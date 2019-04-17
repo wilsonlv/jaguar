@@ -1,39 +1,79 @@
 # jaguar
 
 #### 介绍
-{**以下是码云平台说明，您可以替换此简介**
-码云是开源中国推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用码云实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+jaguar是基于springboot V2.0.1的开发框架，主要技术选型有
+- 核心框架：Spring Boot + Spring Framework + MyBatis-Plus
+- 缓存管理：Redis
+- 数据库连接池：Alibaba Druid
+- 安全框架：Apache Shiro
+- 分布式框架：Dubbo
+- 流程框架：Flowable
+- 接口文档：Swagger
+- 日志管理：SLF4J、Log4j2
 
 #### 软件架构
-软件架构说明
+jaguar包含多个子模块，并且后续会可以一直容纳，主要子模块说明：
 
+- jaguar-core：是jaguar的核心模块，包含实体类、持久层、业务层在内的基础组件；
+    实现了以redis作为二级缓存的快速查询；定义了基础异常类和响应码，以及一些通用的工具类
+- jaguar-redis：整了redis。1、作为框架的二级缓存；2、spring-session的存储。对于本框架有着举足轻重的作用
+- jaguar-mybatis-plus：整合了mybatis-plus与数据库连接池作为持久层组件
+- jaguar-web：依赖于jaguar-core、jaguar-mybatis-plus，定义了控制层的基础组件，以及接口的返回格式；
+    开发人员可以通过引入该模块来快速搭建开发环境
+- jaguar-dubbo：整合了dubbo框架，定义调用dubbo服务的中间件，以减少大量provider的接口定义与层次调用关系；
+    如果开发人员想搭建分布式结构的项目，引入此模块无疑是你最好的选择
+- jaguar-sys-log：通过spring拦截器来实现的接口请求日志记录
 
 #### 安装教程
 
-1. xxxx
-2. xxxx
-3. xxxx
+1. 下载jaguar框架，https://gitee.com/Wilson_Lws/jaguar.git
+2. 在框架的目录下执行mvn clean install命令
+3. 创建自己的项目，引入以下依赖，快速开始开发
 
-#### 使用说明
-
-1. xxxx
-2. xxxx
-3. xxxx
-
-#### 参与贡献
-
-1. Fork 本仓库
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
-
-
-#### 码云特技
-
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. 码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5. 码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+        <dependencyManagement>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-dependencies</artifactId>
+                    <version>2.0.1.RELEASE</version>
+                    <type>pom</type>
+                    <scope>import</scope>
+                </dependency>
+            </dependencies>
+        </dependencyManagement>
+        
+        <dependencies>
+            <!-- springboot启动器 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+            </dependency>
+            <!-- springboot 启动器 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+            </dependency>
+        
+            <dependency>
+                <groupId>com.itqingning</groupId>
+                <artifactId>jaguar-web</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+        
+            <dependency>
+                <groupId>com.itqingning</groupId>
+                <artifactId>jaguar-shiro</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.itqingning</groupId>
+                <artifactId>jaguar-swagger</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+        
+            <dependency>
+                <groupId>com.itqingning</groupId>
+                <artifactId>jaguar-sys-log</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+        </dependencies>
