@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	   http://www.springframework.org/schema/cache
+	   http://www.springframework.org/schema/cache/spring-cache-4.0.xsd">
+
+    <cache:annotation-driven/>
+
+    <!--<bean id="redisPassword" class="org.springframework.data.redis.connection.RedisPassword">
+        <constructor-arg name="thePassword" value="${spring.redis.password}"/>
+    </bean>-->
+
+    <bean id="redisStandaloneConfiguration"
+          class="org.springframework.data.redis.connection.RedisStandaloneConfiguration">
+        <property name="database" value="${spring.redis.database}"/>
+        <property name="hostName" value="${spring.redis.host}"/>
+        <property name="port" value="${spring.redis.port}"/>
+        <!--<property name="password" ref="redisPassword"/>-->
+    </bean>
+
+    <!-- redis单节点数据库连接配置 -->
+    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <constructor-arg name="standaloneConfig" ref="redisStandaloneConfiguration"/>
+    </bean>
+
+    <!--对key的默认序列化器。默认值是StringSerializer-->
+    <bean id="keySerializer" class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+    <!--是对value的默认序列化器，默认值是取自DefaultSerializer的JdkSerializationRedisSerializer。-->
+    <bean id="valueSerializer" class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer"/>
+
+    <!-- redisTemplate配置，redisTemplate是对Jedis的对redis操作的扩展，有更多的操作，封装使操作更便捷 -->
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="jedisConnectionFactory"/>
+        <property name="keySerializer" ref="keySerializer"/>
+        <property name="valueSerializer" ref="valueSerializer"/>
+    </bean>
+
+    <!-- 自定义cacheManager -->
+    <bean id="redisCacheManager" class="com.itqingning.jaguar.redis.RedisCacheManager">
+        <property name="redisTemplate" ref="redisTemplate"/>
+        <property name="expiration" value="${spring.redis.expiration}"/>
+    </bean>
+
+</beans>

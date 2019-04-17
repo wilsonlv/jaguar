@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+    <!--Session集群配置-->
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <property name="globalSessionTimeout" value="${server.servlet.session.timeout}000"/>
+        <property name="sessionDAO" ref="redisSessionDao"/>
+        <property name="sessionIdCookie" ref="sessionIdCookie"/>
+        <property name="sessionListeners">
+            <list>
+                <bean class="com.itqingning.jaguar.shiro.SessionListener"/>
+            </list>
+        </property>
+        <property name="sessionValidationSchedulerEnabled" value="false"/>
+    </bean>
+
+    <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg name="name" value="LIMS-JSESSIONID"/>
+    </bean>
+
+    <bean id="redisSessionDao" class="org.crazycake.shiro.RedisSessionDAO">
+        <property name="redisManager" ref="redisManager"/>
+    </bean>
+    <bean id="redisManager" class="org.crazycake.shiro.RedisManager">
+        <property name="host" value="${spring.redis.host}"/>
+        <property name="port" value="${spring.redis.port}"/>
+        <!--<property name="password" value="${spring.redis.password}"/>-->
+        <property name="expire" value="${server.servlet.session.timeout}"/>
+    </bean>
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="realm"/>
+        <property name="sessionManager" ref="sessionManager"/>
+    </bean>
+
+    <!-- Web应用中,Shiro可控制的Web请求必须经过Shiro主过滤器的拦截,Shiro对基于Spring的Web应用提供了完美的支持 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- Shiro的核心安全接口,这个属性是必须的 -->
+        <property name="securityManager" ref="securityManager"/>
+        <!-- 要求登录时的链接 -->
+        <property name="loginUrl" value="/unauthorized"/>
+        <!-- 用户访问未对其授权的资源时,所显示的连接 -->
+        <property name="unauthorizedUrl" value="/forbidden"/>
+        <!-- Shiro连接约束配置,即过滤链的定义 -->
+        <!-- anon：它对应的过滤器里面是空的,什么都没做 -->
+        <!-- authc：该过滤器下的页面必须验证后才能访问,它是Shiro内置的一个拦截器org.apache.shiro.web.filter.authc.FormAuthenticationFilter -->
+        <property name="filterChainDefinitions">
+            <value>
+                /=anon
+                /test=anon
+                /test/**=anon
+                /login=anon
+                /pic_verification_code=anon
+                /index.jsp=anon
+                /*.ico=anon
+                /unauthorized=anon
+                /forbidden=anon
+                /swagger**=anon
+                /swagger-resources/**=anon
+                /webjars/**=anon
+                /*/api-docs=anon
+                /**=authc
+            </value>
+        </property>
+    </bean>
+    <!-- Shiro生命周期处理器 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"  depends-on="lifecycleBeanPostProcessor">
+        <property name="proxyTargetClass" value="true" />
+    </bean>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager" />
+    </bean>
+
+</beans>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itqingning.jaguar.sys.log.mapper.SysLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.itqingning.jaguar.sys.log.model.SysLog">
+        <result column="session_id" property="sessionId"/>
+        <result column="access_time" property="accessTime"/>
+        <result column="client_host" property="clientHost"/>
+        <result column="request_uri" property="requestUri"/>
+        <result column="api_operation" property="apiOperation"/>
+        <result column="parameters_" property="parameters"/>
+        <result column="method_" property="method"/>
+        <result column="user_agent" property="userAgent"/>
+        <result column="status_" property="status"/>
+        <result column="duration_" property="duration"/>
+    </resultMap>
+
+
+    <select id="selectPage" resultMap="BaseResultMap">
+        select * from sys_request_log
+        <where>
+            <if test="cm.sessionId != null and cm.sessionId != ''">
+                AND session_id = #{cm.sessionId}
+            </if>
+            <if test="cm.accessTime != null and cm.accessTime != ''">
+                AND access_time = #{cm.accessTime}
+            </if>
+            <if test="cm.clientHost != null and cm.clientHost != ''">
+                AND client_host = #{cm.clientHost}
+            </if>
+            <if test="cm.requestUri != null and cm.requestUri != ''">
+                AND request_uri = #{cm.requestUri}
+            </if>
+            <if test="cm.apiOperation != null and cm.apiOperation != ''">
+                AND api_operation = #{cm.apiOperation}
+            </if>
+            <if test="cm.parameters != null and cm.parameters != ''">
+                AND parameters_ = #{cm.parameters}
+            </if>
+            <if test="cm.method != null and cm.method != ''">
+                AND method_ = #{cm.method}
+            </if>
+            <if test="cm.userAgent != null and cm.userAgent != ''">
+                AND user_agent = #{cm.userAgent}
+            </if>
+            <if test="cm.status != null and cm.status != ''">
+                AND status_ = #{cm.status}
+            </if>
+            <if test="cm.duration != null and cm.duration != ''">
+                AND duration_ = #{cm.duration}
+            </if>
+            <if test="cm.enable != null">
+                AND enable_ = #{cm.enable}
+            </if>
+        </where>
+    </select>
+</mapper>
