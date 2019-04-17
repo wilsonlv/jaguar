@@ -39,15 +39,11 @@
             <groupId>org.yfiles</groupId>
             <artifactId>y</artifactId>
             <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/lib/y.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.yfiles</groupId>
             <artifactId>yfiles-server</artifactId>
             <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/lib/yfiles-server.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

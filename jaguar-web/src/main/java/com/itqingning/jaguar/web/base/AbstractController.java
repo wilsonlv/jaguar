@@ -35,11 +35,6 @@ public abstract class AbstractController<T extends BaseService> extends BaseCont
     }
 
     public Object update(BaseModel param) {
-        Long userId = getCurrentUser();
-        if (param.getId() == null) {
-            param.setCreateBy(userId);
-        }
-        param.setUpdateBy(userId);
         BaseModel baseModel = service.update(param);
         return setSuccessJsonResult(baseModel);
     }

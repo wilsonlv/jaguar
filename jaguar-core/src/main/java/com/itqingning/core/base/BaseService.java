@@ -46,10 +46,6 @@ public abstract class BaseService<T extends BaseModel, M extends BaseMapper<T>> 
     @Value("${spring.redis.namespace}")
     private String namespace;
 
-//    private Long getCurrentUser() {
-//        return WebConstants.SYS_REQUEST_LOG.get().getCreateBy();
-//    }
-
     /**
      * 构建分页对象
      */
@@ -174,12 +170,8 @@ public abstract class BaseService<T extends BaseModel, M extends BaseMapper<T>> 
      */
     @Transactional
     public T update(T record) {
-//        Long currentUser = getCurrentUser();
-
-//        record.setUpdateBy(currentUser);
         record.setUpdateTime(new Date());
         if (record.getId() == null) {
-//            record.setCreateBy(currentUser);
             record.setCreateTime(new Date());
             mapper.insert(record);
         } else {
