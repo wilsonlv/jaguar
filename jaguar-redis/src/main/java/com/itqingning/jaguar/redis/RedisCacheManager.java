@@ -1,7 +1,11 @@
 package com.itqingning.jaguar.redis;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,19 +16,14 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by apple on 2017/2/22.
  */
+@Component
 public class RedisCacheManager {
 
+    @Autowired
     private RedisTemplate<String, Serializable> redisTemplate;
 
+    @Value("${spring.redis.expiration}")
     private Integer expiration;
-
-    public RedisTemplate<String, Serializable> getRedisTemplate() {
-        return redisTemplate;
-    }
-
-    public void setRedisTemplate(RedisTemplate<String, Serializable> redisTemplate) {
-        this.redisTemplate = redisTemplate;
-    }
 
     public Integer getExpiration() {
         return expiration;
