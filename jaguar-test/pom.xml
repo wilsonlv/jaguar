@@ -17,18 +17,16 @@
             <artifactId>jaguar-mybatis-plus</artifactId>
             <version>3.0</version>
         </dependency>-->
-        <dependency>
+        <!--<dependency>
             <groupId>com.itqingning</groupId>
             <artifactId>jaguar-dubbo</artifactId>
             <version>3.0</version>
-        </dependency>
+        </dependency>-->
         <!--<dependency>
             <groupId>com.itqingning</groupId>
             <artifactId>jaguar-redis</artifactId>
             <version>3.0</version>
         </dependency>-->
-
-
     </dependencies>
 
 </project>

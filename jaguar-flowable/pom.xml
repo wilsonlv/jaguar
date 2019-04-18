@@ -28,17 +28,5 @@
             <artifactId>flowable-spring-boot-starter</artifactId>
             <version>${flowable.version}</version>
         </dependency>
-
-        <!-- yfiles-->
-        <dependency>
-            <groupId>com.yworks</groupId>
-            <artifactId>yfiles</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.yworks</groupId>
-            <artifactId>yfiles-server</artifactId>
-            <version>1.0</version>
-        </dependency>
     </dependencies>
 </project>
