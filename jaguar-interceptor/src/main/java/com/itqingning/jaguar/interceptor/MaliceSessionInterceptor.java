@@ -6,6 +6,7 @@ import com.itqingning.jaguar.redis.RedisCacheManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -18,7 +19,6 @@ import java.util.Date;
  * Created by lvws on 2018/11/9.
  */
 @Component
-@ConfigurationProperties(prefix = "interceptor.malice.session")
 public class MaliceSessionInterceptor extends HandlerInterceptorAdapter {
 
     private final Logger logger = LogManager.getLogger(getClass());
@@ -28,21 +28,25 @@ public class MaliceSessionInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private RedisCacheManager redisCacheManager;
 
+    @Value("${interceptor.malice.namespace}")
     private String namespace;
 
     /**
      * 冻结期（s）
      */
+    @Value("${interceptor.malice.session.freezingPeriod}")
     private Integer freezingPeriod;
 
     /**
      * 访问maxRecentAccessTimeNum次的最小访问时间间隔（s）
      */
+    @Value("${interceptor.malice.session.minRequestIntervalTime}")
     private Integer minRequestIntervalTime;
 
     /**
      * 最多记录最近XX次的访问时间记录
      */
+    @Value("${interceptor.malice.session.maxRecentAccessTimeNum}")
     private Integer maxRecentAccessTimeNum;
 
 

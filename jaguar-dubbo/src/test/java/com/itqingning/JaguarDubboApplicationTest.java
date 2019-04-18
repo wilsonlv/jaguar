@@ -23,7 +23,7 @@ public class JaguarDubboApplicationTest {
     @Bean
     public ApplicationRunner runner() {
         return args -> {
-            provider.execute();
+
         };
     }
 

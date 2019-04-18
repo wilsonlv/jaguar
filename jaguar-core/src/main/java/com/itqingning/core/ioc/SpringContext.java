@@ -3,12 +3,14 @@ package com.itqingning.core.ioc;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 /**
  * Created by lvws on 2019/4/16.
  */
 @Service
+@PropertySource("classpath:core.properties")
 public class SpringContext implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext;

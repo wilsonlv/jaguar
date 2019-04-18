@@ -19,7 +19,6 @@ import java.util.Date;
  * Created by lvws on 2018/11/9.
  */
 @Component
-@ConfigurationProperties(prefix = "interceptor.malice.ip")
 public class MaliceIpInterceptor extends HandlerInterceptorAdapter {
 
     private final Logger logger = LogManager.getLogger(getClass());
@@ -29,21 +28,25 @@ public class MaliceIpInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private RedisCacheManager redisCacheManager;
 
+    @Value("${interceptor.malice.namespace}")
     private String namespace;
 
     /**
      * 冻结期（s）
      */
+    @Value("${interceptor.malice.ip.freezingPeriod}")
     private Long freezingPeriod = 600L;
 
     /**
      * 访问maxRecentAccessTimeNum次的最小访问时间间隔（s）
      */
+    @Value("${interceptor.malice.ip.minRequestIntervalTime}")
     private Long minRequestIntervalTime;
 
     /**
      * 最多记录最近XX次的访问时间记录
      */
+    @Value("${interceptor.malice.ip.maxRecentAccessTimeNum}")
     private Long maxRecentAccessTimeNum;
 
 

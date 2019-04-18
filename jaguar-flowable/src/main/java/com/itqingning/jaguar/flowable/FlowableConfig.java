@@ -1,9 +1,6 @@
 package com.itqingning.jaguar.flowable;
 
-import org.flowable.engine.HistoryService;
-import org.flowable.engine.RepositoryService;
-import org.flowable.engine.RuntimeService;
-import org.flowable.engine.TaskService;
+import org.flowable.engine.*;
 import org.flowable.spring.ProcessEngineFactoryBean;
 import org.flowable.spring.SpringProcessEngineConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -39,23 +36,28 @@ public class FlowableConfig {
     }
 
     @Bean
-    public RepositoryService repositoryService(SpringProcessEngineConfiguration processEngine) {
-        return processEngine.getRepositoryService();
+    public RepositoryService repositoryService(ProcessEngineFactoryBean processEngine) throws Exception {
+        return processEngine.getObject().getRepositoryService();
     }
 
     @Bean
-    public RuntimeService runtimeService(SpringProcessEngineConfiguration processEngine) {
-        return processEngine.getRuntimeService();
+    public RuntimeService runtimeService(ProcessEngineFactoryBean processEngine) throws Exception {
+        return processEngine.getObject().getRuntimeService();
     }
 
     @Bean
-    public TaskService taskService(SpringProcessEngineConfiguration processEngine) {
-        return processEngine.getTaskService();
+    public TaskService taskService(ProcessEngineFactoryBean processEngine) throws Exception {
+        return processEngine.getObject().getTaskService();
     }
 
     @Bean
-    public HistoryService historyService(SpringProcessEngineConfiguration processEngine) {
-        return processEngine.getHistoryService();
+    public HistoryService historyService(ProcessEngineFactoryBean processEngine) throws Exception {
+        return processEngine.getObject().getHistoryService();
+    }
+
+    @Bean
+    public ManagementService managementService(ProcessEngineFactoryBean processEngine) throws Exception {
+        return processEngine.getObject().getManagementService();
     }
 
 }

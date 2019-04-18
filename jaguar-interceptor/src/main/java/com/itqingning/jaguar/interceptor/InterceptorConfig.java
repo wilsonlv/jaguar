@@ -1,6 +1,7 @@
 package com.itqingning.jaguar.interceptor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * Created by lvws on 2019/1/24.
  */
 @Component
+@PropertySource("classpath:interceptor.properties")
 public class InterceptorConfig implements WebMvcConfigurer {
 
     @Autowired
