@@ -1,0 +1,8 @@
+server:
+  port: 8080
+  servlet:
+    application-display-name: jaguar-test
+
+spring:
+  profiles:
+    active: dev
