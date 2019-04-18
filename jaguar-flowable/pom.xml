@@ -31,12 +31,12 @@
 
         <!-- yfiles-->
         <dependency>
-            <groupId>org.yfiles</groupId>
-            <artifactId>y</artifactId>
+            <groupId>com.yworks</groupId>
+            <artifactId>yfiles</artifactId>
             <version>1.0</version>
         </dependency>
         <dependency>
-            <groupId>org.yfiles</groupId>
+            <groupId>com.yworks</groupId>
             <artifactId>yfiles-server</artifactId>
             <version>1.0</version>
         </dependency>

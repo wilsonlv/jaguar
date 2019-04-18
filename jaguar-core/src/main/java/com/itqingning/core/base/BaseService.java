@@ -21,7 +21,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static com.itqingning.jaguar.mybatisplus.Constant.*;
+import static com.itqingning.core.constant.Constants.*;
+
 
 /**
  * 业务逻辑层基类<br/>

@@ -9,20 +9,44 @@ jaguar是基于springboot V2.0.1的开发框架，主要技术选型有
 - 分布式框架：Dubbo
 - 流程框架：Flowable
 - 接口文档：Swagger
-- 日志管理：SLF4J、Log4j2
+- 日志管理：Logback
 
 #### 软件架构
 jaguar包含多个子模块，并且后续会可以一直容纳，主要子模块说明：
 
-- jaguar-core：是jaguar的核心模块，包含实体类、持久层、业务层在内的基础组件；
+- jaguar-mybatis-plus：整合了mybatis-plus与druid数据库连接池作为持久层组件；
+    使用mybatis-plus-generator + apache velocity来生成从实体类到控制层的基础crud代码，
+    是jaguar的基础模块
+    
+- jaguar-redis：整合了redis。1、作为框架实体类的二级缓存；2、shiro-session的共享存储。
+    对于本框架有着举足轻重的作用，是jaguar的基础模块
+    
+- jaguar-shiro：整合了shiro，作为框架的权限控制组件，依赖于jaguar-redis，是jaguar的基础模块
+    
+- jaguar-core：依赖于jaguar-redis，是jaguar的核心模块，包含实体类、持久层、业务层在内的基础组件；
     实现了以redis作为二级缓存的快速查询；定义了基础异常类和响应码，以及一些通用的工具类
-- jaguar-redis：整了redis。1、作为框架的二级缓存；2、spring-session的存储。对于本框架有着举足轻重的作用
-- jaguar-mybatis-plus：整合了mybatis-plus与数据库连接池作为持久层组件
-- jaguar-web：依赖于jaguar-core、jaguar-mybatis-plus，定义了控制层的基础组件，以及接口的返回格式；
+    
+- jaguar-web：依赖于jaguar-core和jaguar-shiro，定义了控制层的基础组件，以及接口的返回格式；
     开发人员可以通过引入该模块来快速搭建开发环境
-- jaguar-dubbo：整合了dubbo框架，定义调用dubbo服务的中间件，以减少大量provider的接口定义与层次调用关系；
-    如果开发人员想搭建分布式结构的项目，引入此模块无疑是你最好的选择
+    
+- jaguar-dubbo：整合了dubbo框架，依赖于jaguar-core，封装了调用dubbo服务的中间件，
+    以减少大量provider的接口定义与层次调用关系；如果开发人员想搭建分布式结构的项目，
+    引入此模块无疑是你最好的选择
+    
+- jaguar-swagger：整合了swagger，作为框架的接口文档生成与调试工具
+
 - jaguar-sys-log：通过spring拦截器来实现的接口请求日志记录
+
+- jaguar-interceptor：spring的拦截器，目前包括基于ip和session的恶意访问拦截
+
+- jaguar-aviator：整合了google的aviator，是表达式解析组件
+
+- jaguar-flowable：整合了flowable，用作工作流的基础组件
+
+- jaguar-data-encription：数据加密组价，主要包含DES对称加密，RSA非对称加密，MD5和BASE64加密算法
+
+- jaguar-test：jaguar模块测试
+
 
 #### 安装教程
 
@@ -48,7 +72,6 @@ jaguar包含多个子模块，并且后续会可以一直容纳，主要子模�
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
             </dependency>
-            <!-- springboot 启动器 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-test</artifactId>
@@ -60,11 +83,6 @@ jaguar包含多个子模块，并且后续会可以一直容纳，主要子模�
                 <version>${jaguar.version}</version>
             </dependency>
         
-            <dependency>
-                <groupId>com.itqingning</groupId>
-                <artifactId>jaguar-shiro</artifactId>
-                <version>${jaguar.version}</version>
-            </dependency>
             <dependency>
                 <groupId>com.itqingning</groupId>
                 <artifactId>jaguar-swagger</artifactId>

@@ -42,21 +42,21 @@ public abstract class BaseController {
     /**
      * 设置成功响应代码
      */
-    protected ResponseEntity<ModelMap> setSuccessJsonResult() {
+    protected ResponseEntity<JsonResult> setSuccessJsonResult() {
         return setSuccessJsonResult(null);
     }
 
     /**
      * 设置成功响应代码
      */
-    protected ResponseEntity<ModelMap> setSuccessJsonResult(Object data) {
+    protected ResponseEntity<JsonResult> setSuccessJsonResult(Object data) {
         return setJsonResult(HttpCode.OK, data);
     }
 
     /**
      * 设置响应代码
      */
-    protected ResponseEntity<ModelMap> setJsonResult(HttpCode code, Object data) {
+    protected ResponseEntity<JsonResult> setJsonResult(HttpCode code, Object data) {
         JsonResult jsonResult = new JsonResult();
         if (data != null) {
             if (data instanceof Page) {

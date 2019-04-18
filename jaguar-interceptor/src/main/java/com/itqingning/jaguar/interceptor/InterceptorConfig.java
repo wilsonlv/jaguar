@@ -1,6 +1,7 @@
 package com.itqingning.jaguar.interceptor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -18,6 +19,10 @@ public class InterceptorConfig implements WebMvcConfigurer {
     private MaliceIpInterceptor maliceIpInterceptor;
     @Autowired
     private MaliceSessionInterceptor maliceSessionInterceptor;
+    @Value("${interceptor.malice.ip.enable}")
+    private Boolean ipEnable;
+    @Value("${interceptor.malice.session.enable}")
+    private Boolean sessionEnable;
 
     private static final String PATH_PATTERNS = "/**";
 
@@ -25,8 +30,12 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(maliceIpInterceptor).addPathPatterns(PATH_PATTERNS).excludePathPatterns(EXCLUDE_PATH_PATTERNS);
-        registry.addInterceptor(maliceSessionInterceptor).addPathPatterns(PATH_PATTERNS).excludePathPatterns(EXCLUDE_PATH_PATTERNS);
+        if (ipEnable) {
+            registry.addInterceptor(maliceIpInterceptor).addPathPatterns(PATH_PATTERNS).excludePathPatterns(EXCLUDE_PATH_PATTERNS);
+        }
+        if (sessionEnable) {
+            registry.addInterceptor(maliceSessionInterceptor).addPathPatterns(PATH_PATTERNS).excludePathPatterns(EXCLUDE_PATH_PATTERNS);
+        }
     }
 
 }

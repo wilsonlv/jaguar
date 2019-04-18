@@ -12,13 +12,14 @@
     <dependencies>
         <dependency>
             <groupId>com.itqingning</groupId>
-            <artifactId>jaguar-mybatis-plus</artifactId>
-            <version>3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.itqingning</groupId>
             <artifactId>jaguar-redis</artifactId>
             <version>3.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>${mybatis-plus.version}</version>
         </dependency>
     </dependencies>
 
