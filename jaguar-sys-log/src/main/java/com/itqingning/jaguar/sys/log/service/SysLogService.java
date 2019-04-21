@@ -1,7 +1,7 @@
 package com.itqingning.jaguar.sys.log.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.itqingning.core.base.BaseService;
+import com.itqingning.jaguar.core.base.BaseService;
 import com.itqingning.jaguar.sys.log.mapper.SysLogMapper;
 import com.itqingning.jaguar.sys.log.model.SysLog;
 import org.springframework.beans.factory.annotation.Autowired;

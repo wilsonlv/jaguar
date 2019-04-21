@@ -3,6 +3,7 @@ package ${package.Controller};
 import com.lims.core.util.InstanceUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 import ${package.Entity}.${entity};
 import ${package.ServiceImpl}.${entity}Service;
 
@@ -13,6 +14,8 @@ import io.swagger.annotations.ApiOperation;
 #if(${superControllerClassPackage})
 import ${superControllerClassPackage};
 #end
+
+import static com.itqingning.jaguar.core.constant.Constant.*;
 
 /**
  * <p>
@@ -34,14 +37,14 @@ public class ${table.controllerName} {
     @ApiOperation(value = "查询${table.comment}")
     @RequiresPermissions("${table.entityPath}:read")
     @GetMapping(value = "/list")
-    public Object query(ModelMap modelMap,
+    public ResponseEntity<JsonResult> query(ModelMap modelMap,
             @ApiParam(value = "页码") @RequestParam(required = false) Integer page,
             @ApiParam(value = "页量") @RequestParam(required = false) Integer rows){
 
         Map<String, Object> param=InstanceUtil.newHashMap();
         param.put(PAGE,page);
         param.put(ROWS,rows);
-        param.put(ENABLE,1);
+        param.put(DELETED,0);
 
         return super.query(modelMap,param);
     }
@@ -49,28 +52,28 @@ public class ${table.controllerName} {
     @ApiOperation(value = "${table.comment}详情")
     @RequiresPermissions("${table.entityPath}:read")
     @GetMapping(value = "/detail/{id}")
-    public Object get(ModelMap modelMap,@PathVariable Long id){
+    public ResponseEntity<JsonResult> get(ModelMap modelMap,@PathVariable Long id){
         return super.get(modelMap,id);
     }
 
     @ApiOperation(value = "修改${table.comment}")
     @RequiresPermissions("${table.entityPath}:update")
     @PostMapping(value = "/update")
-    public Object update(ModelMap modelMap, ${entity} param){
+    public ResponseEntity<JsonResult> update(ModelMap modelMap, ${entity} param){
         return super.update(modelMap,param);
     }
 
     @ApiOperation(value = "删除${table.comment}")
     @RequiresPermissions("${table.entityPath}:update")
     @DeleteMapping(value = "/del/{id}")
-    public Object del(ModelMap modelMap,@PathVariable Long id){
+    public ResponseEntity<JsonResult> del(ModelMap modelMap,@PathVariable Long id){
         return super.del(modelMap,id);
     }
 
     @ApiOperation(value = "删除${table.comment}")
     @RequiresPermissions("${table.entityPath}:update")
     @DeleteMapping(value = "/delete/{id}")
-    public Object delete(ModelMap modelMap,@PathVariable Long id){
+    public ResponseEntity<JsonResult> delete(ModelMap modelMap,@PathVariable Long id){
         return super.delete(modelMap,id);
     }
 }

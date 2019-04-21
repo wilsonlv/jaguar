@@ -1,6 +1,6 @@
 package com.itqingning.jaguar.web;
 
-import com.itqingning.core.http.HttpCode;
+import com.itqingning.jaguar.core.http.HttpCode;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.ui.ModelMap;
 

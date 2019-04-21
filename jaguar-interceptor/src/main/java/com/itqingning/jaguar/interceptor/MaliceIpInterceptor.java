@@ -1,13 +1,12 @@
 package com.itqingning.jaguar.interceptor;
 
-import com.itqingning.core.http.HttpCode;
+import com.itqingning.jaguar.core.http.HttpCode;
 import com.itqingning.jaguar.web.WebUtil;
 import com.itqingning.jaguar.redis.RedisCacheManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 

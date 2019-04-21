@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itqingning.jaguar.core.base.mapper.SysFieldEditLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.itqingning.jaguar.core.base.model.SysFieldEditLog">
+        <result column="class_name" property="className" />
+        <result column="record_id" property="recordId" />
+        <result column="field_name" property="fieldName" />
+        <result column="old_value" property="oldValue" />
+        <result column="new_value" property="newValue" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <select id="selectPage" resultMap="BaseResultMap">
+        select id_ from sys_field_edit_log
+        <where>
+            <if test="cm.className != null and cm.className != ''">
+                AND class_name = #{cm.className}
+            </if>
+            <if test="cm.recordId != null and cm.recordId != ''">
+                AND record_id = #{cm.recordId}
+            </if>
+            <if test="cm.fieldName != null and cm.fieldName != ''">
+                AND field_name = #{cm.fieldName}
+            </if>
+            <if test="cm.oldValue != null and cm.oldValue != ''">
+                AND old_value = #{cm.oldValue}
+            </if>
+            <if test="cm.newValue != null and cm.newValue != ''">
+                AND new_value = #{cm.newValue}
+            </if>
+        </where>
+    </select>
+</mapper>

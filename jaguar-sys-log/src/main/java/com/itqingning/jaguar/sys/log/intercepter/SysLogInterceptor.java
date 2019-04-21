@@ -1,10 +1,10 @@
 package com.itqingning.jaguar.sys.log.intercepter;
 
 import com.alibaba.fastjson.JSON;
-import com.itqingning.core.http.HttpCode;
-import com.itqingning.core.util.DateUtil;
-import com.itqingning.core.util.ExceptionUtil;
-import com.itqingning.core.util.ExecutorServiceUtil;
+import com.itqingning.jaguar.core.http.HttpCode;
+import com.itqingning.jaguar.core.util.DateUtil;
+import com.itqingning.jaguar.core.util.ExceptionUtil;
+import com.itqingning.jaguar.core.util.ExecutorServiceUtil;
 import com.itqingning.jaguar.sys.log.model.SysLog;
 import com.itqingning.jaguar.sys.log.service.SysLogService;
 import com.itqingning.jaguar.web.JsonResult;

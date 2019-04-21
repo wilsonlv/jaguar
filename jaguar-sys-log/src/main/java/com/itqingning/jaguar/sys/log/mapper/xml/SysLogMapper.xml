@@ -50,9 +50,6 @@
             <if test="cm.duration != null and cm.duration != ''">
                 AND duration_ = #{cm.duration}
             </if>
-            <if test="cm.enable != null">
-                AND enable_ = #{cm.enable}
-            </if>
         </where>
     </select>
 </mapper>

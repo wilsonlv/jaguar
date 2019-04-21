@@ -6,8 +6,8 @@ package com.itqingning.jaguar.web.base;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.itqingning.core.exception.BaseException;
-import com.itqingning.core.http.HttpCode;
+import com.itqingning.jaguar.core.exception.BaseException;
+import com.itqingning.jaguar.core.http.HttpCode;
 import com.itqingning.jaguar.web.JsonResult;
 import com.itqingning.jaguar.web.WebUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -15,7 +15,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;

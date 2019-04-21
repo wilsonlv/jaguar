@@ -1,8 +1,8 @@
 package com.itqingning.jaguar.web.base;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.itqingning.core.base.BaseModel;
-import com.itqingning.core.base.BaseService;
+import com.itqingning.jaguar.core.base.BaseModel;
+import com.itqingning.jaguar.core.base.BaseService;
 import com.itqingning.jaguar.web.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
 package com.itqingning.jaguar.dubbo;
 
-import com.itqingning.core.exception.BusinessException;
+import com.itqingning.jaguar.core.exception.BusinessException;
 
 /**
  * @author lws

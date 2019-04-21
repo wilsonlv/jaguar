@@ -2,7 +2,7 @@ package com.itqingning.jaguar.dubbo;
 
 import com.alibaba.fastjson.JSON;
 import com.esotericsoftware.reflectasm.MethodAccess;
-import com.itqingning.core.base.BaseModel;
+import com.itqingning.jaguar.core.base.BaseModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;

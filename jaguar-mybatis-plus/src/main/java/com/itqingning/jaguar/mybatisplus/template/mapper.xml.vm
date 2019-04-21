@@ -34,9 +34,14 @@
 				AND ${field.name} = #{cm.${field.propertyName}}
 			</if>
 			#end
-			<if test="cm.enable != null">
-				AND enable_ = #{cm.enable}
-			</if>
+            <if test="cm.deleted != null">
+                AND deleted_ = #{cm.deleted}
+            </if>
 		</where>
 	</select>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		DELETE FROM ${table.name} WHERE id_ = #{id}
+	</delete>
+	
 </mapper>

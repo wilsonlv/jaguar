@@ -1,7 +1,7 @@
 package com.itqingning.jaguar.dubbo;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.itqingning.core.base.BaseModel;
+import com.itqingning.jaguar.core.base.BaseModel;
 
 import java.io.Serializable;
 import java.util.List;

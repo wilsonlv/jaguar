@@ -2,7 +2,7 @@ package com.itqingning.jaguar.sys.log.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.itqingning.core.base.BaseModel;
+import com.itqingning.jaguar.core.base.BaseModel;
 
 
 import java.util.Date;

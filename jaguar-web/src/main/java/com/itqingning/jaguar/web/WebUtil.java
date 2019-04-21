@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.UnavailableSecurityManagerException;
 import org.apache.shiro.session.Session;
 import org.springframework.web.util.WebUtils;
 
@@ -29,14 +30,18 @@ public final class WebUtil {
      * 保存当前用户
      */
     public static void saveCurrentUser(Object user) {
-        setSession(WebConstants.CURRENT_USER, user);
+        setSession(WebConstant.CURRENT_USER, user);
     }
 
     /**
      * 获取当前用户
      */
     public static Long getCurrentUser() {
-        return (Long) SecurityUtils.getSubject().getSession().getAttribute(WebConstants.CURRENT_USER);
+        try {
+            return (Long) SecurityUtils.getSubject().getSession().getAttribute(WebConstant.CURRENT_USER);
+        } catch (UnavailableSecurityManagerException e) {
+            return null;
+        }
     }
 
     /**
@@ -50,7 +55,11 @@ public final class WebUtil {
      * 获取session
      */
     public static Session getSession() {
-        return SecurityUtils.getSubject().getSession();
+        try {
+            return SecurityUtils.getSubject().getSession();
+        } catch (UnavailableSecurityManagerException e) {
+            return null;
+        }
     }
 
     /**
