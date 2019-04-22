@@ -1,8 +1,6 @@
 package com.itqingning.jaguar.swagger;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -17,15 +15,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @Configuration
 @EnableSwagger2
-@ConfigurationProperties(prefix = "swagger.config")
 public class SwaggerConfig {
 
-    private String title;
-    private String description;
-    private String version;
-    private String contactName;
-    private String contactUrl;
-    private String contactEmail;
+    @Autowired
+    private SwaggerProperties swaggerProperties;
 
     @Bean
     public Docket platformApi() {
@@ -34,8 +27,9 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title(title).description(description)
-                .contact(new Contact(contactName, contactUrl, contactEmail)).version(version).build();
+        return new ApiInfoBuilder().title(swaggerProperties.getTitle()).description(swaggerProperties.getDescription())
+                .contact(new Contact(swaggerProperties.getContactName(), swaggerProperties.getContactUrl(), swaggerProperties.getContactEmail()))
+                .version(swaggerProperties.getVersion()).build();
     }
 
 }

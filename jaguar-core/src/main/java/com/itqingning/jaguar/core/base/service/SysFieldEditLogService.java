@@ -46,7 +46,7 @@ public class SysFieldEditLogService {
         FILTER_FIELDS.add(SERIAL_VERSION_UID);
     }
 
-    @Autowired
+    @Autowired(required = false)
     private SysFieldEditLogMapper sysFieldEditLogMapper;
 
     @Transactional

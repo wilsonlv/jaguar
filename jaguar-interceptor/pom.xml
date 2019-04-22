@@ -19,11 +19,6 @@
         </dependency>
         <dependency>
             <groupId>com.itqingning</groupId>
-            <artifactId>jaguar-redis</artifactId>
-            <version>3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.itqingning</groupId>
             <artifactId>jaguar-web</artifactId>
             <version>3.0</version>
         </dependency>

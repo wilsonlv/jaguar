@@ -1,12 +1,11 @@
 package com.itqingning.jaguar.interceptor;
 
 import com.itqingning.jaguar.core.http.HttpCode;
-import com.itqingning.jaguar.web.WebUtil;
 import com.itqingning.jaguar.redis.RedisCacheManager;
+import com.itqingning.jaguar.web.WebUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -26,35 +25,19 @@ public class MaliceIpInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired
     private RedisCacheManager redisCacheManager;
+    @Autowired
+    private MaliceProperties maliceProperties;
 
-    @Value("${interceptor.malice.namespace}")
-    private String namespace;
-
-    /**
-     * 冻结期（s）
-     */
-    @Value("${interceptor.malice.ip.freezingPeriod}")
-    private Long freezingPeriod = 600L;
-
-    /**
-     * 访问maxRecentAccessTimeNum次的最小访问时间间隔（s）
-     */
-    @Value("${interceptor.malice.ip.minRequestIntervalTime}")
-    private Long minRequestIntervalTime;
-
-    /**
-     * 最多记录最近XX次的访问时间记录
-     */
-    @Value("${interceptor.malice.ip.maxRecentAccessTimeNum}")
-    private Long maxRecentAccessTimeNum;
-
+    private String namespace() {
+        return redisCacheManager.getNamespace();
+    }
 
     private String getIpAccessKey(String host) {
-        return new StringBuilder(namespace).append(":").append(IP_ACCESS_PREFIX).append(host).toString();
+        return new StringBuilder(namespace()).append(":").append(IP_ACCESS_PREFIX).append(host).toString();
     }
 
     private String getIpAccessTimeKey(String host) {
-        return new StringBuilder(namespace).append(":").append(IP_ACCESS_PREFIX).append(host).append(":times").toString();
+        return new StringBuilder(namespace()).append(":").append(IP_ACCESS_PREFIX).append(host).append(":times").toString();
     }
 
     /**
@@ -81,6 +64,10 @@ public class MaliceIpInterceptor extends HandlerInterceptorAdapter {
 
         String sessionId = request.getSession().getId();
         String host = WebUtil.getHost(request);
+
+        Long freezingPeriod = maliceProperties.getIpFreezingPeriod() * 1000L;
+        Integer maxRecentAccessTimeNum = maliceProperties.getIpMaxRecentAccessTimeNum();
+        Long minRequestIntervalTime = maliceProperties.getIpMinRequestIntervalTime() * 1000L;
 
         Date accessTime = new Date();
 
@@ -132,26 +119,5 @@ public class MaliceIpInterceptor extends HandlerInterceptorAdapter {
         }
 
         return super.preHandle(request, response, handler);
-    }
-
-
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
-    }
-
-    public void setRedisCacheManager(RedisCacheManager redisCacheManager) {
-        this.redisCacheManager = redisCacheManager;
-    }
-
-    public void setFreezingPeriod(Long freezingPeriod) {
-        this.freezingPeriod = freezingPeriod;
-    }
-
-    public void setMinRequestIntervalTime(Long minRequestIntervalTime) {
-        this.minRequestIntervalTime = minRequestIntervalTime;
-    }
-
-    public void setMaxRecentAccessTimeNum(Long maxRecentAccessTimeNum) {
-        this.maxRecentAccessTimeNum = maxRecentAccessTimeNum;
     }
 }

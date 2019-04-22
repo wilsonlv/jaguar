@@ -1,9 +1,9 @@
 package com.itqingning.jaguar.redis;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
@@ -17,29 +17,23 @@ import java.io.Serializable;
  * Created by lvws on 2019/4/18.
  */
 @Configuration
-@PropertySource("classpath:redis.properties")
+@EnableConfigurationProperties(RedisProperties.class)
 public class RedisConfig {
 
-    @Value("${spring.redis.database}")
-    private int database;
-    @Value("${spring.redis.host}")
-    private String host;
-    @Value("${spring.redis.port}")
-    private int port;
-    @Value("${spring.redis.password}")
-    private String password;
+    @Autowired
+    private RedisProperties redisProperties;
 
     @Bean
     public RedisPassword redisPassword() {
-        return RedisPassword.of(password);
+        return RedisPassword.of(redisProperties.getPassword());
     }
 
     @Bean
     public RedisStandaloneConfiguration redisStandaloneConfiguration(RedisPassword redisPassword) {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
-        configuration.setDatabase(database);
-        configuration.setHostName(host);
-        configuration.setPort(port);
+        configuration.setDatabase(redisProperties.getDatabase());
+        configuration.setHostName(redisProperties.getHost());
+        configuration.setPort(redisProperties.getPort());
         configuration.setPassword(redisPassword);
         return configuration;
     }

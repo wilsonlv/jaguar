@@ -36,28 +36,28 @@ public class FlowableConfig {
     }
 
     @Bean
-    public RepositoryService repositoryService(ProcessEngineFactoryBean processEngine) throws Exception {
-        return processEngine.getObject().getRepositoryService();
+    public RepositoryService repositoryService(ProcessEngine processEngine) throws Exception {
+        return processEngine.getRepositoryService();
     }
 
     @Bean
-    public RuntimeService runtimeService(ProcessEngineFactoryBean processEngine) throws Exception {
-        return processEngine.getObject().getRuntimeService();
+    public RuntimeService runtimeService(ProcessEngine processEngine) throws Exception {
+        return processEngine.getRuntimeService();
     }
 
     @Bean
-    public TaskService taskService(ProcessEngineFactoryBean processEngine) throws Exception {
-        return processEngine.getObject().getTaskService();
+    public TaskService taskService(ProcessEngine processEngine) throws Exception {
+        return processEngine.getTaskService();
     }
 
     @Bean
-    public HistoryService historyService(ProcessEngineFactoryBean processEngine) throws Exception {
-        return processEngine.getObject().getHistoryService();
+    public HistoryService historyService(ProcessEngine processEngine) throws Exception {
+        return processEngine.getHistoryService();
     }
 
     @Bean
-    public ManagementService managementService(ProcessEngineFactoryBean processEngine) throws Exception {
-        return processEngine.getObject().getManagementService();
+    public ManagementService managementService(ProcessEngine processEngine) throws Exception {
+        return processEngine.getManagementService();
     }
 
 }

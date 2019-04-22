@@ -1,8 +1,6 @@
 package com.itqingning.jaguar.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -22,15 +20,15 @@ public class RedisCacheManager {
     @Autowired
     private RedisTemplate<String, Serializable> redisTemplate;
 
-    @Value("${spring.redis.expiration}")
-    private Integer expiration;
+    @Autowired
+    private RedisProperties redisProperties;
 
     public Integer getExpiration() {
-        return expiration;
+        return redisProperties.getExpiration();
     }
 
-    public void setExpiration(Integer expiration) {
-        this.expiration = expiration;
+    public String getNamespace() {
+        return redisProperties.getNamespace();
     }
 
     /**
@@ -65,7 +63,7 @@ public class RedisCacheManager {
     public Object get(String key, boolean fresh) {
         BoundValueOperations<String, Serializable> operations = redisTemplate.boundValueOps(key);
         if (fresh) {
-            operations.expire(expiration, TimeUnit.SECONDS);
+            operations.expire(getExpiration(), TimeUnit.SECONDS);
         }
         return operations.get();
     }
@@ -77,7 +75,7 @@ public class RedisCacheManager {
      * @param value
      */
     public void set(String key, Serializable value) {
-        set(key, value, expiration);
+        set(key, value, getExpiration());
     }
 
     /**

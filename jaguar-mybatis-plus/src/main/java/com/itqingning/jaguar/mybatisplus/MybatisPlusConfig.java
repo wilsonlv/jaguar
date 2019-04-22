@@ -3,15 +3,13 @@ package com.itqingning.jaguar.mybatisplus;
 import com.baomidou.mybatisplus.core.injector.ISqlInjector;
 import com.baomidou.mybatisplus.extension.injector.LogicSqlInjector;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
-import com.baomidou.mybatisplus.extension.spring.MybatisMapperRefresh;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.io.Resource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
@@ -19,14 +17,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @MapperScan("com.**.mapper*")
-@EnableTransactionManagement(proxyTargetClass = true)
 @PropertySource("classpath:mybatis-plus.properties")
+@EnableTransactionManagement(proxyTargetClass = true)
+@EnableConfigurationProperties(MybatisPlusProperties.class)
 public class MybatisPlusConfig {
 
-    @Value("${mybatis-plus.mapper-locations}")
-    private Resource[] mapperLocations;
-    @Value("${mybatis-plus.refresh}")
-    private Boolean refresh;
+    @Autowired
+    private MybatisPlusProperties mybatisPlusProperties;
 
     @Bean
     public ISqlInjector sqlInjector() {
@@ -43,7 +40,8 @@ public class MybatisPlusConfig {
 
     @Bean
     public MybatisMapperRefresh mybatisMapperRefresh(SqlSessionFactory sqlSessionFactory) {
-        return new MybatisMapperRefresh(mapperLocations, sqlSessionFactory, refresh);
+        return new MybatisMapperRefresh(mybatisPlusProperties.getMapperLocations(), sqlSessionFactory,
+                10, 5, mybatisPlusProperties.getRefreshMapper());
     }
 
 }

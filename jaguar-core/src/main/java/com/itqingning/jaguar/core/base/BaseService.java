@@ -4,15 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itqingning.jaguar.core.base.service.SysFieldEditLogService;
+import com.itqingning.jaguar.core.constant.Constant;
 import com.itqingning.jaguar.core.enums.OrderType;
 import com.itqingning.jaguar.core.util.ExecutorServiceUtil;
 import com.itqingning.jaguar.core.util.InstanceUtil;
-import com.itqingning.jaguar.core.constant.Constant;
 import com.itqingning.jaguar.redis.RedisCacheManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
@@ -42,9 +41,6 @@ public abstract class BaseService<T extends BaseModel, M extends BaseMapper<T>> 
 
     @Autowired
     protected RedisCacheManager cacheManager;
-
-    @Value("${spring.redis.namespace}")
-    private String namespace;
 
     /**
      * 构建分页对象
@@ -314,6 +310,6 @@ public abstract class BaseService<T extends BaseModel, M extends BaseMapper<T>> 
         } else {
             cacheName = cacheConfig.cacheNames()[0];
         }
-        return new StringBuilder(namespace).append(":").append(cacheName).append(":").append(id).toString();
+        return new StringBuilder(cacheManager.getNamespace()).append(":").append(cacheName).append(":").append(id).toString();
     }
 }
