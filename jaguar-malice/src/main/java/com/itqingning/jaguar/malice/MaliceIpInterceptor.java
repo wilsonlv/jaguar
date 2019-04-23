@@ -1,4 +1,4 @@
-package com.itqingning.jaguar.interceptor;
+package com.itqingning.jaguar.malice;
 
 import com.itqingning.jaguar.core.http.HttpCode;
 import com.itqingning.jaguar.redis.RedisCacheManager;

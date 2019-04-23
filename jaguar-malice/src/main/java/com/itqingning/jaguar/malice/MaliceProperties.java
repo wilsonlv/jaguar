@@ -1,4 +1,4 @@
-package com.itqingning.jaguar.interceptor;
+package com.itqingning.jaguar.malice;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

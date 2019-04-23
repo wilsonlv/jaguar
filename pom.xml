@@ -15,7 +15,7 @@
         <module>jaguar-dubbo</module>
         <module>jaguar-shiro</module>
         <module>jaguar-sys-log</module>
-        <module>jaguar-interceptor</module>
+        <module>jaguar-malice</module>
         <module>jaguar-web</module>
         <module>jaguar-aviator</module>
         <module>jaguar-swagger</module>

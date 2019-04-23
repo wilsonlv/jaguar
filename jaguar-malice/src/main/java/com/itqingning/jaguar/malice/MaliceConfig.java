@@ -1,4 +1,4 @@
-package com.itqingning.jaguar.interceptor;
+package com.itqingning.jaguar.malice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * Created by lvws on 2019/1/24.
  */
 @Configuration
-public class InterceptorConfig implements WebMvcConfigurer {
+public class MaliceConfig implements WebMvcConfigurer {
 
     @Autowired
     private MaliceIpInterceptor maliceIpInterceptor;
