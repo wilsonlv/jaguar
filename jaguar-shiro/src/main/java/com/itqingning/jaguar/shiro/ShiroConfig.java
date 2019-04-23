@@ -13,7 +13,7 @@ import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,7 @@ import org.springframework.context.annotation.DependsOn;
  * Created by lvws on 2019/4/18.
  */
 @Configuration
-@EnableConfigurationProperties({ShiroProperties.class, RedisProperties.class})
+@EnableConfigurationProperties({ShiroProperties.class, RedisProperties.class, ServerProperties.class})
 public class ShiroConfig {
 
     @Bean
@@ -37,19 +37,20 @@ public class ShiroConfig {
     }
 
     @Bean
-    @ConditionalOnBean(RedisProperties.class)
-    public RedisManager redisManager(RedisProperties redisProperties) {
+    public RedisManager redisManager(RedisProperties redisProperties, ServerProperties serverProperties) {
+        Long seconds = serverProperties.getServlet().getSession().getTimeout().getSeconds();
         RedisManager redisManager = new RedisManager();
         redisManager.setHost(redisProperties.getHost());
         redisManager.setPort(redisProperties.getPort());
-        redisManager.setExpire(redisProperties.getExpiration());
+        redisManager.setExpire(seconds.intValue());
         redisManager.setPassword(redisProperties.getPassword());
         return redisManager;
     }
 
     @Bean
-    public RedisSessionDAO redisSessionDAO(RedisManager redisManager) {
+    public RedisSessionDAO redisSessionDAO(RedisManager redisManager, RedisProperties redisProperties) {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
+        redisSessionDAO.setKeyPrefix(redisProperties.getNamespace() + ":" + redisSessionDAO.getKeyPrefix());
         redisSessionDAO.setRedisManager(redisManager);
         return redisSessionDAO;
     }

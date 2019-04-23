@@ -14,7 +14,6 @@ import javax.sql.DataSource;
  * Created by lvws on 2019/4/18.
  */
 @Configuration
-@PropertySource("classpath:flowable.properties")
 public class FlowableConfig {
 
     @Bean
