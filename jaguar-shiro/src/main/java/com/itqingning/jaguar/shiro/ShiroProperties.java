@@ -12,11 +12,6 @@ public class ShiroProperties {
 
     private String cookieName = "JAGUAR-JSESSIONID";
 
-    /**
-     * 会话过期时间（毫秒）
-     */
-    private Long sessionTimeoutMillis = 1800000L;
-
     private String loginUrl = "/unauthorized";
 
     private String unauthorizedUrl = "/forbidden";
@@ -42,14 +37,6 @@ public class ShiroProperties {
 
     public void setCookieName(String cookieName) {
         this.cookieName = cookieName;
-    }
-
-    public Long getSessionTimeoutMillis() {
-        return sessionTimeoutMillis;
-    }
-
-    public void setSessionTimeoutMillis(Long sessionTimeoutMillis) {
-        this.sessionTimeoutMillis = sessionTimeoutMillis;
     }
 
     public String getLoginUrl() {

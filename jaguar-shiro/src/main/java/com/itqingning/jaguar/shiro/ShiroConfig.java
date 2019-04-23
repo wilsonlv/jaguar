@@ -1,33 +1,44 @@
 package com.itqingning.jaguar.shiro;
 
+
 import com.itqingning.jaguar.redis.RedisProperties;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
+import org.apache.shiro.realm.SimpleAccountRealm;
 import org.apache.shiro.session.mgt.SessionManager;
-import org.apache.shiro.spring.LifecycleBeanPostProcessor;
-import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
-import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 
 /**
  * Created by lvws on 2019/4/18.
  */
 @Configuration
-@EnableConfigurationProperties({ShiroProperties.class, RedisProperties.class, ServerProperties.class})
 public class ShiroConfig {
 
+    @Autowired
+    private RedisProperties redisProperties;
+    @Autowired
+    private ShiroProperties shiroProperties;
+    @Autowired
+    private ServerProperties serverProperties;
+
+    public int expire() {
+        Long seconds = serverProperties.getServlet().getSession().getTimeout().getSeconds();
+        return seconds.intValue();
+    }
+
     @Bean
-    public SimpleCookie simpleCookie(ShiroProperties shiroProperties) {
+    public SimpleCookie simpleCookie() {
         return new SimpleCookie(shiroProperties.getCookieName());
     }
 
@@ -37,45 +48,55 @@ public class ShiroConfig {
     }
 
     @Bean
-    public RedisManager redisManager(RedisProperties redisProperties, ServerProperties serverProperties) {
-        Long seconds = serverProperties.getServlet().getSession().getTimeout().getSeconds();
+    public RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
-        redisManager.setHost(redisProperties.getHost());
-        redisManager.setPort(redisProperties.getPort());
-        redisManager.setExpire(seconds.intValue());
-        redisManager.setPassword(redisProperties.getPassword());
+        redisManager.setHost(redisProperties.getHost() + ":" + redisProperties.getPort());
+        redisManager.setDatabase(redisProperties.getDatabase());
+        redisManager.setPassword(redisManager.getPassword());
         return redisManager;
     }
 
     @Bean
-    public RedisSessionDAO redisSessionDAO(RedisManager redisManager, RedisProperties redisProperties) {
+    public RedisSessionDAO redisSessionDAO(RedisManager redisManager) {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
         redisSessionDAO.setKeyPrefix(redisProperties.getNamespace() + ":" + redisSessionDAO.getKeyPrefix());
         redisSessionDAO.setRedisManager(redisManager);
+        redisSessionDAO.setExpire(expire());
         return redisSessionDAO;
     }
 
     @Bean
     public SessionManager sessionManager(RedisSessionDAO redisSessionDAO, SimpleCookie simpleCookie,
-                                         SessionListener sessionListener, ShiroProperties shiroProperties) {
+                                         SessionListener sessionListener) {
+
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        sessionManager.setGlobalSessionTimeout(shiroProperties.getSessionTimeoutMillis());
+        sessionManager.setGlobalSessionTimeout(expire() * 1000);
         sessionManager.setSessionDAO(redisSessionDAO);
         sessionManager.setSessionIdCookie(simpleCookie);
         sessionManager.getSessionListeners().add(sessionListener);
         return sessionManager;
     }
 
+    @Bean("shiroCacheMananger")
+    public RedisCacheManager redisCacheManager(RedisManager redisManager) {
+        RedisCacheManager redisCacheManager = new RedisCacheManager();
+        redisCacheManager.setRedisManager(redisManager);
+        redisCacheManager.setExpire(expire());
+        redisCacheManager.setKeyPrefix(redisProperties.getNamespace() + ":" + redisCacheManager.getKeyPrefix());
+        return redisCacheManager;
+    }
+
     @Bean
-    public SecurityManager securityManager(SessionManager sessionManager, Realm realm) {
+    public DefaultWebSecurityManager securityManager(SessionManager sessionManager, RedisCacheManager redisCacheManager, Realm realm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setSessionManager(sessionManager);
+        securityManager.setCacheManager(redisCacheManager);
         securityManager.setRealm(realm);
         return securityManager;
     }
 
     @Bean
-    public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager, ShiroProperties shiroProperties) {
+    public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         shiroFilterFactoryBean.setLoginUrl(shiroProperties.getLoginUrl());
@@ -85,21 +106,9 @@ public class ShiroConfig {
     }
 
     @Bean
-    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
-        AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
-        advisor.setSecurityManager(securityManager);
-        return advisor;
+    @ConditionalOnMissingBean(Realm.class)
+    public Realm realm() {
+        return new SimpleAccountRealm();
     }
 
-    @Bean
-    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
-        return new LifecycleBeanPostProcessor();
-    }
-
-    @DependsOn("lifecycleBeanPostProcessor")
-    public DefaultAdvisorAutoProxyCreator shiroProxyCreator() {
-        DefaultAdvisorAutoProxyCreator proxyCreator = new DefaultAdvisorAutoProxyCreator();
-        proxyCreator.setProxyTargetClass(true);
-        return proxyCreator;
-    }
 }

@@ -12,13 +12,15 @@
     <artifactId>jaguar-shiro</artifactId>
 
     <properties>
-        <shiro.version>1.2.4</shiro.version>
+        <shiro.version>1.4.0</shiro.version>
     </properties>
 
     <dependencies>
+        <!-- shiro启动器 -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring-boot-web-starter</artifactId>
+            <version>${shiro.version}</version>
         </dependency>
 
         <dependency>
@@ -27,16 +29,11 @@
             <version>3.0</version>
         </dependency>
 
-        <!-- shiro -->
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-spring</artifactId>
-            <version>${shiro.version}</version>
-        </dependency>
+        <!-- shiro-redis -->
         <dependency>
             <groupId>org.crazycake</groupId>
             <artifactId>shiro-redis</artifactId>
-            <version>2.4.2.1-RELEASE</version>
+            <version>3.2.3</version>
         </dependency>
     </dependencies>
 </project>
