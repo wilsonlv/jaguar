@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>jaguar</artifactId>
-        <groupId>com.itqingning</groupId>
+        <groupId>com.jaguar</groupId>
         <version>3.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -13,17 +13,17 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.itqingning</groupId>
+            <groupId>com.jaguar</groupId>
             <artifactId>jaguar-core</artifactId>
             <version>3.0</version>
         </dependency>
         <dependency>
-            <groupId>com.itqingning</groupId>
+            <groupId>com.jaguar</groupId>
             <artifactId>jaguar-web</artifactId>
             <version>3.0</version>
         </dependency>
         <dependency>
-            <groupId>com.itqingning</groupId>
+            <groupId>com.jaguar</groupId>
             <artifactId>jaguar-swagger</artifactId>
             <version>3.0</version>
         </dependency>
