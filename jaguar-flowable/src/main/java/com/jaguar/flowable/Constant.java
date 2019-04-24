@@ -30,4 +30,9 @@ public interface Constant {
     String PROCESS_INITIATOR = "initiator";
     String PROCESS_HANDLER = "handler";
 
+    String ELEMENT_VARIABLE = "multi_assignee_item";
+    String ELEMENT_VARIABLE_EXPRESSION = "${multi_assignee_item}";
+
+    String DEFAULT_COMPLETION_CONDITION = "${nrOfCompletedInstances==nrOfInstances}";
+
 }

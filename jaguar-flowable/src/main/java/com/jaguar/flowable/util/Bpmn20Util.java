@@ -5,6 +5,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.jaguar.flowable.enums.TaskFieldPermission;
 import com.jaguar.flowable.model.*;
+import org.apache.commons.lang3.StringUtils;
 import org.flowable.bpmn.model.*;
 import org.flowable.bpmn.model.Process;
 import org.flowable.common.engine.api.FlowableException;
@@ -151,6 +152,13 @@ public class Bpmn20Util {
             flowableEvent.setImplementation(flowableListener.getImplementation());
             flowableEvent.setImplementationType(flowableListener.getImplementationType());
             userTask.getFlowableEvents().add(flowableEvent);
+        }
+
+        if (taskElement.getLoopCharacteristics() != null) {
+            MultiInstanceLoopCharacteristics multiInstance = taskElement.getLoopCharacteristics();
+            userTask.setMultiInstanceAssignee(multiInstance.getInputDataItem());
+            userTask.setCompletionCondition(multiInstance.getCompletionCondition());
+            userTask.setSequential(multiInstance.isSequential());
         }
         return userTask;
     }
@@ -392,6 +400,17 @@ public class Bpmn20Util {
                 flowableListener.setImplementationType(flowableEvent.getImplementationType());
                 flowableListener.setImplementation(flowableEvent.getImplementation());
                 userTask.getTaskListeners().add(flowableListener);
+            }
+
+            //多人处理
+            if (StringUtils.isNotBlank(task.getMultiInstanceAssignee())) {
+                MultiInstanceLoopCharacteristics multiInstance = new MultiInstanceLoopCharacteristics();
+                multiInstance.setInputDataItem(task.getMultiInstanceAssignee());
+                multiInstance.setCompletionCondition(task.getCompletionCondition());
+                multiInstance.setSequential(task.getSequential());
+                multiInstance.setElementVariable(ELEMENT_VARIABLE);
+                userTask.setLoopCharacteristics(multiInstance);
+                userTask.setAssignee(ELEMENT_VARIABLE_EXPRESSION);
             }
         }
     }

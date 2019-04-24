@@ -22,10 +22,11 @@
             <artifactId>jaguar-web</artifactId>
             <version>3.0</version>
         </dependency>
+
         <dependency>
-            <groupId>com.jaguar</groupId>
-            <artifactId>jaguar-swagger</artifactId>
-            <version>3.0</version>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.5.10</version>
         </dependency>
     </dependencies>
 
