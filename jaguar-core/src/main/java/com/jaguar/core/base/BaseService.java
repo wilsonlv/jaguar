@@ -176,31 +176,37 @@ public abstract class BaseService<T extends BaseModel, M extends BaseMapper<T>> 
             update.setId(record.getId());
             mapper.updateById(update);
 
-            ExecutorServiceUtil.execute(() -> {
-                        try {
-                            sysFieldEditLogService.save(org, update);
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
+            final String cacheKey = getCacheKey(record.getId());
+            cacheManager.del(cacheKey);
+
+            if (TransactionSynchronizationManager.isSynchronizationActive()) {
+                TransactionSynchronizationManager.registerSynchronization(
+                        new TransactionSynchronizationAdapter() {
+                            @Override
+                            public void afterCommit() {
+                                cacheManager.del(cacheKey);
+
+                                saveEditLog(org, update);
+                            }
                         }
-                    }
-            );
+                );
+            } else {
+                saveEditLog(org, update);
+            }
         }
         record = mapper.selectById(record.getId());
-
-        final String cacheKey = getCacheKey(record.getId());
-        cacheManager.del(cacheKey);
-
-        if (TransactionSynchronizationManager.isSynchronizationActive()) {
-            TransactionSynchronizationManager.registerSynchronization(
-                    new TransactionSynchronizationAdapter() {
-                        @Override
-                        public void afterCommit() {
-                            cacheManager.del(cacheKey);
-                        }
-                    }
-            );
-        }
         return record;
+    }
+
+    private <T extends BaseModel> void saveEditLog(final T org, final T update) {
+        ExecutorServiceUtil.execute(() -> {
+                    try {
+                        sysFieldEditLogService.save(org, update);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+        );
     }
 
     /**

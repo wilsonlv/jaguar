@@ -36,7 +36,7 @@ public class SysLogService {
 
     public Page query(Map<String, Object> param) {
         Page page = BaseService.getPage(param);
-        List<SysLog> sysLogs = sysLogMapper.selectPage(page, param);
+        List<SysLog> sysLogs = sysLogMapper.selectEntityPage(page, param);
         return page.setRecords(sysLogs);
     }
 

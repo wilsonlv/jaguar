@@ -35,16 +35,16 @@ public class SysFieldEditLogService {
     private static final String UPDATE_TIME = "updateTime";
     private static final String SERIAL_VERSION_UID = "serialVersionUID";
 
-    private static final List<String> FILTER_FIELDS = new ArrayList<>();
+    private static final List<String> FILTER_FIELDS = new ArrayList<String>() {{
+        add(ID);
+        add(ID);
+        add(CREATE_BY);
+        add(CREATE_TIME);
+        add(UPDATE_BY);
+        add(UPDATE_TIME);
+        add(SERIAL_VERSION_UID);
+    }};
 
-    static {
-        FILTER_FIELDS.add(ID);
-        FILTER_FIELDS.add(CREATE_BY);
-        FILTER_FIELDS.add(CREATE_TIME);
-        FILTER_FIELDS.add(UPDATE_BY);
-        FILTER_FIELDS.add(UPDATE_TIME);
-        FILTER_FIELDS.add(SERIAL_VERSION_UID);
-    }
 
     @Autowired(required = false)
     private SysFieldEditLogMapper sysFieldEditLogMapper;
@@ -92,7 +92,7 @@ public class SysFieldEditLogService {
 
     public Page query(Map<String, Object> param) {
         Page page = BaseService.getPage(param);
-        List<SysFieldEditLog> sysLogs = sysFieldEditLogMapper.selectPage(page, param);
+        List<SysFieldEditLog> sysLogs = sysFieldEditLogMapper.selectEntityPage(page, param);
         return page.setRecords(sysLogs);
     }
 

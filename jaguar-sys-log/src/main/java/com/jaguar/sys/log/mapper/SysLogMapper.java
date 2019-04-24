@@ -17,6 +17,6 @@ import java.util.Map;
  */
 public interface SysLogMapper extends com.baomidou.mybatisplus.core.mapper.BaseMapper<SysLog> {
 
-    List<SysLog> selectPage(IPage page, @Param("cm") Map<String, Object> param);
+    List<SysLog> selectEntityPage(IPage page, @Param("cm") Map<String, Object> param);
 
 }

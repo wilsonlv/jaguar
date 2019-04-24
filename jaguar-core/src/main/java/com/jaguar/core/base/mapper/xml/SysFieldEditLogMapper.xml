@@ -4,19 +4,21 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.jaguar.core.base.model.SysFieldEditLog">
+        <result column="id_" property="id" />
         <result column="class_name" property="className" />
         <result column="record_id" property="recordId" />
         <result column="field_name" property="fieldName" />
         <result column="old_value" property="oldValue" />
         <result column="new_value" property="newValue" />
+        <result column="remark_" property="remark" />
         <result column="create_by" property="createBy" />
         <result column="create_time" property="createTime" />
         <result column="update_by" property="updateBy" />
         <result column="update_time" property="updateTime" />
     </resultMap>
 
-    <select id="selectPage" resultMap="BaseResultMap">
-        select id_ from sys_field_edit_log
+    <select id="selectEntityPage" resultMap="BaseResultMap">
+        select * from sys_field_edit_log
         <where>
             <if test="cm.className != null and cm.className != ''">
                 AND class_name = #{cm.className}
