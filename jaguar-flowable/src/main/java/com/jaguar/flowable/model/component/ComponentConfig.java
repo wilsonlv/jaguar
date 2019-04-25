@@ -1,4 +1,4 @@
-package com.jaguar.flowable.model;
+package com.jaguar.flowable.model.component;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,14 +29,6 @@ public class ComponentConfig implements Serializable {
      * 是否多选
      */
     private boolean multipart;
-    /**
-     * 树状结构标签的取值列
-     */
-    private String labelColumnKey;
-    /**
-     * 树状结构孩子的取值列
-     */
-    private String childrenColumnKey;
 
 
     public String getDataSource() {
@@ -79,19 +71,4 @@ public class ComponentConfig implements Serializable {
         this.multipart = multipart;
     }
 
-    public String getLabelColumnKey() {
-        return labelColumnKey;
-    }
-
-    public void setLabelColumnKey(String labelColumnKey) {
-        this.labelColumnKey = labelColumnKey;
-    }
-
-    public String getChildrenColumnKey() {
-        return childrenColumnKey;
-    }
-
-    public void setChildrenColumnKey(String childrenColumnKey) {
-        this.childrenColumnKey = childrenColumnKey;
-    }
 }

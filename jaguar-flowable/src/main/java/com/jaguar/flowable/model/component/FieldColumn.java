@@ -1,4 +1,4 @@
-package com.jaguar.flowable.model;
+package com.jaguar.flowable.model.component;
 
 import java.io.Serializable;
 
