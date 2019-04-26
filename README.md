@@ -37,7 +37,7 @@ jaguar包含多个子模块，并且后续会可以一直容纳，主要子模�
 
 - jaguar-sys-log：通过spring拦截器来实现的接口请求日志记录
 
-- jaguar-interceptor：spring的拦截器，目前包括基于ip和session的恶意访问拦截
+- jaguar-malice：防范恶意请求的功能模块，使用到了spring的拦截器
 
 - jaguar-aviator：整合了google的aviator，是表达式解析组件
 
