@@ -16,7 +16,7 @@ CREATE TABLE `sys_field_edit_log` (
   KEY `record_id_index` (`record_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='字段编辑日志表';
 
-CREATE TABLE `sys_request_log` (
+CREATE TABLE `sys_log` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '编号',
   `session_id` varchar(50) NOT NULL COMMENT '会话ID',
   `access_time` datetime NOT NULL COMMENT '访问时间',
