@@ -12,10 +12,10 @@ public class Generator {
 
     public static void main(String[] args) {
 
-        String context = "lims";
+        String parentPackage = "com.jaguar.flowable";
         String author = "lvws";
 //        String outputDir = "/Users/apple/develop/data/generator";
-        String outputDir = "/Users/apple/develop/IdeaProjects/Lims/Lims-trunk/lims-sys-server/src/main/java";
+        String outputDir = "/Users/apple/develop/IdeaProjects/Lims/Lims-trunk/src/main/java";
 
         String dbUserName = "root";
         String dbPassword = "lxj900221";
@@ -42,25 +42,25 @@ public class Generator {
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-        strategy.setInclude(new String[]{"process_operation_record"}); // 需要生成的表
+        strategy.setInclude("form_data_attach"); // 需要生成的表
         // 字段名生成策略
         strategy.setNaming(NamingStrategy.underline_to_camel);
         // 自定义实体父类
-        strategy.setSuperEntityClass("com." + context + ".core.base.BaseModel");
+        strategy.setSuperEntityClass("com.jaguar.core.base.BaseModel");
         // 自定义实体，公共字段
-        strategy.setSuperEntityColumns(new String[]{"id_", "deleted_", "remark_", "create_by", "create_time", "update_by", "update_time"});
+        strategy.setSuperEntityColumns("id_", "deleted_", "remark_", "create_by", "create_time", "update_by", "update_time");
         // 自定义 mapper 父类
-        strategy.setSuperMapperClass("com." + context + ".core.base.BaseMapper");
+        strategy.setSuperMapperClass("com.jaguar.core.base.BaseMapper");
         // 自定义 service 父类
-        strategy.setSuperServiceClass("com." + context + ".core.base.BaseService");
+        strategy.setSuperServiceClass("com.jaguar.core.base.BaseService");
         // 自定义 service 实现类父类
-        strategy.setSuperServiceImplClass("com." + context + ".core.base.BaseService");
+        strategy.setSuperServiceImplClass("com.jaguar.core.base.BaseService");
         // 自定义 controller 父类
-        strategy.setSuperControllerClass("com." + context + ".core.base.AbstractController");
+        strategy.setSuperControllerClass("com.jaguar.core.base.AbstractController");
         mpg.setStrategy(strategy);
         // 包配置
         PackageConfig pc = new PackageConfig();
-        pc.setParent("com." + context + ".sys");
+        pc.setParent(parentPackage);
         pc.setEntity("model");
         pc.setMapper("mapper");
         pc.setXml("mapper.xml");
@@ -71,11 +71,11 @@ public class Generator {
         // 自定义模板配置，可以 copy 源码 mybatis-plus/src/main/resources/template 下面内容修改，
         // 放置自己项目的 src/main/resources/template 目录下, 默认名称一下可以不配置，也可以自定义模板名称
         TemplateConfig tc = new TemplateConfig();
-        tc.setEntity("com/" + context + "/core/support/mybaits/template/entity.java.vm");
-        tc.setMapper("com/" + context + "/core/support/mybaits/template/mapper.java.vm");
-        tc.setXml("com/" + context + "/core/support/mybaits/template/mapper.xml.vm");
-        tc.setServiceImpl("com/" + context + "/core/support/mybaits/template/service.java.vm");
-        tc.setController("com/" + context + "/core/support/mybaits/template/controller.java.vm");
+        tc.setEntity("com/jaguar/mybatisplus/template/entity.java.vm");
+        tc.setMapper("com/jaguar/mybatisplus/template/mapper.java.vm");
+        tc.setXml("com/jaguar/mybatisplus/template/mapper.xml.vm");
+        tc.setServiceImpl("com/jaguar/mybatisplus/template/service.java.vm");
+        tc.setController("com/jaguar/mybatisplus/template/controller.java.vm");
         mpg.setTemplate(tc);
         // 执行生成
         mpg.execute();

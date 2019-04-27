@@ -1,0 +1,3 @@
+#Dubbo Registry Cache
+#Thu Apr 18 15:03:41 CST 2019
+com.itqingning.jaguar.dubbo.iprovider.IProvider\:1.0.0=empty\://127.0.0.1\:18080/com.itqingning.jaguar.dubbo.iprovider.IProvider?anyhost\=true&application\=jaguar-dubbo&bean.name\=providers\:dubbo\:com.itqingning.jaguar.dubbo.iprovider.IProvider\:1.0.0&bind.ip\=127.0.0.1&bind.port\=18080&category\=configurators&check\=false&default.deprecated\=false&default.dynamic\=false&default.register\=true&deprecated\=false&dubbo\=2.0.2&dynamic\=false&generic\=false&interface\=com.itqingning.jaguar.dubbo.iprovider.IProvider&methods\=execute&pid\=74764&qos.enable\=false&register\=true&release\=2.7.1&revision\=1.0.0&side\=provider&threads\=100&timestamp\=1555571021245&version\=1.0.0

@@ -41,7 +41,8 @@ jaguar包含多个子模块，并且后续会可以一直容纳，主要子模�
 
 - jaguar-aviator：整合了google的aviator，是表达式解析组件
 
-- jaguar-flowable：整合了flowable，用作工作流的基础组件
+- jaguar-process：整合了flowable，内置表单和流程设计器，是完整的一套包含设计、部署、发起、查询、处理的
+    工单流程系统，用作工作流的功能模块
 
 - jaguar-data-encription：数据加密组价，主要包含DES对称加密，RSA非对称加密，MD5和BASE64加密算法
 

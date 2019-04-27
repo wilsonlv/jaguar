@@ -20,7 +20,7 @@
         <module>jaguar-aviator</module>
         <module>jaguar-swagger</module>
         <module>jaguar-data-encription</module>
-        <module>jaguar-flowable</module>
+        <module>jaguar-process</module>
         <module>jaguar-test</module>
     </modules>
 

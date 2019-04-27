@@ -35,7 +35,7 @@ public class ${table.controllerName} {
     @ApiOperation(value = "查询${table.comment}")
     @RequiresPermissions("${table.entityPath}:read")
     @GetMapping(value = "/list")
-    public ResponseEntity<JsonResult> query(ModelMap modelMap,
+    public ResponseEntity<JsonResult> query(
             @ApiParam(value = "页码") @RequestParam(required = false) Integer page,
             @ApiParam(value = "页量") @RequestParam(required = false) Integer rows){
 
@@ -44,34 +44,34 @@ public class ${table.controllerName} {
         param.put(ROWS,rows);
         param.put(DELETED,0);
 
-        return super.query(modelMap,param);
+        return super.query(param);
     }
 
     @ApiOperation(value = "${table.comment}详情")
     @RequiresPermissions("${table.entityPath}:read")
     @GetMapping(value = "/detail/{id}")
-    public ResponseEntity<JsonResult> get(ModelMap modelMap,@PathVariable Long id){
-        return super.get(modelMap,id);
+    public ResponseEntity<JsonResult> get(@PathVariable Long id){
+        return super.get(id);
     }
 
     @ApiOperation(value = "修改${table.comment}")
     @RequiresPermissions("${table.entityPath}:update")
     @PostMapping(value = "/update")
-    public ResponseEntity<JsonResult> update(ModelMap modelMap, ${entity} param){
-        return super.update(modelMap,param);
+    public ResponseEntity<JsonResult> update(${entity} param){
+        return super.update(param);
     }
 
     @ApiOperation(value = "删除${table.comment}")
     @RequiresPermissions("${table.entityPath}:update")
     @DeleteMapping(value = "/del/{id}")
-    public ResponseEntity<JsonResult> del(ModelMap modelMap,@PathVariable Long id){
-        return super.del(modelMap,id);
+    public ResponseEntity<JsonResult> del(@PathVariable Long id){
+        return super.del(id);
     }
 
     @ApiOperation(value = "删除${table.comment}")
     @RequiresPermissions("${table.entityPath}:update")
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<JsonResult> delete(ModelMap modelMap,@PathVariable Long id){
-        return super.delete(modelMap,id);
+    public ResponseEntity<JsonResult> delete(@PathVariable Long id){
+        return super.delete(id);
     }
 }

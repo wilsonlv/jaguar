@@ -13,8 +13,12 @@ public interface WebConstant {
      */
     String WEBTHEME = "WEB_THEME";
     /**
-     * 当前用户
+     * 当前用户ID
      */
     String CURRENT_USER = "CURRENT_USER";
+    /**
+     * 当前用户账号
+     */
+    String CURRENT_USER_ACCOUNT = "CURRENT_USER_ACCOUNT";
 
 }

@@ -39,6 +39,13 @@ public abstract class BaseController {
     }
 
     /**
+     * 获取当前用户账号
+     */
+    protected String getCurrentUserAccount() {
+        return WebUtil.getCurrentUserAccount();
+    }
+
+    /**
      * 设置成功响应代码
      */
     protected ResponseEntity<JsonResult> setSuccessJsonResult() {

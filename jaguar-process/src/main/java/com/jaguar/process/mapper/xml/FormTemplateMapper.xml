@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jaguar.process.mapper.FormTemplateMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jaguar.process.model.po.FormTemplate">
+        <result column="id_" property="id"/>
+        <result column="element_id" property="elementId"/>
+        <result column="name_" property="name"/>
+        <result column="version_" property="version"/>
+    </resultMap>
+
+    <select id="selectIdPage" resultType="java.lang.Long">
+        select id_ from form_template
+        <where>
+            <if test="cm.elementId != null and cm.elementId != ''">
+                AND element_id = #{cm.elementId}
+            </if>
+            <if test="cm.name != null and cm.name != ''">
+                AND name_ = #{cm.name}
+            </if>
+            <if test="cm.version != null">
+                AND version_ = #{cm.version}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryLatest" resultType="java.lang.Long">
+        SELECT a.id_ FROM form_template a
+        RIGHT JOIN
+        (SELECT name_, MAX(version_) AS max_version FROM form_template GROUP BY name_) b
+        ON a.name_ = b.name_ and a.version_ = b.max_version
+        <where>
+            <if test="cm.elementId != null and cm.elementId != ''">
+                AND a.element_id = #{cm.elementId}
+            </if>
+            <if test="cm.name != null and cm.name != ''">
+                AND a.name_ = #{cm.name}
+            </if>
+            <if test="cm.deleted != null">
+                AND deleted_ = #{cm.deleted}
+            </if>
+        </where>
+    </select>
+</mapper>

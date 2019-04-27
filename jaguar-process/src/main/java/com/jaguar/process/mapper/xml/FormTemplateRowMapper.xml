@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jaguar.process.mapper.FormTemplateRowMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jaguar.process.model.po.FormTemplateRow">
+        <result column="form_template_id" property="formTemplateId"/>
+        <result column="form_template_sheet_id" property="formTemplateSheetId"/>
+        <result column="sort_no" property="sortNo"/>
+    </resultMap>
+
+
+    <select id="selectIdPage" resultType="java.lang.Long">
+        select id_ from form_template_row
+        <where>
+            <if test="cm.formTemplateId != null and cm.formTemplateId != ''">
+                AND form_template_id = #{cm.formTemplateId}
+            </if>
+            <if test="cm.formTemplateSheetId != null and cm.formTemplateSheetId != ''">
+                AND form_template_sheet_id = #{cm.formTemplateSheetId}
+            </if>
+            <if test="cm.sortNo != null and cm.sortNo != ''">
+                AND sort_no = #{cm.sortNo}
+            </if>
+            <if test="cm.deleted != null">
+                AND deleted_ = #{cm.deleted}
+            </if>
+        </where>
+    </select>
+</mapper>

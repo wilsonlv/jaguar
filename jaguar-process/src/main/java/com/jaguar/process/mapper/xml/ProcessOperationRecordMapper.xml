@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jaguar.process.mapper.ProcessOperationRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jaguar.process.model.po.ProcessOperationRecord">
+        <result column="process_info_id" property="processInfoId"/>
+        <result column="operator_" property="operator"/>
+        <result column="process_operation_type" property="processOperationType"/>
+        <result column="operate_time" property="operateTime"/>
+        <result column="task_name" property="taskName"/>
+        <result column="task_inst_id" property="taskInstId"/>
+        <result column="task_def_id" property="taskDefId"/>
+        <result column="assignee_" property="assignee"/>
+    </resultMap>
+
+
+    <select id="selectIdPage" resultType="java.lang.Long">
+        select id_ from process_operation_record
+        <where>
+            <if test="cm.processInfoId != null and cm.processInfoId != ''">
+                AND process_info_id = #{cm.processInfoId}
+            </if>
+            <if test="cm.operator != null and cm.operator != ''">
+                AND operator_ = #{cm.operator}
+            </if>
+            <if test="cm.processOperationType != null and cm.processOperationType != ''">
+                AND process_operation_type = #{cm.processOperationType}
+            </if>
+            <if test="cm.operateTime != null and cm.operateTime != ''">
+                AND operate_time = #{cm.operateTime}
+            </if>
+            <if test="cm.taskName != null and cm.taskName != ''">
+                AND task_name = #{cm.taskName}
+            </if>
+            <if test="cm.taskInstId != null and cm.taskInstId != ''">
+                AND task_inst_id = #{cm.taskInstId}
+            </if>
+            <if test="cm.taskDefId != null and cm.taskDefId != ''">
+                AND task_def_id = #{cm.taskDefId}
+            </if>
+            <if test="cm.assignee != null and cm.assignee != ''">
+                AND assignee_ = #{cm.assignee}
+            </if>
+            <if test="cm.deleted != null">
+                AND deleted_ = #{cm.deleted}
+            </if>
+        </where>
+    </select>
+</mapper>

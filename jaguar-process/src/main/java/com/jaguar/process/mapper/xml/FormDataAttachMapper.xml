@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jaguar.process.mapper.FormDataAttachMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.jaguar.process.model.po.FormDataAttach">
+		<result column="form_data_id" property="formDataId" />
+		<result column="value_" property="value" />
+	</resultMap>
+
+
+	<select id="selectIdPage" resultType="java.lang.Long">
+		select id_ from form_data_attach
+		<where>
+						<if test="cm.formDataId != null and cm.formDataId != ''">
+				AND form_data_id = #{cm.formDataId}
+			</if>
+						<if test="cm.value != null and cm.value != ''">
+				AND value_ = #{cm.value}
+			</if>
+			            <if test="cm.deleted != null">
+                AND deleted_ = #{cm.deleted}
+            </if>
+		</where>
+	</select>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		DELETE FROM form_data_attach WHERE id_ = #{id}
+	</delete>
+	
+</mapper>

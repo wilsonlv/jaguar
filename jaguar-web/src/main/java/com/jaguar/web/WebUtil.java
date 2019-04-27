@@ -29,8 +29,15 @@ public final class WebUtil {
     /**
      * 保存当前用户
      */
-    public static void saveCurrentUser(Object user) {
+    public static void saveCurrentUser(Long user) {
         setSession(WebConstant.CURRENT_USER, user);
+    }
+
+    /**
+     * 保存当前用户
+     */
+    public static void saveCurrentUserAccount(String userAccount) {
+        setSession(WebConstant.CURRENT_USER_ACCOUNT, userAccount);
     }
 
     /**
@@ -39,6 +46,14 @@ public final class WebUtil {
     public static Long getCurrentUser() {
         try {
             return (Long) SecurityUtils.getSubject().getSession().getAttribute(WebConstant.CURRENT_USER);
+        } catch (UnavailableSecurityManagerException e) {
+            return null;
+        }
+    }
+
+    public static String getCurrentUserAccount() {
+        try {
+            return (String) SecurityUtils.getSubject().getSession().getAttribute(WebConstant.CURRENT_USER_ACCOUNT);
         } catch (UnavailableSecurityManagerException e) {
             return null;
         }
