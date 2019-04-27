@@ -1,6 +1,7 @@
 package ${package.Controller};
 
-import com.lims.core.util.InstanceUtil;
+import com.jaguar.core.util.InstanceUtil;
+import com.jaguar.web.base.AbstractController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,11 @@ import io.swagger.annotations.ApiOperation;
 #if(${superControllerClassPackage})
 import ${superControllerClassPackage};
 #end
+
+import java.util.Map;
+
+import com.jaguar.web.JsonResult;
+import static com.jaguar.core.constant.Constant.*;
 
 /**
  * <p>

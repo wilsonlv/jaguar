@@ -24,7 +24,7 @@
 		</where>
 	</select>
 	
-	<delete id="delete" parameterType="java.lang.Long">
+	<delete id="physicalDelete" parameterType="java.lang.Long">
 		DELETE FROM form_data_attach WHERE id_ = #{id}
 	</delete>
 	

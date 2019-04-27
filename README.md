@@ -77,7 +77,19 @@ jaguar包含多个子模块，并且后续会可以一直容纳，主要子模�
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-test</artifactId>
             </dependency>
-        
+            
+            <dependency>
+                <groupId>com.itqingning</groupId>
+                <artifactId>jaguar-redis</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>com.itqingning</groupId>
+                <artifactId>jaguar-mybatis-plus</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            
             <dependency>
                 <groupId>com.itqingning</groupId>
                 <artifactId>jaguar-web</artifactId>

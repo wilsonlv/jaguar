@@ -19,5 +19,5 @@ public interface BaseMapper<T extends BaseModel> extends com.baomidou.mybatisplu
 
     List<Long> selectIdPage(IPage page, @Param("cm") Map<String, Object> params);
 
-    void delete(@Param("id") Long id);
+    void physicalDelete(@Param("id") Long id);
 }

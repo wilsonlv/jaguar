@@ -244,7 +244,7 @@ public abstract class BaseService<T extends BaseModel, M extends BaseMapper<T>> 
      */
     @Transactional
     public Boolean delete(final Long id) {
-        mapper.delete(id);
+        mapper.physicalDelete(id);
 
         final String cacheKey = getCacheKey(id);
         cacheManager.del(cacheKey);
