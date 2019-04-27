@@ -1,11 +1,12 @@
 package com.jaguar.process.controller;
 
-import com.jaguar.web.base.AbstractController;
 import com.jaguar.core.exception.BusinessException;
 import com.jaguar.core.util.Assert;
 import com.jaguar.core.util.InstanceUtil;
 import com.jaguar.process.model.po.FormTemplate;
 import com.jaguar.process.service.FormTemplateService;
+import com.jaguar.web.JsonResult;
+import com.jaguar.web.base.AbstractController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-import com.jaguar.web.JsonResult;
 import static com.jaguar.core.constant.Constant.*;
 
 /**
@@ -35,11 +35,11 @@ public class FormTemplateController extends AbstractController<FormTemplateServi
     @RequiresPermissions("formTemplate:read")
     @GetMapping(value = "/list")
     public ResponseEntity<JsonResult> query(
-                        @ApiParam(value = "页码") @RequestParam(required = false) Integer page,
-                        @ApiParam(value = "页量") @RequestParam(required = false) Integer rows,
-                        @ApiParam(value = "表单名称") @RequestParam(required = false) String name,
-                        @ApiParam(value = "表单元素ID") @RequestParam(required = false) String elementId,
-                        @ApiParam(value = "只查询最新版") @RequestParam(required = false, defaultValue = "true") boolean latest) {
+            @ApiParam(value = "页码") @RequestParam(required = false) Integer page,
+            @ApiParam(value = "页量") @RequestParam(required = false) Integer rows,
+            @ApiParam(value = "表单名称") @RequestParam(required = false) String name,
+            @ApiParam(value = "表单元素ID") @RequestParam(required = false) String elementId,
+            @ApiParam(value = "只查询最新版") @RequestParam(required = false, defaultValue = "true") boolean latest) {
 
         Map<String, Object> param = InstanceUtil.newHashMap();
         param.put(PAGE, page);
@@ -50,33 +50,33 @@ public class FormTemplateController extends AbstractController<FormTemplateServi
         param.put("elementId", elementId);
 
         if (latest) {
-            return setSuccessJsonResult( service.queryLatest(param));
+            return setSuccessJsonResult(service.queryLatest(param));
         }
-        return super.query( param);
+        return super.query(param);
     }
 
     @ApiOperation(value = "表单模版表详情")
     @RequiresPermissions("formTemplate:read")
     @GetMapping(value = "/detail/{id}")
-    public ResponseEntity<JsonResult> get( @PathVariable Long id) {
+    public ResponseEntity<JsonResult> get(@PathVariable Long id) {
 
         FormTemplate formTemplate = service.getFormComponentById(id);
-        return setSuccessJsonResult( formTemplate);
+        return setSuccessJsonResult(formTemplate);
     }
 
     @ApiOperation(value = "表单模版表详情")
     @RequiresPermissions("formTemplate:read")
     @GetMapping(value = "/detail_by_elementid/{elementId}")
-    public ResponseEntity<JsonResult> getByElementId( @PathVariable String elementId) {
+    public ResponseEntity<JsonResult> getByElementId(@PathVariable String elementId) {
 
         FormTemplate formTemplate = service.getFormComponentByElementId(elementId);
-        return setSuccessJsonResult( formTemplate);
+        return setSuccessJsonResult(formTemplate);
     }
 
     @ApiOperation(value = "发布表单模版")
     @RequiresPermissions("formTemplate:update")
     @PostMapping(value = "/deploy")
-    public ResponseEntity<JsonResult> deploy( @RequestBody FormTemplate formTemplate) {
+    public ResponseEntity<JsonResult> deploy(@RequestBody FormTemplate formTemplate) {
         Assert.notNull(formTemplate.getElementId(), "表单模版元素ID");
         Assert.notNull(formTemplate.getName(), "表单名称");
         if (formTemplate.getFormTemplateSheets() == null || formTemplate.getFormTemplateSheets().size() == 0) {
@@ -86,7 +86,7 @@ public class FormTemplateController extends AbstractController<FormTemplateServi
         synchronized (this) {
             formTemplate = service.deployForm(formTemplate);
         }
-        return setSuccessJsonResult( formTemplate);
+        return setSuccessJsonResult(formTemplate);
     }
 
 }

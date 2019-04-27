@@ -1,17 +1,19 @@
 package com.jaguar.process.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jaguar.core.base.BaseService;
 import com.jaguar.core.enums.OrderType;
 import com.jaguar.core.util.Assert;
 import com.jaguar.core.util.InstanceUtil;
 import com.jaguar.process.Constant;
-import com.jaguar.process.util.Bpmn20Util;
 import com.jaguar.process.mapper.FormTemplateMapper;
 import com.jaguar.process.model.po.FormTemplate;
 import com.jaguar.process.model.po.FormTemplateField;
 import com.jaguar.process.model.po.FormTemplateRow;
 import com.jaguar.process.model.po.FormTemplateSheet;
+import com.jaguar.process.util.Bpmn20Util;
+import org.apache.commons.lang3.StringUtils;
 import org.flowable.bpmn.model.BpmnModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -106,6 +108,12 @@ public class FormTemplateService extends BaseService<FormTemplate, FormTemplateM
                     field.setFormTemplateSheetId(persistentSheet.getId());
                     field.setFormTemplateRowId(persistentRow.getId());
                     field.setSortNo(k);
+
+                    if (StringUtils.isNotBlank(field.getComponentConfig())) {
+                        JSONObject jsonObject = JSONObject.parseObject(field.getComponentConfig());
+                        field.setComponentConfig(jsonObject.toJSONString());
+                    }
+
                     FormTemplateField persistentField = formTemplateFieldService.update(field);
                     persistentRow.getFormTemplateFields().add(persistentField);
                 }

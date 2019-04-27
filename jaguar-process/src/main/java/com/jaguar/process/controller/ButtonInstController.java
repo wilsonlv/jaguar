@@ -1,9 +1,6 @@
 package com.jaguar.process.controller;
 
-import com.jaguar.core.enums.OrderType;
 import com.jaguar.core.util.InstanceUtil;
-import com.jaguar.process.enums.ButtonPosition;
-import com.jaguar.process.model.po.ButtonDef;
 import com.jaguar.process.model.po.ButtonInst;
 import com.jaguar.process.service.ButtonInstService;
 import com.jaguar.web.JsonResult;
@@ -15,7 +12,6 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 import static com.jaguar.core.constant.Constant.*;
@@ -76,30 +72,4 @@ public class ButtonInstController extends AbstractController<ButtonInstService> 
         return super.delete(id);
     }
 
-
-    @ApiOperation(value = "查询按钮")
-    @GetMapping(value = "/button/list")
-    public ResponseEntity<JsonResult> buttonList(@ApiParam(value = "展示页面", required = true) @RequestParam String showPage,
-                                                 @ApiParam(value = "流程定义ID", required = true) @RequestParam String processDefinitionId,
-                                                 @ApiParam(value = "任务定义ID") @RequestParam(required = false) String taskDefId,
-                                                 @ApiParam(value = "按钮位置（BUTTOM，LEFT_TOP，RIGHT_TOP）") @RequestParam(required = false) ButtonPosition buttonPosition) {
-
-        Map<String, Object> param = InstanceUtil.newHashMap();
-        param.put(PAGE, 1);
-        param.put(ROWS, 100);
-        param.put(SORT, "sort_no");
-        param.put(ORDER, OrderType.ASC);
-        param.put(DELETED, 0);
-
-        param.put("showPage", showPage);
-        param.put("defaultSetting", true);
-        param.put("processDefinitionId", processDefinitionId);
-        param.put("taskDefId", taskDefId);
-        if (buttonPosition != null) {
-            param.put("buttonPosition", buttonPosition.toString());
-        }
-
-        List<ButtonDef> buttonDefs = service.queryPageButtonList(param);
-        return setSuccessJsonResult(buttonDefs);
-    }
 }

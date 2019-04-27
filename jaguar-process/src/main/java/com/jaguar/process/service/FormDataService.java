@@ -8,13 +8,12 @@ import com.jaguar.core.exception.BusinessException;
 import com.jaguar.core.util.InstanceUtil;
 import com.jaguar.process.Constant;
 import com.jaguar.process.enums.FormDataPersistenceType;
-import com.jaguar.process.enums.FormTemplateFieldType;
 import com.jaguar.process.enums.TaskFieldPermission;
 import com.jaguar.process.interfaces.IUserDefinedComponent;
 import com.jaguar.process.mapper.FormDataMapper;
 import com.jaguar.process.model.po.*;
 import com.jaguar.process.model.vo.UserTask;
-import com.jaguar.process.model.vo.component.UserDefinedConfig;
+import com.jaguar.process.model.vo.component.ComponentConfig;
 import org.apache.commons.lang3.StringUtils;
 import org.flowable.engine.RuntimeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -157,38 +156,39 @@ public class FormDataService extends BaseService<FormData, FormDataMapper> {
             exist = false;
         }
 
-        if (field.getFormTemplateFieldType() == FormTemplateFieldType.fileUpload) {
-            //附件上传存储在FormDataAttach表中
+        switch (field.getFormTemplateFieldType()) {
+            case fileUpload: {
+                //附件上传存储在FormDataAttach表中
 
-            formData.setFormDataPersistenceType(FormDataPersistenceType.FORM_DATA_ATTACH);
-            formData = this.update(formData);
+                formData.setFormDataPersistenceType(FormDataPersistenceType.FORM_DATA_ATTACH);
+                formData = this.update(formData);
 
-            FormDataAttach formDataAttach;
-            if (exist) {
-                formDataAttach = formDataAttachService.getByFormDataId(formData.getId());
-            } else {
-                formDataAttach = new FormDataAttach();
-                formDataAttach.setFormDataId(formData.getId());
+                FormDataAttach formDataAttach;
+                if (exist) {
+                    formDataAttach = formDataAttachService.getByFormDataId(formData.getId());
+                } else {
+                    formDataAttach = new FormDataAttach();
+                    formDataAttach.setFormDataId(formData.getId());
+                }
+                formDataAttach.setValue(value);
+                formDataAttachService.update(formDataAttach);
+                break;
             }
-            formDataAttach.setValue(value);
-            formDataAttachService.update(formDataAttach);
-        } else if (field.getFormTemplateFieldType() == FormTemplateFieldType.userDefined) {
-            //自定义组件由配置类来实现持久化
+            case userDefined: {
+                //自定义组件由配置类来实现持久化
 
-            formData.setFormDataPersistenceType(FormDataPersistenceType.USER_DEFINED);
-            formData = this.update(formData);
+                formData.setFormDataPersistenceType(FormDataPersistenceType.USER_DEFINED);
+                formData = this.update(formData);
 
-            UserDefinedConfig config = JSONObject.parseObject(field.getComponentConfig(), UserDefinedConfig.class);
-            Object bean = applicationContext.getBean(config.getComponentClassName());
-            if (!(bean instanceof IUserDefinedComponent)) {
-                throw new BusinessException("自定义组件类必须是实现IUserDefinedComponent接口！");
+                IUserDefinedComponent component = ComponentConfig.resovleUserDefinedComponent(field.getComponentConfig());
+                component.persist(formData.getId(), value);
+                break;
             }
-            IUserDefinedComponent component = (IUserDefinedComponent) bean;
-            component.persist(formData.getId(), value);
-        } else {
-            formData.setFormDataPersistenceType(FormDataPersistenceType.VALUE);
-            formData.setValue(value);
-            this.update(formData);
+            default: {
+                formData.setFormDataPersistenceType(FormDataPersistenceType.VALUE);
+                formData.setValue(value);
+                this.update(formData);
+            }
         }
     }
 
@@ -203,13 +203,27 @@ public class FormDataService extends BaseService<FormData, FormDataMapper> {
                     continue;
                 }
 
-                if (field.getFormTemplateFieldType() == FormTemplateFieldType.fileUpload
-                        || field.getFormTemplateFieldType() == FormTemplateFieldType.userDefined) {
-//                    SysAttach sysAttach = sysAttachService.getById(formData.getSysAttachId());
-//                    field.setValue(sysAttach.getContent());
-                } else {
-                    field.setValue(formData.getValue());
+                switch (formData.getFormDataPersistenceType()) {
+                    case VALUE: {
+                        field.setValue(formData.getValue());
+                        continue;
+                    }
+                    case FORM_DATA_ATTACH: {
+                        FormDataAttach formDataAttach = formDataAttachService.getByFormDataId(formData.getId());
+                        field.setValue(formDataAttach.getValue());
+                        continue;
+                    }
+                    case USER_DEFINED: {
+                        IUserDefinedComponent component = ComponentConfig.resovleUserDefinedComponent(field.getComponentConfig());
+                        String value = component.read(formData.getId());
+                        field.setValue(value);
+                        continue;
+                    }
+                    default: {
+                        throw new BusinessException("无效的数据存储类型：" + formData.getFormDataPersistenceType());
+                    }
                 }
+
             }
         }
     }

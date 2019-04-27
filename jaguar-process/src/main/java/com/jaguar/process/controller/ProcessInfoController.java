@@ -1,7 +1,12 @@
 package com.jaguar.process.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.jaguar.core.enums.OrderType;
+import com.jaguar.core.util.InstanceUtil;
+import com.jaguar.process.enums.ButtonPosition;
+import com.jaguar.process.model.po.ButtonDef;
 import com.jaguar.process.model.po.ProcessInfo;
+import com.jaguar.process.service.ButtonInstService;
 import com.jaguar.process.service.FlowDefinitionService;
 import com.jaguar.process.service.ProcessInfoService;
 import com.jaguar.core.util.Assert;
@@ -19,6 +24,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+
+import static com.jaguar.core.constant.Constant.*;
+import static com.jaguar.core.constant.Constant.DELETED;
 
 /**
  * <p>
@@ -35,10 +44,12 @@ public class ProcessInfoController extends AbstractController<ProcessInfoService
 
     @Autowired
     private FlowDefinitionService flowDefinitionService;
+    @Autowired
+    private ButtonInstService buttonInstService;
 
     @ApiOperation(value = "预发起工单")
     @RequiresPermissions("processInfo:update")
-    @GetMapping(value = "/pre_create")
+    @GetMapping(value = "/pre_create/{processDefinitionKey}")
     public Object preCreate(@ApiParam(value = "流程定义名称", required = true) @PathVariable String processDefinitionKey) {
 
         ProcessInfo processInfo = service.preCreate(getCurrentUserAccount(), processDefinitionKey);
@@ -208,5 +219,30 @@ public class ProcessInfoController extends AbstractController<ProcessInfoService
         return setSuccessJsonResult(processView);
     }
 
+    @ApiOperation(value = "查询按钮")
+    @GetMapping(value = "/button/list")
+    public ResponseEntity<JsonResult> buttonList(@ApiParam(value = "展示页面", required = true) @RequestParam String showPage,
+                                                 @ApiParam(value = "流程定义ID", required = true) @RequestParam String processDefinitionId,
+                                                 @ApiParam(value = "任务定义ID") @RequestParam(required = false) String taskDefId,
+                                                 @ApiParam(value = "按钮位置（BUTTOM，LEFT_TOP，RIGHT_TOP）") @RequestParam(required = false) ButtonPosition buttonPosition) {
+
+        Map<String, Object> param = InstanceUtil.newHashMap();
+        param.put(PAGE, 1);
+        param.put(ROWS, 100);
+        param.put(SORT, "sort_no");
+        param.put(ORDER, OrderType.ASC);
+        param.put(DELETED, 0);
+
+        param.put("showPage", showPage);
+        param.put("defaultSetting", true);
+        param.put("processDefinitionId", processDefinitionId);
+        param.put("taskDefId", taskDefId);
+        if (buttonPosition != null) {
+            param.put("buttonPosition", buttonPosition.toString());
+        }
+
+        List<ButtonDef> buttonDefs = buttonInstService.queryPageButtonList(param);
+        return setSuccessJsonResult(buttonDefs);
+    }
 
 }

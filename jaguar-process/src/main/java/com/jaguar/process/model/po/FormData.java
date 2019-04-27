@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.jaguar.process.enums.FormDataPersistenceType;
 import com.jaguar.core.base.BaseModel;
+import lombok.Data;
 
 /**
  * <p>
@@ -13,6 +14,7 @@ import com.jaguar.core.base.BaseModel;
  * @author lvws
  * @since 2019-02-28
  */
+@Data
 @TableName("form_data")
 public class FormData extends BaseModel {
 
@@ -48,65 +50,5 @@ public class FormData extends BaseModel {
      */
     @TableField("value_")
     private String value;
-    /**
-     * 附件表ID
-     */
-    @TableField("form_data_attach_id")
-    private Long formDataAttachId;
 
-    public Long getProcessInfoId() {
-        return processInfoId;
-    }
-
-    public void setProcessInfoId(Long processInfoId) {
-        this.processInfoId = processInfoId;
-    }
-
-    public Long getFormTemplateId() {
-        return formTemplateId;
-    }
-
-    public void setFormTemplateId(Long formTemplateId) {
-        this.formTemplateId = formTemplateId;
-    }
-
-    public Long getFormTemplateSheetId() {
-        return formTemplateSheetId;
-    }
-
-    public void setFormTemplateSheetId(Long formTemplateSheetId) {
-        this.formTemplateSheetId = formTemplateSheetId;
-    }
-
-    public Long getFormTemplateFieldId() {
-        return formTemplateFieldId;
-    }
-
-    public void setFormTemplateFieldId(Long formTemplateFieldId) {
-        this.formTemplateFieldId = formTemplateFieldId;
-    }
-
-    public FormDataPersistenceType getFormDataPersistenceType() {
-        return formDataPersistenceType;
-    }
-
-    public void setFormDataPersistenceType(FormDataPersistenceType formDataPersistenceType) {
-        this.formDataPersistenceType = formDataPersistenceType;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public Long getFormDataAttachId() {
-        return formDataAttachId;
-    }
-
-    public void setFormDataAttachId(Long formDataAttachId) {
-        this.formDataAttachId = formDataAttachId;
-    }
 }
