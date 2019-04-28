@@ -220,6 +220,7 @@ public class ProcessInfoController extends AbstractController<ProcessInfoService
     }
 
     @ApiOperation(value = "查询按钮")
+    @RequiresPermissions("processInfo:read")
     @GetMapping(value = "/button/list")
     public ResponseEntity<JsonResult> buttonList(@ApiParam(value = "展示页面", required = true) @RequestParam String showPage,
                                                  @ApiParam(value = "流程定义ID", required = true) @RequestParam String processDefinitionId,

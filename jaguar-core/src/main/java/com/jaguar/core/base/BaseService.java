@@ -218,10 +218,11 @@ public abstract class BaseService<T extends BaseModel, M extends BaseMapper<T>> 
     @Transactional
     public Boolean del(final Long id, Long userId) {
         final T record = this.getById(id);
-        record.setDeleted(true);
         record.setUpdateTime(new Date());
         record.setUpdateBy(userId);
         mapper.updateById(record);
+
+        mapper.deleteById(id);
 
         final String cacheKey = getCacheKey(record.getId());
         cacheManager.del(cacheKey);
