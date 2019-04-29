@@ -7,6 +7,7 @@ import com.jaguar.core.base.BaseModel;
 import com.jaguar.core.base.BaseService;
 import com.jaguar.core.base.mapper.SysFieldEditLogMapper;
 import com.jaguar.core.base.model.SysFieldEditLog;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,14 +68,31 @@ public class SysFieldEditLogService {
             Object newValue = field.get(update);
             TableField annotation = field.getAnnotation(TableField.class);
 
-            if (newValue == null && annotation.strategy() != FieldStrategy.IGNORED) {
+            if (!annotation.exist()) {//过滤临时字段
                 continue;
             }
-            if (newValue instanceof List || newValue instanceof Map) {
+
+            if (annotation.strategy() == FieldStrategy.NOT_EMPTY) {//如果更新策略是非空更新
+                if (newValue instanceof String && StringUtils.isBlank((String) newValue)) {
+                    //如果是空字符串，则不会更新
+                    continue;
+                } else if (newValue == null) {
+                    //如果是nul，也不会更新
+                    continue;
+                }
+            } else if (annotation.strategy() == FieldStrategy.NOT_NULL && newValue == null) {
+                //如果更新策略是非null更新，新值是null，则不会更新
                 continue;
             }
 
             Object oldValue = field.get(org);
+            if (newValue == null && oldValue == null) {
+                //新旧值都为null，值不变
+                continue;
+            } else if (newValue != null && oldValue != null && newValue.equals(oldValue)) {
+                //新旧值都不为null，新值等于旧值，值不变
+                continue;
+            }
 
             SysFieldEditLog sysFieldEditLog = new SysFieldEditLog();
             sysFieldEditLog.setClassName(update.getClass().getName());

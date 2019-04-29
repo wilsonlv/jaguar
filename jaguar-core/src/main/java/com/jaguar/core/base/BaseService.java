@@ -172,9 +172,7 @@ public abstract class BaseService<T extends BaseModel, M extends BaseMapper<T>> 
             mapper.insert(record);
         } else {
             T org = getById(record.getId());
-            T update = InstanceUtil.getDiff(org, record);
-            update.setId(record.getId());
-            mapper.updateById(update);
+            mapper.updateById(record);
 
             final String cacheKey = getCacheKey(record.getId());
             cacheManager.del(cacheKey);
@@ -186,16 +184,15 @@ public abstract class BaseService<T extends BaseModel, M extends BaseMapper<T>> 
                             public void afterCommit() {
                                 cacheManager.del(cacheKey);
 
-                                saveEditLog(org, update);
+                                saveEditLog(org, record);
                             }
                         }
                 );
             } else {
-                saveEditLog(org, update);
+                saveEditLog(org, record);
             }
         }
-        record = mapper.selectById(record.getId());
-        return record;
+        return mapper.selectById(record.getId());
     }
 
     private <T extends BaseModel> void saveEditLog(final T org, final T update) {

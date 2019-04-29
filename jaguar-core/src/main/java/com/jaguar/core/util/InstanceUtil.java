@@ -1,9 +1,5 @@
 package com.jaguar.core.util;
 
-import java.beans.BeanInfo;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -16,56 +12,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class InstanceUtil {
 
     private InstanceUtil() {
-    }
-
-    /**
-     * @param oldBean
-     * @param newBean
-     * @return
-     */
-    public static <T> T getDiff(T oldBean, T newBean) {
-        if (oldBean == null && newBean != null) {
-            return newBean;
-        } else if (newBean == null) {
-            return null;
-        }
-
-        Class<?> clazz = oldBean.getClass();
-        try {
-            @SuppressWarnings("unchecked")
-            T object = (T) clazz.newInstance();
-            BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
-            PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
-
-            boolean flag = false;
-
-            for (PropertyDescriptor property : propertyDescriptors) {
-                String key = property.getName();
-                // 过滤class属性
-                if (key.equals("class")) {
-                    continue;
-                }
-
-                // 得到property对应的getter方法
-                Method getter = property.getReadMethod();
-                // 得到property对应的setter方法
-                Method setter = property.getWriteMethod();
-                Object oldValue = getter.invoke(oldBean);
-                Object newValue = getter.invoke(newBean);
-                if (newValue != null) {
-                    if (oldValue == null) {
-                        setter.invoke(object, newValue);
-                        flag = true;
-                    } else if (!newValue.equals(oldValue)) {
-                        setter.invoke(object, newValue);
-                        flag = true;
-                    }
-                }
-            }
-            return flag ? object : newBean;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     /**

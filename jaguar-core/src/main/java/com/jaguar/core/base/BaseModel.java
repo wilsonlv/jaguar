@@ -13,7 +13,7 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class BaseModel implements Serializable {
 
-    @TableId(value = "id_", type = IdType.AUTO)
+    @TableId(value = "id_", type = IdType.ID_WORKER)
     private Long id;
 
     @TableField("create_by")
