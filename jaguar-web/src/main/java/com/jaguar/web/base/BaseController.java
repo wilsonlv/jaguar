@@ -68,7 +68,7 @@ public abstract class BaseController {
             if (data instanceof Page) {
                 Page<?> page = (Page<?>) data;
                 jsonResult.setData(page.getRecords());
-                jsonResult.setCurrent(page.getCurrent());
+                jsonResult.setCurrent( page.getCurrent());
                 jsonResult.setSize(page.getSize());
                 jsonResult.setPages(page.getPages());
                 jsonResult.setTotal(page.getTotal());

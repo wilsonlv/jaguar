@@ -54,35 +54,35 @@ public class JsonResult extends ModelMap {
         this.put(JR_TIME_STAMP, timestamp);
     }
 
-    public Long getCurrent() {
-        return (Long) this.get(JR_CURRENT);
+    public Integer getCurrent() {
+        return (Integer) this.get(JR_CURRENT);
     }
 
     public void setCurrent(Long current) {
-        this.put(JR_CURRENT, current);
+        this.put(JR_CURRENT, current.intValue());
     }
 
-    public Long getSize() {
-        return (Long) this.get(JR_SIZE);
+    public Integer getSize() {
+        return (Integer) this.get(JR_SIZE);
     }
 
     public void setSize(Long size) {
-        this.put(JR_SIZE, size);
+        this.put(JR_SIZE, size.intValue());
     }
 
-    public Long getPages() {
-        return (Long) this.get(JR_PAGES);
+    public Integer getPages() {
+        return (Integer) this.get(JR_PAGES);
     }
 
     public void setPages(Long pages) {
-        this.put(JR_PAGES, pages);
+        this.put(JR_PAGES, pages.intValue());
     }
 
-    public Long getTotal() {
-        return (Long) this.get(JR_TOTAL);
+    public Integer getTotal() {
+        return (Integer) this.get(JR_TOTAL);
     }
 
     public void setTotal(Long total) {
-        this.put(JR_TOTAL, total);
+        this.put(JR_TOTAL, total.intValue());
     }
 }
