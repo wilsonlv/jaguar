@@ -129,7 +129,7 @@ public class SysFieldEditLogService {
     }
 
     public Page query(Map<String, Object> param) {
-        Page page = BaseService.getPage(param);
+        Page<SysFieldEditLog> page = BaseService.getPage(param, SysFieldEditLog.class);
         List<SysFieldEditLog> sysLogs = sysFieldEditLogMapper.selectEntityPage(page, param);
         return page.setRecords(sysLogs);
     }

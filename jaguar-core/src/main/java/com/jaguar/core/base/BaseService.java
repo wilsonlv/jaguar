@@ -50,6 +50,13 @@ public abstract class BaseService<T extends BaseModel, M extends BaseMapper<T>> 
      * 构建分页对象
      */
     public static Page<Long> getPage(Map<String, Object> params) {
+        return getPage(params, Long.class);
+    }
+
+    /**
+     * 构建分页对象
+     */
+    public static <T> Page<T> getPage(Map<String, Object> params, Class<T> tClass) {
         Integer current = (Integer) params.get(Constant.PAGE);
         Integer size = (Integer) params.get(Constant.ROWS);
         if (current == null) {
@@ -62,7 +69,7 @@ public abstract class BaseService<T extends BaseModel, M extends BaseMapper<T>> 
             return new Page<>();
         }
 
-        Page<Long> page = new Page<>(current, size);
+        Page<T> page = new Page<>(current, size);
 
         String sort = (String) params.get(Constant.SORT);
         if (sort == null) {

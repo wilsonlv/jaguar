@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,10 +37,12 @@ public class TableInfoService extends BaseService<TableInfo, TableInfoMapper> {
         this.schema = url.substring(url.lastIndexOf('/') + 1);
     }
 
-    public List<TableInfo> showTables(Map<String, Object> param) {
-        Page<Long> page = getPage(param);
+    public Page<TableInfo> showTables(Map<String, Object> param) {
         param.put("schema", schema);
-        return mapper.showTables(page, param);
+
+        Page<TableInfo> page = getPage(param, TableInfo.class);
+        page.setRecords(mapper.showTables(page, param));
+        return page;
     }
 
     public void generate(TableInfo tableInfo) {

@@ -34,8 +34,8 @@ public class SysLogService {
         sysLogMapper.insert(sysRequestLog);
     }
 
-    public Page query(Map<String, Object> param) {
-        Page page = BaseService.getPage(param);
+    public Page<SysLog> query(Map<String, Object> param) {
+        Page<SysLog> page = BaseService.getPage(param, SysLog.class);
         List<SysLog> sysLogs = sysLogMapper.selectEntityPage(page, param);
         return page.setRecords(sysLogs);
     }
