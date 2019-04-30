@@ -13,6 +13,4 @@ public interface Constant {
     String SORT = "sort";//排序字段
     String ORDER = "order";//排序方式
 
-    String DELETED = "deleted";//逻辑删除
-
 }

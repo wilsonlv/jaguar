@@ -11,7 +11,6 @@
     <artifactId>jaguar-mybatis-plus</artifactId>
 
     <properties>
-        <mysql.version>5.1.39</mysql.version>
         <druid.version>1.1.10</druid.version>
     </properties>
 
@@ -21,18 +20,6 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>${mybatis-plus.version}</version>
-        </dependency>
-
-        <!-- mybatis plus generator -->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-generator</artifactId>
-            <version>${mybatis-plus.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity</artifactId>
-            <version>1.7</version>
         </dependency>
 
         <!-- mysql驱动与连接池 -->

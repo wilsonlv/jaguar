@@ -70,9 +70,7 @@
             <if test="cm.componentClassName != null and cm.componentClassName != ''">
                 AND component_class_name = #{cm.componentClassName}
             </if>
-            <if test="cm.deleted != null">
-                AND deleted_ = #{cm.deleted}
-            </if>
+            AND deleted_ = #{cm.deleted}
         </where>
     </select>
 </mapper>

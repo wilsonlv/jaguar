@@ -1,4 +1,4 @@
-package com.jaguar.mybatisplus;
+package com.jaguar.mybatisplus.generator;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
@@ -12,7 +12,7 @@ public class Generator {
 
     public static void main(String[] args) {
 
-        String parentPackage = "com.jaguar.flowable";
+        String parentPackage = "com.itqingning.lims.res";
         String author = "lvws";
 //        String outputDir = "/Users/apple/develop/data/generator";
         String outputDir = "/Users/apple/develop/IdeaProjects/Lims/Lims-trunk/src/main/java";
@@ -42,7 +42,7 @@ public class Generator {
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-        strategy.setInclude("form_data_attach"); // 需要生成的表
+        strategy.setInclude("subcontractor"); // 需要生成的表
         // 字段名生成策略
         strategy.setNaming(NamingStrategy.underline_to_camel);
         // 自定义实体父类
@@ -71,11 +71,11 @@ public class Generator {
         // 自定义模板配置，可以 copy 源码 mybatis-plus/src/main/resources/template 下面内容修改，
         // 放置自己项目的 src/main/resources/template 目录下, 默认名称一下可以不配置，也可以自定义模板名称
         TemplateConfig tc = new TemplateConfig();
-        tc.setEntity("com/jaguar/mybatisplus/template/entity.java.vm");
-        tc.setMapper("com/jaguar/mybatisplus/template/mapper.java.vm");
-        tc.setXml("com/jaguar/mybatisplus/template/mapper.xml.vm");
-        tc.setServiceImpl("com/jaguar/mybatisplus/template/service.java.vm");
-        tc.setController("com/jaguar/mybatisplus/template/controller.java.vm");
+        tc.setEntity("com/jaguar/mybatisplus/generator/template/entity.java.vm");
+        tc.setMapper("com/jaguar/mybatisplus/generator/template/mapper.java.vm");
+        tc.setXml("com/jaguar/mybatisplus/generator/template/mapper.xml.vm");
+        tc.setServiceImpl("com/jaguar/mybatisplus/generator/template/service.java.vm");
+        tc.setController("com/jaguar/mybatisplus/generator/template/controller.java.vm");
         mpg.setTemplate(tc);
         // 执行生成
         mpg.execute();

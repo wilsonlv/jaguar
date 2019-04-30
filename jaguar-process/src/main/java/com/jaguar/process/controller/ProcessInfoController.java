@@ -2,17 +2,17 @@ package com.jaguar.process.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jaguar.core.enums.OrderType;
+import com.jaguar.core.util.Assert;
 import com.jaguar.core.util.InstanceUtil;
 import com.jaguar.process.enums.ButtonPosition;
+import com.jaguar.process.enums.TaskStatus;
 import com.jaguar.process.model.po.ButtonDef;
 import com.jaguar.process.model.po.ProcessInfo;
+import com.jaguar.process.model.vo.FlowDefinition;
+import com.jaguar.process.model.vo.ProcessView;
 import com.jaguar.process.service.ButtonInstService;
 import com.jaguar.process.service.FlowDefinitionService;
 import com.jaguar.process.service.ProcessInfoService;
-import com.jaguar.core.util.Assert;
-import com.jaguar.process.enums.TaskStatus;
-import com.jaguar.process.model.vo.FlowDefinition;
-import com.jaguar.process.model.vo.ProcessView;
 import com.jaguar.web.JsonResult;
 import com.jaguar.web.base.AbstractController;
 import io.swagger.annotations.Api;
@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.jaguar.core.constant.Constant.*;
-import static com.jaguar.core.constant.Constant.DELETED;
 
 /**
  * <p>
@@ -232,7 +231,6 @@ public class ProcessInfoController extends AbstractController<ProcessInfoService
         param.put(ROWS, 100);
         param.put(SORT, "sort_no");
         param.put(ORDER, OrderType.ASC);
-        param.put(DELETED, 0);
 
         param.put("showPage", showPage);
         param.put("defaultSetting", true);

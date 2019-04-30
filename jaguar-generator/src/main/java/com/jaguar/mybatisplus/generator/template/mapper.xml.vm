@@ -34,9 +34,7 @@
 				AND ${field.name} = #{cm.${field.propertyName}}
 			</if>
 			#end
-            <if test="cm.deleted != null">
-                AND deleted_ = #{cm.deleted}
-            </if>
+			AND deleted_ = 0
 		</where>
 	</select>
 	

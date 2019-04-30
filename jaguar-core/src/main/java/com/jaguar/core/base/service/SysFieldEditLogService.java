@@ -9,6 +9,7 @@ import com.jaguar.core.base.mapper.SysFieldEditLogMapper;
 import com.jaguar.core.base.model.SysFieldEditLog;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,17 +47,23 @@ public class SysFieldEditLogService {
         add(SERIAL_VERSION_UID);
     }};
 
-
     @Autowired(required = false)
     private SysFieldEditLogMapper sysFieldEditLogMapper;
+    @Value("${mybatis-plus.global-config.db-config.field-strategy}")
+    private FieldStrategy fieldStrategy;
 
     @Transactional
-    public <T extends BaseModel> void save(T org, T update) throws IllegalAccessException {
+    public <T extends BaseModel> T compareDifference(T org, T update) throws IllegalAccessException, InstantiationException {
         Long recordId = update.getId();
         Long lastUpdateBy = org.getUpdateBy();
         Date lastUpdateTime = org.getUpdateTime();
         Long currentUpdateBy = update.getUpdateBy();
         Date currentUpdateTime = update.getUpdateTime();
+
+        T difference = (T) org.getClass().newInstance();
+        difference.setId(recordId);
+        difference.setUpdateBy(currentUpdateBy);
+        difference.setUpdateTime(currentUpdateTime);
 
         Field[] fields = update.getClass().getDeclaredFields();
         for (Field field : fields) {
@@ -72,7 +79,13 @@ public class SysFieldEditLogService {
                 continue;
             }
 
-            if (annotation.strategy() == FieldStrategy.NOT_EMPTY) {//如果更新策略是非空更新
+            FieldStrategy strategy = annotation.strategy();
+            if (strategy == FieldStrategy.DEFAULT) {
+                strategy = fieldStrategy;
+            }
+
+            if (strategy == FieldStrategy.NOT_EMPTY) {
+                //如果更新策略是非空更新
                 if (newValue instanceof String && StringUtils.isBlank((String) newValue)) {
                     //如果是空字符串，则不会更新
                     continue;
@@ -83,6 +96,9 @@ public class SysFieldEditLogService {
             } else if (annotation.strategy() == FieldStrategy.NOT_NULL && newValue == null) {
                 //如果更新策略是非null更新，新值是null，则不会更新
                 continue;
+            } else if (annotation.strategy() == FieldStrategy.IGNORED) {
+                //如果更新策略是直接更新，则需要设置新值
+                field.set(difference, newValue);
             }
 
             Object oldValue = field.get(org);
@@ -105,7 +121,11 @@ public class SysFieldEditLogService {
             sysFieldEditLog.setUpdateBy(currentUpdateBy);
             sysFieldEditLog.setUpdateTime(currentUpdateTime);
             sysFieldEditLogMapper.insert(sysFieldEditLog);
+
+            field.set(difference, newValue);
         }
+
+        return difference;
     }
 
     public Page query(Map<String, Object> param) {

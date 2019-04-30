@@ -26,9 +26,7 @@
             <if test="cm.sortNo != null and cm.sortNo != ''">
                 AND sort_no = #{cm.sortNo}
             </if>
-            <if test="cm.deleted != null">
-                AND deleted_ = #{cm.deleted}
-            </if>
+            AND deleted_ = 0
         </where>
     </select>
 </mapper>

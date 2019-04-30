@@ -9,8 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jaguar-sys-log</artifactId>
-
+    <artifactId>jaguar-generator</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.jaguar</groupId>
@@ -21,6 +20,25 @@
             <groupId>com.jaguar</groupId>
             <artifactId>jaguar-web</artifactId>
             <version>3.0</version>
+        </dependency>
+
+        <!-- mybatis plus generator -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <version>${mybatis-plus.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>1.7</version>
+        </dependency>
+
+        <!-- mysql驱动与连接池 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
         </dependency>
 
         <dependency>

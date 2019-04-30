@@ -50,7 +50,6 @@ public class DraftDefinitionController extends AbstractController<DraftDefinitio
         param.put(ROWS, rows);
         param.put(SORT, "create_time");
         param.put(ORDER, OrderType.DESC);
-        param.put(DELETED, 0);
 
         param.put("definitionType", definitionType.toString());
 

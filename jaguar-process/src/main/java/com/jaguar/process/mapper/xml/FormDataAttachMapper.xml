@@ -18,9 +18,7 @@
 						<if test="cm.value != null and cm.value != ''">
 				AND value_ = #{cm.value}
 			</if>
-			            <if test="cm.deleted != null">
-                AND deleted_ = #{cm.deleted}
-            </if>
+            deleted_ = 0
 		</where>
 	</select>
 	

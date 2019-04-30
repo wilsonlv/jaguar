@@ -338,7 +338,7 @@ public class ProcessInfoService extends BaseService<ProcessInfo, ProcessInfoMapp
 
         runtimeService.deleteProcessInstance(processInfo.getProcessInstanceId(), reason);
 
-        this.del(processInfoId, null);
+        this.del(processInfoId);
 
         processOperationRecordService.cancel(processInfo);
     }

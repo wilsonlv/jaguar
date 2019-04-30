@@ -45,9 +45,7 @@
             <if test="cm.definitionType != null and cm.definitionType != ''">
                 AND a.definition_type = #{cm.definitionType}
             </if>
-            <if test="cm.deleted != null">
-                AND deleted_ = #{cm.deleted}
-            </if>
+            AND deleted_ = #{cm.deleted}
         </where>
     </select>
 

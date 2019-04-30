@@ -44,7 +44,6 @@ public class FormTemplateController extends AbstractController<FormTemplateServi
         Map<String, Object> param = InstanceUtil.newHashMap();
         param.put(PAGE, page);
         param.put(ROWS, rows);
-        param.put(DELETED, 0);
 
         param.put("name", name);
         param.put("elementId", elementId);

@@ -42,9 +42,7 @@
             <if test="cm.assignee != null and cm.assignee != ''">
                 AND assignee_ = #{cm.assignee}
             </if>
-            <if test="cm.deleted != null">
-                AND deleted_ = #{cm.deleted}
-            </if>
+            AND deleted_ = #{cm.deleted}
         </where>
     </select>
 </mapper>

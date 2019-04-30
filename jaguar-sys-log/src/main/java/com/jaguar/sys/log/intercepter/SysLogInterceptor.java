@@ -1,6 +1,7 @@
 package com.jaguar.sys.log.intercepter;
 
 import com.alibaba.fastjson.JSON;
+import com.jaguar.core.base.BaseService;
 import com.jaguar.core.http.HttpCode;
 import com.jaguar.core.util.DateUtil;
 import com.jaguar.core.util.ExceptionUtil;
@@ -85,6 +86,7 @@ public class SysLogInterceptor extends HandlerInterceptorAdapter {
             sysLog.setCreateBy(WebUtil.getCurrentUser());
 
             SYS_LOG.set(sysLog);
+            BaseService.CURRENT_USER.set(sysLog.getCreateBy());
         }
 
         return super.preHandle(request, response, handler);

@@ -1,0 +1,41 @@
+package ${package.Entity};
+
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
+#foreach($pkg in ${table.importPackages})
+import ${pkg};
+#end
+
+/**
+ * <p>
+ * ${table.comment}
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Data
+@TableName("${table.name}")
+#if(${superEntityClass})
+public class ${entity} extends ${superEntityClass}#if(${activeRecord})<${entity}>#end {
+#elseif(${activeRecord})
+public class ${entity} extends Model<${entity}> {
+#else
+public class ${entity} implements Serializable {
+#end
+
+    private static final long serialVersionUID = 1L;
+
+#foreach($field in ${table.fields})
+#if("$!field.comment" != "")
+    /**
+     * ${field.comment}
+     */
+#end
+	@TableField("${field.name}")
+	private ${field.propertyType} ${field.propertyName};
+#end
+
+}

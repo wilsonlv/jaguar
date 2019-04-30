@@ -37,9 +37,7 @@
             <if test="cm.name != null and cm.name != ''">
                 AND a.name_ = #{cm.name}
             </if>
-            <if test="cm.deleted != null">
-                AND deleted_ = #{cm.deleted}
-            </if>
+            AND deleted_ = #{cm.deleted}
         </where>
     </select>
 </mapper>

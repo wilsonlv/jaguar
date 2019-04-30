@@ -42,9 +42,7 @@
             <if test="cm.orderTime != null and cm.orderTime != ''">
                 AND order_time = #{cm.orderTime}
             </if>
-            <if test="cm.deleted != null">
-                AND deleted_ = #{cm.deleted}
-            </if>
+            AND deleted_ = 0
         </where>
     </select>
 </mapper>

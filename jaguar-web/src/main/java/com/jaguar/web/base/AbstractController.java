@@ -47,7 +47,7 @@ public abstract class AbstractController<T extends BaseService> extends BaseCont
     }
 
     public ResponseEntity<JsonResult> del(Long id) {
-        Boolean del = service.del(id, getCurrentUser());
+        Boolean del = service.del(id);
         return setSuccessJsonResult(del);
     }
 }

@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jaguar.core.base.service.SysFieldEditLogService;
 import com.jaguar.core.constant.Constant;
 import com.jaguar.core.enums.OrderType;
-import com.jaguar.core.util.ExecutorServiceUtil;
 import com.jaguar.core.util.InstanceUtil;
 import com.jaguar.redis.RedisCacheManager;
 import org.apache.logging.log4j.LogManager;
@@ -41,6 +40,11 @@ public abstract class BaseService<T extends BaseModel, M extends BaseMapper<T>> 
 
     @Autowired
     protected RedisCacheManager cacheManager;
+
+    /**
+     * 通过SysLogInterceptor日志拦截器来设置
+     */
+    public static final ThreadLocal<Long> CURRENT_USER = new ThreadLocal<>();
 
     /**
      * 构建分页对象
@@ -166,16 +170,23 @@ public abstract class BaseService<T extends BaseModel, M extends BaseMapper<T>> 
      */
     @Transactional
     public T update(T record) {
+        record.setUpdateBy(CURRENT_USER.get());
         record.setUpdateTime(new Date());
         if (record.getId() == null) {
             record.setCreateTime(new Date());
             mapper.insert(record);
         } else {
-            T org = getById(record.getId());
-            mapper.updateById(record);
-
             final String cacheKey = getCacheKey(record.getId());
             cacheManager.del(cacheKey);
+
+            T org = this.selectById(record.getId());
+            try {
+                record = sysFieldEditLogService.compareDifference(org, record);
+            } catch (IllegalAccessException | InstantiationException e) {
+                throw new RuntimeException(e);
+            }
+
+            mapper.updateById(record);
 
             if (TransactionSynchronizationManager.isSynchronizationActive()) {
                 TransactionSynchronizationManager.registerSynchronization(
@@ -183,40 +194,22 @@ public abstract class BaseService<T extends BaseModel, M extends BaseMapper<T>> 
                             @Override
                             public void afterCommit() {
                                 cacheManager.del(cacheKey);
-
-                                saveEditLog(org, record);
                             }
                         }
                 );
-            } else {
-                saveEditLog(org, record);
             }
         }
         return mapper.selectById(record.getId());
     }
 
-    private <T extends BaseModel> void saveEditLog(final T org, final T update) {
-        ExecutorServiceUtil.execute(() -> {
-                    try {
-                        sysFieldEditLogService.save(org, update);
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                }
-        );
-    }
-
     /**
      * 逻辑删除
-     *
-     * @param id     实体类Id
-     * @param userId 操作人
      */
     @Transactional
-    public Boolean del(final Long id, Long userId) {
+    public Boolean del(final Long id) {
         final T record = this.getById(id);
         record.setUpdateTime(new Date());
-        record.setUpdateBy(userId);
+        record.setUpdateBy(CURRENT_USER.get());
         mapper.updateById(record);
 
         mapper.deleteById(id);

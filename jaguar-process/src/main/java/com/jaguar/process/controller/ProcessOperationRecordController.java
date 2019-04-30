@@ -40,7 +40,6 @@ public class ProcessOperationRecordController extends AbstractController<Process
         Map<String, Object> param = InstanceUtil.newHashMap();
         param.put(PAGE, page);
         param.put(ROWS, rows);
-        param.put(DELETED, 0);
 
         param.put("processInfoId", processInfoId);
 
