@@ -1,5 +1,6 @@
 package com.jaguar.mybatisplus.generator.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jaguar.core.enums.OrderType;
 import com.jaguar.core.util.InstanceUtil;
 import com.jaguar.mybatisplus.generator.model.TableInfo;
@@ -13,7 +14,6 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 import static com.jaguar.core.constant.Constant.*;
@@ -42,7 +42,7 @@ public class TableInfoController extends AbstractController<TableInfoService> {
 
         param.put("fuzzyTableName", fuzzyTableName);
 
-        List<TableInfo> tableInfos = service.showTables(param);
+        Page<TableInfo> tableInfos = service.showTables(param);
         return setSuccessJsonResult(tableInfos);
     }
 
