@@ -39,7 +39,6 @@ public class SysFieldEditLogService {
 
     private static final List<String> FILTER_FIELDS = new ArrayList<String>() {{
         add(ID);
-        add(ID);
         add(CREATE_BY);
         add(CREATE_TIME);
         add(UPDATE_BY);
@@ -105,7 +104,7 @@ public class SysFieldEditLogService {
             if (newValue == null && oldValue == null) {
                 //新旧值都为null，值不变
                 continue;
-            } else if (newValue != null && oldValue != null && newValue.equals(oldValue)) {
+            } else if (newValue != null && newValue.equals(oldValue)) {
                 //新旧值都不为null，新值等于旧值，值不变
                 continue;
             }
