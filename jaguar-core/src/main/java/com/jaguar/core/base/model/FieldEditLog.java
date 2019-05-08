@@ -12,8 +12,8 @@ import com.jaguar.core.base.BaseModel;
  * @author lvws
  * @since 2019-04-10
  */
-@TableName("sys_field_edit_log")
-public class SysFieldEditLog extends BaseModel {
+@TableName("t_field_edit_log")
+public class FieldEditLog extends BaseModel {
 
     private static final long serialVersionUID = 1L;
 

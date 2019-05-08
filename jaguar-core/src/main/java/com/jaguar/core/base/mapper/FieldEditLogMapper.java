@@ -1,7 +1,7 @@
 package com.jaguar.core.base.mapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.jaguar.core.base.model.SysFieldEditLog;
+import com.jaguar.core.base.model.FieldEditLog;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -15,8 +15,8 @@ import java.util.Map;
  * @author lvws
  * @since 2019-04-10
  */
-public interface SysFieldEditLogMapper extends com.baomidou.mybatisplus.core.mapper.BaseMapper<SysFieldEditLog> {
+public interface FieldEditLogMapper extends com.baomidou.mybatisplus.core.mapper.BaseMapper<FieldEditLog> {
 
-    List<SysFieldEditLog> selectEntityPage(IPage page, @Param("cm") Map<String, Object> param);
+    List<FieldEditLog> selectEntityPage(IPage page, @Param("cm") Map<String, Object> param);
 
 }

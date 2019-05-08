@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jaguar.core.base.BaseModel;
 import com.jaguar.core.base.BaseService;
-import com.jaguar.core.base.mapper.SysFieldEditLogMapper;
-import com.jaguar.core.base.model.SysFieldEditLog;
+import com.jaguar.core.base.mapper.FieldEditLogMapper;
+import com.jaguar.core.base.model.FieldEditLog;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +28,7 @@ import java.util.Map;
  * @since 2019-04-10
  */
 @Service
-public class SysFieldEditLogService {
+public class FieldEditLogService {
 
     private static final String ID = "id";
     private static final String CREATE_BY = "createBy";
@@ -48,22 +48,17 @@ public class SysFieldEditLogService {
     }};
 
     @Autowired(required = false)
-    private SysFieldEditLogMapper sysFieldEditLogMapper;
+    private FieldEditLogMapper fieldEditLogMapper;
     @Value("${mybatis-plus.global-config.db-config.field-strategy}")
     private FieldStrategy fieldStrategy;
 
     @Transactional
-    public <T extends BaseModel> T compareDifference(T org, T update) throws IllegalAccessException, InstantiationException {
+    public <T extends BaseModel> void compareDifference(T org, T update) throws IllegalAccessException, InstantiationException {
         Long recordId = update.getId();
         Long lastUpdateBy = org.getUpdateBy();
         Date lastUpdateTime = org.getUpdateTime();
         Long currentUpdateBy = update.getUpdateBy();
         Date currentUpdateTime = update.getUpdateTime();
-
-        T difference = (T) org.getClass().newInstance();
-        difference.setId(recordId);
-        difference.setUpdateBy(currentUpdateBy);
-        difference.setUpdateTime(currentUpdateTime);
 
         Field[] fields = update.getClass().getDeclaredFields();
         for (Field field : fields) {
@@ -96,9 +91,6 @@ public class SysFieldEditLogService {
             } else if (annotation.strategy() == FieldStrategy.NOT_NULL && newValue == null) {
                 //如果更新策略是非null更新，新值是null，则不会更新
                 continue;
-            } else if (annotation.strategy() == FieldStrategy.IGNORED) {
-                //如果更新策略是直接更新，则需要设置新值
-                field.set(difference, newValue);
             }
 
             Object oldValue = field.get(org);
@@ -110,27 +102,23 @@ public class SysFieldEditLogService {
                 continue;
             }
 
-            SysFieldEditLog sysFieldEditLog = new SysFieldEditLog();
-            sysFieldEditLog.setClassName(update.getClass().getName());
-            sysFieldEditLog.setFieldName(field.getName());
-            sysFieldEditLog.setRecordId(recordId);
-            sysFieldEditLog.setOldValue(String.valueOf(oldValue));
-            sysFieldEditLog.setNewValue(String.valueOf(newValue));
-            sysFieldEditLog.setCreateBy(lastUpdateBy);
-            sysFieldEditLog.setCreateTime(lastUpdateTime);
-            sysFieldEditLog.setUpdateBy(currentUpdateBy);
-            sysFieldEditLog.setUpdateTime(currentUpdateTime);
-            sysFieldEditLogMapper.insert(sysFieldEditLog);
-
-            field.set(difference, newValue);
+            FieldEditLog fieldEditLog = new FieldEditLog();
+            fieldEditLog.setClassName(update.getClass().getName());
+            fieldEditLog.setFieldName(field.getName());
+            fieldEditLog.setRecordId(recordId);
+            fieldEditLog.setOldValue(String.valueOf(oldValue));
+            fieldEditLog.setNewValue(String.valueOf(newValue));
+            fieldEditLog.setCreateBy(lastUpdateBy);
+            fieldEditLog.setCreateTime(lastUpdateTime);
+            fieldEditLog.setUpdateBy(currentUpdateBy);
+            fieldEditLog.setUpdateTime(currentUpdateTime);
+            fieldEditLogMapper.insert(fieldEditLog);
         }
-
-        return difference;
     }
 
     public Page query(Map<String, Object> param) {
-        Page<SysFieldEditLog> page = BaseService.getPage(param, SysFieldEditLog.class);
-        List<SysFieldEditLog> sysLogs = sysFieldEditLogMapper.selectEntityPage(page, param);
+        Page<FieldEditLog> page = BaseService.getPage(param, FieldEditLog.class);
+        List<FieldEditLog> sysLogs = fieldEditLogMapper.selectEntityPage(page, param);
         return page.setRecords(sysLogs);
     }
 

@@ -3,7 +3,7 @@ package com.jaguar.core.base;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jaguar.core.base.service.SysFieldEditLogService;
+import com.jaguar.core.base.service.FieldEditLogService;
 import com.jaguar.core.constant.Constant;
 import com.jaguar.core.enums.OrderType;
 import com.jaguar.core.util.InstanceUtil;
@@ -36,7 +36,7 @@ public abstract class BaseService<T extends BaseModel, M extends BaseMapper<T>> 
     protected M mapper;
 
     @Autowired
-    protected SysFieldEditLogService sysFieldEditLogService;
+    protected FieldEditLogService fieldEditLogService;
 
     @Autowired
     protected RedisCacheManager cacheManager;
@@ -180,6 +180,7 @@ public abstract class BaseService<T extends BaseModel, M extends BaseMapper<T>> 
         record.setUpdateBy(CURRENT_USER.get());
         record.setUpdateTime(new Date());
         if (record.getId() == null) {
+            record.setCreateBy(CURRENT_USER.get());
             record.setCreateTime(new Date());
             mapper.insert(record);
         } else {
@@ -188,7 +189,7 @@ public abstract class BaseService<T extends BaseModel, M extends BaseMapper<T>> 
 
             T org = this.selectById(record.getId());
             try {
-                record = sysFieldEditLogService.compareDifference(org, record);
+                fieldEditLogService.compareDifference(org, record);
             } catch (IllegalAccessException | InstantiationException e) {
                 throw new RuntimeException(e);
             }
