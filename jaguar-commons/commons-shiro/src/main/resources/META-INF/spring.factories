@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    org.jaguar.commons.shiro.config.ShiroProperties,\
+    org.jaguar.commons.shiro.config.ShiroSessionConfig,\
+    org.jaguar.commons.shiro.config.ShiroConfig

@@ -1,0 +1,54 @@
+package org.jaguar.core.base;
+
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import org.jaguar.core.web.JsonResult;
+import org.jaguar.core.web.Page;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+
+/**
+ * Created by lvws on 2019/5/6.
+ */
+public abstract class AbstractController<T extends BaseModel,
+        M extends com.baomidou.mybatisplus.core.mapper.BaseMapper<T>, N extends BaseService<T, M>> extends BaseController {
+
+    @Autowired
+    protected N service;
+
+    public ResponseEntity<JsonResult<Page<T>>> page(com.baomidou.mybatisplus.extension.plugins.pagination.Page<T> page) {
+        return this.page(page, Wrappers.emptyWrapper());
+    }
+
+    public ResponseEntity<JsonResult<Page<T>>> page(com.baomidou.mybatisplus.extension.plugins.pagination.Page<T> page,
+                                                    Wrapper<T> queryWrapper) {
+        page = service.page(page, queryWrapper);
+        return success(page);
+    }
+
+    public ResponseEntity<JsonResult<T>> getById(Long id) {
+        T model = service.getById(id);
+        return success(model);
+    }
+
+    public ResponseEntity<JsonResult<T>> insert(T entity) {
+        T model = service.insert(entity);
+        return success(model);
+    }
+
+    public ResponseEntity<JsonResult<T>> updateById(T entity) {
+        T model = service.updateById(entity);
+        return success(model);
+    }
+
+    public ResponseEntity<JsonResult<T>> saveOrUpdate(T entity) {
+        T model = service.saveOrUpdate(entity);
+        return success(model);
+    }
+
+    public ResponseEntity delete(Long id) {
+        service.delete(id);
+        return success();
+    }
+
+}

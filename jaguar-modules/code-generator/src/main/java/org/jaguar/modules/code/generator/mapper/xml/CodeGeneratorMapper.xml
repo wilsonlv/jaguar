@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jaguar.modules.code.generator.mapper.CodeGeneratorMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.jaguar.modules.code.generator.model.CodeGenerator">
+        <result column="table_name" property="tableName"/>
+        <result column="table_comment" property="tableComment"/>
+    </resultMap>
+
+    <select id="showTables" resultMap="BaseResultMap">
+        SELECT table_name, table_comment FROM information_schema.tables
+        <where>
+            table_schema = #{schema}
+            <if test="fuzzyTableName != null and fuzzyTableName != ''">
+                AND LIKE CONCAT('%',#{fuzzyTableName},'%')
+            </if>
+        </where>
+    </select>
+
+</mapper>

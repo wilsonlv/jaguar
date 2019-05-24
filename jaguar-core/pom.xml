@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>jaguar</artifactId>
-        <groupId>com.jaguar</groupId>
+        <groupId>org.jaguar</groupId>
         <version>3.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -11,15 +11,19 @@
     <artifactId>jaguar-core</artifactId>
     <dependencies>
         <dependency>
-            <groupId>com.jaguar</groupId>
-            <artifactId>jaguar-redis</artifactId>
+            <groupId>org.jaguar</groupId>
+            <artifactId>commons-utils</artifactId>
             <version>3.0</version>
         </dependency>
-
         <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus</artifactId>
-            <version>${mybatis-plus.version}</version>
+            <groupId>org.jaguar</groupId>
+            <artifactId>commons-shiro</artifactId>
+            <version>3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jaguar</groupId>
+            <artifactId>commons-mybatis-plus</artifactId>
+            <version>3.0</version>
         </dependency>
     </dependencies>
 

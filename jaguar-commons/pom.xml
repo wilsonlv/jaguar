@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>jaguar</artifactId>
+        <groupId>org.jaguar</groupId>
+        <version>3.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>jaguar-commons</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>commons-aviator</module>
+        <module>commons-data-encription</module>
+        <module>commons-dubbo</module>
+        <module>commons-enums</module>
+        <module>commons-malice</module>
+        <module>commons-mybatis-plus</module>
+        <module>commons-redis</module>
+        <module>commons-shiro</module>
+        <module>commons-swagger</module>
+        <module>commons-utils</module>
+    </modules>
+
+</project>

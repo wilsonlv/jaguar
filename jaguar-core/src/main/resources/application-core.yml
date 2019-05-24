@@ -1,0 +1,11 @@
+spring:
+  servlet:
+    multipart:
+      max-request-size: 10MB
+      max-file-size: 3MB
+  application:
+    name: ${server.servlet.application-display-name}
+  jackson:
+    serialization.FAIL_ON_EMPTY_BEANS: false
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8

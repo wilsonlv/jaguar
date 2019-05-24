@@ -1,0 +1,17 @@
+dubbo:
+  application:
+    name: ${project.artifactId}
+    qos-enable: false
+  registry:
+    address: zookeeper://127.0.0.1:2181
+    file: ./dubbo/${dubbo.application.name}.cache
+  protocol:
+    name: dubbo
+    port: 18080
+    threads: 100
+  scan:
+    base-packages: org.jaguar
+
+logging:
+  level:
+    org.apache.dubbo: debug
