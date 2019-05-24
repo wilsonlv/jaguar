@@ -34,13 +34,6 @@
             <artifactId>velocity</artifactId>
             <version>1.7</version>
         </dependency>
-
-        <!-- mysql驱动与连接池 -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
-        </dependency>
     </dependencies>
 
 </project>

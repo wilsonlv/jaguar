@@ -1,8 +1,8 @@
 package org.jaguar.modules.workflow.model.vo.component;
 
 import com.alibaba.fastjson.JSONObject;
-import io.netty.channel.ChannelException;
 import org.jaguar.core.context.SpringContext;
+import org.jaguar.core.exception.CheckedException;
 import org.jaguar.modules.workflow.interfaces.IUserDefinedComponent;
 
 import java.io.Serializable;
@@ -19,7 +19,7 @@ public abstract class ComponentConfig implements Serializable {
         UserDefinedConfig config = JSONObject.parseObject(userDefinedConfig, UserDefinedConfig.class);
         Object bean = SpringContext.getBean(config.getComponentClassName());
         if (!(bean instanceof IUserDefinedComponent)) {
-            throw new ChannelException("自定义组件类必须是实现IUserDefinedComponent接口！");
+            throw new CheckedException("自定义组件类必须是实现IUserDefinedComponent接口！");
         }
         return (IUserDefinedComponent) bean;
     }

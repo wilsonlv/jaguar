@@ -23,12 +23,6 @@
             <version>${shiro.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.jaguar</groupId>
-            <artifactId>commons-redis</artifactId>
-            <version>3.0</version>
-        </dependency>
-
         <!-- shiro-redis -->
         <dependency>
             <groupId>org.crazycake</groupId>
