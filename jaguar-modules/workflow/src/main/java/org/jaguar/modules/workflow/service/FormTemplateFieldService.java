@@ -1,5 +1,6 @@
 package org.jaguar.modules.workflow.service;
 
+
 import org.apache.commons.lang3.StringUtils;
 import org.jaguar.commons.aviator.ExpressionUtil;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
@@ -30,8 +31,8 @@ public class FormTemplateFieldService extends BaseService<FormTemplateField, For
      */
     public FormTemplateField getByFormIdAndFieldKey(Long formTemplateId, String fieldKey) {
         JaguarLambdaQueryWrapper<FormTemplateField> wrapper = JaguarLambdaQueryWrapper.newInstance();
-        wrapper.eq(FormTemplateField::getFormTemplateId, formTemplateId);
-        wrapper.eq(FormTemplateField::getKey, fieldKey);
+        wrapper.eq(FormTemplateField::getFormTemplateId, formTemplateId)
+                .eq(FormTemplateField::getKey, fieldKey);
         return this.unique(wrapper);
     }
 
@@ -58,7 +59,7 @@ public class FormTemplateFieldService extends BaseService<FormTemplateField, For
                 if (StringUtils.isNotBlank(field.getDefaultValue()) && ExpressionUtil.isExpression(field.getDefaultValue())) {
                     Object result = ExpressionUtil.execute(field.getDefaultValue(), evn);
                     if (result instanceof Date) {
-                        field.setDefaultValue(DateUtil.format(result, field.getTimePattern()));
+                        field.setDefaultValue(DateUtil.format((Date) result, DateUtil.DateTimePattern.valueOf(field.getTimePattern())));
                     } else {
                         field.setDefaultValue((String) result);
                     }

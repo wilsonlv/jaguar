@@ -14,7 +14,7 @@ public class SwaggerProperties {
 
     private String title = "jaguar-api";
     private String description = "Copyright © 清宁智能";
-    private String version = "2.0";
+    private String version = "master";
     private String contactName = "lvws";
     private String contactUrl;
     private String contactEmail;

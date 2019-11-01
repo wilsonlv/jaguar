@@ -2,10 +2,10 @@ package org.jaguar.modules.workflow.model.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import org.jaguar.core.base.BaseModel;
-import org.jaguar.modules.workflow.enums.FormDataPersistenceType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.jaguar.core.base.BaseModel;
+import org.jaguar.modules.workflow.enums.FormDataPersistenceType;
 
 /**
  * <p>
@@ -17,7 +17,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_process_form_data")
+@TableName("t_workflow_form_data")
 public class FormData extends BaseModel {
 
     private static final long serialVersionUID = 1L;
@@ -43,6 +43,11 @@ public class FormData extends BaseModel {
     @TableField("form_template_field_id")
     private Long formTemplateFieldId;
     /**
+     * 表单字段key
+     */
+    @TableField("field_key")
+    private String fieldKey;
+    /**
      * 数据存储方式
      */
     @TableField("form_data_persistence_type")
@@ -52,5 +57,10 @@ public class FormData extends BaseModel {
      */
     @TableField("value_")
     private String value;
+    /**
+     * 批次号
+     */
+    @TableField("batch_num")
+    private Integer batchNum;
 
 }

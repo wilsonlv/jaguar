@@ -2,11 +2,11 @@ package org.jaguar.modules.workflow.model.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.jaguar.core.base.BaseModel;
 import org.jaguar.modules.workflow.enums.FormTemplateFieldType;
 import org.jaguar.modules.workflow.model.vo.component.ComponentConfig;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * <p>
@@ -18,8 +18,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_process_form_template_field")
-public class FormTemplateField extends BaseModel {
+@TableName("t_workflow_form_template_field")
+public class FormTemplateField extends BaseModel implements Cloneable {
 
     private static final long serialVersionUID = 1L;
 
@@ -53,6 +53,16 @@ public class FormTemplateField extends BaseModel {
      */
     @TableField("form_template_field_type")
     private FormTemplateFieldType formTemplateFieldType;
+    /**
+     * 当字段类型为text时，是否显示
+     */
+    @TableField("visible_")
+    private Boolean visible;
+    /**
+     * 当字段类型为text时，值是否在流程定义中唯一
+     */
+    @TableField("unique_")
+    private Boolean unique;
     /**
      * 提示信息
      */
@@ -98,6 +108,9 @@ public class FormTemplateField extends BaseModel {
     private ComponentConfig config;
 
     @TableField(exist = false)
-    private String value;
+    private Object value;
 
+    public FormTemplateField clone() throws CloneNotSupportedException {
+        return (FormTemplateField) super.clone();
+    }
 }

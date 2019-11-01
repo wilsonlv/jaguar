@@ -7,7 +7,7 @@ public interface IUserDefinedComponent {
 
     String getFieldKey();
 
-    void persist(Long formDataId, String value);
+    void persist(Long processInfoId, Long formDataId, String value);
 
     String read(Long formDataId);
 

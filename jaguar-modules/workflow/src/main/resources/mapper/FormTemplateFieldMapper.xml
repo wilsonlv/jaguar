@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itqingning.lucy.process.mapper.FormTemplateFieldMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.jaguar.modules.workflow.model.po.FormTemplateField">
+        <result column="form_template_id" property="formTemplateId"/>
+        <result column="form_template_sheet_id" property="formTemplateSheetId"/>
+        <result column="form_template_row_id" property="formTemplateRowId"/>
+        <result column="form_template_field_type" property="formTemplateFieldType"/>
+        <result column="visible_" property="visible"/>
+        <result column="label_" property="label"/>
+        <result column="key_" property="key"/>
+        <result column="type_" property="type"/>
+        <result column="placeholder_" property="placeholder"/>
+        <result column="default_value" property="defaultValue"/>
+        <result column="sort_no" property="sortNo"/>
+        <result column="dic_type" property="dicType"/>
+        <result column="time_pattern" property="timePattern"/>
+        <result column="data_source" property="dataSource"/>
+        <result column="show_column" property="showColumn"/>
+        <result column="component_js_name" property="componentJsName"/>
+        <result column="component_class_name" property="componentClassName"/>
+    </resultMap>
+
+</mapper>

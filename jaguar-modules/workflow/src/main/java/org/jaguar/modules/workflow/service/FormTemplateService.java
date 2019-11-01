@@ -2,18 +2,19 @@ package org.jaguar.modules.workflow.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.apache.commons.lang3.StringUtils;
+import org.flowable.bpmn.model.BpmnModel;
+import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import org.jaguar.core.base.BaseService;
 import org.jaguar.core.exception.Assert;
-import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import org.jaguar.modules.workflow.Constant;
 import org.jaguar.modules.workflow.mapper.FormTemplateMapper;
 import org.jaguar.modules.workflow.model.po.FormTemplate;
 import org.jaguar.modules.workflow.model.po.FormTemplateField;
 import org.jaguar.modules.workflow.model.po.FormTemplateRow;
+
 import org.jaguar.modules.workflow.model.po.FormTemplateSheet;
 import org.jaguar.modules.workflow.util.Bpmn20Util;
-import org.apache.commons.lang3.StringUtils;
-import org.flowable.bpmn.model.BpmnModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,14 +41,11 @@ public class FormTemplateService extends BaseService<FormTemplate, FormTemplateM
     /**
      * 根据表单查询最新的表单基本信息
      */
-    private FormTemplate getLatest(String name, String elementId) {
-
-        JaguarLambdaQueryWrapper<FormTemplate> wrapper = new JaguarLambdaQueryWrapper<>();
-        wrapper.eq(FormTemplate::getName, name);
-        wrapper.eq(FormTemplate::getElementId, elementId);
-        wrapper.orderByDesc(FormTemplate::getVersion);
-
-        return this.unique(wrapper, false);
+    public FormTemplate getLatest(String name, String elementId) {
+        return this.unique(JaguarLambdaQueryWrapper.<FormTemplate>newInstance()
+                .eq(FormTemplate::getName, name)
+                .eq(FormTemplate::getElementId, elementId)
+                .orderByDesc(FormTemplate::getVersion), false);
     }
 
     /**
@@ -115,7 +113,7 @@ public class FormTemplateService extends BaseService<FormTemplate, FormTemplateM
      * 查询最新版的表单基本信息
      */
     public IPage<FormTemplate> queryLatest(IPage<FormTemplate> page, String name, String fuzzyName, String elementId) {
-        page.setRecords(mapper.queryLatest(page, name, fuzzyName, elementId));
+        page.setRecords(this.mapper.queryLatest(page, name, fuzzyName, elementId));
         return page;
     }
 
@@ -136,14 +134,10 @@ public class FormTemplateService extends BaseService<FormTemplate, FormTemplateM
      */
     @Transactional
     public void fillFormComponent(FormTemplate formTemplate) {
-
-        JaguarLambdaQueryWrapper<FormTemplateSheet> sheetWrapper = new JaguarLambdaQueryWrapper<>();
-
-        sheetWrapper.eq(FormTemplateSheet::getFormTemplateId, formTemplate.getId());
-        formTemplate.setFormTemplateSheets(formTemplateSheetService.list(sheetWrapper));
+        formTemplate.setFormTemplateSheets(formTemplateSheetService.list(JaguarLambdaQueryWrapper.<FormTemplateSheet>newInstance()
+                .eq(FormTemplateSheet::getFormTemplateId, formTemplate.getId())));
 
         for (FormTemplateSheet sheet : formTemplate.getFormTemplateSheets()) {
-
             sheet.setFormTemplateRows(formTemplateRowService.list(JaguarLambdaQueryWrapper.<FormTemplateRow>newInstance()
                     .eq(FormTemplateRow::getFormTemplateSheetId, sheet.getId())));
 
@@ -155,22 +149,14 @@ public class FormTemplateService extends BaseService<FormTemplate, FormTemplateM
     }
 
     /**
-     * 根据表单元素ID获取最新版的完整表单组件
-     */
-    @Transactional
-    public FormTemplate getFormComponentByElementId(String elementId) {
-        FormTemplate formTemplate = this.getLatest(null, elementId);
-        this.fillFormComponent(formTemplate);
-        return formTemplate;
-    }
-
-    /**
      * 根据流程bpmn规范查询所绑定的表单基本信息
      */
     public FormTemplate findByBpmn(BpmnModel bpmnModel) {
+        String fromTemplateName = Bpmn20Util.findProcessProperties(bpmnModel)
+                .getString(Constant.PROCESS_PROPERTIES_FORM_NAME);
         String fromTemplateElementId = Bpmn20Util.findProcessProperties(bpmnModel)
                 .getString(Constant.PROCESS_PROPERTIES_FORM_ELEMENT_ID);
-        return this.getLatest(null, fromTemplateElementId);
+        return this.getLatest(fromTemplateName, fromTemplateElementId);
     }
 
 }

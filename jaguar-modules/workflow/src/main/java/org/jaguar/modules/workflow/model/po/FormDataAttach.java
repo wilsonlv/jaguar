@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_process_form_data_attach")
+@TableName("t_workflow_form_data_attach")
 public class FormDataAttach extends BaseModel {
 
     private static final long serialVersionUID = 1L;
@@ -27,9 +27,9 @@ public class FormDataAttach extends BaseModel {
     @TableField("form_data_id")
     private Long formDataId;
     /**
-     * 值
+     * 文档ID
      */
-    @TableField("value_")
-    private String value;
+    @TableField("document_id")
+    private Long documentId;
 
 }

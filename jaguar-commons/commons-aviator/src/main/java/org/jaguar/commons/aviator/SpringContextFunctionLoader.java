@@ -11,6 +11,9 @@ import org.springframework.context.ApplicationContext;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Map;
 
@@ -77,8 +80,17 @@ public class SpringContextFunctionLoader implements FunctionLoader {
                 try {
                     for (int i = 0; i < args.length; i++) {
                         Class<?> clazz = finalMethod.getParameterTypes()[i];
-                        if (clazz == Date.class) {
-                            args[i] = DateUtil.autoParse((String) args[i]);
+
+                        if (clazz == LocalDate.class) {
+                            args[i] = LocalDate.parse((CharSequence) args[i]);
+                        } else if (clazz == LocalDateTime.class) {
+                            args[i] = LocalDateTime.parse((CharSequence) args[i]);
+                        } else if (clazz == Date.class) {
+                            try {
+                                args[i] = DateUtil.parse((String) args[i]);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
 

@@ -18,7 +18,7 @@ import java.util.Map;
 public class FlowDefinition implements Serializable {
 
     private String id;
-    @NotBlank(message = "流程名称为非空")
+    @NotEmpty(message = "流程名称为非空")
     private String name;
     private String initiateTask;
 
@@ -30,19 +30,27 @@ public class FlowDefinition implements Serializable {
     @NotNull(message = "结束节点为非空")
     private EndState endState;
 
-    @NotEmpty(message = "用户任务集合为非空")
+    @NotNull(message = "任务节点集合")
     private List<UserTask> userTaskList = new ArrayList<>();
-    @NotEmpty(message = "系统任务集合为非空")
+    @NotNull(message = "服务节点集合")
     private List<ServiceTask> serviceTaskList = new ArrayList<>();
-    @NotEmpty(message = "排他网关集合为非空")
+    @NotNull(message = "等待节点集合")
+    private List<ReceiveTask> receiveTaskList = new ArrayList<>();
+    @NotNull(message = "决策节点集合")
     private List<ExclusiveGateway> exclusiveGatewayList = new ArrayList<>();
-    @NotEmpty(message = "平行网关集合为非空")
+    @NotNull(message = "平行网管集合")
     private List<ParallelGateway> parallelGatewayList = new ArrayList<>();
-    @NotEmpty(message = "节点坐标集合非为空")
+    @NotNull(message = "包容网管集合")
+    private List<InclusiveGateway> inclusiveGatewayList = new ArrayList<>();
+
+    @NotNull(message = "节点坐标集合")
     private Map<String, NodeBox> nodeBoxList = new HashMap<>();
-    @NotEmpty(message = "连线坐标集合为非空")
+    @NotNull(message = "连线坐标集合")
     private List<Line> lineList = new ArrayList<>();
 
+    @NotBlank(message = "表单名称")
+    private String formName;
+    @NotBlank(message = "表单元素ID")
     private String formElementId;
 
 }

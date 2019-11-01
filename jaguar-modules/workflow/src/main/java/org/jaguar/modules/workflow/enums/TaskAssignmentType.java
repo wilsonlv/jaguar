@@ -6,6 +6,7 @@ package org.jaguar.modules.workflow.enums;
 public enum  TaskAssignmentType {
 
     ASSIGNEE,
-    CANDIDATE_GROUP;
+    CANDIDATE_USER,
+    CANDIDATE_GROUP
 
 }

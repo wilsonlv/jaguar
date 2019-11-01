@@ -1,5 +1,6 @@
 package org.jaguar.modules.workflow.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import org.jaguar.core.base.BaseService;
 import org.jaguar.modules.workflow.enums.ButtonPosition;
@@ -25,19 +26,20 @@ public class ButtonDefService extends BaseService<ButtonDef, ButtonDefMapper> {
     /**
      * 获取页面上button
      */
-    public List<ButtonDef> queryPageButtonList(String showPage, String processDefinitionId, String taskDefId, ButtonPosition buttonPosition) {
+    public List<ButtonDef> queryPageButtonList(String showPage, String processDefinitionKey, String taskDefName,
+                                               ButtonPosition buttonPosition) {
 
-        JaguarLambdaQueryWrapper<ButtonDef> wrapper = new JaguarLambdaQueryWrapper<>();
-        wrapper.eq(ButtonDef::getDefaultSetting, true);
-        wrapper.like(ButtonDef::getShowPages, showPage);
-        wrapper.eq(ButtonDef::getButtonPosition, buttonPosition);
-        wrapper.orderByAsc(ButtonDef::getSortNo);
+        LambdaQueryWrapper<ButtonDef> wrapper = JaguarLambdaQueryWrapper.<ButtonDef>newInstance()
+                .eq(ButtonDef::getDefaultSetting, true)
+                .like(ButtonDef::getShowPages, showPage)
+                .eq(ButtonDef::getButtonPosition, buttonPosition)
+                .orderByAsc(ButtonDef::getSortNo);
         List<ButtonDef> buttonDefs = this.list(wrapper);
 
         Map<String, Object> param = new HashMap<>();
-        param.put("processDefinitionId", processDefinitionId);
+        param.put("processDefinitionKey", processDefinitionKey);
         param.put("showPage", showPage);
-        param.put("taskDefId", taskDefId);
+        param.put("taskDefName", taskDefName);
         param.put("defaultSetting", true);
         if (buttonPosition != null) {
             param.put("buttonPosition", buttonPosition.toString());

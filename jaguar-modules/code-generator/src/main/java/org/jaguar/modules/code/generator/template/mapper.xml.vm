@@ -26,18 +26,6 @@
     </sql>
 #end
 
-	<select id="selectIdPage" resultType="java.lang.Long">
-		select id_ from ${table.name}
-		<where>
-			#foreach($field in ${table.fields})
-			<if test="cm.${field.propertyName} != null and cm.${field.propertyName} != ''">
-				AND ${field.name} = #{cm.${field.propertyName}}
-			</if>
-			#end
-			AND deleted_ = 0
-		</where>
-	</select>
-	
 	<delete id="physicalDelete" parameterType="java.lang.Long">
 		DELETE FROM ${table.name} WHERE id_ = #{id}
 	</delete>

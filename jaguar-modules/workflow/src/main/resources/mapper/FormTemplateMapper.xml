@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itqingning.lucy.process.mapper.FormTemplateMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.jaguar.modules.workflow.model.po.FormTemplate">
+        <result column="id" property="id"/>
+        <result column="element_id" property="elementId"/>
+        <result column="name_" property="name"/>
+        <result column="version_" property="version"/>
+    </resultMap>
+
+    <select id="queryLatest" resultMap="BaseResultMap">
+        SELECT a.id, a.name_, a.element_id, a.version_
+        FROM t_process_form_template a
+        RIGHT JOIN
+        (SELECT name_, MAX(version_) AS max_version FROM t_process_form_template GROUP BY name_) b
+        ON a.name_ = b.name_ and a.version_ = b.max_version
+        <where>
+            <if test="elementId != null and elementId != ''">
+                AND a.element_id = #{elementId}
+            </if>
+            <if test="name != null and name != ''">
+                AND a.name_ = #{name}
+            </if>
+            <if test="fuzzyName != null and fuzzyName != ''">
+                AND a.name_ LIKE CONCAT('%',#{fuzzyName},'%')
+            </if>
+            AND deleted_ = 0
+        </where>
+    </select>
+</mapper>

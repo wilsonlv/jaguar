@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_process_button_inst")
+@TableName("t_workflow_button_inst")
 public class ButtonInst extends BaseModel {
 
     private static final long serialVersionUID = 1L;
@@ -29,18 +29,23 @@ public class ButtonInst extends BaseModel {
     /**
      * 流程定义ID
      */
-    @TableField("process_definition_id")
-    private String processDefinitionId;
+    @TableField("process_definition_key")
+    private String processDefinitionkey;
     /**
      * 流程任务定义ID
      */
-    @TableField("task_def_id")
-    private String taskDefId;
+    @TableField("task_def_name")
+    private String taskDefName;
     /**
      * 排序号
      */
     @TableField("sort_no")
     private Integer sortNo;
+    /**
+     * 参数
+     */
+    @TableField("params_")
+    private String params;
 
     @TableField(exist = false)
     private ButtonDef buttonDef;

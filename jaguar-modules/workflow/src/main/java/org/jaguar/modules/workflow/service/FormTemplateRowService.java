@@ -14,6 +14,6 @@ import org.springframework.stereotype.Service;
  * @since 2019-02-28
  */
 @Service
-public class FormTemplateRowService extends BaseService<FormTemplateRow, FormTemplateRowMapper>  {
+public class FormTemplateRowService extends BaseService<FormTemplateRow, FormTemplateRowMapper> {
 
 }

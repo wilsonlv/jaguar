@@ -2,14 +2,16 @@ package org.jaguar.modules.workflow.model.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.jaguar.core.base.BaseModel;
 import org.jaguar.modules.workflow.model.dto.TaskDTO;
 import org.jaguar.modules.workflow.model.vo.UserTask;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,7 +24,7 @@ import java.util.Map;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_process_info")
+@TableName("t_workflow_process_info")
 public class ProcessInfo extends BaseModel {
 
     private static final long serialVersionUID = 1L;
@@ -66,9 +68,18 @@ public class ProcessInfo extends BaseModel {
      * 下单时间
      */
     @TableField("order_time")
-    private Date orderTime;
+    private LocalDateTime orderTime;
+    /**
+     * 是否挂起
+     */
+    @TableField("suspend_")
+    private Boolean suspend;
 
-
+    /**
+     * 发起人
+     */
+    @TableField(exist = false)
+    private IProcessUser initiatorEntity;
     /**
      * 表单模版
      */
@@ -83,7 +94,7 @@ public class ProcessInfo extends BaseModel {
      * 工单结束时间
      */
     @TableField(exist = false)
-    private Date endTime;
+    private LocalDateTime endTime;
     /**
      * 当前用户任务
      */
@@ -95,9 +106,14 @@ public class ProcessInfo extends BaseModel {
     @TableField(exist = false)
     private TaskDTO taskDTO;
     /**
+     * 工单的当前任务结合
+     */
+    @TableField(exist = false)
+    private List<TaskDTO> currentTaskDTOs = new ArrayList<>();
+    /**
      * 工单的已办任务
      */
     @TableField(exist = false)
-    private Map<String, String> taskDTOS = new LinkedHashMap<>();
+    private Map<String, String> historyTasks = new LinkedHashMap<>();
 
 }

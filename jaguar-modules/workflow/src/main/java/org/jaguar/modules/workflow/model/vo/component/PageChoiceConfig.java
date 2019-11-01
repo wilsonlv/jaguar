@@ -24,7 +24,7 @@ public class PageChoiceConfig extends ComponentConfig {
     /**
      * 字段值的取值字段
      */
-    private String valueKey;
+    private String valueColunm;
     /**
      * 展示列
      */

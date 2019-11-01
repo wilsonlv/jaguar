@@ -2,10 +2,10 @@ package org.jaguar.modules.workflow.model.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import org.jaguar.core.base.BaseModel;
-import org.jaguar.modules.workflow.enums.DefinitionType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.jaguar.core.base.BaseModel;
+import org.jaguar.modules.workflow.enums.DefinitionType;
 
 /**
  * <p>
@@ -17,7 +17,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_process_draft_definition")
+@TableName("t_workflow_draft_definition")
 public class DraftDefinition extends BaseModel {
 
     private static final long serialVersionUID = 1L;

@@ -2,10 +2,10 @@ package org.jaguar.commons.malice.interceptor;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jaguar.commons.malice.model.vo.SysIpAccess;
 import org.jaguar.commons.malice.config.MaliceProperties;
-import org.jaguar.commons.utils.IPUtil;
+import org.jaguar.commons.malice.model.vo.SysIpAccess;
 import org.jaguar.commons.redis.cache.RedisCacheManager;
+import org.jaguar.commons.utils.IPUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,8 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 /**
  * Created by lvws on 2018/11/9.
@@ -71,7 +72,7 @@ public class MaliceIpInterceptor extends HandlerInterceptorAdapter {
         Integer maxRecentAccessTimeNum = maliceProperties.getIpMaxRecentAccessTimeNum();
         Long minRequestIntervalTime = maliceProperties.getIpMinRequestIntervalTime() * 1000L;
 
-        Date accessTime = new Date();
+        LocalDateTime accessTime = LocalDateTime.now();
 
         String ipAccessKey = getIpAccessKey(host);
         String ipAccessTimeKey = getIpAccessTimeKey(host);
@@ -88,7 +89,7 @@ public class MaliceIpInterceptor extends HandlerInterceptorAdapter {
         }
 
         if (sysIpAccess.getFreezing() == 1) {
-            if ((sysIpAccess.getFreezingTime().getTime() + freezingPeriod * 1000) > accessTime.getTime()) {
+            if (sysIpAccess.getFreezingTime().plusNanos(freezingPeriod ).isAfter(accessTime)) {
                 response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
                 logger.warn("To intercept a malicious request : {} , host ip is : {} , sessionId is : {}", url, host, sessionId);
                 return false;
@@ -99,13 +100,19 @@ public class MaliceIpInterceptor extends HandlerInterceptorAdapter {
             }
         }
 
-        if (maxRecentAccessTimeNum <= redisCacheManager.lsize(ipAccessTimeKey)) {//如果达到最大访问次数
-            Date firstDate = (Date) redisCacheManager.lrange(ipAccessTimeKey, 0, 1).get(0);
-            Date endDate = (Date) redisCacheManager.lrange(ipAccessTimeKey, maxRecentAccessTimeNum - 1, maxRecentAccessTimeNum).get(0);
-            if ((endDate.getTime() - firstDate.getTime()) / 1000 > minRequestIntervalTime) {
+
+        if (maxRecentAccessTimeNum <= redisCacheManager.lsize(ipAccessTimeKey)) {
+            //如果达到最大访问次数
+
+            LocalDateTime firstDate = (LocalDateTime) redisCacheManager.lrange(ipAccessTimeKey, 0, 1).get(0);
+            LocalDateTime endDate = (LocalDateTime) redisCacheManager.lrange(ipAccessTimeKey, maxRecentAccessTimeNum - 1, maxRecentAccessTimeNum).get(0);
+
+            if (firstDate.plusNanos(minRequestIntervalTime).isBefore(endDate)) {
                 redisCacheManager.leftPop(ipAccessTimeKey);
                 redisCacheManager.rightPush(ipAccessTimeKey, accessTime);
-            } else {//如果时间差小于等于最小间隔，则可认为是恶意攻击
+            } else {
+                //如果时间差小于等于最小间隔，则可认为是恶意攻击
+
                 if (sysIpAccess.getFreezing() == 0) {
                     sysIpAccess.setFreezing(1);
                     sysIpAccess.setFreezingTime(accessTime);

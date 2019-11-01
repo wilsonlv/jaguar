@@ -4,9 +4,9 @@ import ${package}.${moduleName}.model.${entity};
 import ${package}.${moduleName}.mapper.${entity}Mapper;
 import ${package}.${moduleName}.service.${entity}Service;
 
-import com.itqingning.lucy.base.controller.AbstractController;
-import com.itqingning.lucy.common.db.mybatisplus.Page;
-import com.itqingning.lucy.common.db.mybatisplus.LucyLambdaQueryWrapper;
+import org.jaguar.core.base.AbstractController;
+import org.jaguar.core.web.Page;
+import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;

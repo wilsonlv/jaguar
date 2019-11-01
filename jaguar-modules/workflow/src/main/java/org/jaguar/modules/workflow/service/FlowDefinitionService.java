@@ -1,12 +1,6 @@
 package org.jaguar.modules.workflow.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.jaguar.core.base.BaseService;
-import org.jaguar.modules.workflow.Constant;
-import org.jaguar.modules.workflow.mapper.ProcessInfoMapper;
-import org.jaguar.modules.workflow.model.po.ProcessInfo;
-import org.jaguar.modules.workflow.model.vo.FlowDefinition;
-import org.jaguar.modules.workflow.util.Bpmn20Util;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.flowable.bpmn.model.BpmnModel;
@@ -14,6 +8,12 @@ import org.flowable.engine.RepositoryService;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.repository.ProcessDefinitionQuery;
+import org.jaguar.core.base.BaseService;
+import org.jaguar.modules.workflow.Constant;
+import org.jaguar.modules.workflow.mapper.ProcessInfoMapper;
+import org.jaguar.modules.workflow.model.po.ProcessInfo;
+import org.jaguar.modules.workflow.model.vo.FlowDefinition;
+import org.jaguar.modules.workflow.util.Bpmn20Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,11 +40,13 @@ public class FlowDefinitionService extends BaseService<ProcessInfo, ProcessInfoM
 
         long startTime = System.currentTimeMillis();
         log.info("开始部署【{}】", flowDefinition.getName());
-        Deployment deploy = repositoryService.createDeployment().addBpmnModel(flowDefinition.getName() + Constant.RESOURCE_NAME_PATTERN, bpmnModel).deploy();
+        Deployment deploy = repositoryService.createDeployment()
+                .addBpmnModel(flowDefinition.getName() + Constant.RESOURCE_NAME_PATTERN, bpmnModel).deploy();
         long duration = (System.currentTimeMillis() - startTime) / 1000;
         log.info("【{}】部署完成，耗时：{}s", flowDefinition.getName(), duration);
 
-        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().deploymentId(deploy.getId()).singleResult();
+        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+                .deploymentId(deploy.getId()).singleResult();
         return processDefinition.getId();
     }
 

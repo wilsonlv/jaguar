@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 
 /**
@@ -39,9 +40,9 @@ public class FormTemplateController extends AbstractController<FormTemplate, For
     @GetMapping(value = "/page")
     public ResponseEntity<JsonResult<Page<FormTemplate>>> page(
             @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<FormTemplate> page,
-            @ApiParam(value = "表单名称") String name,
-            @ApiParam(value = "模糊表单名称") String fuzzyName,
-            @ApiParam(value = "表单元素ID") String elementId,
+            @ApiParam(value = "表单名称") @RequestParam(required = false) String name,
+            @ApiParam(value = "模糊表单名称") @RequestParam(required = false) String fuzzyName,
+            @ApiParam(value = "表单元素ID") @RequestParam(required = false) String elementId,
             @ApiParam(value = "只查询最新版") @RequestParam(required = false, defaultValue = "true") Boolean latest) {
 
         if (latest) {
@@ -67,10 +68,13 @@ public class FormTemplateController extends AbstractController<FormTemplate, For
 
     @ApiOperation(value = "表单模版表详情")
     @RequiresPermissions("process_form_template_view")
-    @GetMapping(value = "/detail_by_elementid/{elementId}")
-    public ResponseEntity<JsonResult<FormTemplate>> getByElementId(@PathVariable String elementId) {
+    @GetMapping(value = "/detail_by_name_and_elementId")
+    public ResponseEntity<JsonResult<FormTemplate>> getByNameAndElementId(
+            @ApiParam(value = "表单名称", required = true) @RequestParam @NotBlank String formName,
+            @ApiParam(value = "表单元素ID", required = true) @RequestParam @NotBlank String formElementId) {
 
-        FormTemplate formTemplate = service.getFormComponentByElementId(elementId);
+        FormTemplate formTemplate = service.getLatest(formName, formElementId);
+        service.fillFormComponent(formTemplate);
         return success(formTemplate);
     }
 

@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.jaguar.core.base.AbstractController;
-import org.jaguar.core.exception.Assert;
 import org.jaguar.core.web.JsonResult;
 import org.jaguar.core.web.Page;
 import org.jaguar.modules.workflow.mapper.ProcessInfoMapper;
@@ -31,8 +30,8 @@ public class FlowDefinitionController extends AbstractController<ProcessInfo, Pr
     @GetMapping(value = "/page")
     public ResponseEntity<JsonResult<Page<FlowDefinition>>> page(
             @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<FlowDefinition> page,
-            @ApiParam(value = "流程名称") String name,
-            @ApiParam(value = "模糊流程名称") String fuzzyName,
+            @ApiParam(value = "流程名称") @RequestParam(required = false) String name,
+            @ApiParam(value = "模糊流程名称") @RequestParam(required = false) String fuzzyName,
             @ApiParam(value = "只查询最新版") @RequestParam(required = false, defaultValue = "true") Boolean latest) {
 
         IPage<FlowDefinition> flowDefinitions = service.queryFlow(page, name, fuzzyName, latest);
@@ -52,8 +51,6 @@ public class FlowDefinitionController extends AbstractController<ProcessInfo, Pr
     @RequiresPermissions("process_flow_definition_update")
     @PostMapping(value = "/deploy")
     public ResponseEntity<JsonResult<String>> deploy(@RequestBody FlowDefinition flowDefinition) {
-
-        Assert.notNull(flowDefinition.getFormElementId(), "表单元素ID");
 
         String processDefinitionId;
         synchronized (this) {

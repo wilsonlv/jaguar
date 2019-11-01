@@ -15,6 +15,4 @@ public interface IProcessUser extends Serializable {
 
     String getUserName();
 
-    String getOrgName();
-
 }

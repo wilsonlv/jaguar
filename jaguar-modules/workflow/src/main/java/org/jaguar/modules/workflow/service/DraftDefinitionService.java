@@ -1,10 +1,12 @@
 package org.jaguar.modules.workflow.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.flowable.bpmn.converter.BpmnXMLConverter;
 import org.flowable.bpmn.model.BpmnModel;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
+import org.jaguar.core.Charsets;
 import org.jaguar.core.base.BaseService;
 import org.jaguar.core.exception.Assert;
 import org.jaguar.modules.workflow.enums.DefinitionType;
@@ -20,7 +22,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -39,10 +40,10 @@ public class DraftDefinitionService extends BaseService<DraftDefinition, DraftDe
      * 根据名称和类型查询最新版的草稿
      */
     private DraftDefinition getLatestBy(String name, DefinitionType definitionType) {
-        JaguarLambdaQueryWrapper<DraftDefinition> wrapper = new JaguarLambdaQueryWrapper<>();
-        wrapper.eq(DraftDefinition::getName, name);
-        wrapper.eq(DraftDefinition::getDefinitionType, definitionType);
-        wrapper.orderByDesc(DraftDefinition::getVersion);
+        LambdaQueryWrapper<DraftDefinition> wrapper = JaguarLambdaQueryWrapper.<DraftDefinition>newInstance()
+                .eq(DraftDefinition::getName, name)
+                .eq(DraftDefinition::getDefinitionType, definitionType)
+                .orderByDesc(DraftDefinition::getVersion);
         List<DraftDefinition> records = this.list(wrapper);
         if (records.size() > 0) {
             return records.get(0);
@@ -93,7 +94,7 @@ public class DraftDefinitionService extends BaseService<DraftDefinition, DraftDe
         BpmnModel bpmnModel = Bpmn20Util.convertBPMN(flowDefinition);
         String context;
         try {
-            context = new String(new BpmnXMLConverter().convertToXML(bpmnModel), StandardCharsets.UTF_8.name());
+            context = new String(new BpmnXMLConverter().convertToXML(bpmnModel), Charsets.UTF_8_NAME);
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
@@ -120,7 +121,7 @@ public class DraftDefinitionService extends BaseService<DraftDefinition, DraftDe
         XMLStreamReader xmlStreamReader;
         try {
             xmlStreamReader = factory.createXMLStreamReader(
-                    new ByteArrayInputStream(draftDefinition.getContext().getBytes(StandardCharsets.UTF_8.name())));
+                    new ByteArrayInputStream(draftDefinition.getContext().getBytes(Charsets.UTF_8_NAME)));
         } catch (UnsupportedEncodingException | XMLStreamException e) {
             throw new RuntimeException(e);
         }

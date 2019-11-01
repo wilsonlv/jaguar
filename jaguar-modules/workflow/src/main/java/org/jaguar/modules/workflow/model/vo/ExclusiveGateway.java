@@ -9,4 +9,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ExclusiveGateway extends Node {
+
+    private String defaultFlow;
+
 }

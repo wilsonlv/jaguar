@@ -6,8 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jaguar.core.base.BaseModel;
 
-
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Created by lvws on 2018/11/9.
@@ -26,7 +25,7 @@ public class HandlerLog extends BaseModel {
      * 访问时间
      */
     @TableField("access_time")
-    private Date accessTime;
+    private LocalDateTime accessTime;
     /**
      * 客户端IP
      */

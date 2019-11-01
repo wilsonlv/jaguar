@@ -2,12 +2,12 @@ package org.jaguar.modules.workflow.model.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import org.jaguar.core.base.BaseModel;
-import org.jaguar.modules.workflow.enums.ProcessOperationType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.jaguar.core.base.BaseModel;
+import org.jaguar.modules.workflow.enums.ProcessOperationType;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -19,7 +19,7 @@ import java.util.Date;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_process_operation_record")
+@TableName("t_workflow_operation_record")
 public class OperationRecord extends BaseModel {
 
     private static final long serialVersionUID = 1L;
@@ -43,7 +43,7 @@ public class OperationRecord extends BaseModel {
      * 操作时间
      */
     @TableField("operate_time")
-    private Date operateTime;
+    private LocalDateTime operateTime;
     /**
      * 任务名称
      */
@@ -64,5 +64,25 @@ public class OperationRecord extends BaseModel {
      */
     @TableField("assignee_")
     private String assignee;
+    /**
+     * 操作原因
+     */
+    @TableField("reason_")
+    private String reason;
+    /**
+     * 批次号
+     */
+    @TableField("batch_num")
+    private String batchNum;
+    /**
+     * 操作人
+     */
+    @TableField(exist = false)
+    private IProcessUser operatorUser;
+    /**
+     * 受派人
+     */
+    @TableField(exist = false)
+    private IProcessUser assigneeUser;
 
 }

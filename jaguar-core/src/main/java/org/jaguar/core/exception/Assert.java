@@ -1,6 +1,7 @@
 package org.jaguar.core.exception;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jaguar.commons.utils.AccurateCalculator;
 import org.jaguar.core.base.BaseModel;
 
 /**
@@ -9,7 +10,9 @@ import org.jaguar.core.base.BaseModel;
  */
 public final class Assert {
 
+
     private static final String VALIDATE_ID = "无效的%sID【%s】";
+    private static final String VALIDATE_PROPERTY = "无效的%s【%s】";
     private static final String NOT_NULL = "【%s】为非空！";
     private static final String DUPLICATE = "重复的【%s】";
 
@@ -24,6 +27,12 @@ public final class Assert {
     public static void validateId(Object object, String name, String id) {
         if (object == null) {
             throw new CheckedException(getMessage(VALIDATE_ID, name, id));
+        }
+    }
+
+    public static void validateProperty(Object object, String name, String value) {
+        if (object == null) {
+            throw new CheckedException(getMessage(VALIDATE_PROPERTY, name, value));
         }
     }
 
@@ -42,6 +51,12 @@ public final class Assert {
     public static void notNull(String str, String name) {
         if (StringUtils.isBlank(str)) {
             throw new CheckedException(getMessage(NOT_NULL, name));
+        }
+    }
+
+    public static void isPositive(String num) {
+        if (!AccurateCalculator.positive(num)) {
+            throw new CheckedException("num '" + num + "' must be positive");
         }
     }
 

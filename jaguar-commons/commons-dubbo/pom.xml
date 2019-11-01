@@ -4,7 +4,7 @@
     <parent>
         <artifactId>jaguar-commons</artifactId>
         <groupId>org.jaguar</groupId>
-        <version>3.0</version>
+        <version>master</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -43,7 +43,7 @@
         <dependency>
             <groupId>org.jaguar</groupId>
             <artifactId>jaguar-core</artifactId>
-            <version>3.0</version>
+            <version>${jaguar.version}</version>
         </dependency>
 
         <!-- Dubbo Spring Boot Starter -->

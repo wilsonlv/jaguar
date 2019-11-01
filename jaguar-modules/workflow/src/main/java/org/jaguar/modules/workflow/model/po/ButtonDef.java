@@ -18,7 +18,7 @@ import org.jaguar.modules.workflow.enums.ButtonPosition;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_process_button_def")
+@TableName("t_workflow_button_def")
 public class ButtonDef extends BaseModel {
 
     private static final long serialVersionUID = 1L;
@@ -39,11 +39,6 @@ public class ButtonDef extends BaseModel {
     @TableField("button_action_type")
     private ButtonActionType buttonActionType;
     /**
-     * 按钮动作事件
-     */
-    @TableField("action_")
-    private String action;
-    /**
      * 是否默认配置（0：否，1：是）
      */
     @TableField("default_setting")
@@ -59,14 +54,24 @@ public class ButtonDef extends BaseModel {
     @TableField("button_position")
     private ButtonPosition buttonPosition;
     /**
-     * 按钮样式
+     * 按钮组件
      */
-    @TableField("class_style")
-    private String classStyle;
+    @TableField("component_")
+    private String component;
     /**
      * 排序号
      */
     @TableField("sort_no")
     private Integer sortNo;
+    /**
+     * 备注
+     */
+    @TableField("remark_")
+    private String remark;
+    /**
+     * 备注
+     */
+    @TableField(exist = false)
+    private String params;
 
 }

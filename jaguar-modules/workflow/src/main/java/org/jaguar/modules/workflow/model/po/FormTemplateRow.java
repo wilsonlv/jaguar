@@ -19,8 +19,8 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_process_form_template_row")
-public class FormTemplateRow extends BaseModel {
+@TableName("t_workflow_form_template_row")
+public class FormTemplateRow extends BaseModel implements Cloneable {
 
     private static final long serialVersionUID = 1L;
 
@@ -43,4 +43,12 @@ public class FormTemplateRow extends BaseModel {
     @TableField(exist = false)
     private List<FormTemplateField> formTemplateFields = new ArrayList<>();
 
+    public FormTemplateRow clone() throws CloneNotSupportedException {
+        FormTemplateRow clone = (FormTemplateRow) super.clone();
+        clone.setFormTemplateFields(new ArrayList<>());
+        for (FormTemplateField field : this.formTemplateFields) {
+            clone.getFormTemplateFields().add(field.clone());
+        }
+        return clone;
+    }
 }

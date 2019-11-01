@@ -9,6 +9,9 @@ public enum ProcessOperationType {
     HANDLE,
     REASSIGN,
     GOBACK,
+    REJECT,
     CANCEL,
+    SUSPEND,
+    ACTIVATE,
 
 }

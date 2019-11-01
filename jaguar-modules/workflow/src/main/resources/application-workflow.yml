@@ -1,8 +1,9 @@
-flowable.cmmn.enabled=false
-flowable.form.enabled=false
-flowable.idm.enabled=false
-flowable.dmn.enabled=false
-flowable.content.enabled=false
-flowable.content.storage.root-folder=content
-flowable.app.enabled=false
-flowable.app.deploy-resources=false
+flowable:
+  cmmn.enabled: false
+  form.enabled: false
+  idm.enabled: false
+  dmn.enabled: false
+  content.enabled: false
+  content.storage.root-folder: content
+  app.enabled: false
+  app.deploy-resources: false

@@ -4,7 +4,7 @@
     <parent>
         <artifactId>jaguar</artifactId>
         <groupId>org.jaguar</groupId>
-        <version>3.0</version>
+        <version>master</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -13,17 +13,17 @@
         <dependency>
             <groupId>org.jaguar</groupId>
             <artifactId>commons-utils</artifactId>
-            <version>3.0</version>
+            <version>${jaguar.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
             <artifactId>commons-shiro</artifactId>
-            <version>3.0</version>
+            <version>${jaguar.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
             <artifactId>commons-mybatis-plus</artifactId>
-            <version>3.0</version>
+            <version>${jaguar.version}</version>
         </dependency>
     </dependencies>
 

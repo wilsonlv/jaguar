@@ -3,7 +3,7 @@ package org.jaguar.commons.malice.model.vo;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Created by lvws on 2018/11/9.
@@ -24,6 +24,6 @@ public class SysIpAccess implements Serializable {
     /**
      * 冻结时间
      */
-    private Date freezingTime;
+    private LocalDateTime freezingTime;
 
 }

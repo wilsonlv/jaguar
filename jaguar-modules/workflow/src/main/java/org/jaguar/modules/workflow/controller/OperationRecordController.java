@@ -14,10 +14,7 @@ import org.jaguar.modules.workflow.model.po.OperationRecord;
 import org.jaguar.modules.workflow.service.OperationRecordService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -38,10 +35,10 @@ public class OperationRecordController extends AbstractController<OperationRecor
     @GetMapping(value = "/page")
     public ResponseEntity<JsonResult<Page<OperationRecord>>> page(
             @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<OperationRecord> page,
-            @ApiParam(value = "工单信息ID") Long processInfoId,
-            @ApiParam(value = "操作人账号") String operator,
-            @ApiParam(value = "操作类型") ProcessOperationType processOperationType,
-            @ApiParam(value = "模糊任务名称") String fuzzyTaskName) {
+            @ApiParam(value = "工单信息ID") @RequestParam(required = false) Long processInfoId,
+            @ApiParam(value = "操作人账号") @RequestParam(required = false) String operator,
+            @ApiParam(value = "操作类型") @RequestParam(required = false) ProcessOperationType processOperationType,
+            @ApiParam(value = "模糊任务名称") @RequestParam(required = false) String fuzzyTaskName) {
 
         JaguarLambdaQueryWrapper<OperationRecord> wrapper = JaguarLambdaQueryWrapper.newInstance();
         wrapper.eq(OperationRecord::getProcessInfoId, processInfoId)

@@ -1,6 +1,7 @@
 package org.jaguar.commons.aviator;
 
 import com.googlecode.aviator.AviatorEvaluator;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
 
@@ -17,10 +18,7 @@ public class ExpressionUtil {
     }
 
     public static boolean isExpression(String expression, String expressionPre, String expressionSuf) {
-        if (!expression.startsWith(expressionPre) || !expression.endsWith(expressionSuf)) {
-            return false;
-        }
-        return true;
+        return StringUtils.isNotBlank(expression) && (expression.startsWith(expressionPre) && expression.endsWith(expressionSuf));
     }
 
     public static Object execute(String expression, Map<String, Object> envVariable) {
@@ -34,6 +32,13 @@ public class ExpressionUtil {
 
         expression = expression.substring(2, expression.length() - 1);
         return AviatorEvaluator.getInstance().execute(expression, envVariable);
+    }
+
+    public static Object executeText(String text, Map<String, Object> envVariable) {
+        text = text.replaceAll("\\$\\{", "'+");
+        text = text.replaceAll("}", "+'");
+
+        return AviatorEvaluator.getInstance().execute('\'' + text + '\'', envVariable);
     }
 
 }

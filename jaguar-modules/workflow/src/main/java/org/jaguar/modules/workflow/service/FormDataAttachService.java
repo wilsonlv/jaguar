@@ -1,10 +1,12 @@
 package org.jaguar.modules.workflow.service;
 
-import org.jaguar.core.base.BaseService;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
+import org.jaguar.core.base.BaseService;
 import org.jaguar.modules.workflow.mapper.FormDataAttachMapper;
 import org.jaguar.modules.workflow.model.po.FormDataAttach;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,8 +19,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class FormDataAttachService extends BaseService<FormDataAttach, FormDataAttachMapper> {
 
-    public FormDataAttach getByFormDataId(Long formDataId) {
-        return this.unique(JaguarLambdaQueryWrapper.<FormDataAttach>newInstance()
+    public List<FormDataAttach> getByFormDataId(Long formDataId) {
+        return this.list(JaguarLambdaQueryWrapper.<FormDataAttach>newInstance()
                 .eq(FormDataAttach::getFormDataId, formDataId));
     }
 

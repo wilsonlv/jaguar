@@ -6,7 +6,7 @@ import org.jaguar.core.base.BaseModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_process_form_template")
+@TableName("t_workflow_form_template")
 public class FormTemplate extends BaseModel {
 
     private static final long serialVersionUID = 1L;
@@ -28,13 +28,13 @@ public class FormTemplate extends BaseModel {
     /**
      * xml元素ID
      */
-    @NotBlank(message = "表单模版元素ID")
+    @NotEmpty(message = "表单模版元素ID")
     @TableField("element_id")
     private String elementId;
     /**
      * 表单名称
      */
-    @NotBlank(message = "表单名称")
+    @NotEmpty(message = "表单名称")
     @TableField("name_")
     private String name;
     /**

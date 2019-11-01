@@ -56,7 +56,7 @@ public class DraftDefinitionController extends AbstractController<DraftDefinitio
     public ResponseEntity<JsonResult<Page<DraftDefinition>>> page(
             @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<DraftDefinition> page,
             @ApiParam(value = "只查询最新版") @RequestParam(defaultValue = "true", required = false) Boolean latest,
-            @ApiParam(value = "模糊草稿名称") String fuzzyName,
+            @ApiParam(value = "模糊草稿名称") @RequestParam(required = false) String fuzzyName,
             @ApiParam(value = "草稿类型（FORM：表单，FLOW：流程，默认全部）") DefinitionType definitionType) {
 
         IPage<DraftDefinition> draftDefinitionPage;

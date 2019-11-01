@@ -23,7 +23,8 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 /**
  * Created by lvws on 2018/11/12.
@@ -76,7 +77,7 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
 
             HandlerLog handlerLog = new HandlerLog();
             handlerLog.setSessionId(request.getSession().getId());
-            handlerLog.setAccessTime(new Date());
+            handlerLog.setAccessTime(LocalDateTime.now());
             handlerLog.setClientHost(IPUtil.getHost(request));
             handlerLog.setRequestUri(request.getServletPath());
             handlerLog.setApiOperation(apiOperation != null ? apiOperation.value() : null);
@@ -100,8 +101,8 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
 
             handlerLog.setStatus(response.getStatus());
 
-            Date endTime = new Date();
-            Long duration = endTime.getTime() - handlerLog.getAccessTime().getTime();
+            LocalDateTime endTime = LocalDateTime.now();
+            Long duration = Duration.between(endTime, handlerLog.getAccessTime()).toMillis();
 
             if (handlerLog.getRequestUri().contains(shiroProperties.getLoginUrl())) {
                 log.warn("用户[{}@{}]没有登录", handlerLog.getClientHost(), handlerLog.getUserAgent());
@@ -117,8 +118,9 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
 
             String message = "响应uri: {}; 开始时间: {}; 结束时间: {}; 耗时: {}s;";
             log.info(message, handlerLog.getRequestUri(),
-                    DateUtil.format(handlerLog.getAccessTime(), DateUtil.DatePattern.YYYY_MM_DD_HH_MM_SS_SSS),
-                    DateUtil.format(endTime, DateUtil.DatePattern.YYYY_MM_DD_HH_MM_SS_SSS), duration / 1000.00);
+                    DateUtil.formatDateTime(handlerLog.getAccessTime(), DateUtil.DateTimePattern.YYYY_MM_DD_HH_MM_SS_SSS),
+                    DateUtil.formatDateTime(endTime, DateUtil.DateTimePattern.YYYY_MM_DD_HH_MM_SS_SSS),
+                    duration / 1000.00);
 
         }
         super.afterCompletion(request, response, handler, ex);

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>jaguar-modules</artifactId>
         <groupId>org.jaguar</groupId>
-        <version>3.0</version>
+        <version>master</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,13 +15,13 @@
         <dependency>
             <groupId>org.jaguar</groupId>
             <artifactId>jaguar-core</artifactId>
-            <version>3.0</version>
+            <version>${jaguar.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.jaguar</groupId>
             <artifactId>commons-swagger</artifactId>
-            <version>3.0</version>
+            <version>${jaguar.version}</version>
         </dependency>
     </dependencies>
 

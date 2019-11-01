@@ -17,5 +17,6 @@ import java.util.List;
  */
 public interface FormTemplateMapper extends BaseMapper<FormTemplate> {
 
-    List<FormTemplate> queryLatest(IPage page, @Param("name") String name, @Param("fuzzyName") String fuzzyName, @Param("elementId") String elementId);
+    List<FormTemplate> queryLatest(IPage page, @Param("name") String name, @Param("fuzzyName") String fuzzyName,
+                                   @Param("elementId") String elementId);
 }
