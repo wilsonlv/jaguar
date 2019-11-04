@@ -23,7 +23,7 @@
             <version>${shiro.version}</version>
         </dependency>
 
-        <!-- redis -->
+        <!-- commons-redis -->
         <dependency>
             <groupId>org.jaguar</groupId>
             <artifactId>commons-redis</artifactId>

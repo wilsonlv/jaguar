@@ -18,7 +18,7 @@ public class Generator {
         String outputDir = "/Users/apple/develop/IdeaProjects/Lims/Lims-trunk/src/main/java";
 
         String dbUserName = "root";
-        String dbPassword = "lxj900221";
+        String dbPassword = "root";
         String dbUrl = "jdbc:mysql://127.0.0.1:3306/lims?characterEncoding=utf8";
 
         AutoGenerator mpg = new AutoGenerator();
@@ -26,7 +26,7 @@ public class Generator {
         GlobalConfig gc = new GlobalConfig();
         gc.setOutputDir(outputDir);
         gc.setFileOverride(true);
-        gc.setBaseResultMap(true);// XML ResultMap
+        gc.setBaseResultMap(true);
         gc.setOpen(false);
         gc.setAuthor(author);
         gc.setServiceImplName("%sService");
@@ -41,8 +41,10 @@ public class Generator {
         mpg.setDataSource(dsc);
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
-        strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-        strategy.setInclude("subcontractor"); // 需要生成的表
+        // 表名生成策略
+        strategy.setNaming(NamingStrategy.underline_to_camel);
+        // 需要生成的表
+        strategy.setInclude("");
         // 字段名生成策略
         strategy.setNaming(NamingStrategy.underline_to_camel);
         // 自定义实体父类

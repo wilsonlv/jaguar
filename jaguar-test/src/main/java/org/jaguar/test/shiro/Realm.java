@@ -1,4 +1,4 @@
-package org.jaguar.test;
+package org.jaguar.test.shiro;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -6,12 +6,12 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by lvws on 2019/5/23.
  */
-@Component
+@Service
 public class Realm extends AuthorizingRealm {
 
     @Override

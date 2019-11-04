@@ -82,11 +82,11 @@ public class CodeGeneratorConfig {
     @Bean
     public TemplateConfig templateConfig() {
         TemplateConfig config = new TemplateConfig();
-        config.setEntity("com/jaguar/mybatisplus/generator/template/entity.java.vm");
-        config.setMapper("com/jaguar/mybatisplus/generator/template/mapper.java.vm");
-        config.setXml("com/jaguar/mybatisplus/generator/template/mapper.xml.vm");
-        config.setServiceImpl("com/jaguar/mybatisplus/generator/template/service.java.vm");
-        config.setController("com/jaguar/mybatisplus/generator/template/controller.java.vm");
+        config.setEntity("com/jaguar/modules/code/generator/template/entity.java.vm");
+        config.setMapper("com/jaguar/modules/code/generator/template/mapper.java.vm");
+        config.setXml("com/jaguar/modules/code/generator/template/mapper.xml.vm");
+        config.setServiceImpl("com/jaguar/modules/code/generator/template/service.java.vm");
+        config.setController("com/jaguar/modules/code/generator/template/controller.java.vm");
         return config;
     }
 

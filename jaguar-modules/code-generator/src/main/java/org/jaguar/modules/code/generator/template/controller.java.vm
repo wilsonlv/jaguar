@@ -16,6 +16,8 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * <p>
  * ${table.comment}  前端控制器
@@ -53,7 +55,7 @@ public class ${table.controllerName} extends AbstractController<${entity}, ${ent
     @ApiOperation(value = "修改${table.comment}")
     @RequiresPermissions("${table.entityPath}:update")
     @PostMapping(value = "/update")
-    public ResponseEntity<JsonResult<${className}>> update(${entity} ${lowerClassName}){
+    public ResponseEntity<JsonResult<${className}>> update(@RequestBody @NotNull ${entity} ${lowerClassName}){
         return super.saveOrUpdate(${lowerClassName});
     }
 

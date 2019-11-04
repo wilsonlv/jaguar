@@ -10,4 +10,3 @@ server:
 spring:
   profiles:
     include: core, mybatisplus, redis, shiro
-    active: dev
