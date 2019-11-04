@@ -1,5 +1,6 @@
 package org.jaguar.commons.shiro.config;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
@@ -9,6 +10,8 @@ import org.crazycake.shiro.RedisSessionDAO;
 import org.jaguar.commons.redis.config.RedisProperties;
 import org.jaguar.commons.shiro.listener.SessionListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,12 +20,11 @@ import org.springframework.context.annotation.Configuration;
  * Created by lvws on 2019/4/30.
  */
 @Configuration
+@AutoConfigureAfter(ShiroProperties.class)
 public class ShiroSessionConfig {
 
     @Autowired
     private RedisProperties redisProperties;
-    @Autowired
-    private ShiroProperties shiroProperties;
     @Autowired
     private ServerProperties serverProperties;
 
@@ -32,21 +34,13 @@ public class ShiroSessionConfig {
     }
 
     @Bean
-    public SessionListener sessionListener() {
-        return new SessionListener();
-    }
-
-    @Bean
-    public SimpleCookie simpleCookie() {
-        return new SimpleCookie(shiroProperties.getCookieName());
-    }
-
-    @Bean
     public RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
         redisManager.setHost(redisProperties.getHost() + ":" + redisProperties.getPort());
         redisManager.setDatabase(redisProperties.getDatabase());
-        redisManager.setPassword(redisProperties.getPassword());
+        if (StringUtils.isNotBlank(redisProperties.getPassword())) {
+            redisManager.setPassword(redisProperties.getPassword());
+        }
         return redisManager;
     }
 
@@ -60,18 +54,6 @@ public class ShiroSessionConfig {
     }
 
     @Bean
-    public SessionManager sessionManager(RedisSessionDAO redisSessionDAO, SimpleCookie simpleCookie,
-                                         SessionListener sessionListener) {
-
-        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        sessionManager.setGlobalSessionTimeout(expire() * 1000);
-        sessionManager.setSessionDAO(redisSessionDAO);
-        sessionManager.setSessionIdCookie(simpleCookie);
-        sessionManager.getSessionListeners().add(sessionListener);
-        return sessionManager;
-    }
-
-    @Bean
     public RedisCacheManager shiroCacheMananger(RedisManager redisManager) {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
         redisCacheManager.setRedisManager(redisManager);
@@ -80,4 +62,13 @@ public class ShiroSessionConfig {
         return redisCacheManager;
     }
 
+    @Bean
+    public SessionManager sessionManager(RedisSessionDAO redisSessionDAO, @Value("${shiro.cookie-name}") String cookieName) {
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        sessionManager.setGlobalSessionTimeout(expire() * 1000);
+        sessionManager.setSessionDAO(redisSessionDAO);
+        sessionManager.setSessionIdCookie(new SimpleCookie(cookieName));
+        sessionManager.getSessionListeners().add(new SessionListener());
+        return sessionManager;
+    }
 }

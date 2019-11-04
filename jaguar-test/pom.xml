@@ -17,6 +17,16 @@
             <artifactId>jaguar-core</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jaguar</groupId>
+            <artifactId>code-generator</artifactId>
+            <version>${jaguar.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jaguar</groupId>
+            <artifactId>document</artifactId>
+            <version>${jaguar.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

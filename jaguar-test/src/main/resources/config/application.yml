@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8088
   servlet:
     session:
       timeout: 3600
@@ -9,4 +9,5 @@ server:
 
 spring:
   profiles:
+    include: core, mybatisplus, redis, shiro, document
     active: dev
