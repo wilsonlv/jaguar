@@ -1,9 +1,9 @@
-package org.jaguar.commons.malice.interceptor;
+package com.jaguar.modules.malice.prevention.interceptor;
 
+import com.jaguar.modules.malice.prevention.config.MalicePreventionProperties;
+import com.jaguar.modules.malice.prevention.model.SessionAccess;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jaguar.commons.malice.config.MaliceProperties;
-import org.jaguar.commons.malice.model.vo.SysSessionAccess;
 import org.jaguar.commons.redis.cache.RedisCacheManager;
 import org.jaguar.commons.utils.IPUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +23,12 @@ public class MaliceSessionInterceptor extends HandlerInterceptorAdapter {
 
     private final Logger logger = LogManager.getLogger(getClass());
 
-    private static final String SESSION_ACCESS_PREFIX = "SysSessionAccess:";
+    private static final String SESSION_ACCESS_PREFIX = "SessionAccess:";
 
     @Autowired
     private RedisCacheManager redisCacheManager;
     @Autowired
-    private MaliceProperties maliceProperties;
+    private MalicePreventionProperties malicePreventionProperties;
 
 
     private String namespace() {
@@ -55,35 +55,35 @@ public class MaliceSessionInterceptor extends HandlerInterceptorAdapter {
         String sessionId = request.getSession().getId();
         String host = IPUtil.getHost(request);
 
-        Long freezingPeriod = maliceProperties.getSessionFreezingPeriod() * 1000L;
-        Integer maxRecentAccessTimeNum = maliceProperties.getSessionMaxRecentAccessTimeNum();
-        Long minRequestIntervalTime = maliceProperties.getSessionMinRequestIntervalTime() * 1000L;
+        Long freezingPeriod = malicePreventionProperties.getSessionFreezingPeriod() * 1000L;
+        Integer maxRecentAccessTimeNum = malicePreventionProperties.getSessionMaxRecentAccessTimeNum();
+        Long minRequestIntervalTime = malicePreventionProperties.getSessionMinRequestIntervalTime() * 1000L;
 
         LocalDateTime accessTime = LocalDateTime.now();
 
         String sessionAccessKey = getSessionAccessKey(sessionId);
         String sessionAccessTimeKey = getSessionAccessTimeKey(sessionId);
 
-        SysSessionAccess sysSessionAccess = (SysSessionAccess) redisCacheManager.get(sessionAccessKey);
-        if (sysSessionAccess == null) {
-            sysSessionAccess = new SysSessionAccess();
-            sysSessionAccess.setSessionId(sessionId);
-            sysSessionAccess.setFreezing(0);
-            redisCacheManager.set(sessionAccessKey, sysSessionAccess);
+        SessionAccess sessionAccess = (SessionAccess) redisCacheManager.get(sessionAccessKey);
+        if (sessionAccess == null) {
+            sessionAccess = new SessionAccess();
+            sessionAccess.setSessionId(sessionId);
+            sessionAccess.setFreezing(0);
+            redisCacheManager.set(sessionAccessKey, sessionAccess);
 
             redisCacheManager.rightPush(sessionAccessTimeKey, accessTime);
             return super.preHandle(request, response, handler);
         }
 
-        if (sysSessionAccess.getFreezing() == 1) {
-            if (sysSessionAccess.getFreezingTime().plusNanos(freezingPeriod).isAfter(accessTime)) {
+        if (sessionAccess.getFreezing() == 1) {
+            if (sessionAccess.getFreezingTime().plusNanos(freezingPeriod).isAfter(accessTime)) {
                 response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
                 logger.warn("To intercept a malicious request : {} , host ip is : {} , sessionId is : {}", url, host, sessionId);
                 return false;
             } else {
-                sysSessionAccess.setFreezing(0);
-                sysSessionAccess.setFreezingTime(null);
-                redisCacheManager.set(sessionAccessKey, sysSessionAccess);
+                sessionAccess.setFreezing(0);
+                sessionAccess.setFreezingTime(null);
+                redisCacheManager.set(sessionAccessKey, sessionAccess);
             }
         }
 
@@ -99,10 +99,10 @@ public class MaliceSessionInterceptor extends HandlerInterceptorAdapter {
             } else {
                 //如果时间差小于等于最小间隔，则可认为是恶意攻击
 
-                if (sysSessionAccess.getFreezing() == 0) {
-                    sysSessionAccess.setFreezing(1);
-                    sysSessionAccess.setFreezingTime(accessTime);
-                    redisCacheManager.set(sessionAccessKey, sysSessionAccess);
+                if (sessionAccess.getFreezing() == 0) {
+                    sessionAccess.setFreezing(1);
+                    sessionAccess.setFreezingTime(accessTime);
+                    redisCacheManager.set(sessionAccessKey, sessionAccess);
                 }
 
                 response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());

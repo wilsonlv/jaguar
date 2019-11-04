@@ -1,3 +1,13 @@
+server:
+  port: 8080
+  servlet:
+    session:
+      timeout: 3600
+    application-display-name: jaguar
+  tomcat:
+    uri-encoding: UTF-8
+
 spring:
   profiles:
-    include: core, mybatisplus
+    include: core, mybatisplus, redis, shiro
+    active: dev

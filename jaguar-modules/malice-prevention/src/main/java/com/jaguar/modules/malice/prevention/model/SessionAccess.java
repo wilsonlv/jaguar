@@ -1,4 +1,4 @@
-package org.jaguar.commons.malice.model.vo;
+package com.jaguar.modules.malice.prevention.model;
 
 import lombok.Data;
 
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  * Created by lvws on 2018/11/9.
  */
 @Data
-public class SysSessionAccess implements Serializable {
+public class SessionAccess implements Serializable {
 
     /**
      * 会话ID

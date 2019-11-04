@@ -1,9 +1,9 @@
-package org.jaguar.commons.malice.interceptor;
+package com.jaguar.modules.malice.prevention.interceptor;
 
+import com.jaguar.modules.malice.prevention.config.MalicePreventionProperties;
+import com.jaguar.modules.malice.prevention.model.IpAccess;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jaguar.commons.malice.config.MaliceProperties;
-import org.jaguar.commons.malice.model.vo.SysIpAccess;
 import org.jaguar.commons.redis.cache.RedisCacheManager;
 import org.jaguar.commons.utils.IPUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +24,12 @@ public class MaliceIpInterceptor extends HandlerInterceptorAdapter {
 
     private final Logger logger = LogManager.getLogger(getClass());
 
-    private static final String IP_ACCESS_PREFIX = "SysIpAccess:";
+    private static final String IP_ACCESS_PREFIX = "IpAccess:";
 
     @Autowired
     private RedisCacheManager redisCacheManager;
     @Autowired
-    private MaliceProperties maliceProperties;
+    private MalicePreventionProperties malicePreventionProperties;
 
     private String namespace() {
         return redisCacheManager.getNamespace();
@@ -68,35 +68,35 @@ public class MaliceIpInterceptor extends HandlerInterceptorAdapter {
         String sessionId = request.getSession().getId();
         String host = IPUtil.getHost(request);
 
-        Long freezingPeriod = maliceProperties.getIpFreezingPeriod() * 1000L;
-        Integer maxRecentAccessTimeNum = maliceProperties.getIpMaxRecentAccessTimeNum();
-        Long minRequestIntervalTime = maliceProperties.getIpMinRequestIntervalTime() * 1000L;
+        Long freezingPeriod = malicePreventionProperties.getIpFreezingPeriod() * 1000L;
+        Integer maxRecentAccessTimeNum = malicePreventionProperties.getIpMaxRecentAccessTimeNum();
+        Long minRequestIntervalTime = malicePreventionProperties.getIpMinRequestIntervalTime() * 1000L;
 
         LocalDateTime accessTime = LocalDateTime.now();
 
         String ipAccessKey = getIpAccessKey(host);
         String ipAccessTimeKey = getIpAccessTimeKey(host);
 
-        SysIpAccess sysIpAccess = (SysIpAccess) redisCacheManager.get(ipAccessKey);
-        if (sysIpAccess == null) {
-            sysIpAccess = new SysIpAccess();
-            sysIpAccess.setAddress(host);
-            sysIpAccess.setFreezing(0);
-            redisCacheManager.set(ipAccessKey, sysIpAccess);
+        IpAccess ipAccess = (IpAccess) redisCacheManager.get(ipAccessKey);
+        if (ipAccess == null) {
+            ipAccess = new IpAccess();
+            ipAccess.setAddress(host);
+            ipAccess.setFreezing(0);
+            redisCacheManager.set(ipAccessKey, ipAccess);
 
             redisCacheManager.rightPush(ipAccessTimeKey, accessTime);
             return super.preHandle(request, response, handler);
         }
 
-        if (sysIpAccess.getFreezing() == 1) {
-            if (sysIpAccess.getFreezingTime().plusNanos(freezingPeriod ).isAfter(accessTime)) {
+        if (ipAccess.getFreezing() == 1) {
+            if (ipAccess.getFreezingTime().plusNanos(freezingPeriod).isAfter(accessTime)) {
                 response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
                 logger.warn("To intercept a malicious request : {} , host ip is : {} , sessionId is : {}", url, host, sessionId);
                 return false;
             } else {
-                sysIpAccess.setFreezing(0);
-                sysIpAccess.setFreezingTime(null);
-                redisCacheManager.set(ipAccessKey, sysIpAccess);
+                ipAccess.setFreezing(0);
+                ipAccess.setFreezingTime(null);
+                redisCacheManager.set(ipAccessKey, ipAccess);
             }
         }
 
@@ -113,10 +113,10 @@ public class MaliceIpInterceptor extends HandlerInterceptorAdapter {
             } else {
                 //如果时间差小于等于最小间隔，则可认为是恶意攻击
 
-                if (sysIpAccess.getFreezing() == 0) {
-                    sysIpAccess.setFreezing(1);
-                    sysIpAccess.setFreezingTime(accessTime);
-                    redisCacheManager.set(ipAccessKey, sysIpAccess);
+                if (ipAccess.getFreezing() == 0) {
+                    ipAccess.setFreezing(1);
+                    ipAccess.setFreezingTime(accessTime);
+                    redisCacheManager.set(ipAccessKey, ipAccess);
                 }
 
                 response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());

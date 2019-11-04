@@ -17,7 +17,7 @@
         <result column="update_time" property="updateTime" />
     </resultMap>
 
-    <select id="selectEntityPage" resultMap="BaseResultMap">
+    <select id="selectPage" resultMap="BaseResultMap">
         select * from sys_field_edit_log
         <where>
             <if test="cm.className != null and cm.className != ''">

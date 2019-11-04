@@ -12,12 +12,12 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "redis")
 public class RedisProperties {
 
-    private Integer database = 0;
-    private String host = "127.0.0.1";
-    private Integer port = 6379;
+    private Integer database;
+    private String host;
+    private Integer port;
     private String password;
 
-    private Integer expiration = 604800;
-    private String namespace = "jaguar";
+    private Integer expiration;
+    private String namespace;
 
 }

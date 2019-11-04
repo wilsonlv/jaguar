@@ -36,8 +36,7 @@ public class CodeGeneratorService extends BaseService<CodeGenerator, CodeGenerat
     }
 
     public Page<CodeGenerator> showTables(Page<CodeGenerator> page, String fuzzyTableName) {
-        page.setRecords(mapper.showTables(page, schema, fuzzyTableName));
-        return page;
+        return mapper.showTables(page, schema, fuzzyTableName);
     }
 
     public void generate(CodeGenerator codeGenerator) {

@@ -17,6 +17,7 @@
         <module>handler-log</module>
         <module>workflow</module>
         <module>document</module>
+        <module>malice-prevention</module>
     </modules>
 
 </project>

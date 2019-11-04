@@ -12,23 +12,12 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "shiro")
 public class ShiroProperties {
 
-    private String cookieName = "JAGUAR-JSESSIONID";
+    private String cookieName;
 
-    private String loginUrl = "/unauthorized";
+    private String loginUrl;
 
-    private String unauthorizedUrl = "/forbidden";
+    private String unauthorizedUrl;
 
-    private String filterChainDefinitions = "/index.jsp," +
-            "/*.ico," +
-            "/unauthorized," +
-            "/forbidden," +
-            "/swagger**," +
-            "/swagger-resources/**," +
-            "/webjars/**," +
-            "/*/api-docs," +
-            "/login," +
-            "/pic_verification_code," +
-            "/test," +
-            "/test/**,";
+    private String filterChainDefinitions;
 
 }

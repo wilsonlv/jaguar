@@ -17,6 +17,6 @@ import java.util.Map;
  */
 public interface FieldEditLogMapper extends com.baomidou.mybatisplus.core.mapper.BaseMapper<FieldEditLog> {
 
-    List<FieldEditLog> selectEntityPage(IPage page, @Param("cm") Map<String, Object> param);
+    List<FieldEditLog> selectPage(IPage page, @Param("cm") Map<String, Object> param);
 
 }
