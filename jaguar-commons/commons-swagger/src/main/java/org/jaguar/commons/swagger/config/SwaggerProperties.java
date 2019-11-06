@@ -9,13 +9,13 @@ import org.springframework.context.annotation.Configuration;
  */
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "swagger")
+@ConfigurationProperties(prefix = "jaguar.swagger")
 public class SwaggerProperties {
 
-    private String title = "jaguar-api";
-    private String description = "Copyright © 清宁智能";
-    private String version = "master";
-    private String contactName = "lvws";
+    private String title;
+    private String description;
+    private String version;
+    private String contactName;
     private String contactUrl;
     private String contactEmail;
 

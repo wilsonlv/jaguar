@@ -1,0 +1,10 @@
+server:
+  port: 8098
+  servlet:
+    session:
+      timeout: 3600
+    application-display-name: jaguar-code-generator
+
+spring:
+  profiles:
+    active: dev

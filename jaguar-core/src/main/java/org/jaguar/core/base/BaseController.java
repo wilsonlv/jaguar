@@ -1,11 +1,10 @@
-/**
- *
- */
 package org.jaguar.core.base;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.jaguar.core.exception.BaseException;
 import org.jaguar.core.web.JsonResult;
 import org.jaguar.core.web.LoginUtil;
@@ -13,9 +12,13 @@ import org.jaguar.core.web.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
+import javax.validation.ConstraintViolationException;
 
 /**
  * 控制器基类
@@ -59,8 +62,9 @@ public abstract class BaseController {
      * 请求参数错误
      */
     @ResponseBody
-    @ExceptionHandler(value = MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<JsonResult<String>> ConstraintViolationExceptionHandler(Exception exception) {
+    @ExceptionHandler(value = {MethodArgumentTypeMismatchException.class, ConstraintViolationException.class,
+            MethodArgumentNotValidException.class, MissingServletRequestParameterException.class})
+    public ResponseEntity<JsonResult<String>> badRequestExceptionHandler(Exception exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new JsonResult<String>().setMessage(exception.getMessage()));
     }
@@ -73,6 +77,28 @@ public abstract class BaseController {
     public ResponseEntity<JsonResult<String>> httpRequestMethodNotSupportedExceptionHandler(Exception exception) {
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
                 .body(new JsonResult<String>().setMessage(exception.getMessage()));
+    }
+
+    /**
+     * 数据权限异常
+     */
+    @ResponseBody
+    @ExceptionHandler(value = {AuthenticationException.class})
+    public ResponseEntity<JsonResult<String>> authenticationExceptionHandler(Exception exception) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new JsonResult<String>().setMessage(exception.getMessage()));
+    }
+
+    /**
+     * Controller接口注解RequiresPermissions异常
+     */
+    @ResponseBody
+    @ExceptionHandler(value = {UnauthorizedException.class})
+    public ResponseEntity<JsonResult<String>> unauthorizedExceptionHandler(Exception exception) {
+        String message = exception.getMessage();
+        String permission = message.substring(message.indexOf('[') + 1, message.length() - 1);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new JsonResult<String>().setMessage("对不起，您没有【" + permission + "】操作权限！"));
     }
 
     /**

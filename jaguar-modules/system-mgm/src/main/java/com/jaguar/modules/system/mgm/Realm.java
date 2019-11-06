@@ -1,4 +1,4 @@
-package org.jaguar.test.shiro;
+package com.jaguar.modules.system.mgm;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -9,7 +9,8 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.stereotype.Service;
 
 /**
- * Created by lvws on 2019/5/23.
+ * @author lvws
+ * @since 2019-11-05
  */
 @Service
 public class Realm extends AuthorizingRealm {

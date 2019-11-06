@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "redis")
+@ConfigurationProperties(prefix = "jaguar.redis")
 public class RedisProperties {
 
     private Integer database;

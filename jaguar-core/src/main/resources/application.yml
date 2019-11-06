@@ -9,4 +9,4 @@ server:
 
 spring:
   profiles:
-    include: core, mybatisplus, redis, shiro
+    include: core, mybatisplus, redis, shiro, swagger

@@ -18,6 +18,7 @@
         <module>workflow</module>
         <module>document</module>
         <module>malice-prevention</module>
+        <module>system-mgm</module>
     </modules>
 
 </project>

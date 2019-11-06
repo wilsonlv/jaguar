@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "shiro")
+@ConfigurationProperties(prefix = "jaguar.shiro")
 public class ShiroProperties {
 
     private String cookieName;
@@ -20,4 +20,7 @@ public class ShiroProperties {
 
     private String filterChainDefinitions;
 
+    private Boolean redisSessionEnable;
+
+    private Boolean authcEnable;
 }
