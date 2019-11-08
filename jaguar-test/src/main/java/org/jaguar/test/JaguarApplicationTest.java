@@ -13,19 +13,12 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootApplication
 @MapperScan(basePackages = {"org.jaguar.**.mapper"})
-@ComponentScan({"org.jaguar.core", "org.jaguar.commons", "org.jaguar.modules"})
+@ComponentScan({"org.jaguar"})
 @ServletComponentScan({"org.jaguar"})
 public class JaguarApplicationTest {
 
     public static void main(String[] args) {
         SpringApplication.run(JaguarApplicationTest.class, args);
-    }
-
-    @Bean
-    public ApplicationRunner runner() {
-        return args -> {
-
-        };
     }
 
 }

@@ -1,7 +1,7 @@
-package com.jaguar.modules.malice.prevention.interceptor;
+package org.jaguar.modules.malice.prevention.interceptor;
 
-import com.jaguar.modules.malice.prevention.config.MalicePreventionProperties;
-import com.jaguar.modules.malice.prevention.model.SessionAccess;
+import org.jaguar.modules.malice.prevention.config.MalicePreventionProperties;
+import org.jaguar.modules.malice.prevention.model.SessionAccess;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jaguar.commons.redis.cache.RedisCacheManager;

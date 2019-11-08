@@ -9,5 +9,10 @@ server:
 
 spring:
   profiles:
-    include: core, mybatisplus, redis, shiro, document
+    include: core, mybatisplus, shiro, swagger, code-generator
     active: dev
+
+logging:
+  level:
+    org.jaguar: debug
+    com.baomidou: debug

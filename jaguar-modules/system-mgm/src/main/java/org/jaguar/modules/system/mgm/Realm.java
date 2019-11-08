@@ -1,4 +1,4 @@
-package com.jaguar.modules.system.mgm;
+package org.jaguar.modules.system.mgm;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;

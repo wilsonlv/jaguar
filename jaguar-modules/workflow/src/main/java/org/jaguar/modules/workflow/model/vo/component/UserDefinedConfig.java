@@ -19,7 +19,7 @@ public class UserDefinedConfig extends ComponentConfig {
     private String componentJsName;
     /**
      * spring bean的name
-     * 需要实现com.jaguar.flowable.interfaces.IUserDefinedComponent
+     * 需要实现org.jaguar.modules.workflow.interfaces.IUserDefinedComponent
      */
     private String componentClassName;
 

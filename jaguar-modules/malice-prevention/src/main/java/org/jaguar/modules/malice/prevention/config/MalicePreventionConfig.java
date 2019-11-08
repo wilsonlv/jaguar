@@ -1,7 +1,7 @@
-package com.jaguar.modules.malice.prevention.config;
+package org.jaguar.modules.malice.prevention.config;
 
-import com.jaguar.modules.malice.prevention.interceptor.MaliceIpInterceptor;
-import com.jaguar.modules.malice.prevention.interceptor.MaliceSessionInterceptor;
+import org.jaguar.modules.malice.prevention.interceptor.MaliceIpInterceptor;
+import org.jaguar.modules.malice.prevention.interceptor.MaliceSessionInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

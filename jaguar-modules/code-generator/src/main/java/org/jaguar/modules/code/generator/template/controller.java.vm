@@ -1,9 +1,10 @@
 package ${package.Controller};
 
-import ${package}.${moduleName}.model.${entity};
-import ${package}.${moduleName}.mapper.${entity}Mapper;
-import ${package}.${moduleName}.service.${entity}Service;
+import ${package.Entity}.${entity};
+import ${package.Mapper}.${entity}Mapper;
+import ${package.ServiceImpl}.${entity}Service;
 
+import org.jaguar.core.web.JsonResult;
 import org.jaguar.core.base.AbstractController;
 import org.jaguar.core.web.Page;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
@@ -12,9 +13,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiOperation;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 import javax.validation.constraints.NotNull;
 
@@ -28,42 +31,42 @@ import javax.validation.constraints.NotNull;
  */
 @Validated
 @RestController
-@RequestMapping("/${moduleName}/${table.name}")
+@RequestMapping("/${package.ModuleName}/${table.entityPath}")
 @Api(value = "${table.comment}管理", description = "${table.comment}管理")
 public class ${table.controllerName} extends AbstractController<${entity}, ${entity}Mapper, ${entity}Service> {
 
 
     @ApiOperation(value = "查询${table.comment}")
-    @RequiresPermissions("${table.entityPath}:read")
+    @RequiresPermissions("${table.entityPath}:读取")
     @GetMapping(value = "/page")
-    public ResponseEntity<JsonResult<Page<${className}>>> page(
-        @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<${className}> page,
-        @ApiParam(value = "查询信息") ${className} ${lowerClassName}) {
+    public ResponseEntity<JsonResult<Page<${entity}>>> page(
+        @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<${entity}> page,
+        @ApiParam(value = "查询信息") ${entity} ${table.entityPath}) {
 
-        LucyLambdaQueryWrapper<${className}> wrapper = new LucyLambdaQueryWrapper<>();
-        wrapper.setEntity(${lowerClassName});
+        LambdaQueryWrapper<${entity}> wrapper = new JaguarLambdaQueryWrapper<>();
+        wrapper.setEntity(${table.entityPath});
         return super.page(page, wrapper);
     }
 
     @ApiOperation(value = "${table.comment}详情")
-    @RequiresPermissions("${table.entityPath}:read")
+    @RequiresPermissions("${table.entityPath}:读取")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<JsonResult<${className}>> detail(@PathVariable Long id){
-        return super.get(id);
+    public ResponseEntity<JsonResult<${entity}>> detail(@PathVariable Long id){
+        return super.getById(id);
     }
 
     @ApiOperation(value = "修改${table.comment}")
     @RequiresPermissions("${table.entityPath}:update")
     @PostMapping(value = "/update")
-    public ResponseEntity<JsonResult<${className}>> update(@RequestBody @NotNull ${entity} ${lowerClassName}){
-        return super.saveOrUpdate(${lowerClassName});
+    public ResponseEntity<JsonResult<${entity}>> update(@RequestBody @NotNull ${entity} ${table.entityPath}){
+        return super.saveOrUpdate(${table.entityPath});
     }
 
     @ApiOperation(value = "删除${table.comment}")
     @RequiresPermissions("${table.entityPath}:del")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity del(@PathVariable Long id){
-        return super.del(id);
+        return super.delete(id);
     }
 
 }

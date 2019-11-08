@@ -16,6 +16,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @CacheConfig(cacheNames = "${entity}")
-public class ${entity}Service extends ${superServiceClass}<${entity}, ${entity}Mapper>  {
+public class ${entity}Service extends ${superServiceImplClass}<${entity}, ${entity}Mapper>  {
 
 }

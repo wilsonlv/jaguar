@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  org.jaguar.modules.code.generator.config.CodeGeneratorProperties,\
   org.jaguar.modules.code.generator.config.CodeGeneratorConfig

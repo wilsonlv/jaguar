@@ -50,21 +50,20 @@ public class CodeGeneratorConfig {
     @Bean
     public StrategyConfig strategyConfig() {
         StrategyConfig strategy = new StrategyConfig();
-        strategy.setNaming(NamingStrategy.underline_to_camel);
         // 字段名生成策略
         strategy.setNaming(NamingStrategy.underline_to_camel);
-        // 自定义实体父类
-        strategy.setSuperEntityClass(BaseModel.class.getName());
         // 自定义实体，公共字段
         strategy.setSuperEntityColumns("id_", "deleted_", "remark_", "create_by", "create_time", "update_by", "update_time");
+        // 自定义实体父类
+        strategy.setSuperEntityClass(BaseModel.class.getName());
         // 自定义 mapper 父类
         strategy.setSuperMapperClass(BaseMapper.class.getName());
-        // 自定义 service 父类
-        strategy.setSuperServiceClass(BaseService.class.getName());
         // 自定义 service 实现类父类
         strategy.setSuperServiceImplClass(BaseService.class.getName());
         // 自定义 controller 父类
         strategy.setSuperControllerClass(AbstractController.class.getName());
+        // controller mapping 驼峰转连字符
+        strategy.setControllerMappingHyphenStyle(true);
         return strategy;
     }
 
@@ -74,6 +73,7 @@ public class CodeGeneratorConfig {
         config.setEntity("model");
         config.setMapper("mapper");
         config.setXml("mapper.xml");
+        config.setService(null);
         config.setServiceImpl("service");
         config.setController("controller");
         return config;
@@ -82,15 +82,16 @@ public class CodeGeneratorConfig {
     @Bean
     public TemplateConfig templateConfig() {
         TemplateConfig config = new TemplateConfig();
-        config.setEntity("com/jaguar/modules/code/generator/template/entity.java.vm");
-        config.setMapper("com/jaguar/modules/code/generator/template/mapper.java.vm");
-        config.setXml("com/jaguar/modules/code/generator/template/mapper.xml.vm");
-        config.setServiceImpl("com/jaguar/modules/code/generator/template/service.java.vm");
-        config.setController("com/jaguar/modules/code/generator/template/controller.java.vm");
+        config.setEntity("org/jaguar/modules/code/generator/template/entity.java.vm");
+        config.setMapper("org/jaguar/modules/code/generator/template/mapper.java.vm");
+        config.setXml("org/jaguar/modules/code/generator/template/mapper.xml.vm");
+        config.setService(null);
+        config.setServiceImpl("org/jaguar/modules/code/generator/template/service.java.vm");
+        config.setController("org/jaguar/modules/code/generator/template/controller.java.vm");
         return config;
     }
 
-    @Bean
+    /*@Bean
     public AutoGenerator autoGenerator(GlobalConfig globalConfig, DataSourceConfig dataSourceConfig,
                                        StrategyConfig strategyConfig, PackageConfig packageConfig,
                                        TemplateConfig templateConfig) {
@@ -107,7 +108,7 @@ public class CodeGeneratorConfig {
         // 模版配置
         generator.setTemplate(templateConfig);
         return generator;
-    }
+    }*/
 
 
 }

@@ -6,14 +6,15 @@
     <resultMap id="BaseResultMap" type="org.jaguar.modules.code.generator.model.CodeGenerator">
         <result column="table_name" property="tableName"/>
         <result column="table_comment" property="tableComment"/>
+        <result column="create_time" property="createTime"/>
     </resultMap>
 
     <select id="showTables" resultMap="BaseResultMap">
-        SELECT table_name, table_comment FROM information_schema.tables
+        SELECT table_name, table_comment, create_time FROM information_schema.tables
         <where>
             table_schema = #{schema}
             <if test="fuzzyTableName != null and fuzzyTableName != ''">
-                AND LIKE CONCAT('%',#{fuzzyTableName},'%')
+                AND table_name LIKE CONCAT('%',#{fuzzyTableName},'%')
             </if>
         </where>
     </select>

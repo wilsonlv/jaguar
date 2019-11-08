@@ -1,4 +1,4 @@
-package com.jaguar.modules.malice.prevention.config;
+package org.jaguar.modules.malice.prevention.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

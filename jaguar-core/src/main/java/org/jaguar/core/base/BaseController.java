@@ -65,6 +65,7 @@ public abstract class BaseController {
     @ExceptionHandler(value = {MethodArgumentTypeMismatchException.class, ConstraintViolationException.class,
             MethodArgumentNotValidException.class, MissingServletRequestParameterException.class})
     public ResponseEntity<JsonResult<String>> badRequestExceptionHandler(Exception exception) {
+        exception.printStackTrace();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new JsonResult<String>().setMessage(exception.getMessage()));
     }
@@ -75,6 +76,7 @@ public abstract class BaseController {
     @ResponseBody
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<JsonResult<String>> httpRequestMethodNotSupportedExceptionHandler(Exception exception) {
+        exception.printStackTrace();
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
                 .body(new JsonResult<String>().setMessage(exception.getMessage()));
     }
@@ -85,6 +87,7 @@ public abstract class BaseController {
     @ResponseBody
     @ExceptionHandler(value = {AuthenticationException.class})
     public ResponseEntity<JsonResult<String>> authenticationExceptionHandler(Exception exception) {
+        exception.printStackTrace();
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(new JsonResult<String>().setMessage(exception.getMessage()));
     }
@@ -95,6 +98,7 @@ public abstract class BaseController {
     @ResponseBody
     @ExceptionHandler(value = {UnauthorizedException.class})
     public ResponseEntity<JsonResult<String>> unauthorizedExceptionHandler(Exception exception) {
+        exception.printStackTrace();
         String message = exception.getMessage();
         String permission = message.substring(message.indexOf('[') + 1, message.length() - 1);
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
@@ -107,6 +111,7 @@ public abstract class BaseController {
     @ResponseBody
     @ExceptionHandler(value = BaseException.class)
     public ResponseEntity<JsonResult<String>> baseExceptionHandler(BaseException exception) {
+        exception.printStackTrace();
         return ResponseEntity.status(exception.getHttpStatus())
                 .body(new JsonResult<String>().setMessage(exception.getMessage()));
     }
@@ -117,6 +122,7 @@ public abstract class BaseController {
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<JsonResult<String>> allUnknownExceptionHandler(Exception exception) {
+        exception.printStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new JsonResult<String>().setMessage(exception.getMessage()));
     }

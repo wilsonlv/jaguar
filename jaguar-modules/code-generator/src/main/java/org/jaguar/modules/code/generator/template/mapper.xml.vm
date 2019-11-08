@@ -25,9 +25,5 @@
         ${table.fieldNames}
     </sql>
 #end
-
-	<delete id="physicalDelete" parameterType="java.lang.Long">
-		DELETE FROM ${table.name} WHERE id_ = #{id}
-	</delete>
 	
 </mapper>

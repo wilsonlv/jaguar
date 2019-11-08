@@ -1,4 +1,4 @@
-package com.jaguar.modules.malice.prevention.model;
+package org.jaguar.modules.malice.prevention.model;
 
 import lombok.Data;
 

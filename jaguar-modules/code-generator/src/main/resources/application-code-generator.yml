@@ -1,0 +1,4 @@
+jaguar:
+  code-generator:
+    default-output-dir: code_genertor/
+    default-parent-package: org.jaguar.modules
