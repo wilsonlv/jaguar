@@ -13,5 +13,10 @@ public interface Constant {
      * 当前用户账号
      */
     String CURRENT_USER_ACCOUNT = "CURRENT_USER_ACCOUNT";
+    /**
+     * 当前用户权限
+     */
+    String CURRENT_USER_AUTH_INFO = "CURRENT_USER_AUTH_INFO";
+
 
 }

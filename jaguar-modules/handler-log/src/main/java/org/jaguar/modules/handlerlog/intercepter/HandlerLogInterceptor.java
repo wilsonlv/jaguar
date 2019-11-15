@@ -39,7 +39,7 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
     /**
      * 当前线程访问信息
      */
-    public static final ThreadLocal<HandlerLog> SYS_LOG = new NamedThreadLocal<>("SYS_LOG");
+    public static final ThreadLocal<HandlerLog> HANDLER_LOG = new NamedThreadLocal<>("HANDLER_LOG");
 
     @Autowired
     protected HandlerLogService sysLogService;
@@ -69,6 +69,7 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
                 .append(userAgentInfo.getUaName()).toString();
     }
 
+    @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
 
@@ -84,20 +85,27 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
             handlerLog.setMethod(request.getMethod());
             handlerLog.setUserAgent(getUserAgent(request));
             handlerLog.setParameters(JSONObject.toJSONString(request.getParameterMap()));
-            handlerLog.setCreateBy(LoginUtil.getCurrentUser());
+            try {
+                handlerLog.setCreateBy(LoginUtil.getCurrentUser());
+            } catch (Exception ignored) {
+                log.warn("用户[{}@{}]匿名请求", handlerLog.getClientHost(), handlerLog.getUserAgent());
+            }
 
-            SYS_LOG.set(handlerLog);
+            HANDLER_LOG.set(handlerLog);
             BaseService.CURRENT_USER.set(handlerLog.getCreateBy());
         }
 
         return super.preHandle(request, response, handler);
     }
 
+    @Override
     public void afterCompletion(final HttpServletRequest request, final HttpServletResponse response, Object handler,
                                 final Exception ex) throws Exception {
 
-        if (handler instanceof HandlerMethod && !(request.getRequestURI().equals("/error"))) {
-            final HandlerLog handlerLog = SYS_LOG.get();
+        if (handler instanceof HandlerMethod && !("/error".equals(request.getRequestURI()))) {
+            final HandlerLog handlerLog = HANDLER_LOG.get();
+            HANDLER_LOG.remove();
+            BaseService.CURRENT_USER.remove();
 
             handlerLog.setStatus(response.getStatus());
 

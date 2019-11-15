@@ -15,4 +15,4 @@ spring:
 logging:
   level:
     org.jaguar: debug
-    com.baomidou: debug
+    com.baomidou.mybatisplus.extension.spring: debug

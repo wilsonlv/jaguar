@@ -4,20 +4,20 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import org.jaguar.core.base.BaseModel;
-import org.jaguar.modules.system.enums.RoleMenuPermission;
 
 /**
  * <p>
- * 系统角色菜单表
+ * 系统用户角色表
  * </p>
  *
  * @author lvws
- * @since 2019-11-08
+ * @since 2019-11-15
  */
 @Data
-@TableName("t_system_role_menu")
-public class RoleMenu extends BaseModel {
+@TableName("t_system_user_role")
+public class UserRole extends BaseModel {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,21 +27,17 @@ public class RoleMenu extends BaseModel {
 	@TableField("id")
 	private Long id;
     /**
+     * 用户ID
+     */
+	@TableField("user_id")
+	private Long userId;
+    /**
      * 角色ID
      */
 	@TableField("role_id")
 	private Long roleId;
-    /**
-     * 菜单ID
-     */
-	@TableField("menu_id")
-	private Long menuId;
-    /**
-     * 角色菜单权限（READ，VIEW，UPDATE，DEL）
-     */
-	@TableField("role_menu_permission")
-	private RoleMenuPermission roleMenuPermission;
 
 	@TableField(exist = false)
-	private Menu menu;
+	private Role role;
+
 }

@@ -37,7 +37,7 @@ public class ${table.controllerName} extends AbstractController<${entity}, ${ent
 
 
     @ApiOperation(value = "查询${table.comment}")
-    @RequiresPermissions("${table.entityPath}:读取")
+    @RequiresPermissions("${table.comment}:读取")
     @GetMapping(value = "/page")
     public ResponseEntity<JsonResult<Page<${entity}>>> page(
         @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<${entity}> page,
@@ -49,21 +49,21 @@ public class ${table.controllerName} extends AbstractController<${entity}, ${ent
     }
 
     @ApiOperation(value = "${table.comment}详情")
-    @RequiresPermissions("${table.entityPath}:读取")
+    @RequiresPermissions("${table.comment}:读取")
     @GetMapping(value = "/{id}")
     public ResponseEntity<JsonResult<${entity}>> detail(@PathVariable Long id){
         return super.getById(id);
     }
 
     @ApiOperation(value = "修改${table.comment}")
-    @RequiresPermissions("${table.entityPath}:update")
+    @RequiresPermissions("${table.comment}:新增编辑")
     @PostMapping(value = "/update")
     public ResponseEntity<JsonResult<${entity}>> update(@RequestBody @NotNull ${entity} ${table.entityPath}){
         return super.saveOrUpdate(${table.entityPath});
     }
 
     @ApiOperation(value = "删除${table.comment}")
-    @RequiresPermissions("${table.entityPath}:del")
+    @RequiresPermissions("${table.comment}:删除")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity del(@PathVariable Long id){
         return super.delete(id);

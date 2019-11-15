@@ -179,13 +179,15 @@ public final class SecurityUtil {
         return encodeMD5(encryptDes(password));
     }
 
+    /**
+     * 验证密码格式
+     */
     public static boolean checkPassword(String password) {
         return PASSWORD_PATTERN.matcher(password).matches();
     }
 
     public static void main(String[] args) {
 //        System.out.println(encryptPassword("admin"));
-
         System.out.println(encryptPassword("NlYvNE"));
     }
 

@@ -17,6 +17,29 @@ CREATE TABLE `t_system_user` (
 ) ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='系统用户表';
 
 
+DROP TABLE IF EXISTS `t_system_login`;
+CREATE TABLE `t_system_login` (
+  `id`                  bigint(20) NOT NULL COMMENT 'ID',
+  `principal_`          varchar(50) NOT NULL COMMENT '登陆主体',
+  `credentials_`        varchar(50) NOT NULL COMMENT '登陆凭证',
+  `login_ip`            varchar(50) NOT NULL COMMENT '登陆IP',
+  `login_time`          datetime NOT NULL COMMENT '登陆时间',
+  `session_id`          varchar(20) NOT NULL COMMENT '会话ID',
+  `result_code`         int NOT NULL COMMENT '响应码',
+  `client_type`         varchar(10) NOT NULL COMMENT '客户端类型',
+  `client_version`      varchar(10) NOT NULL COMMENT '客户端版本',
+  `device_model`        varchar(20) DEFAULT NULL COMMENT '设备型号',
+  `device_sys_version`  varchar(20) DEFAULT NULL COMMENT '设备系统版本',
+  `device_imei`         varchar(50) DEFAULT NULL COMMENT '设备唯一编号',
+  `deleted_`            tinyint(1) NOT NULL DEFAULT '0' COMMENT '逻辑删除标记(0--正常 1--删除)',
+  `create_by`           bigint(20) unsigned DEFAULT NULL COMMENT '创建人',
+  `create_time`         timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by`           bigint(20) unsigned DEFAULT NULL COMMENT '最新修改人',
+  `update_time`         timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='系统登陆日志表';
+
+
 DROP TABLE IF EXISTS `t_system_role`;
 CREATE TABLE `t_system_role` (
   `id`                  bigint(20) NOT NULL COMMENT 'ID',
@@ -30,6 +53,20 @@ CREATE TABLE `t_system_role` (
   `update_time`         timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='系统角色表';
+
+
+DROP TABLE IF EXISTS `t_system_user_role`;
+CREATE TABLE `t_system_user_role` (
+  `id`                  bigint(20) NOT NULL COMMENT 'ID',
+  `user_id`             bigint(20) NOT NULL COMMENT '用户ID',
+  `role_id`             bigint(20) NOT NULL COMMENT '角色ID',
+  `deleted_`            tinyint(1) NOT NULL DEFAULT '0' COMMENT '逻辑删除标记(0--正常 1--删除)',
+  `create_by`           bigint(20) unsigned DEFAULT NULL COMMENT '创建人',
+  `create_time`         timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by`           bigint(20) unsigned DEFAULT NULL COMMENT '最新修改人',
+  `update_time`         timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='系统用户角色表';
 
 
 DROP TABLE IF EXISTS `t_system_menu`;
@@ -64,3 +101,4 @@ CREATE TABLE `t_system_menu` (
   `update_time`             timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='系统角色菜单表';
+

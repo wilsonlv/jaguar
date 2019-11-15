@@ -1,10 +1,14 @@
 package org.jaguar.modules.system.mgm.model;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-
 import org.jaguar.core.base.BaseModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -23,42 +27,45 @@ public class User extends BaseModel {
     /**
      * ID
      */
-	@TableField("id")
-	private Long id;
+    @TableField("id")
+    private Long id;
     /**
      * 用户账号（唯一）
      */
-	@TableField("user_account")
-	private String userAccount;
+    @TableField("user_account")
+    private String userAccount;
     /**
      * 用户手机号（唯一）
      */
-	@TableField("user_phone")
-	private String userPhone;
+    @TableField("user_phone")
+    private String userPhone;
     /**
      * 用户邮箱（唯一）
      */
-	@TableField("user_email")
-	private String userEmail;
+    @TableField("user_email")
+    private String userEmail;
     /**
      * 用户密码
      */
-	@TableField("user_password")
-	private String userPassword;
+    @JsonIgnore
+    @TableField("user_password")
+    private String userPassword;
     /**
      * 用户昵称
      */
-	@TableField("user_nick_name")
-	private String userNickName;
+    @TableField("user_nick_name")
+    private String userNickName;
     /**
      * 用户部门ID
      */
-	@TableField("user_dept_id")
-	private Long userDeptId;
+    @TableField(value = "user_dept_id", strategy = FieldStrategy.IGNORED)
+    private Long userDeptId;
     /**
      * 用户是否锁定
      */
-	@TableField("user_locked")
-	private Boolean userLocked;
+    @TableField("user_locked")
+    private Boolean userLocked;
 
+    @TableField(exist = false)
+    private List<UserRole> userRoleList = new ArrayList<>();
 }

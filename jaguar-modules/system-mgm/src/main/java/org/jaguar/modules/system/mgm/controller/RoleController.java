@@ -37,7 +37,7 @@ public class RoleController extends AbstractController<Role, RoleMapper, RoleSer
 
 
     @ApiOperation(value = "查询系统角色表")
-    @RequiresPermissions("role:读取")
+    @RequiresPermissions("系统角色表:读取")
     @GetMapping(value = "/page")
     public ResponseEntity<JsonResult<Page<Role>>> page(
         @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<Role> page,
@@ -49,21 +49,21 @@ public class RoleController extends AbstractController<Role, RoleMapper, RoleSer
     }
 
     @ApiOperation(value = "系统角色表详情")
-    @RequiresPermissions("role:读取")
+    @RequiresPermissions("系统角色表:读取")
     @GetMapping(value = "/{id}")
     public ResponseEntity<JsonResult<Role>> detail(@PathVariable Long id){
         return super.getById(id);
     }
 
     @ApiOperation(value = "修改系统角色表")
-    @RequiresPermissions("role:update")
+    @RequiresPermissions("系统角色表:新增编辑")
     @PostMapping(value = "/update")
     public ResponseEntity<JsonResult<Role>> update(@RequestBody @NotNull Role role){
         return super.saveOrUpdate(role);
     }
 
     @ApiOperation(value = "删除系统角色表")
-    @RequiresPermissions("role:del")
+    @RequiresPermissions("系统角色表:删除")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity del(@PathVariable Long id){
         return super.delete(id);

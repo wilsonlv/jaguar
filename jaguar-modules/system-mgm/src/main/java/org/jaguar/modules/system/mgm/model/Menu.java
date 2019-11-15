@@ -3,8 +3,10 @@ package org.jaguar.modules.system.mgm.model;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-
 import org.jaguar.core.base.BaseModel;
+import org.jaguar.modules.system.enums.MenuType;
+
+import java.util.List;
 
 /**
  * <p>
@@ -23,42 +25,44 @@ public class Menu extends BaseModel {
     /**
      * ID
      */
-	@TableField("id")
-	private Long id;
+    @TableField("id")
+    private Long id;
     /**
      * 菜单名称
      */
-	@TableField("menu_name")
-	private String menuName;
+    @TableField("menu_name")
+    private String menuName;
     /**
      * 上级菜单ID
      */
-	@TableField("menu_parent_id")
-	private Long menuParentId;
+    @TableField("menu_parent_id")
+    private Long menuParentId;
     /**
      * 菜单图标
      */
-	@TableField("menu_icon")
-	private String menuIcon;
+    @TableField("menu_icon")
+    private String menuIcon;
     /**
      * 菜单URI
      */
-	@TableField("menu_page_uri")
-	private String menuPageUri;
+    @TableField("menu_page_uri")
+    private String menuPageUri;
     /**
      * 菜单排序号
      */
-	@TableField("menu_sort_no")
-	private Integer menuSortNo;
+    @TableField("menu_sort_no")
+    private Integer menuSortNo;
     /**
      * 菜单权限名称
      */
-	@TableField("menu_auth_name")
-	private String menuAuthName;
+    @TableField("menu_auth_name")
+    private String menuAuthName;
     /**
      * 菜单类型（MENU，FUNCTION）
      */
-	@TableField("menu_type")
-	private String menuType;
+    @TableField("menu_type")
+    private MenuType menuType;
 
+    @TableField(exist = false)
+    private List<Menu> children;
 }

@@ -31,13 +31,13 @@ import javax.validation.constraints.NotNull;
  */
 @Validated
 @RestController
-@RequestMapping("/system/roleMenu")
+@RequestMapping("/system/role_menu")
 @Api(value = "系统角色菜单表管理", description = "系统角色菜单表管理")
 public class RoleMenuController extends AbstractController<RoleMenu, RoleMenuMapper, RoleMenuService> {
 
 
     @ApiOperation(value = "查询系统角色菜单表")
-    @RequiresPermissions("roleMenu:读取")
+    @RequiresPermissions("系统角色菜单表:读取")
     @GetMapping(value = "/page")
     public ResponseEntity<JsonResult<Page<RoleMenu>>> page(
         @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<RoleMenu> page,
@@ -49,21 +49,21 @@ public class RoleMenuController extends AbstractController<RoleMenu, RoleMenuMap
     }
 
     @ApiOperation(value = "系统角色菜单表详情")
-    @RequiresPermissions("roleMenu:读取")
+    @RequiresPermissions("系统角色菜单表:读取")
     @GetMapping(value = "/{id}")
     public ResponseEntity<JsonResult<RoleMenu>> detail(@PathVariable Long id){
         return super.getById(id);
     }
 
     @ApiOperation(value = "修改系统角色菜单表")
-    @RequiresPermissions("roleMenu:update")
+    @RequiresPermissions("系统角色菜单表:新增编辑")
     @PostMapping(value = "/update")
     public ResponseEntity<JsonResult<RoleMenu>> update(@RequestBody @NotNull RoleMenu roleMenu){
         return super.saveOrUpdate(roleMenu);
     }
 
     @ApiOperation(value = "删除系统角色菜单表")
-    @RequiresPermissions("roleMenu:del")
+    @RequiresPermissions("系统角色菜单表:删除")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity del(@PathVariable Long id){
         return super.delete(id);

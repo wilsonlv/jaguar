@@ -3,7 +3,7 @@ package org.jaguar.core.web;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.UnavailableSecurityManagerException;
+import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.session.Session;
 import org.jaguar.core.Constant;
 
@@ -32,22 +32,22 @@ public final class LoginUtil {
     }
 
     /**
-     * 获取当前用户
+     * 保存当前用户权限
      */
+    public static void saveCurrentUserAuthInfo(AuthorizationInfo userAuthInfo) {
+        setSession(Constant.CURRENT_USER_AUTH_INFO, userAuthInfo);
+    }
+
     public static Long getCurrentUser() {
-        try {
-            return (Long) SecurityUtils.getSubject().getSession().getAttribute(Constant.CURRENT_USER);
-        } catch (UnavailableSecurityManagerException e) {
-            return null;
-        }
+        return (Long) getSession().getAttribute(Constant.CURRENT_USER);
     }
 
     public static String getCurrentUserAccount() {
-        try {
-            return (String) SecurityUtils.getSubject().getSession().getAttribute(Constant.CURRENT_USER_ACCOUNT);
-        } catch (UnavailableSecurityManagerException e) {
-            return null;
-        }
+        return (String) getSession().getAttribute(Constant.CURRENT_USER_ACCOUNT);
+    }
+
+    public static AuthorizationInfo getCurrentUserAuthInfo() {
+        return (AuthorizationInfo) getSession().getAttribute(Constant.CURRENT_USER_AUTH_INFO);
     }
 
     /**
@@ -61,11 +61,7 @@ public final class LoginUtil {
      * 获取session
      */
     public static Session getSession() {
-        try {
-            return SecurityUtils.getSubject().getSession();
-        } catch (UnavailableSecurityManagerException e) {
-            return null;
-        }
+        return SecurityUtils.getSubject().getSession();
     }
 
 }

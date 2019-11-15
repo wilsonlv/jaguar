@@ -8,7 +8,42 @@
 		<result column="role_id" property="roleId" />
 		<result column="menu_id" property="menuId" />
 		<result column="role_menu_permission" property="roleMenuPermission" />
+		<association property="menu" javaType="org.jaguar.modules.system.mgm.model.Menu">
+			<result column="menu_name" property="menuName" />
+			<result column="menu_parent_id" property="menuParentId" />
+			<result column="menu_icon" property="menuIcon" />
+			<result column="menu_page_uri" property="menuPageUri" />
+			<result column="menu_sort_no" property="menuSortNo" />
+			<result column="menu_auth_name" property="menuAuthName" />
+			<result column="menu_type" property="menuType" />
+		</association>
 	</resultMap>
 
+
+	<select id="listWithMenu" resultMap="BaseResultMap">
+		SELECT
+			rm.*, m.*
+		FROM t_system_role_menu rm
+		LEFT JOIN t_system_menu m ON m.id_ = rm.menu_id
+		<where>
+			rm.deleted_ = 0
+			AND m.deleted_ = 0
+			AND rm.role_id in
+			<foreach collection="#{roleIds}" item="role" open="(" separator="," close=")">
+				#{roleId}
+			</foreach>
+			<if test="parentId != null">
+				<if test="parentId == 0">
+					AND m.menu_parent_id IS NULL
+				</if>
+				<if test="parentId != 0">
+					AND m.menu_parent_id = #{parentId}
+				</if>
+			</if>
+			<if test="menuType != null">
+				AND m.menu_type = #{menuType}
+			</if>
+		</where>
+	</select>
 	
 </mapper>
