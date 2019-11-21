@@ -23,11 +23,6 @@ public class Menu extends BaseModel {
     private static final long serialVersionUID = 1L;
 
     /**
-     * ID
-     */
-    @TableField("id")
-    private Long id;
-    /**
      * 菜单名称
      */
     @TableField("menu_name")

@@ -7,6 +7,8 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.jaguar.commons.enums.ClientType;
 import org.jaguar.core.base.BaseModel;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -24,27 +26,24 @@ public class Login extends BaseModel implements AuthenticationToken {
     private static final long serialVersionUID = 1L;
 
     /**
-     * ID
+     * 登录主体
      */
-    @TableField("id")
-    private Long id;
-    /**
-     * 登陆主体
-     */
+    @NotBlank(message = "登录主体为非空")
     @TableField("principal_")
     private String principal;
     /**
-     * 登陆凭证
+     * 登录凭证
      */
+    @NotBlank(message = "登录凭证为非空")
     @TableField("credentials_")
     private String credentials;
     /**
-     * 登陆IP
+     * 登录IP
      */
     @TableField("login_ip")
     private String loginIp;
     /**
-     * 登陆时间
+     * 登录时间
      */
     @TableField("login_time")
     private LocalDateTime loginTime;
@@ -61,11 +60,13 @@ public class Login extends BaseModel implements AuthenticationToken {
     /**
      * 客户端类型
      */
+    @NotNull(message = "客户端类型为非空")
     @TableField("client_type")
     private ClientType clientType;
     /**
      * 客户端版本
      */
+    @NotBlank(message = "客户端版本为非空")
     @TableField("client_version")
     private String clientVersion;
     /**

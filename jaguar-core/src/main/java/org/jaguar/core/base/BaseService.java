@@ -19,7 +19,6 @@ import java.util.Map;
 /**
  * Created by lvws on 2019/5/6.
  */
-
 @Slf4j
 public abstract class BaseService<T extends BaseModel, M extends com.baomidou.mybatisplus.core.mapper.BaseMapper<T>> {
 
@@ -122,14 +121,14 @@ public abstract class BaseService<T extends BaseModel, M extends com.baomidou.my
         return SqlHelper.getObject(mapper.selectList(queryWrapper));
     }
 
-    public Page<T> page(Page<T> page, Wrapper<T> queryWrapper) {
+    public Page<T> query(Page<T> page, Wrapper<T> queryWrapper) {
         if (ArrayUtils.isEmpty(page.ascs()) && ArrayUtils.isEmpty(page.descs())) {
             page.setDesc(DEFAULT_ORDER_COLUMN);
         }
         return (Page<T>) mapper.selectPage(page, queryWrapper);
     }
 
-    public Page<Map<String, Object>> pageMaps(Page<T> page, Wrapper<T> queryWrapper) {
+    public Page<Map<String, Object>> queryMaps(Page<T> page, Wrapper<T> queryWrapper) {
         if (ArrayUtils.isEmpty(page.ascs()) && ArrayUtils.isEmpty(page.descs())) {
             page.setDesc(DEFAULT_ORDER_COLUMN);
         }

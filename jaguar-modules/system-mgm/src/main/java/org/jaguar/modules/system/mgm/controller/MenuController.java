@@ -42,7 +42,7 @@ public class MenuController extends AbstractController<Menu, MenuMapper, MenuSer
 
         LambdaQueryWrapper<Menu> wrapper = new JaguarLambdaQueryWrapper<>();
         wrapper.setEntity(menu);
-        return super.page(page, wrapper);
+        return super.query(page, wrapper);
     }
 
     @ApiOperation(value = "系统菜单表详情")

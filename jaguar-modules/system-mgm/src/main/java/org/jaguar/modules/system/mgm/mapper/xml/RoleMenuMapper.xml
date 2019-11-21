@@ -9,6 +9,7 @@
 		<result column="menu_id" property="menuId" />
 		<result column="role_menu_permission" property="roleMenuPermission" />
 		<association property="menu" javaType="org.jaguar.modules.system.mgm.model.Menu">
+			<result column="menu_id"  property="id" />
 			<result column="menu_name" property="menuName" />
 			<result column="menu_parent_id" property="menuParentId" />
 			<result column="menu_icon" property="menuIcon" />
@@ -29,7 +30,7 @@
 			rm.deleted_ = 0
 			AND m.deleted_ = 0
 			AND rm.role_id in
-			<foreach collection="#{roleIds}" item="role" open="(" separator="," close=")">
+			<foreach collection="roleIds" item="roleId" open="(" separator="," close=")">
 				#{roleId}
 			</foreach>
 			<if test="parentId != null">
@@ -42,6 +43,9 @@
 			</if>
 			<if test="menuType != null">
 				AND m.menu_type = #{menuType}
+			</if>
+			<if test="roleMenuPermission != null">
+				AND rm.role_menu_permission = #{roleMenuPermission}
 			</if>
 		</where>
 	</select>

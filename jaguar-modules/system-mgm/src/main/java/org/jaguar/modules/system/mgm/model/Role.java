@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import org.jaguar.core.base.BaseModel;
+import org.jaguar.modules.system.enums.RoleDataScope;
 
 /**
  * <p>
@@ -21,11 +22,6 @@ public class Role extends BaseModel {
     private static final long serialVersionUID = 1L;
 
     /**
-     * ID
-     */
-	@TableField("id")
-	private Long id;
-    /**
      * 角色名称
      */
 	@TableField("role_name")
@@ -34,7 +30,7 @@ public class Role extends BaseModel {
      * 角色数据权限（OWNER、DEPT、ALL）
      */
 	@TableField("role_data_scope")
-	private String roleDataScope;
+	private RoleDataScope roleDataScope;
     /**
      * 角色是否锁定
      */

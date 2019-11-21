@@ -16,3 +16,4 @@ logging:
   level:
     org.jaguar: debug
     com.baomidou.mybatisplus.extension.spring: debug
+    springfox: error

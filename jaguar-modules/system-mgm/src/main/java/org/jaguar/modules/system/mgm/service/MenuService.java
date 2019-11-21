@@ -1,9 +1,8 @@
 package org.jaguar.modules.system.mgm.service;
 
-import org.jaguar.modules.system.mgm.model.Menu;
-import org.jaguar.modules.system.mgm.mapper.MenuMapper;
 import org.jaguar.core.base.BaseService;
-import org.springframework.cache.annotation.CacheConfig;
+import org.jaguar.modules.system.mgm.mapper.MenuMapper;
+import org.jaguar.modules.system.mgm.model.Menu;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
  * @since 2019-11-08
  */
 @Service
-@CacheConfig(cacheNames = "Menu")
-public class MenuService extends BaseService<Menu, MenuMapper>  {
+public class MenuService extends BaseService<Menu, MenuMapper> {
 
 }

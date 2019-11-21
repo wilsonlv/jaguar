@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -51,7 +52,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setLoginUrl(shiroProperties.getLoginUrl());
         shiroFilterFactoryBean.setUnauthorizedUrl(shiroProperties.getUnauthorizedUrl());
 
-        Map<String, String> filterChainDefinitionMap = new HashMap<>();
+        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         if (shiroProperties.getAuthcEnable()) {
             String[] anons = shiroProperties.getFilterChainDefinitions().split(",");
             for (String anon : anons) {

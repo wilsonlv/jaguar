@@ -1,9 +1,8 @@
 package org.jaguar.modules.system.mgm.service;
 
-import org.jaguar.modules.system.mgm.model.Role;
-import org.jaguar.modules.system.mgm.mapper.RoleMapper;
 import org.jaguar.core.base.BaseService;
-import org.springframework.cache.annotation.CacheConfig;
+import org.jaguar.modules.system.mgm.mapper.RoleMapper;
+import org.jaguar.modules.system.mgm.model.Role;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
  * @since 2019-11-08
  */
 @Service
-@CacheConfig(cacheNames = "Role")
-public class RoleService extends BaseService<Role, RoleMapper>  {
+public class RoleService extends BaseService<Role, RoleMapper> {
 
 }

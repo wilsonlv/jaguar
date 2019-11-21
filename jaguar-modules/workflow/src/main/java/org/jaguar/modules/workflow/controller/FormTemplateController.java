@@ -54,7 +54,7 @@ public class FormTemplateController extends AbstractController<FormTemplate, For
                 .like(FormTemplate::getName, fuzzyName)
                 .eq(FormTemplate::getElementId, elementId)
                 .select(FormTemplate::getId, FormTemplate::getName, FormTemplate::getElementId, FormTemplate::getVersion);
-        return super.page(page, wrapper);
+        return super.query(page, wrapper);
     }
 
     @ApiOperation(value = "表单模版表详情")

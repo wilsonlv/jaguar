@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.jaguar.core.base.BaseModel;
 
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,13 +26,9 @@ public class User extends BaseModel {
     private static final long serialVersionUID = 1L;
 
     /**
-     * ID
-     */
-    @TableField("id")
-    private Long id;
-    /**
      * 用户账号（唯一）
      */
+    @NotBlank(message = "用户账号为非空且唯一")
     @TableField("user_account")
     private String userAccount;
     /**
@@ -65,6 +62,11 @@ public class User extends BaseModel {
      */
     @TableField("user_locked")
     private Boolean userLocked;
+    /**
+     * 用户初始密码
+     */
+    @TableField(exist = false)
+    private String initialPassword;
 
     @TableField(exist = false)
     private List<UserRole> userRoleList = new ArrayList<>();

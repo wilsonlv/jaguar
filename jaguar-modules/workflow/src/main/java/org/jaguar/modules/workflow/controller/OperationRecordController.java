@@ -46,7 +46,7 @@ public class OperationRecordController extends AbstractController<OperationRecor
                 .eq(OperationRecord::getProcessOperationType, processOperationType)
                 .like(OperationRecord::getTaskName, fuzzyTaskName);
 
-        return super.page(page, wrapper);
+        return super.query(page, wrapper);
     }
 
     @ApiOperation(value = "工单操作记录表详情")

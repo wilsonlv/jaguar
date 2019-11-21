@@ -212,7 +212,7 @@ public class FormDataService extends BaseService<FormData, FormDataMapper> {
         wrapper.eq(FormData::getProcessInfoId, processInfo.getId())
                 .eq(FormData::getFormTemplateFieldId, field.getId())
                 .orderByDesc(FormData::getBatchNum);
-        List<FormData> formDatas = this.page(new Page<>(1, 1), wrapper).getRecords();
+        List<FormData> formDatas = this.query(new Page<>(1, 1), wrapper).getRecords();
 
         FormData formData;
         if (formDatas.size() == 0) {

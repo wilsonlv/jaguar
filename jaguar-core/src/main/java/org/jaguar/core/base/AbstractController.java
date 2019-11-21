@@ -16,13 +16,13 @@ public abstract class AbstractController<T extends BaseModel,
     @Autowired
     protected N service;
 
-    public ResponseEntity<JsonResult<Page<T>>> page(com.baomidou.mybatisplus.extension.plugins.pagination.Page<T> page) {
-        return this.page(page, Wrappers.emptyWrapper());
+    public ResponseEntity<JsonResult<Page<T>>> query(com.baomidou.mybatisplus.extension.plugins.pagination.Page<T> page) {
+        return this.query(page, Wrappers.emptyWrapper());
     }
 
-    public ResponseEntity<JsonResult<Page<T>>> page(com.baomidou.mybatisplus.extension.plugins.pagination.Page<T> page,
-                                                    Wrapper<T> queryWrapper) {
-        page = service.page(page, queryWrapper);
+    public ResponseEntity<JsonResult<Page<T>>> query(com.baomidou.mybatisplus.extension.plugins.pagination.Page<T> page,
+                                                     Wrapper<T> queryWrapper) {
+        page = service.query(page, queryWrapper);
         return success(page);
     }
 

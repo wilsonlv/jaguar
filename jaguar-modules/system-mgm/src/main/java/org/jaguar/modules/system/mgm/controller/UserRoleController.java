@@ -42,7 +42,7 @@ public class UserRoleController extends AbstractController<UserRole, UserRoleMap
 
         LambdaQueryWrapper<UserRole> wrapper = new JaguarLambdaQueryWrapper<>();
         wrapper.setEntity(userRole);
-        return super.page(page, wrapper);
+        return super.query(page, wrapper);
     }
 
     @ApiOperation(value = "系统用户角色表详情")

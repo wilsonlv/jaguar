@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiParam;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
-import org.jaguar.commons.enums.ClientType;
 import org.jaguar.commons.utils.ExecutorServiceUtil;
 import org.jaguar.commons.utils.IdentifyingCode;
 import org.jaguar.core.base.AbstractController;
@@ -31,8 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
@@ -98,34 +96,18 @@ public class AuthController extends AbstractController<User, UserMapper, UserSer
 
     @ApiOperation(value = "登录")
     @PostMapping(value = "/login")
-    public ResponseEntity<JsonResult<User>> login(
-            @ApiParam(value = "登陆主体", required = true) @RequestParam @NotBlank String principal,
-            @ApiParam(value = "登陆凭证", required = true) @RequestParam @NotBlank String credentials,
-            @ApiParam(value = "验证码") @RequestParam(required = false) String verifyCode,
-            @ApiParam(value = "客服端类型", required = true) @RequestParam @NotNull ClientType clientType,
-            @ApiParam(value = "客户端版本", required = true) @RequestParam @NotNull String clientVersion,
-            @ApiParam(value = "设备型号") @RequestParam(required = false) String deviceModel,
-            @ApiParam(value = "设备系统版本") @RequestParam(required = false) String deviceSysVersion,
-            @ApiParam(value = "设备唯一标示") @RequestParam(required = false) String deviceImei) {
+    public ResponseEntity<JsonResult<User>> login(@ApiParam("登录信息") @RequestBody @Valid Login login) {
 
 //        this.verificationCode(verifyCode);
 
         HandlerLog handlerLog = HandlerLogInterceptor.HANDLER_LOG.get();
 
-        final Login login = new Login();
-        login.setPrincipal(principal);
-        login.setCredentials(credentials);
-        login.setClientType(clientType);
-        login.setClientVersion(clientVersion);
-        login.setDeviceModel(deviceModel);
-        login.setDeviceSysVersion(deviceSysVersion);
-        login.setDeviceImei(deviceImei);
         login.setLoginIp(handlerLog.getClientHost());
         login.setLoginTime(handlerLog.getAccessTime());
         login.setSessionId(handlerLog.getSessionId());
         login.setResultCode(HttpStatus.OK.value());
 
-        synchronized (principal.intern()) {
+        synchronized (login.getPrincipal().intern()) {
             try {
                 Subject subject = SecurityUtils.getSubject();
                 subject.login(login);
@@ -153,7 +135,7 @@ public class AuthController extends AbstractController<User, UserMapper, UserSer
     @GetMapping(value = "/info")
     public ResponseEntity<JsonResult<User>> getPersonalInfo() {
 
-        User user = service.getPersonalInfo(getCurrentUser());
+        User user = service.getDetail(getCurrentUser());
         return success(user);
     }
 

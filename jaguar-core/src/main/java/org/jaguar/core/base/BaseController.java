@@ -11,6 +11,7 @@ import org.jaguar.core.web.LoginUtil;
 import org.jaguar.core.web.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -59,11 +60,25 @@ public abstract class BaseController {
     }
 
     /**
+     * 请求参数验证错误
+     */
+    @ResponseBody
+    @ExceptionHandler(value = {MethodArgumentNotValidException.class})
+    public ResponseEntity<JsonResult<String>> methodArgumentNotValidException(MethodArgumentNotValidException exception) {
+        StringBuilder errorMessage = new StringBuilder();
+        for (ObjectError objectError : exception.getBindingResult().getAllErrors()) {
+            errorMessage.append("【").append(objectError.getDefaultMessage()).append("】");
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new JsonResult<String>().setMessage(errorMessage.toString()));
+    }
+
+    /**
      * 请求参数错误
      */
     @ResponseBody
-    @ExceptionHandler(value = {MethodArgumentTypeMismatchException.class, ConstraintViolationException.class,
-            MethodArgumentNotValidException.class, MissingServletRequestParameterException.class})
+    @ExceptionHandler(value = {MethodArgumentTypeMismatchException.class, ConstraintViolationException.class, MissingServletRequestParameterException.class})
     public ResponseEntity<JsonResult<String>> badRequestExceptionHandler(Exception exception) {
         exception.printStackTrace();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)

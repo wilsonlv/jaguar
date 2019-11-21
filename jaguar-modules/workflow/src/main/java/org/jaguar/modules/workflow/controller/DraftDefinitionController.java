@@ -77,7 +77,7 @@ public class DraftDefinitionController extends AbstractController<DraftDefinitio
                     .select(DraftDefinition::getId, DraftDefinition::getElementId,
                             DraftDefinition::getName, DraftDefinition::getDefinitionType, DraftDefinition::getVersion);
 
-            draftDefinitionPage = service.page(page, wrapper);
+            draftDefinitionPage = service.query(page, wrapper);
         }
         return success(draftDefinitionPage);
     }

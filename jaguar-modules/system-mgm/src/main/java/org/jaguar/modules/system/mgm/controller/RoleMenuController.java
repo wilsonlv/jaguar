@@ -45,7 +45,7 @@ public class RoleMenuController extends AbstractController<RoleMenu, RoleMenuMap
 
         LambdaQueryWrapper<RoleMenu> wrapper = new JaguarLambdaQueryWrapper<>();
         wrapper.setEntity(roleMenu);
-        return super.page(page, wrapper);
+        return super.query(page, wrapper);
     }
 
     @ApiOperation(value = "系统角色菜单表详情")

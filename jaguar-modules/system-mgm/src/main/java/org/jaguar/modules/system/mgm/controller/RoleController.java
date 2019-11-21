@@ -45,7 +45,7 @@ public class RoleController extends AbstractController<Role, RoleMapper, RoleSer
 
         LambdaQueryWrapper<Role> wrapper = new JaguarLambdaQueryWrapper<>();
         wrapper.setEntity(role);
-        return super.page(page, wrapper);
+        return super.query(page, wrapper);
     }
 
     @ApiOperation(value = "系统角色表详情")

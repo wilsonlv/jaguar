@@ -32,10 +32,10 @@ public class ButtonDefController extends AbstractController<ButtonDef, ButtonDef
     @ApiOperation(value = "查询按钮定义表")
     @RequiresPermissions("process_button_def_view")
     @GetMapping(value = "/page")
-    public ResponseEntity<JsonResult<Page<ButtonDef>>> page(
+    public ResponseEntity<JsonResult<Page<ButtonDef>>> query(
             @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<ButtonDef> page) {
 
-        return super.page(page);
+        return super.query(page);
     }
 
     @ApiOperation(value = "按钮定义表详情")

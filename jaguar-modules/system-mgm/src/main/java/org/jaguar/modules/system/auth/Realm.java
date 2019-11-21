@@ -14,17 +14,13 @@ import org.jaguar.core.web.LoginUtil;
 import org.jaguar.modules.handlerlog.intercepter.HandlerLogInterceptor;
 import org.jaguar.modules.handlerlog.model.HandlerLog;
 import org.jaguar.modules.system.mgm.model.Login;
-import org.jaguar.modules.system.mgm.model.RoleMenu;
 import org.jaguar.modules.system.mgm.model.User;
-import org.jaguar.modules.system.mgm.model.UserRole;
 import org.jaguar.modules.system.mgm.service.RoleMenuService;
-import org.jaguar.modules.system.mgm.service.UserRoleService;
 import org.jaguar.modules.system.mgm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Set;
 
 /**

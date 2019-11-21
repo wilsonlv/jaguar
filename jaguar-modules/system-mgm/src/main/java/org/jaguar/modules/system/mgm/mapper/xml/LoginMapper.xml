@@ -3,7 +3,7 @@
 <mapper namespace="org.jaguar.modules.system.mapper.LoginMapper">
 
 	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="org.jaguar.modules.system.model.Login">
+	<resultMap id="BaseResultMap" type="org.jaguar.modules.system.mgm.model.Login">
 		<id column="id" property="id" />
 		<result column="principal_" property="principal" />
 		<result column="credentials_" property="credentials" />

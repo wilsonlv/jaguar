@@ -22,11 +22,6 @@ public class RoleMenu extends BaseModel {
     private static final long serialVersionUID = 1L;
 
     /**
-     * ID
-     */
-	@TableField("id")
-	private Long id;
-    /**
      * 角色ID
      */
 	@TableField("role_id")

@@ -42,7 +42,7 @@ public class LoginController extends AbstractController<Login, LoginMapper, Logi
 
         LambdaQueryWrapper<Login> wrapper = new JaguarLambdaQueryWrapper<>();
         wrapper.setEntity(login);
-        return super.page(page, wrapper);
+        return super.query(page, wrapper);
     }
 
     @ApiOperation(value = "系统登陆日志表详情")

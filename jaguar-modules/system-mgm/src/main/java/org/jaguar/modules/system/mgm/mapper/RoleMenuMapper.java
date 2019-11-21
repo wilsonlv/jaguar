@@ -3,6 +3,7 @@ package org.jaguar.modules.system.mgm.mapper;
 import org.apache.ibatis.annotations.Param;
 import org.jaguar.core.base.BaseMapper;
 import org.jaguar.modules.system.enums.MenuType;
+import org.jaguar.modules.system.enums.RoleMenuPermission;
 import org.jaguar.modules.system.mgm.model.RoleMenu;
 
 import javax.validation.constraints.NotEmpty;
@@ -23,5 +24,6 @@ public interface RoleMenuMapper extends BaseMapper<RoleMenu> {
      */
     List<RoleMenu> listWithMenu(@Param("roleIds") @NotEmpty List<Long> roleIds,
                                 @Param("parentId") Long parentId,
-                                @Param("menuType") MenuType menuType);
+                                @Param("menuType") MenuType menuType,
+                                @Param("roleMenuPermission") RoleMenuPermission roleMenuPermission);
 }

@@ -22,11 +22,6 @@ public class UserRole extends BaseModel {
     private static final long serialVersionUID = 1L;
 
     /**
-     * ID
-     */
-	@TableField("id")
-	private Long id;
-    /**
      * 用户ID
      */
 	@TableField("user_id")
