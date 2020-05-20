@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by lvws on 2019/5/23.
+ * @author lvws
+ * @since 2019/5/23.
  */
 public class Parameter implements Serializable {
 

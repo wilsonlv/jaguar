@@ -14,12 +14,12 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Created by lvws on 2019/4/18.
+ * @author lvws
+ * @since  2019/4/18.
  */
 @Configuration
 public class ShiroConfig {

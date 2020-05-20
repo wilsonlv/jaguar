@@ -2,17 +2,19 @@ package org.jaguar.commons.dubbo.provider;
 
 import com.alibaba.fastjson.JSON;
 import com.esotericsoftware.reflectasm.MethodAccess;
-import org.jaguar.core.base.BaseModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jaguar.core.base.BaseModel;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Created by lvws on 2019/5/23.
+ * @author lvws
+ * @since 2019/5/23.
  */
 public abstract class BaseProviderImpl implements ApplicationContextAware, IBaseProvider {
 
@@ -22,7 +24,8 @@ public abstract class BaseProviderImpl implements ApplicationContextAware, IBase
 
     private ApplicationContext applicationContext;
 
-    public void setApplicationContext(ApplicationContext applicationContext) {
+    @Override
+    public void setApplicationContext(@Nonnull ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
 
@@ -39,17 +42,21 @@ public abstract class BaseProviderImpl implements ApplicationContextAware, IBase
         Object service = applicationContext.getBean(parameter.getService());
         try {
             Long id = parameter.getId();
+            String str = parameter.getStr();
+            Boolean flag = parameter.getFlag();
             BaseModel model = parameter.getModel();
             List<?> list = parameter.getList();
             Map<?, ?> map = parameter.getMap();
             Object[] objects = parameter.getObjects();
-            String str = parameter.getStr();
-            Boolean flag = parameter.getFlag();
             Object obj = parameter.getObject();
             Object result;
             MethodAccess methodAccess = MethodAccess.get(service.getClass());
             if (id != null) {
                 result = methodAccess.invoke(service, parameter.getMethod(), id);
+            } else if (str != null) {
+                result = methodAccess.invoke(service, parameter.getMethod(), str);
+            } else if (flag != null) {
+                result = methodAccess.invoke(service, parameter.getMethod(), flag);
             } else if (model != null) {
                 result = methodAccess.invoke(service, parameter.getMethod(), model);
             } else if (list != null) {
@@ -58,10 +65,6 @@ public abstract class BaseProviderImpl implements ApplicationContextAware, IBase
                 result = methodAccess.invoke(service, parameter.getMethod(), map);
             } else if (objects != null) {
                 result = methodAccess.invoke(service, parameter.getMethod(), objects);
-            } else if (str != null) {
-                result = methodAccess.invoke(service, parameter.getMethod(), str);
-            } else if (flag != null) {
-                result = methodAccess.invoke(service, parameter.getMethod(), flag);
             } else if (obj != null) {
                 result = methodAccess.invoke(service, parameter.getMethod(), obj);
             } else {

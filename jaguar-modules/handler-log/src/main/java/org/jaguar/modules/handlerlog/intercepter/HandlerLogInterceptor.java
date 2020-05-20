@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jaguar.commons.shiro.config.ShiroProperties;
 import org.jaguar.commons.utils.DateUtil;
 import org.jaguar.commons.utils.ExecutorServiceUtil;
-import org.jaguar.commons.utils.IPUtil;
+import org.jaguar.commons.utils.IpUtil;
 import org.jaguar.core.base.BaseService;
 import org.jaguar.core.web.LoginUtil;
 import org.jaguar.modules.handlerlog.model.HandlerLog;
@@ -79,7 +79,7 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
             HandlerLog handlerLog = new HandlerLog();
             handlerLog.setSessionId(request.getSession().getId());
             handlerLog.setAccessTime(LocalDateTime.now());
-            handlerLog.setClientHost(IPUtil.getHost(request));
+            handlerLog.setClientHost(IpUtil.getHost(request));
             handlerLog.setRequestUri(request.getServletPath());
             handlerLog.setApiOperation(apiOperation != null ? apiOperation.value() : null);
             handlerLog.setMethod(request.getMethod());

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.jaguar.core.base.BaseModel;
 
 import javax.validation.constraints.NotBlank;
@@ -21,6 +22,7 @@ import java.util.List;
  */
 @Data
 @TableName("t_system_user")
+@EqualsAndHashCode(callSuper = true)
 public class User extends BaseModel {
 
     private static final long serialVersionUID = 1L;

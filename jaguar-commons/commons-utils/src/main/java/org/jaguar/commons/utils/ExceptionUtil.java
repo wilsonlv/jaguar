@@ -1,6 +1,5 @@
 package org.jaguar.commons.utils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -19,6 +18,7 @@ public class ExceptionUtil {
 		if (e == null) {
 			return "";
 		}
+
 		StringWriter stringWriter = new StringWriter();
 		e.printStackTrace(new PrintWriter(stringWriter));
 		return stringWriter.toString();

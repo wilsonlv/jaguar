@@ -3,7 +3,8 @@ package org.jaguar.commons.utils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Created by lvws on 2019/4/2.
+ * @author lvws
+ * @since 2019/4/2.
  */
 public class NumberUtil {
 

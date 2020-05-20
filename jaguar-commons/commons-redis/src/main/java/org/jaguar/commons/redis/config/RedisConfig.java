@@ -13,7 +13,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import java.io.Serializable;
 
 /**
- * Created by lvws on 2019/4/18.
+ * @author lvws
+ * @since  2019/4/18.
  */
 @Configuration
 public class RedisConfig {

@@ -5,7 +5,7 @@ import org.jaguar.modules.malice.prevention.model.SessionAccess;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jaguar.commons.redis.cache.RedisCacheManager;
-import org.jaguar.commons.utils.IPUtil;
+import org.jaguar.commons.utils.IpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -53,7 +53,7 @@ public class MaliceSessionInterceptor extends HandlerInterceptorAdapter {
         }
 
         String sessionId = request.getSession().getId();
-        String host = IPUtil.getHost(request);
+        String host = IpUtil.getHost(request);
 
         Long freezingPeriod = malicePreventionProperties.getSessionFreezingPeriod() * 1000L;
         Integer maxRecentAccessTimeNum = malicePreventionProperties.getSessionMaxRecentAccessTimeNum();

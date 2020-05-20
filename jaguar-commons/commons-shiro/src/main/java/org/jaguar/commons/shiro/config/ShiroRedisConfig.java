@@ -6,7 +6,6 @@ import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
 import org.jaguar.commons.redis.config.RedisProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.Bean;
@@ -26,8 +25,8 @@ public class ShiroRedisConfig {
     private ServerProperties serverProperties;
 
     public int expire() {
-        Long seconds = serverProperties.getServlet().getSession().getTimeout().getSeconds();
-        return seconds.intValue();
+        long seconds = serverProperties.getServlet().getSession().getTimeout().getSeconds();
+        return (int) seconds;
     }
 
     @Bean

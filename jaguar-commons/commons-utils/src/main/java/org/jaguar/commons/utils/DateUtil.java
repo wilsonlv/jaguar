@@ -12,7 +12,8 @@ import java.util.Date;
 
 
 /**
- * Created by lvws on 2019/10/31.
+ * @author lvws
+ * @since 2019/10/31.
  */
 public class DateUtil {
 
@@ -21,17 +22,26 @@ public class DateUtil {
      **/
     public enum DateTimePattern {
 
+        /**
+         * 时间格式
+         */
         HHMMSS("HHmmss"),
         HH_MM_SS("HH:mm:ss"),
         HH_MM_SS_SSS("HH:mm:ss.SSS"),
 
+        /**
+         * 日期格式
+         */
         YYYYMMDD("yyyyMMdd"),
         YYYY_MM_DD("yyyy-MM-dd"),
 
+        /**
+         * 日期+时间
+         */
         YYYY_MM_DD_HH_MM_SS("yyyy-MM-dd HH:mm:ss"),
         YYYY_MM_DD_HH_MM_SS_SSS("yyyy-MM-dd HH:mm:ss.SSS");
 
-        private String pattern;
+        private final String pattern;
 
         DateTimePattern(String pattern) {
             this.pattern = pattern;

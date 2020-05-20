@@ -6,18 +6,15 @@ import javax.xml.bind.Marshaller;
 import java.io.StringWriter;
 
 /**
- * Created by lvws on 2019/3/15.
+ * @author lvws
+ * @since 2019/3/15.
  */
 public class XmlUtil {
 
     /**
      * 将javaBean转换为xml对象
-     *
-     * @param clazz
-     * @param bean
-     * @return
      */
-    public static String parseBeanToXml(Class clazz, Object bean) {
+    public static String parseBeanToXml(Class<?> clazz, Object bean) {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();

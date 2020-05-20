@@ -3,6 +3,7 @@ package org.jaguar.modules.system.mgm.model;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.jaguar.commons.enums.ClientType;
 import org.jaguar.core.base.BaseModel;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("t_system_login")
+@EqualsAndHashCode(callSuper = true)
 public class Login extends BaseModel implements AuthenticationToken {
 
     private static final long serialVersionUID = 1L;

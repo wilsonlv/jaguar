@@ -29,7 +29,6 @@ import java.util.List;
 @Service
 public class FieldEditLogService {
 
-
     private static final String ID = "id";
     private static final String CREATE_BY = "createBy";
     private static final String CREATE_TIME = "createTime";
@@ -53,7 +52,7 @@ public class FieldEditLogService {
     private FieldStrategy fieldStrategy;
 
     @Transactional
-    public <T extends BaseModel> void logUpdation(T org, T update) throws IllegalAccessException, InstantiationException {
+    public <T extends BaseModel> void logUpdation(T org, T update) throws IllegalAccessException {
         Long recordId = update.getId();
         Long lastUpdateBy = org.getUpdateBy();
         LocalDateTime lastUpdateTime = org.getUpdateTime();
@@ -72,7 +71,8 @@ public class FieldEditLogService {
             TableField annotation = field.getAnnotation(TableField.class);
             FieldStrategy strategy;
             if (annotation != null) {
-                if (!annotation.exist()) {//过滤临时字段
+                //过滤临时字段
+                if (!annotation.exist()) {
                     continue;
                 }
                 strategy = annotation.strategy();
@@ -102,7 +102,7 @@ public class FieldEditLogService {
             if (newValue == null && oldValue == null) {
                 //新旧值都为null，值不变
                 continue;
-            } else if (newValue != null && oldValue != null && newValue.equals(oldValue)) {
+            } else if (newValue != null && newValue.equals(oldValue)) {
                 //新旧值都不为null，新值等于旧值，值不变
                 continue;
             }

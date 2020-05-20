@@ -3,8 +3,7 @@ package org.jaguar.modules.system.mgm.model;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-
-import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.EqualsAndHashCode;
 import org.jaguar.core.base.BaseModel;
 
 /**
@@ -17,6 +16,7 @@ import org.jaguar.core.base.BaseModel;
  */
 @Data
 @TableName("t_system_user_role")
+@EqualsAndHashCode(callSuper = true)
 public class UserRole extends BaseModel {
 
     private static final long serialVersionUID = 1L;
@@ -24,15 +24,15 @@ public class UserRole extends BaseModel {
     /**
      * 用户ID
      */
-	@TableField("user_id")
-	private Long userId;
+    @TableField("user_id")
+    private Long userId;
     /**
      * 角色ID
      */
-	@TableField("role_id")
-	private Long roleId;
+    @TableField("role_id")
+    private Long roleId;
 
-	@TableField(exist = false)
-	private Role role;
+    @TableField(exist = false)
+    private Role role;
 
 }

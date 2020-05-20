@@ -45,9 +45,8 @@ public abstract class BaseController {
         return LoginUtil.getCurrentUserAccount();
     }
 
-
-    protected ResponseEntity<JsonResult> success() {
-        return ResponseEntity.ok(new JsonResult());
+    protected ResponseEntity<JsonResult<?>> success() {
+        return ResponseEntity.ok(new JsonResult<>());
     }
 
     protected <T> ResponseEntity<JsonResult<T>> success(T data) {

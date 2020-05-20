@@ -8,7 +8,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Collection;
 
 /**
- * Created by lvws on 2019/5/7.
+ * @author lvws
+ * @since 2019/5/7.
  */
 public class JaguarLambdaQueryWrapper<T> extends LambdaQueryWrapper<T> {
 

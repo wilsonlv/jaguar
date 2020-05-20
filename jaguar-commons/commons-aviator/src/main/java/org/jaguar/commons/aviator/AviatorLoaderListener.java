@@ -3,12 +3,12 @@ package org.jaguar.commons.aviator;
 import com.googlecode.aviator.AviatorEvaluator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 /**
- * Created by lvws on 2019/4/16.
+ * @author lvws
+ * @since 2019/4/16.
  */
 @Slf4j
 @Component

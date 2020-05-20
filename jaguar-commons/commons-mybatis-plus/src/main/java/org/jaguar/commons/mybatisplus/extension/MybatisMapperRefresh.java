@@ -1,6 +1,5 @@
 package org.jaguar.commons.mybatisplus.extension;
 
-import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.core.toolkit.GlobalConfigUtils;
 import com.baomidou.mybatisplus.core.toolkit.SystemClock;
 import lombok.extern.slf4j.Slf4j;
@@ -26,22 +25,23 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 /**
- * Created by lvws on 2019/5/14.
+ * @author lvws
+ * @since 2019/5/14.
  */
 @Slf4j
 public class MybatisMapperRefresh implements Runnable {
     /**
      * 记录jar包存在的mapper
      */
-    private static final Map<String, List<Resource>> jarMapper = new HashMap<>();
-    private SqlSessionFactory sqlSessionFactory;
-    private Resource[] mapperLocations;
+    private static final Map<String, List<Resource>> JAR_MAPPER = new HashMap<>();
+    private final SqlSessionFactory sqlSessionFactory;
+    private final Resource[] mapperLocations;
     private Long beforeTime = 0L;
     private Configuration configuration;
     /**
      * 是否开启刷新mapper
      */
-    private boolean enabled;
+    private final boolean enabled;
     /**
      * xml文件目录
      */
@@ -76,85 +76,80 @@ public class MybatisMapperRefresh implements Runnable {
 
     @Override
     public void run() {
-        final GlobalConfig globalConfig = GlobalConfigUtils.getGlobalConfig(configuration);
+        GlobalConfigUtils.getGlobalConfig(configuration);
+
         /*
          * 启动 XML 热加载
          */
         if (enabled) {
             beforeTime = SystemClock.now();
             final MybatisMapperRefresh runnable = this;
-            new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-                    if (fileSet == null) {
-                        fileSet = new HashSet<>();
-                        if (mapperLocations != null) {
-                            for (Resource mapperLocation : mapperLocations) {
-                                try {
-                                    if (ResourceUtils.isJarURL(mapperLocation.getURL())) {
-                                        String key = new UrlResource(ResourceUtils.extractJarFileURL(mapperLocation.getURL()))
-                                                .getFile().getPath();
-                                        fileSet.add(key);
-                                        if (jarMapper.get(key) != null) {
-                                            jarMapper.get(key).add(mapperLocation);
-                                        } else {
-                                            List<Resource> resourcesList = new ArrayList<>();
-                                            resourcesList.add(mapperLocation);
-                                            jarMapper.put(key, resourcesList);
-                                        }
+            new Thread(() -> {
+                if (fileSet == null) {
+                    fileSet = new HashSet<>();
+                    if (mapperLocations != null) {
+                        for (Resource mapperLocation : mapperLocations) {
+                            try {
+                                if (ResourceUtils.isJarURL(mapperLocation.getURL())) {
+                                    String key = new UrlResource(ResourceUtils.extractJarFileURL(mapperLocation.getURL()))
+                                            .getFile().getPath();
+                                    fileSet.add(key);
+                                    if (JAR_MAPPER.get(key) != null) {
+                                        JAR_MAPPER.get(key).add(mapperLocation);
                                     } else {
-                                        fileSet.add(mapperLocation.getFile().getPath());
+                                        List<Resource> resourcesList = new ArrayList<>();
+                                        resourcesList.add(mapperLocation);
+                                        JAR_MAPPER.put(key, resourcesList);
                                     }
-                                } catch (IOException ioException) {
-                                    ioException.printStackTrace();
+                                } else {
+                                    fileSet.add(mapperLocation.getFile().getPath());
                                 }
+                            } catch (IOException ioException) {
+                                ioException.printStackTrace();
                             }
                         }
                     }
+                }
+                try {
+                    Thread.sleep(delaySeconds * 1000);
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                }
+                do {
                     try {
-                        Thread.sleep(delaySeconds * 1000);
+                        long tempBeforeTime = beforeTime;
+                        for (String filePath : fileSet) {
+                            File file = new File(filePath);
+                            if (file.isFile() && file.lastModified() > tempBeforeTime) {
+                                List<Resource> removeList = JAR_MAPPER.get(filePath);
+                                if (removeList != null && !removeList.isEmpty()) {
+                                    for (Resource resource : removeList) {
+                                        runnable.refresh(resource);
+                                    }
+                                } else {
+                                    runnable.refresh(new FileSystemResource(file));
+                                }
+                            }
+                            if (beforeTime < file.lastModified()) {
+                                beforeTime = file.lastModified();
+                            }
+                        }
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
+                    try {
+                        Thread.sleep(sleepSeconds * 1000);
                     } catch (InterruptedException interruptedException) {
                         interruptedException.printStackTrace();
                     }
-                    do {
-                        try {
-                            long tempBeforeTime = beforeTime;
-                            for (String filePath : fileSet) {
-                                File file = new File(filePath);
-                                if (file.isFile() && file.lastModified() > tempBeforeTime) {
-                                    List<Resource> removeList = jarMapper.get(filePath);
-                                    if (removeList != null && !removeList.isEmpty()) {
-                                        for (Resource resource : removeList) {
-                                            runnable.refresh(resource);
-                                        }
-                                    } else {
-                                        runnable.refresh(new FileSystemResource(file));
-                                    }
-                                }
-                                if (beforeTime < file.lastModified()) {
-                                    beforeTime = file.lastModified();
-                                }
-                            }
-                        } catch (Exception exception) {
-                            exception.printStackTrace();
-                        }
-                        try {
-                            Thread.sleep(sleepSeconds * 1000);
-                        } catch (InterruptedException interruptedException) {
-                            interruptedException.printStackTrace();
-                        }
 
-                    } while (true);
-                }
+                } while (true);
             }, "mybatis-plus MapperRefresh").start();
         }
     }
 
     /**
      * 刷新mapper
-     *
-     * @throws Exception
      */
     @SuppressWarnings("rawtypes")
     private void refresh(Resource resource) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
@@ -172,7 +167,6 @@ public class MybatisMapperRefresh implements Runnable {
             Field field = MapperRegistry.class.getDeclaredField("knownMappers");
             field.setAccessible(true);
             Map mapConfig = (Map) field.get(configuration.getMapperRegistry());
-            Collection<String> mappedStatementNames = configuration.getMappedStatementNames();
 
             mapConfig.remove(Resources.classForName(namespace));
             loadedResourcesSet.remove(resource.toString());
@@ -196,9 +190,6 @@ public class MybatisMapperRefresh implements Runnable {
 
     /**
      * 清理parameterMap
-     *
-     * @param list
-     * @param namespace
      */
     private void cleanParameterMap(List<XNode> list, String namespace) {
         for (XNode parameterMapNode : list) {
@@ -209,9 +200,6 @@ public class MybatisMapperRefresh implements Runnable {
 
     /**
      * 清理resultMap
-     *
-     * @param list
-     * @param namespace
      */
     private void cleanResultMap(List<XNode> list, String namespace) {
         for (XNode resultMapNode : list) {
@@ -241,9 +229,6 @@ public class MybatisMapperRefresh implements Runnable {
 
     /**
      * 清理selectKey
-     *
-     * @param list
-     * @param namespace
      */
     private void cleanKeyGenerators(List<XNode> list, String namespace) {
         for (XNode context : list) {
@@ -267,9 +252,6 @@ public class MybatisMapperRefresh implements Runnable {
 
     /**
      * 清理sql节点缓存
-     *
-     * @param list
-     * @param namespace
      */
     private void cleanSqlElement(List<XNode> list, String namespace) {
         for (XNode context : list) {

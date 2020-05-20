@@ -5,7 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Created by lvws on 2019/4/23.
+ * @author lvws
+ * @since 2019/4/23.
  */
 @Configuration
 public class AopConfig {

@@ -12,7 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Created by lvws on 2019/4/30.
+ * @author lvws
+ * @since 2019/4/30.
  */
 @Configuration
 public class ShiroSessionConfig {
@@ -21,8 +22,8 @@ public class ShiroSessionConfig {
     private ServerProperties serverProperties;
 
     private int expire() {
-        Long seconds = serverProperties.getServlet().getSession().getTimeout().getSeconds();
-        return seconds.intValue();
+        long seconds = serverProperties.getServlet().getSession().getTimeout().getSeconds();
+        return (int) seconds;
     }
 
     @Bean

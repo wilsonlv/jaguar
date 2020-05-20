@@ -2,6 +2,8 @@ package org.jaguar.core.base.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.jaguar.core.base.BaseModel;
 
 /**
@@ -12,7 +14,9 @@ import org.jaguar.core.base.BaseModel;
  * @author lvws
  * @since 2019-04-10
  */
+@Data
 @TableName("t_field_edit_log")
+@EqualsAndHashCode(callSuper = true)
 public class FieldEditLog extends BaseModel {
 
     private static final long serialVersionUID = 1L;
@@ -42,46 +46,5 @@ public class FieldEditLog extends BaseModel {
      */
     @TableField("new_value")
     private String newValue;
-
-
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
-    }
-
-    public Long getRecordId() {
-        return recordId;
-    }
-
-    public void setRecordId(Long recordId) {
-        this.recordId = recordId;
-    }
-
-    public String getFieldName() {
-        return fieldName;
-    }
-
-    public void setFieldName(String fieldName) {
-        this.fieldName = fieldName;
-    }
-
-    public String getOldValue() {
-        return oldValue;
-    }
-
-    public void setOldValue(String oldValue) {
-        this.oldValue = oldValue;
-    }
-
-    public String getNewValue() {
-        return newValue;
-    }
-
-    public void setNewValue(String newValue) {
-        this.newValue = newValue;
-    }
 
 }

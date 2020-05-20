@@ -8,7 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 /**
- * Created by lvws on 2019/5/6.
+ * @author lvws
+ * @since 2019/5/6
  */
 public abstract class AbstractController<T extends BaseModel,
         M extends com.baomidou.mybatisplus.core.mapper.BaseMapper<T>, N extends BaseService<T, M>> extends BaseController {
@@ -46,7 +47,7 @@ public abstract class AbstractController<T extends BaseModel,
         return success(model);
     }
 
-    public ResponseEntity delete(Long id) {
+    public ResponseEntity<?> delete(Long id) {
         service.delete(id);
         return success();
     }

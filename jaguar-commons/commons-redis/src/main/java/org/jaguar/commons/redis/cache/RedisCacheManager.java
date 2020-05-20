@@ -13,7 +13,8 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by apple on 2017/2/22.
+ * @author lvws
+ * @since 2017/2/22.
  */
 @Component
 public class RedisCacheManager {
@@ -34,9 +35,6 @@ public class RedisCacheManager {
 
     /**
      * 模糊匹配
-     *
-     * @param pattern
-     * @return
      */
     public Set<String> keys(String pattern) {
         return redisTemplate.keys(pattern);
@@ -44,9 +42,6 @@ public class RedisCacheManager {
 
     /**
      * 根据key获取vlaue，并刷新缓存的过期时间
-     *
-     * @param key
-     * @return
      */
     public Object get(String key) {
         return get(key, true);
@@ -55,11 +50,9 @@ public class RedisCacheManager {
     /**
      * 根据key获取vlaue
      *
-     * @param key
      * @param fresh 是否刷新缓存的过期时间
      *              true：是
      *              flase：否
-     * @return
      */
     public Object get(String key, boolean fresh) {
         BoundValueOperations<String, Serializable> operations = redisTemplate.boundValueOps(key);
@@ -71,9 +64,6 @@ public class RedisCacheManager {
 
     /**
      * 设置key-value，默认有效期
-     *
-     * @param key
-     * @param value
      */
     public void set(String key, Serializable value) {
         set(key, value, getExpiration());
@@ -81,10 +71,6 @@ public class RedisCacheManager {
 
     /**
      * 设置key-value和有效期，-1为永久
-     *
-     * @param key
-     * @param value
-     * @param seconds
      */
     public void set(String key, Serializable value, int seconds) {
         if (seconds == -1) {
@@ -96,9 +82,6 @@ public class RedisCacheManager {
 
     /**
      * 目标key是否存在
-     *
-     * @param key
-     * @return
      */
     public Boolean exists(String key) {
         return redisTemplate.hasKey(key);
@@ -106,8 +89,6 @@ public class RedisCacheManager {
 
     /**
      * 删除目标key缓存
-     *
-     * @param key
      */
     public void del(String key) {
         redisTemplate.delete(key);
@@ -115,10 +96,6 @@ public class RedisCacheManager {
 
     /**
      * 目标key在几秒后是否过期
-     *
-     * @param key
-     * @param seconds
-     * @return
      */
     public Boolean expire(String key, int seconds) {
         return redisTemplate.expire(key, seconds, TimeUnit.SECONDS);
@@ -126,10 +103,6 @@ public class RedisCacheManager {
 
     /**
      * 目标key在某时刻是否过期
-     *
-     * @param key
-     * @param unixTime
-     * @return
      */
     public Boolean expireAt(String key, long unixTime) {
         return redisTemplate.expireAt(key, new Date(unixTime));
@@ -138,14 +111,14 @@ public class RedisCacheManager {
     /**
      * 从左侧压入队列
      */
-    public long leftPush(String key, Serializable value) {
+    public Long leftPush(String key, Serializable value) {
         return redisTemplate.boundListOps(key).leftPush(value);
     }
 
     /**
      * 从右侧压入队列
      */
-    public long rightPush(String key, Serializable value) {
+    public Long rightPush(String key, Serializable value) {
         return redisTemplate.boundListOps(key).rightPush(value);
     }
 

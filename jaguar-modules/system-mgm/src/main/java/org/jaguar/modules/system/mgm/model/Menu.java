@@ -3,6 +3,7 @@ package org.jaguar.modules.system.mgm.model;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.jaguar.core.base.BaseModel;
 import org.jaguar.modules.system.enums.MenuType;
 
@@ -18,6 +19,7 @@ import java.util.List;
  */
 @Data
 @TableName("t_system_menu")
+@EqualsAndHashCode(callSuper = true)
 public class Menu extends BaseModel {
 
     private static final long serialVersionUID = 1L;

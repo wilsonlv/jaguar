@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import lombok.EqualsAndHashCode;
 import org.jaguar.core.base.BaseModel;
 import org.jaguar.modules.system.enums.RoleDataScope;
 
@@ -17,6 +18,7 @@ import org.jaguar.modules.system.enums.RoleDataScope;
  */
 @Data
 @TableName("t_system_role")
+@EqualsAndHashCode(callSuper = true)
 public class Role extends BaseModel {
 
     private static final long serialVersionUID = 1L;

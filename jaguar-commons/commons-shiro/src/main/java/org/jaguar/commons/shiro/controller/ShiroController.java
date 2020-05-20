@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class ShiroController {
 
     @RequestMapping(value = "/unauthorized")
-    public ResponseEntity unauthorized() {
+    public ResponseEntity<?> unauthorized() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @RequestMapping(value = "/forbidden")
-    public ResponseEntity forbidden() {
+    public ResponseEntity<?> forbidden() {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 

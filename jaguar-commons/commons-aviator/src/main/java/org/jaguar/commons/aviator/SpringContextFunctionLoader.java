@@ -18,11 +18,12 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * Created by lvws on 2019/3/8.
+ * @author lvws
+ * @since 2019/3/7.
  */
 public class SpringContextFunctionLoader implements FunctionLoader {
 
-    private ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
 
     public SpringContextFunctionLoader(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
