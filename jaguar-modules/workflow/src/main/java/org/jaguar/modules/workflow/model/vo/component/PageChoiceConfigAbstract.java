@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class PageChoiceConfig extends ComponentConfig {
+public class PageChoiceConfigAbstract extends AbstractComponentConfig {
 
     /**
      * 数据源接口

@@ -8,7 +8,8 @@ import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 /**
- * Created by lvws on 2019/4/30.
+ * @author lvws
+ * @since 2019/4/30.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

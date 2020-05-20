@@ -21,7 +21,7 @@ import java.util.List;
  * @since 2019-11-08
  */
 @Data
-@TableName("t_system_user")
+@TableName("jaguar_modules_system_user")
 @EqualsAndHashCode(callSuper = true)
 public class User extends BaseModel {
 

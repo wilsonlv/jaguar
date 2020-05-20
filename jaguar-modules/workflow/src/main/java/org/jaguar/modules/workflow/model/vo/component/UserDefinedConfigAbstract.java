@@ -10,11 +10,12 @@ import org.jaguar.modules.workflow.enums.FormDataPersistenceType;
 import org.jaguar.modules.workflow.interfaces.IUserDefinedComponent;
 
 /**
- * Created by lvws on 2019/4/26.
+ * @author lvws
+ * @since 2019/4/25.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class UserDefinedConfig extends ComponentConfig {
+public class UserDefinedConfigAbstract extends AbstractComponentConfig {
 
     private String componentJsName;
     /**

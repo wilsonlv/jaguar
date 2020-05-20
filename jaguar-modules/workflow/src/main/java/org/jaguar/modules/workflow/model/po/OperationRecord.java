@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_workflow_operation_record")
+@TableName("jaguar_modules_workflow_operation_record")
 public class OperationRecord extends BaseModel {
 
     private static final long serialVersionUID = 1L;

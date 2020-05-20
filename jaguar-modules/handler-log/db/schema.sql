@@ -1,4 +1,4 @@
-CREATE TABLE `t_handler_log` (
+CREATE TABLE `jaguar_modules_handler_log` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '编号',
   `session_id` varchar(50) NOT NULL COMMENT '会话ID',
   `access_time` datetime NOT NULL COMMENT '访问时间',

@@ -32,7 +32,7 @@ import javax.validation.Valid;
 @Validated
 @RestController
 @RequestMapping("/${package.ModuleName}/${table.entityPath}")
-@Api(value = "${table.comment}管理", description = "${table.comment}管理")
+@Api(value = "${table.comment}管理")
 public class ${table.controllerName} extends AbstractController<${entity}, ${entity}Mapper, ${entity}Service> {
 
 

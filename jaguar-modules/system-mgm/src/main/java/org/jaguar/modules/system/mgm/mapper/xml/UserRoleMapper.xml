@@ -17,8 +17,8 @@
 	<select id="listWithRoleByUserId" resultMap="BaseResultMap">
 		SELECT
 			ur.*, r.*
-		FROM t_system_user_role ur
-		LEFT JOIN t_system_role r ON r.id_ = ur.role_id
+		FROM jaguar_modules_system_user_role ur
+		LEFT JOIN jaguar_modules_system_role r ON r.id_ = ur.role_id
 		WHERE
 			ur.deleted_ = 0
 			AND r.deleted_ = 0

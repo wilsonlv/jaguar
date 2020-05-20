@@ -6,7 +6,8 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * Created by lvws on 2019/5/7.
+ * @author lvws
+ * @since 2019/5/7.
  */
 @Data
 public class Page<T> {

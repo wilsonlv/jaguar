@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
  * @since 2019-11-15
  */
 @Data
-@TableName("t_system_login")
+@TableName("jaguar_modules_system_login")
 @EqualsAndHashCode(callSuper = true)
 public class Login extends BaseModel implements AuthenticationToken {
 

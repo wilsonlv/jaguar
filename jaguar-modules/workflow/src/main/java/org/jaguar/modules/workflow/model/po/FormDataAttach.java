@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_workflow_form_data_attach")
+@TableName("jaguar_modules_workflow_form_data_attach")
 public class FormDataAttach extends BaseModel {
 
     private static final long serialVersionUID = 1L;

@@ -1,21 +1,18 @@
 package org.jaguar.core.web;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.session.Session;
 import org.jaguar.core.Constant;
 
 /**
- * Created by lvws on 2019/5/23.
+ * @author lvws
+ * @since 2019/5/23.
  */
 public final class LoginUtil {
 
     private LoginUtil() {
     }
-
-    private static Logger logger = LogManager.getLogger();
 
     /**
      * 保存当前用户

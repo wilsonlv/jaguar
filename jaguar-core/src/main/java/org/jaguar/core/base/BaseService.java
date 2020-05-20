@@ -17,7 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by lvws on 2019/5/6.
+ * @author lvws
+ * @since 2019/5/6.
  */
 @Slf4j
 public abstract class BaseService<T extends BaseModel, M extends com.baomidou.mybatisplus.core.mapper.BaseMapper<T>> {
@@ -59,7 +60,7 @@ public abstract class BaseService<T extends BaseModel, M extends com.baomidou.my
         T org = this.getById(entity.getId());
         try {
             fieldEditLogService.logUpdation(org, entity);
-        } catch (IllegalAccessException | InstantiationException e) {
+        } catch (IllegalAccessException e) {
             throw new CheckedException(e);
         }
 

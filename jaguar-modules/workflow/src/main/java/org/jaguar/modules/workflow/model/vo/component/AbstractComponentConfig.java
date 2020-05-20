@@ -5,14 +5,15 @@ import com.alibaba.fastjson.JSONObject;
 import java.io.Serializable;
 
 /**
- * Created by lvws on 2019/3/19.
+ * @author lvws
+ * @since 2019/3/19.
  */
-public abstract class ComponentConfig implements Serializable {
+public abstract class AbstractComponentConfig implements Serializable {
 
     /**
      * 通过解析自定义组件配置来获取自定义组件的实现类
      */
-    public static <T extends ComponentConfig> T resovleComponent(String userDefinedConfig, Class<T> clazz) {
+    public static <T extends AbstractComponentConfig> T resovleComponent(String userDefinedConfig, Class<T> clazz) {
         return JSONObject.parseObject(userDefinedConfig, clazz);
     }
 

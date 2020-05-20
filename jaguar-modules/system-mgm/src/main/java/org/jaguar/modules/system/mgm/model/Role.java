@@ -17,7 +17,7 @@ import org.jaguar.modules.system.enums.RoleDataScope;
  * @since 2019-11-08
  */
 @Data
-@TableName("t_system_role")
+@TableName("jaguar_modules_system_role")
 @EqualsAndHashCode(callSuper = true)
 public class Role extends BaseModel {
 

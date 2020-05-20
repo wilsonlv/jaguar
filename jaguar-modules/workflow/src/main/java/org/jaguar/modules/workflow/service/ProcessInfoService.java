@@ -859,10 +859,12 @@ public class ProcessInfoService extends BaseService<ProcessInfo, ProcessInfoMapp
             formTemplateSheetService.fillSheetComponent(sheet);
 
             //填充表单数据
-            if (sheet.getOverride()) {//通常情况下
+            if (sheet.getOverride()) {
+                //通常情况下
                 formDataService.fillFormData(processInfoId, sheet);
                 formTemplate.getFormTemplateSheets().add(sheet);
-            } else {//扩展块的情况下
+            } else {
+                //扩展块的情况下
                 List<FormTemplateSheet> sheets = formDataService.fillFormDataForExtendSheet(processInfoId, sheet);
                 formTemplate.getFormTemplateSheets().addAll(sheets);
             }

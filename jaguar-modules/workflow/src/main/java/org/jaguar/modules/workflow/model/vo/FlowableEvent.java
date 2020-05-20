@@ -5,13 +5,14 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * Created by lvws on 2019/3/2.
+ * @author lvws
+ * @since 2019/3/14.
  */
 @Data
 public class FlowableEvent implements Serializable {
 
     private String type;
-    private String ImplementationType;
-    private String Implementation;
+    private String implementationType;
+    private String implementation;
 
 }

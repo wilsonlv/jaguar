@@ -9,7 +9,8 @@ import org.jaguar.core.base.BaseModel;
 import java.time.LocalDateTime;
 
 /**
- * Created by lvws on 2018/11/9.
+ * @author lvws
+ * @since 2018/11/9.
  */
 @Data
 @TableName("jaguar_modules_handler_log")

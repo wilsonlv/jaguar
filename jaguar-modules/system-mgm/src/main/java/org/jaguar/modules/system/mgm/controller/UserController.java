@@ -30,7 +30,7 @@ import javax.validation.Valid;
 @Validated
 @RestController
 @RequestMapping("/system/user")
-@Api(value = "系统用户表管理", description = "系统用户表管理")
+@Api(value = "系统用户表管理")
 public class UserController extends AbstractController<User, UserMapper, UserService> {
 
 

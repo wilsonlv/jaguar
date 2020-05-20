@@ -47,7 +47,7 @@ public abstract class AbstractController<T extends BaseModel,
         return success(model);
     }
 
-    public ResponseEntity<?> delete(Long id) {
+    public ResponseEntity<JsonResult<?>> delete(Long id) {
         service.delete(id);
         return success();
     }

@@ -18,7 +18,7 @@ import org.jaguar.modules.workflow.enums.ButtonPosition;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_workflow_button_def")
+@TableName("jaguar_modules_workflow_button_def")
 public class ButtonDef extends BaseModel {
 
     private static final long serialVersionUID = 1L;

@@ -3,15 +3,15 @@ package org.jaguar.core.web;
 import java.io.Serializable;
 
 /**
- * Created by lvws on 2019/4/16.
+ * @author lvws
+ * @since 2019/4/16.
  */
 public class JsonResult<T> implements Serializable {
-
 
     private T data;
     private String message;
 
-    public JsonResult(){
+    public JsonResult() {
     }
 
     public JsonResult(T data) {

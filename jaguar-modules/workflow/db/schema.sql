@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS `t_workflow_button_def`;
-CREATE TABLE `t_workflow_button_def` (
+DROP TABLE IF EXISTS `jaguar_modules_workflow_button_def`;
+CREATE TABLE `jaguar_modules_workflow_button_def` (
   `id` bigint(20) NOT NULL COMMENT 'ID',
   `name_` varchar(45) NOT NULL COMMENT '按钮名称',
   `label_` varchar(45) NOT NULL COMMENT '按钮标签',
@@ -20,8 +20,8 @@ CREATE TABLE `t_workflow_button_def` (
 ) ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='按钮定义表';
 
 
-DROP TABLE IF EXISTS `t_workflow_button_inst`;
-CREATE TABLE `t_workflow_button_inst` (
+DROP TABLE IF EXISTS `jaguar_modules_workflow_button_inst`;
+CREATE TABLE `jaguar_modules_workflow_button_inst` (
   `id` bigint(20) NOT NULL COMMENT 'ID',
   `button_def_id` bigint(20) NOT NULL COMMENT '按钮定义ID',
   `process_definition_key` varchar(45) NOT NULL COMMENT '流程定义名称',
@@ -37,8 +37,8 @@ CREATE TABLE `t_workflow_button_inst` (
 ) ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='按钮实例表';
 
 
-DROP TABLE IF EXISTS `t_workflow_draft_definition`;
-CREATE TABLE `t_workflow_draft_definition` (
+DROP TABLE IF EXISTS `jaguar_modules_workflow_draft_definition`;
+CREATE TABLE `jaguar_modules_workflow_draft_definition` (
   `id` bigint(20) NOT NULL COMMENT 'ID',
   `element_id` varchar(50) DEFAULT NULL,
   `name_` varchar(45) NOT NULL COMMENT '名称',
@@ -54,8 +54,8 @@ CREATE TABLE `t_workflow_draft_definition` (
 ) ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='草稿表';
 
 
-DROP TABLE IF EXISTS `t_workflow_form_data`;
-CREATE TABLE `t_workflow_form_data` (
+DROP TABLE IF EXISTS `jaguar_modules_workflow_form_data`;
+CREATE TABLE `jaguar_modules_workflow_form_data` (
   `id` bigint(20) NOT NULL COMMENT 'ID',
   `process_info_id` bigint(20) NOT NULL COMMENT '流程信息ID',
   `form_template_id` bigint(20) NOT NULL COMMENT '表单模版ID',
@@ -75,8 +75,8 @@ CREATE TABLE `t_workflow_form_data` (
 ) ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='表单数据表';
 
 
-DROP TABLE IF EXISTS `t_workflow_form_data_attach`;
-CREATE TABLE `t_workflow_form_data_attach` (
+DROP TABLE IF EXISTS `jaguar_modules_workflow_form_data_attach`;
+CREATE TABLE `jaguar_modules_workflow_form_data_attach` (
   `id` bigint(20) NOT NULL COMMENT 'ID',
   `form_data_id` bigint(20) NOT NULL COMMENT '表单数据表ID',
   `value_` text NOT NULL COMMENT '值',
@@ -89,8 +89,8 @@ CREATE TABLE `t_workflow_form_data_attach` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='表单数据附件表';
 
 
-DROP TABLE IF EXISTS `t_workflow_form_template`;
-CREATE TABLE `t_workflow_form_template` (
+DROP TABLE IF EXISTS `jaguar_modules_workflow_form_template`;
+CREATE TABLE `jaguar_modules_workflow_form_template` (
   `id` bigint(20) NOT NULL COMMENT 'ID',
   `element_id` varchar(50) NOT NULL COMMENT 'xml元素ID',
   `name_` varchar(50) NOT NULL COMMENT '表单名称',
@@ -104,8 +104,8 @@ CREATE TABLE `t_workflow_form_template` (
 ) ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='表单模版表';
 
 
-DROP TABLE IF EXISTS `t_workflow_form_template_field`;
-CREATE TABLE `t_workflow_form_template_field` (
+DROP TABLE IF EXISTS `jaguar_modules_workflow_form_template_field`;
+CREATE TABLE `jaguar_modules_workflow_form_template_field` (
   `id` bigint(20) NOT NULL COMMENT 'ID',
   `form_template_id` bigint(20) NOT NULL COMMENT '表单模版ID',
   `form_template_sheet_id` bigint(20) NOT NULL COMMENT '表单块ID',
@@ -132,8 +132,8 @@ CREATE TABLE `t_workflow_form_template_field` (
 ) ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='表单字段表';
 
 
-DROP TABLE IF EXISTS `t_workflow_form_template_row`;
-CREATE TABLE `t_workflow_form_template_row` (
+DROP TABLE IF EXISTS `jaguar_modules_workflow_form_template_row`;
+CREATE TABLE `jaguar_modules_workflow_form_template_row` (
   `id` bigint(20) NOT NULL COMMENT 'ID',
   `form_template_id` bigint(20) NOT NULL COMMENT '表单模版ID',
   `form_template_sheet_id` bigint(20) NOT NULL COMMENT '表单块ID',
@@ -147,8 +147,8 @@ CREATE TABLE `t_workflow_form_template_row` (
 ) ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='表单行表';
 
 
-DROP TABLE IF EXISTS `t_workflow_form_template_sheet`;
-CREATE TABLE `t_workflow_form_template_sheet` (
+DROP TABLE IF EXISTS `jaguar_modules_workflow_form_template_sheet`;
+CREATE TABLE `jaguar_modules_workflow_form_template_sheet` (
   `id` bigint(20) NOT NULL COMMENT 'ID',
   `element_id` varchar(50) NOT NULL COMMENT 'xml元素ID',
   `form_template_id` bigint(20) NOT NULL COMMENT '表单模版ID',
@@ -164,8 +164,8 @@ CREATE TABLE `t_workflow_form_template_sheet` (
 ) ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='表单块表';
 
 
-DROP TABLE IF EXISTS `t_workflow_process_info`;
-CREATE TABLE `t_workflow_info` (
+DROP TABLE IF EXISTS `jaguar_modules_workflow_process_info`;
+CREATE TABLE `jaguar_modules_workflow_info` (
   `id` bigint(20) NOT NULL COMMENT 'ID',
   `process_definition_id` varchar(45) NOT NULL COMMENT '流程定义ID',
   `process_instance_id` varchar(45) NOT NULL COMMENT '流程实例ID',
@@ -185,8 +185,8 @@ CREATE TABLE `t_workflow_info` (
 ) ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='工单信息表';
 
 
-DROP TABLE IF EXISTS `t_workflow_operation_record`;
-CREATE TABLE `t_workflow_operation_record` (
+DROP TABLE IF EXISTS `jaguar_modules_workflow_operation_record`;
+CREATE TABLE `jaguar_modules_workflow_operation_record` (
   `id` bigint(20) NOT NULL COMMENT 'ID',
   `process_info_id` bigint(20) NOT NULL COMMENT '工单信息ID',
   `operator_` varchar(45) NOT NULL COMMENT '操作人账号',

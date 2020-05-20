@@ -50,7 +50,7 @@ public abstract class BaseController {
     }
 
     protected <T> ResponseEntity<JsonResult<T>> success(T data) {
-        return ResponseEntity.ok(new JsonResult<T>(data));
+        return ResponseEntity.ok(new JsonResult<>(data));
     }
 
     protected <T> ResponseEntity<JsonResult<Page<T>>> success(IPage<T> data) {

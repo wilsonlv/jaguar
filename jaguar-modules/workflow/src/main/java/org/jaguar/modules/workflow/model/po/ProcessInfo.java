@@ -24,7 +24,7 @@ import java.util.Map;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_workflow_process_info")
+@TableName("jaguar_modules_workflow_process_info")
 public class ProcessInfo extends BaseModel {
 
     private static final long serialVersionUID = 1L;

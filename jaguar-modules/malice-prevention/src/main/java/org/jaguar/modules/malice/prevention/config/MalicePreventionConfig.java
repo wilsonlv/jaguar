@@ -4,12 +4,14 @@ import org.jaguar.modules.malice.prevention.interceptor.MaliceIpInterceptor;
 import org.jaguar.modules.malice.prevention.interceptor.MaliceSessionInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 /**
- * Created by lvws on 2019/1/24.
+ * @author lvws
+ * @since 2019/1/24.
  */
 @Configuration
 public class MalicePreventionConfig implements WebMvcConfigurer {
@@ -26,7 +28,7 @@ public class MalicePreventionConfig implements WebMvcConfigurer {
     private static final String[] EXCLUDE_PATH_PATTERNS = new String[]{"/*.ico"};
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
+    public void addInterceptors(@NonNull InterceptorRegistry registry) {
         if (malicePreventionProperties.getIpEnable()) {
             registry.addInterceptor(maliceIpInterceptor).addPathPatterns(PATH_PATTERNS).excludePathPatterns(EXCLUDE_PATH_PATTERNS);
         }

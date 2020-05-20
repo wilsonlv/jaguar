@@ -29,7 +29,7 @@ import javax.validation.constraints.NotNull;
 @Validated
 @RestController
 @RequestMapping("/system/login")
-@Api(value = "系统登陆日志表管理", description = "系统登陆日志表管理")
+@Api(value = "系统登陆日志表管理")
 public class LoginController extends AbstractController<Login, LoginMapper, LoginService> {
 
 
@@ -62,7 +62,7 @@ public class LoginController extends AbstractController<Login, LoginMapper, Logi
     @ApiOperation(value = "删除系统登陆日志表")
     @RequiresPermissions("系统登陆日志表:删除")
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity del(@PathVariable Long id) {
+    public ResponseEntity<JsonResult<?>> del(@PathVariable Long id) {
         return super.delete(id);
     }
 

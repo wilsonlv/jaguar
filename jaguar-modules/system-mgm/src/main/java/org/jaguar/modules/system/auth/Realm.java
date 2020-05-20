@@ -36,9 +36,8 @@ public class Realm extends AuthorizingRealm {
     @Autowired
     private RoleMenuService roleMenuService;
 
-
     @Override
-    public Class getAuthenticationTokenClass() {
+    public Class<?> getAuthenticationTokenClass() {
         return Login.class;
     }
 

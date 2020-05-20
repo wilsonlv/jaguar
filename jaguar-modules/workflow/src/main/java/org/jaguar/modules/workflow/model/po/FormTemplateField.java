@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jaguar.core.base.BaseModel;
 import org.jaguar.modules.workflow.enums.FormTemplateFieldType;
-import org.jaguar.modules.workflow.model.vo.component.ComponentConfig;
+import org.jaguar.modules.workflow.model.vo.component.AbstractComponentConfig;
 
 /**
  * <p>
@@ -18,7 +18,7 @@ import org.jaguar.modules.workflow.model.vo.component.ComponentConfig;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_workflow_form_template_field")
+@TableName("jaguar_modules_workflow_form_template_field")
 public class FormTemplateField extends BaseModel implements Cloneable {
 
     private static final long serialVersionUID = 1L;
@@ -105,11 +105,12 @@ public class FormTemplateField extends BaseModel implements Cloneable {
     private String componentConfig;
 
     @TableField(exist = false)
-    private ComponentConfig config;
+    private AbstractComponentConfig config;
 
     @TableField(exist = false)
     private Object value;
 
+    @Override
     public FormTemplateField clone() throws CloneNotSupportedException {
         return (FormTemplateField) super.clone();
     }

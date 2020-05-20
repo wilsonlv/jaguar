@@ -2,6 +2,7 @@ package org.jaguar.modules.workflow.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.flowable.engine.RuntimeService;
 import org.jaguar.commons.aviator.ExpressionUtil;
@@ -17,8 +18,8 @@ import org.jaguar.modules.workflow.interfaces.IUserDefinedComponent;
 import org.jaguar.modules.workflow.mapper.FormDataMapper;
 import org.jaguar.modules.workflow.model.po.*;
 import org.jaguar.modules.workflow.model.vo.UserTask;
-import org.jaguar.modules.workflow.model.vo.component.ComponentConfig;
-import org.jaguar.modules.workflow.model.vo.component.UserDefinedConfig;
+import org.jaguar.modules.workflow.model.vo.component.AbstractComponentConfig;
+import org.jaguar.modules.workflow.model.vo.component.UserDefinedConfigAbstract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +38,7 @@ import java.util.Map;
  * @author lvws
  * @since 2019-02-28
  */
+@Slf4j
 @Service
 public class FormDataService extends BaseService<FormData, FormDataMapper> {
 
@@ -116,17 +118,12 @@ public class FormDataService extends BaseService<FormData, FormDataMapper> {
                 }
 
                 String value = formData.getString(field.getKey());
-                switch (taskFormPermission) {
-                    case REQUIRED: {
-                        if (submit && !field.getFormTemplateFieldType().equals(FormTemplateFieldType.userDefined) && StringUtils.isBlank(value)) {
-                            throw new CheckedException("【" + field.getKey() + "】为必填字段！");
-                        }
-                    }
-                    default: {
-                        createFormData(processInfo, field, value, sheet.getOverride());
-                        break;
+                if (taskFormPermission == TaskFieldPermission.REQUIRED) {
+                    if (submit && !field.getFormTemplateFieldType().equals(FormTemplateFieldType.userDefined) && StringUtils.isBlank(value)) {
+                        throw new CheckedException("【" + field.getKey() + "】为必填字段！");
                     }
                 }
+                createFormData(processInfo, field, value, sheet.getOverride());
 
                 //提交的数据的优先级大于结果值
                 if (StringUtils.isNotBlank(field.getResultValue()) && StringUtils.isBlank(value)) {
@@ -155,17 +152,12 @@ public class FormDataService extends BaseService<FormData, FormDataMapper> {
             throw new CheckedException("没有在【" + userTask.getName() + "】中找到【" + field.getKey() + "】的字段权限！");
         }
 
-        switch (taskFormPermission) {
-            case REQUIRED: {
-                if (StringUtils.isBlank(value)) {
-                    throw new CheckedException("【" + field.getKey() + "】为必填字段！");
-                }
-            }
-            default: {
-                createFormData(processInfo, field, value, true);
-                break;
+        if (taskFormPermission == TaskFieldPermission.REQUIRED) {
+            if (StringUtils.isBlank(value)) {
+                throw new CheckedException("【" + field.getKey() + "】为必填字段！");
             }
         }
+        createFormData(processInfo, field, value, true);
     }
 
     /**
@@ -206,6 +198,10 @@ public class FormDataService extends BaseService<FormData, FormDataMapper> {
      * 保存表单数据
      */
     private void createFormData(ProcessInfo processInfo, FormTemplateField field, String value, boolean override) {
+        if (field.getFormTemplateFieldType() == FormTemplateFieldType.fileUpload) {
+            return;
+        }
+
         field.setValue(value);
 
         JaguarLambdaQueryWrapper<FormData> wrapper = JaguarLambdaQueryWrapper.newInstance();
@@ -238,62 +234,55 @@ public class FormDataService extends BaseService<FormData, FormDataMapper> {
             formData.setBatchNum(formDatas.get(0).getBatchNum() + 1);
         }
 
-        switch (field.getFormTemplateFieldType()) {
-            case fileUpload: {
+        if (field.getFormTemplateFieldType() == FormTemplateFieldType.userDefined) {
+            //自定义组件由配置来实现持久化
+            formData.setFormDataPersistenceType(FormDataPersistenceType.USER_DEFINED);
+
+            UserDefinedConfigAbstract userDefinedConfig = AbstractComponentConfig.resovleComponent(field.getComponentConfig(), UserDefinedConfigAbstract.class);
+            //如果没有组件配置，则不需要管理
+            if (userDefinedConfig == null) {
+                return;
+            } else if (userDefinedConfig.getFormDataPersistenceType() == null && StringUtils.isBlank(userDefinedConfig.getComponentClassName())) {
+                return;
+            }
+
+            if (FormDataPersistenceType.USER_DEFINED.equals(userDefinedConfig.getFormDataPersistenceType())
+                    || StringUtils.isNotBlank(userDefinedConfig.getComponentClassName())) {
+                //如果持久化方式为USER_DEFINED或配置了组件类，组使用自定义存储
+
+                formData = this.saveOrUpdate(formData);
+                userDefinedConfig.getBean().persist(processInfo.getId(), formData.getId(), value);
+                return;
+            } else if (!FormDataPersistenceType.VALUE.equals(userDefinedConfig.getFormDataPersistenceType())) {
+                throw new CheckedException("无效的数据存储类型：" + userDefinedConfig.getFormDataPersistenceType());
+            }
+            //如果持久化方式为VALUE，则使用值存储
+        }
+
+        switch (field.getKey()) {
+            case Constant.PROCESS_NUM: {
+                processInfo.setProcessNum(value);
+                runtimeService.setVariable(processInfo.getProcessInstanceId(), Constant.PROCESS_NUM, value);
                 break;
             }
-            case userDefined: {
-                //自定义组件由配置来实现持久化
-
-                formData.setFormDataPersistenceType(FormDataPersistenceType.USER_DEFINED);
-
-                UserDefinedConfig userDefinedConfig = ComponentConfig.resovleComponent(field.getComponentConfig(), UserDefinedConfig.class);
-                if (userDefinedConfig == null ||
-                        (userDefinedConfig.getFormDataPersistenceType() == null
-                                && StringUtils.isBlank(userDefinedConfig.getComponentClassName()))) {//如果没有组件配置，则不需要管理
-                    break;
-                }
-
-                if (FormDataPersistenceType.USER_DEFINED.equals(userDefinedConfig.getFormDataPersistenceType())
-                        || StringUtils.isNotBlank(userDefinedConfig.getComponentClassName())) {
-                    //如果持久化方式为USER_DEFINED或配置了组件类，组使用自定义存储
-
-                    formData = this.saveOrUpdate(formData);
-                    userDefinedConfig.getBean().persist(processInfo.getId(), formData.getId(), value);
-                    break;
-                } else if (FormDataPersistenceType.VALUE.equals(userDefinedConfig.getFormDataPersistenceType())) {
-                    //如果持久化方式为VALUE，则使用go to default
-                } else {
-                    break;
-                }
+            case Constant.PROCESS_TITLE: {
+                processInfo.setTitle(value);
+                runtimeService.setVariable(processInfo.getProcessInstanceId(), Constant.PROCESS_TITLE, value);
+                break;
             }
-            default: {
-                switch (field.getKey()) {
-                    case Constant.PROCESS_NUM: {
-                        processInfo.setProcessNum(value);
-                        runtimeService.setVariable(processInfo.getProcessInstanceId(), Constant.PROCESS_NUM, value);
-                        break;
-                    }
-                    case Constant.PROCESS_TITLE: {
-                        processInfo.setTitle(value);
-                        runtimeService.setVariable(processInfo.getProcessInstanceId(), Constant.PROCESS_TITLE, value);
-                        break;
-                    }
-                    case Constant.PROCESS_PRIORITY: {
-                        processInfo.setPriority(Integer.parseInt(value));
-                        runtimeService.setVariable(processInfo.getProcessInstanceId(), Constant.PROCESS_PRIORITY, value);
-                        break;
-                    }
-                    default:
-                }
-
-                formData.setFormDataPersistenceType(FormDataPersistenceType.VALUE);
-                formData.setValue(value);
-                this.saveOrUpdate(formData);
-
-                runtimeService.setVariable(processInfo.getProcessInstanceId(), Constant.PROCESS_FORM_VARIABLE_PRE + field.getKey(), value);
+            case Constant.PROCESS_PRIORITY: {
+                processInfo.setPriority(Integer.parseInt(value));
+                runtimeService.setVariable(processInfo.getProcessInstanceId(), Constant.PROCESS_PRIORITY, value);
+                break;
             }
+            default:
         }
+
+        formData.setFormDataPersistenceType(FormDataPersistenceType.VALUE);
+        formData.setValue(value);
+        this.saveOrUpdate(formData);
+
+        runtimeService.setVariable(processInfo.getProcessInstanceId(), Constant.PROCESS_FORM_VARIABLE_PRE + field.getKey(), value);
     }
 
     /**
@@ -352,7 +341,7 @@ public class FormDataService extends BaseService<FormData, FormDataMapper> {
                         continue;
                     }
                     case USER_DEFINED: {
-                        UserDefinedConfig userDefinedConfig = ComponentConfig.resovleComponent(field.getComponentConfig(), UserDefinedConfig.class);
+                        UserDefinedConfigAbstract userDefinedConfig = AbstractComponentConfig.resovleComponent(field.getComponentConfig(), UserDefinedConfigAbstract.class);
                         IUserDefinedComponent component = userDefinedConfig.getBean();
                         if (component != null) {
                             String value = component.read(formData.getId());

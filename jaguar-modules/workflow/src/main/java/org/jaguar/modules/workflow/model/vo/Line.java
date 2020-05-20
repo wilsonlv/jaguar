@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by lvws on 2019/3/5.
+ * @author lvws
+ * @since 2019/3/14.
  */
 @Data
 public class Line implements Serializable {

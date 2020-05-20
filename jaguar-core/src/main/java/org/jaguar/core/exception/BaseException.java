@@ -4,7 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 
 /**
- * Created by lvws on 2019/5/23.
+ * @author lvws
+ * @since 2019/5/23.
  */
 public abstract class BaseException extends RuntimeException {
 
@@ -23,6 +24,10 @@ public abstract class BaseException extends RuntimeException {
         super(cause);
     }
 
+    /**
+     * 异常对应的的状态码
+     * @return 状态码枚举类
+     */
     public abstract HttpStatus getHttpStatus();
 
     @Override

@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS `t_system_user`;
-CREATE TABLE `t_system_user` (
+DROP TABLE IF EXISTS `jaguar_modules_system_user`;
+CREATE TABLE `jaguar_modules_system_user` (
   `id_`                 bigint(20) NOT NULL COMMENT 'ID',
   `user_account`        varchar(50) UNIQUE NOT NULL COMMENT '用户账号（唯一）',
   `user_phone`          varchar(11) UNIQUE DEFAULT NULL COMMENT '用户手机号（唯一）',
@@ -17,8 +17,8 @@ CREATE TABLE `t_system_user` (
 ) ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='系统用户表';
 
 
-DROP TABLE IF EXISTS `t_system_login`;
-CREATE TABLE `t_system_login` (
+DROP TABLE IF EXISTS `jaguar_modules_system_login`;
+CREATE TABLE `jaguar_modules_system_login` (
   `id_`                  bigint(20) NOT NULL COMMENT 'ID',
   `principal_`          varchar(50) NOT NULL COMMENT '登陆主体',
   `credentials_`        varchar(50) NOT NULL COMMENT '登陆凭证',
@@ -40,8 +40,8 @@ CREATE TABLE `t_system_login` (
 ) ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='系统登陆日志表';
 
 
-DROP TABLE IF EXISTS `t_system_role`;
-CREATE TABLE `t_system_role` (
+DROP TABLE IF EXISTS `jaguar_modules_system_role`;
+CREATE TABLE `jaguar_modules_system_role` (
   `id_`                  bigint(20) NOT NULL COMMENT 'ID',
   `role_name`           varchar(20) NOT NULL COMMENT '角色名称',
   `role_data_scope`     varchar(5) NOT NULL COMMENT '角色数据权限（OWNER、DEPT、ALL）',
@@ -55,8 +55,8 @@ CREATE TABLE `t_system_role` (
 ) ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='系统角色表';
 
 
-DROP TABLE IF EXISTS `t_system_user_role`;
-CREATE TABLE `t_system_user_role` (
+DROP TABLE IF EXISTS `jaguar_modules_system_user_role`;
+CREATE TABLE `jaguar_modules_system_user_role` (
   `id_`                  bigint(20) NOT NULL COMMENT 'ID',
   `user_id`             bigint(20) NOT NULL COMMENT '用户ID',
   `role_id`             bigint(20) NOT NULL COMMENT '角色ID',
@@ -69,8 +69,8 @@ CREATE TABLE `t_system_user_role` (
 ) ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='系统用户角色表';
 
 
-DROP TABLE IF EXISTS `t_system_menu`;
-CREATE TABLE `t_system_menu` (
+DROP TABLE IF EXISTS `jaguar_modules_system_menu`;
+CREATE TABLE `jaguar_modules_system_menu` (
   `id_`                  bigint(20) NOT NULL COMMENT 'ID',
   `menu_name`           varchar(20) NOT NULL COMMENT '菜单名称',
   `menu_parent_id`      bigint(20) DEFAULT NULL COMMENT '上级菜单ID',
@@ -88,8 +88,8 @@ CREATE TABLE `t_system_menu` (
 ) ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='系统菜单表';
 
 
-DROP TABLE IF EXISTS `t_system_role_menu`;
-CREATE TABLE `t_system_menu` (
+DROP TABLE IF EXISTS `jaguar_modules_system_role_menu`;
+CREATE TABLE `jaguar_modules_system_menu` (
   `id_`                      bigint(20) NOT NULL COMMENT 'ID',
   `role_id`                 bigint(20) NOT NULL COMMENT '角色ID',
   `menu_id`                 bigint(20) NOT NULL COMMENT '菜单ID',

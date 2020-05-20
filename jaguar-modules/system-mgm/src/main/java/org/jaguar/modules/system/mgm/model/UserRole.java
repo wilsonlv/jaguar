@@ -15,7 +15,7 @@ import org.jaguar.core.base.BaseModel;
  * @since 2019-11-15
  */
 @Data
-@TableName("t_system_user_role")
+@TableName("jaguar_modules_system_user_role")
 @EqualsAndHashCode(callSuper = true)
 public class UserRole extends BaseModel {
 

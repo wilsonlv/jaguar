@@ -26,9 +26,10 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @RestController
 @RequestMapping("/process/button_inst")
-@Api(value = "按钮实例表管理", description = "按钮实例表管理")
+@Api(value = "按钮实例表管理")
 public class ButtonInstController extends AbstractController<ButtonInst, ButtonInstMapper, ButtonInstService> {
 
+    @Override
     @ApiOperation(value = "查询按钮实例表")
     @RequiresPermissions("process_button_def_view")
     @GetMapping(value = "/page")
@@ -38,6 +39,7 @@ public class ButtonInstController extends AbstractController<ButtonInst, ButtonI
         return super.query(page);
     }
 
+    @Override
     @ApiOperation(value = "按钮实例表详情")
     @RequiresPermissions("process_button_def_view")
     @GetMapping(value = "/{id}")
@@ -52,10 +54,11 @@ public class ButtonInstController extends AbstractController<ButtonInst, ButtonI
         return super.saveOrUpdate(param);
     }
 
+    @Override
     @ApiOperation(value = "删除按钮实例表")
     @RequiresPermissions("process_button_def_del")
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity delete(@PathVariable Long id) {
+    public ResponseEntity<JsonResult<?>> delete(@PathVariable Long id) {
         return super.delete(id);
     }
 

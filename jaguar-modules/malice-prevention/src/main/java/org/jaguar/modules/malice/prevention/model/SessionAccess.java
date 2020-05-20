@@ -6,7 +6,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * Created by lvws on 2018/11/9.
+ * @author lvws
+ * @since 2018/11/9.
  */
 @Data
 public class SessionAccess implements Serializable {

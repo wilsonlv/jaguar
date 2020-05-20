@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_workflow_form_template")
+@TableName("jaguar_modules_workflow_form_template")
 public class FormTemplate extends BaseModel {
 
     private static final long serialVersionUID = 1L;

@@ -12,7 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Created by lvws on 2019/4/30.
+ * @author lvws
+ * @since 2019/4/30.
  */
 @Service
 public class CodeGeneratorService extends BaseService<CodeGenerator, CodeGeneratorMapper> {

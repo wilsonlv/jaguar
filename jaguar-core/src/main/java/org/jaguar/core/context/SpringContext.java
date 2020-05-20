@@ -3,10 +3,12 @@ package org.jaguar.core.context;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 /**
- * Created by lvws on 2019/4/16.
+ * @author lvws
+ * @since 2019/4/16.
  */
 @Component
 public class SpringContext implements ApplicationContextAware {
@@ -14,7 +16,7 @@ public class SpringContext implements ApplicationContextAware {
     private static ApplicationContext applicationContext;
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
         SpringContext.applicationContext = applicationContext;
     }
 

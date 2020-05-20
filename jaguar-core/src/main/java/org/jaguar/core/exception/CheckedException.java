@@ -3,7 +3,8 @@ package org.jaguar.core.exception;
 import org.springframework.http.HttpStatus;
 
 /**
- * Created by lvws on 2019/5/23.
+ * @author lvws
+ * @since 2019/5/23.
  */
 public class CheckedException extends BaseException {
 

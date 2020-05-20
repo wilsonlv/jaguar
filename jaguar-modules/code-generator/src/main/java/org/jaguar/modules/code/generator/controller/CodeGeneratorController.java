@@ -24,7 +24,7 @@ import javax.validation.constraints.NotNull;
  * @since 2019/4/30.
  */
 @RestController
-@Api(value = "代码生成管理", description = "代码生成管理")
+@Api(value = "代码生成管理")
 @RequestMapping("/code_generator")
 public class CodeGeneratorController extends AbstractController<CodeGenerator, CodeGeneratorMapper, CodeGeneratorService> {
 
@@ -56,7 +56,7 @@ public class CodeGeneratorController extends AbstractController<CodeGenerator, C
 
     @ApiOperation(value = "生成代码")
     @PostMapping(value = "/generate")
-    public ResponseEntity<JsonResult> generate(@RequestBody @NotNull CodeGenerator codeGenerator) {
+    public ResponseEntity<JsonResult<?>> generate(@RequestBody @NotNull CodeGenerator codeGenerator) {
 
         if (StringUtils.isBlank(codeGenerator.getOutputDir())) {
             codeGenerator.setOutputDir(codeGeneratorProperties.getDefaultOutputDir());

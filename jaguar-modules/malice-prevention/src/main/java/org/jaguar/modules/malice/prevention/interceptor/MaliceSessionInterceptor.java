@@ -1,13 +1,14 @@
 package org.jaguar.modules.malice.prevention.interceptor;
 
-import org.jaguar.modules.malice.prevention.config.MalicePreventionProperties;
-import org.jaguar.modules.malice.prevention.model.SessionAccess;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jaguar.commons.redis.cache.RedisCacheManager;
 import org.jaguar.commons.utils.IpUtil;
+import org.jaguar.modules.malice.prevention.config.MalicePreventionProperties;
+import org.jaguar.modules.malice.prevention.model.SessionAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -16,7 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 
 /**
- * Created by lvws on 2018/11/9.
+ * @author lvws
+ * @since 2018/11/9.
  */
 @Component
 public class MaliceSessionInterceptor extends HandlerInterceptorAdapter {
@@ -36,15 +38,15 @@ public class MaliceSessionInterceptor extends HandlerInterceptorAdapter {
     }
 
     private String getSessionAccessKey(String sessionId) {
-        return new StringBuilder(namespace()).append(":").append(SESSION_ACCESS_PREFIX).append(sessionId).toString();
+        return namespace() + ":" + SESSION_ACCESS_PREFIX + sessionId;
     }
 
     private String getSessionAccessTimeKey(String sessionId) {
-        return new StringBuilder(namespace()).append(":").append(SESSION_ACCESS_PREFIX).append(sessionId).append(":times").toString();
+        return namespace() + ":" + SESSION_ACCESS_PREFIX + sessionId + ":times";
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+    public boolean preHandle(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler)
             throws Exception {
 
         String url = request.getServletPath();
@@ -55,9 +57,9 @@ public class MaliceSessionInterceptor extends HandlerInterceptorAdapter {
         String sessionId = request.getSession().getId();
         String host = IpUtil.getHost(request);
 
-        Long freezingPeriod = malicePreventionProperties.getSessionFreezingPeriod() * 1000L;
+        long freezingPeriod = malicePreventionProperties.getSessionFreezingPeriod() * 1000L;
         Integer maxRecentAccessTimeNum = malicePreventionProperties.getSessionMaxRecentAccessTimeNum();
-        Long minRequestIntervalTime = malicePreventionProperties.getSessionMinRequestIntervalTime() * 1000L;
+        long minRequestIntervalTime = malicePreventionProperties.getSessionMinRequestIntervalTime() * 1000L;
 
         LocalDateTime accessTime = LocalDateTime.now();
 

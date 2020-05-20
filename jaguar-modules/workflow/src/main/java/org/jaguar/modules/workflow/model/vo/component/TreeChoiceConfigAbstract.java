@@ -4,11 +4,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * Created by lvws on 2019/4/25.
+ * @author lvws
+ * @since 2019/4/25.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class TreeChoiceConfig extends ComponentConfig {
+public class TreeChoiceConfigAbstract extends AbstractComponentConfig {
 
     /**
      * 数据源接口

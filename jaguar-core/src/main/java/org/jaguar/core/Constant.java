@@ -1,7 +1,8 @@
 package org.jaguar.core;
 
 /**
- * Created by lvws on 2019/2/21.
+ * @author lvws
+ * @since 2019/2/21.
  */
 public interface Constant {
 

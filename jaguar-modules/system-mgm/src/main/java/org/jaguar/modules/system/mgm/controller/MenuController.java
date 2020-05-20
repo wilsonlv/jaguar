@@ -29,7 +29,7 @@ import javax.validation.constraints.NotNull;
 @Validated
 @RestController
 @RequestMapping("/system/menu")
-@Api(value = "系统菜单表管理", description = "系统菜单表管理")
+@Api(value = "系统菜单表管理")
 public class MenuController extends AbstractController<Menu, MenuMapper, MenuService> {
 
 
@@ -62,7 +62,7 @@ public class MenuController extends AbstractController<Menu, MenuMapper, MenuSer
     @ApiOperation(value = "删除系统菜单表")
     @RequiresPermissions("系统菜单表:删除")
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity del(@PathVariable Long id){
+    public ResponseEntity<JsonResult<?>> del(@PathVariable Long id){
         return super.delete(id);
     }
 

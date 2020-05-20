@@ -29,7 +29,7 @@ import javax.validation.constraints.NotNull;
 @Validated
 @RestController
 @RequestMapping("/system/user_role")
-@Api(value = "系统用户角色表管理", description = "系统用户角色表管理")
+@Api(value = "系统用户角色表管理")
 public class UserRoleController extends AbstractController<UserRole, UserRoleMapper, UserRoleService> {
 
 
@@ -62,7 +62,7 @@ public class UserRoleController extends AbstractController<UserRole, UserRoleMap
     @ApiOperation(value = "删除系统用户角色表")
     @RequiresPermissions("系统用户角色表:删除")
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity del(@PathVariable Long id) {
+    public ResponseEntity<JsonResult<?>> del(@PathVariable Long id) {
         return super.delete(id);
     }
 

@@ -17,7 +17,7 @@ import org.jaguar.modules.system.enums.RoleMenuPermission;
  * @since 2019-11-08
  */
 @Data
-@TableName("t_system_role_menu")
+@TableName("jaguar_modules_system_role_menu")
 @EqualsAndHashCode(callSuper = true)
 public class RoleMenu extends BaseModel {
 

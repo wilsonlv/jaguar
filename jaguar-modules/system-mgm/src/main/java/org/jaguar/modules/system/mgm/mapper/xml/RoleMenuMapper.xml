@@ -24,8 +24,8 @@
 	<select id="listWithMenu" resultMap="BaseResultMap">
 		SELECT
 			rm.*, m.*
-		FROM t_system_role_menu rm
-		LEFT JOIN t_system_menu m ON m.id_ = rm.menu_id
+		FROM jaguar_modules_system_role_menu rm
+		LEFT JOIN jaguar_modules_system_menu m ON m.id_ = rm.menu_id
 		<where>
 			rm.deleted_ = 0
 			AND m.deleted_ = 0

@@ -1,5 +1,6 @@
 package org.jaguar.modules.document.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import org.jaguar.core.base.BaseService;
 import org.jaguar.core.exception.CheckedException;
@@ -72,7 +73,12 @@ public class DocumentService extends BaseService<Document, DocumentMapper> {
                 throw new CheckedException("文件为非空！");
             }
 
-            String filePath = this.createFilePath(file.getOriginalFilename());
+            String originalFilename = file.getOriginalFilename();
+            if (StringUtils.isBlank(originalFilename)) {
+                continue;
+            }
+
+            String filePath = this.createFilePath(originalFilename);
             try {
                 file.transferTo(new File(filePath));
             } catch (IOException e) {
@@ -80,8 +86,8 @@ public class DocumentService extends BaseService<Document, DocumentMapper> {
             }
 
             Document document = new Document();
-            document.setOriginalName(file.getOriginalFilename());
-            document.setExtension(file.getOriginalFilename().split(".")[1]);
+            document.setOriginalName(originalFilename);
+            document.setExtension(originalFilename.split("\\.")[1]);
             document.setAbsolutePath(filePath);
             document.setTotalSpace(file.getSize());
             document = this.insert(document);

@@ -5,7 +5,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Created by lvws on 2019/5/23.
+ * @author lvws
+ * @since 2019/5/23.
  */
 @SpringBootApplication
 @MapperScan(basePackages = {"org.jaguar.**.mapper"})

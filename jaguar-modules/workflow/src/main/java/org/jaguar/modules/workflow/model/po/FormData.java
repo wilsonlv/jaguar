@@ -17,7 +17,7 @@ import org.jaguar.modules.workflow.enums.FormDataPersistenceType;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_workflow_form_data")
+@TableName("jaguar_modules_workflow_form_data")
 public class FormData extends BaseModel {
 
     private static final long serialVersionUID = 1L;

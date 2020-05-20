@@ -1,7 +1,6 @@
 package org.jaguar.modules.code.generator.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
-import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import lombok.Data;
@@ -14,7 +13,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Created by lvws on 2019/4/30.
+ * @author lvws
+ * @since 2019/4/30.
  */
 @Data
 @Configuration

@@ -29,7 +29,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
@@ -47,7 +46,7 @@ import java.util.HashMap;
 @Validated
 @RestController
 @RequestMapping("/process/draft_definition")
-@Api(value = "草稿表管理", description = "草稿表管理")
+@Api(value = "草稿表管理")
 public class DraftDefinitionController extends AbstractController<DraftDefinition, DraftDefinitionMapper, DraftDefinitionService> {
 
     @ApiOperation(value = "查询草稿表")
@@ -62,7 +61,7 @@ public class DraftDefinitionController extends AbstractController<DraftDefinitio
         IPage<DraftDefinition> draftDefinitionPage;
         if (latest) {
             page.setDesc("a.create_time");
-            draftDefinitionPage = service.queryLatest(page, new HashMap<String, Object>() {{
+            draftDefinitionPage = service.queryLatest(page, new HashMap<String, Object>(2) {{
                 put("fuzzyName", fuzzyName);
                 if (definitionType != null) {
                     put("definitionType", definitionType.toString());
@@ -82,6 +81,7 @@ public class DraftDefinitionController extends AbstractController<DraftDefinitio
         return success(draftDefinitionPage);
     }
 
+    @Override
     @ApiOperation(value = "草稿表详情")
     @RequiresPermissions("process_draft_definition_view")
     @GetMapping(value = "/{id}")
@@ -110,7 +110,7 @@ public class DraftDefinitionController extends AbstractController<DraftDefinitio
     @ApiOperation(value = "保存表单草稿")
     @RequiresPermissions("process_draft_definition_update")
     @PostMapping(value = "/save_form")
-    public ResponseEntity<JsonResult> saveForm(@Valid @RequestBody FormTemplate formTemplate) {
+    public ResponseEntity<JsonResult<?>> saveForm(@Valid @RequestBody FormTemplate formTemplate) {
         synchronized (this) {
             service.saveForm(formTemplate);
         }
@@ -120,7 +120,7 @@ public class DraftDefinitionController extends AbstractController<DraftDefinitio
     @ApiOperation(value = "保存流程草稿")
     @RequiresPermissions("process_draft_definition_update")
     @PostMapping(value = "/save_flow")
-    public ResponseEntity<JsonResult> saveFlow(@Valid @RequestBody FlowDefinition flowDefinition) {
+    public ResponseEntity<JsonResult<?>> saveFlow(@Valid @RequestBody FlowDefinition flowDefinition) {
 
         synchronized (this) {
             service.saveFlow(flowDefinition);
@@ -131,7 +131,7 @@ public class DraftDefinitionController extends AbstractController<DraftDefinitio
     @ApiOperation(value = "导入表单草稿")
     @RequiresPermissions("process_draft_definition_import")
     @PostMapping(value = "/import_form")
-    public ResponseEntity<JsonResult> importForm(@ApiParam(value = "表单草稿", required = true) @NotNull MultipartFile file)
+    public ResponseEntity<JsonResult<?>> importForm(@ApiParam(value = "表单草稿", required = true) @NotNull MultipartFile file)
             throws IOException {
         FormTemplate formTemplate = JSONObject.parseObject(
                 file.getInputStream(), StandardCharsets.UTF_8, FormTemplate.class, new Feature[]{});
@@ -147,8 +147,8 @@ public class DraftDefinitionController extends AbstractController<DraftDefinitio
     @ApiOperation(value = "导入流程草稿")
     @RequiresPermissions("process_draft_definition_import")
     @PostMapping(value = "/import_flow")
-    public ResponseEntity<JsonResult> importFlow(@ApiParam(value = "流程草稿", required = true) @NotNull MultipartFile file)
-            throws IOException, XMLStreamException {
+    public ResponseEntity<JsonResult<?>> importFlow(@ApiParam(value = "流程草稿", required = true) @NotNull MultipartFile file)
+            throws IOException {
 
         BpmnModel bpmnModel = Bpmn20Util.xmlToBpmnModel(file.getInputStream());
         FlowDefinition flowDefinition = Bpmn20Util.parseFlow(bpmnModel);

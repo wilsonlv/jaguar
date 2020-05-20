@@ -18,7 +18,7 @@ import java.util.List;
  * @since 2019-11-08
  */
 @Data
-@TableName("t_system_menu")
+@TableName("jaguar_modules_system_menu")
 @EqualsAndHashCode(callSuper = true)
 public class Menu extends BaseModel {
 

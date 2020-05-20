@@ -44,7 +44,7 @@ import static org.jaguar.modules.system.Constant.PIC_VERIFICATION_CODE;
 @Validated
 @RestController
 @RequestMapping("/auth")
-@Api(value = "个人登录和权限管理", description = "个人登录和权限管理")
+@Api(value = "个人登录和权限管理")
 public class AuthController extends AbstractController<User, UserMapper, UserService> {
 
     @Autowired
@@ -125,7 +125,7 @@ public class AuthController extends AbstractController<User, UserMapper, UserSer
 
     @ApiOperation(value = "退出登陆")
     @PostMapping(value = "/logout")
-    public ResponseEntity<JsonResult> logout() {
+    public ResponseEntity<JsonResult<?>> logout() {
 
         SecurityUtils.getSubject().logout();
         return success();
@@ -157,7 +157,7 @@ public class AuthController extends AbstractController<User, UserMapper, UserSer
 
     @ApiOperation(value = "修改密码")
     @PostMapping(value = "/modify_password")
-    public ResponseEntity<JsonResult> modifyPassword(
+    public ResponseEntity<JsonResult<?>> modifyPassword(
             @ApiParam(value = "旧密码", required = true) @RequestParam String oldPassword,
             @ApiParam(value = "新密码", required = true) @RequestParam String newPassword) {
 

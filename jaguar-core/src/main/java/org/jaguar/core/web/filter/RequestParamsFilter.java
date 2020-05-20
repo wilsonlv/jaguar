@@ -11,7 +11,8 @@ import java.io.IOException;
 import java.util.Enumeration;
 
 /**
- * Created by lvws on 2017/3/28.
+ * @author lvws
+ * @since 2017/3/28.
  */
 @WebFilter(urlPatterns = "/*")
 public class RequestParamsFilter implements Filter {
@@ -19,8 +20,7 @@ public class RequestParamsFilter implements Filter {
     private static final Logger logger = LogManager.getLogger(RequestParamsFilter.class);
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
+    public void init(FilterConfig filterConfig) {
     }
 
     @Override

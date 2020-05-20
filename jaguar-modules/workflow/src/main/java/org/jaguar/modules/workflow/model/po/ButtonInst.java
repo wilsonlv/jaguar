@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_workflow_button_inst")
+@TableName("jaguar_modules_workflow_button_inst")
 public class ButtonInst extends BaseModel {
 
     private static final long serialVersionUID = 1L;

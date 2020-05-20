@@ -16,6 +16,7 @@ import org.jaguar.modules.handlerlog.model.HandlerLog;
 import org.jaguar.modules.handlerlog.service.HandlerLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.NamedThreadLocal;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -27,11 +28,14 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 /**
- * Created by lvws on 2018/11/12.
+ * @author lvws
+ * @since 2018/11/12.
  */
 @Slf4j
 @Component
 public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
+
+    private static final String ERROR = "/error";
 
     @Autowired
     private ShiroProperties shiroProperties;
@@ -63,14 +67,13 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
             return null;
         }
 
-        return new StringBuffer()
-                .append(userAgentInfo.getOsName()).append(" ")
-                .append(userAgentInfo.getType()).append(" ")
-                .append(userAgentInfo.getUaName()).toString();
+        return userAgentInfo.getOsName() + " " +
+                userAgentInfo.getType() + " " +
+                userAgentInfo.getUaName();
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler)
             throws Exception {
 
         if (handler instanceof HandlerMethod) {
@@ -99,10 +102,10 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
     }
 
     @Override
-    public void afterCompletion(final HttpServletRequest request, final HttpServletResponse response, Object handler,
+    public void afterCompletion(@NonNull final HttpServletRequest request, @NonNull final HttpServletResponse response, @NonNull Object handler,
                                 final Exception ex) throws Exception {
 
-        if (handler instanceof HandlerMethod && !("/error".equals(request.getRequestURI()))) {
+        if (handler instanceof HandlerMethod && !(ERROR.equals(request.getRequestURI()))) {
             final HandlerLog handlerLog = HANDLER_LOG.get();
             HANDLER_LOG.remove();
             BaseService.CURRENT_USER.remove();
@@ -110,7 +113,7 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
             handlerLog.setStatus(response.getStatus());
 
             LocalDateTime endTime = LocalDateTime.now();
-            Long duration = Duration.between(endTime, handlerLog.getAccessTime()).toMillis();
+            long duration = Duration.between(endTime, handlerLog.getAccessTime()).toMillis();
 
             if (handlerLog.getRequestUri().contains(shiroProperties.getLoginUrl())) {
                 log.warn("用户[{}@{}]没有登录", handlerLog.getClientHost(), handlerLog.getUserAgent());

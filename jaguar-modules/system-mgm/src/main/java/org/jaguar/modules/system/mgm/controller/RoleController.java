@@ -32,7 +32,7 @@ import javax.validation.constraints.NotNull;
 @Validated
 @RestController
 @RequestMapping("/system/role")
-@Api(value = "系统角色表管理", description = "系统角色表管理")
+@Api(value = "系统角色表管理")
 public class RoleController extends AbstractController<Role, RoleMapper, RoleService> {
 
 
@@ -65,7 +65,7 @@ public class RoleController extends AbstractController<Role, RoleMapper, RoleSer
     @ApiOperation(value = "删除系统角色表")
     @RequiresPermissions("系统角色表:删除")
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity del(@PathVariable Long id){
+    public ResponseEntity<JsonResult<?>> del(@PathVariable Long id){
         return super.delete(id);
     }
 

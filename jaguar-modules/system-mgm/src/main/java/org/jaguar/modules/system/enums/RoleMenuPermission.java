@@ -6,12 +6,24 @@ package org.jaguar.modules.system.enums;
  */
 public enum RoleMenuPermission {
 
+    /**
+     * 查看
+     */
     VIEW("查看"),
+    /**
+     * 读取
+     */
     READ("读取"),
+    /**
+     * 新增编辑
+     */
     UPDATE("新增编辑"),
+    /**
+     * 删除
+     */
     DEL("删除");
 
-    private String name;
+    private final String name;
 
     RoleMenuPermission(String name) {
         this.name = name;

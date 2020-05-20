@@ -4,11 +4,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * Created by lvws on 2019/7/31.
+ * @author lvws
+ * @since 2019/7/31.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class FileUploadConfig extends ComponentConfig {
+public class FileUploadConfigAbstract extends AbstractComponentConfig {
 
     /**
      * 最大文件数量

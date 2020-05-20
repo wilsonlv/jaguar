@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_workflow_form_template_sheet")
+@TableName("jaguar_modules_workflow_form_template_sheet")
 public class FormTemplateSheet extends BaseModel implements Cloneable {
 
     private static final long serialVersionUID = 1L;
@@ -53,6 +53,7 @@ public class FormTemplateSheet extends BaseModel implements Cloneable {
     @TableField(exist = false)
     private List<FormTemplateRow> formTemplateRows = new ArrayList<>();
 
+    @Override
     public FormTemplateSheet clone() throws CloneNotSupportedException {
         FormTemplateSheet clone = (FormTemplateSheet) super.clone();
         clone.setFormTemplateRows(new ArrayList<>());

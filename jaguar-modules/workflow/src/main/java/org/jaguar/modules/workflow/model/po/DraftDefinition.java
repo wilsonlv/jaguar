@@ -17,7 +17,7 @@ import org.jaguar.modules.workflow.enums.DefinitionType;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_workflow_draft_definition")
+@TableName("jaguar_modules_workflow_draft_definition")
 public class DraftDefinition extends BaseModel {
 
     private static final long serialVersionUID = 1L;

@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @RestController
 @RequestMapping("/process/operation_record")
-@Api(value = "工单操作记录表管理", description = "工单操作记录表管理")
+@Api(value = "工单操作记录表管理")
 public class OperationRecordController extends AbstractController<OperationRecord, OperationRecordMapper, OperationRecordService> {
 
     @ApiOperation(value = "查询工单操作记录表")
@@ -49,6 +49,7 @@ public class OperationRecordController extends AbstractController<OperationRecor
         return super.query(page, wrapper);
     }
 
+    @Override
     @ApiOperation(value = "工单操作记录表详情")
     @RequiresPermissions("process_operation_record_view")
     @GetMapping(value = "/{id}")
