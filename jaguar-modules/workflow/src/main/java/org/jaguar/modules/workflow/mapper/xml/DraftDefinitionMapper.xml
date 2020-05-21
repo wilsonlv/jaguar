@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.itqingning.lucy.process.mapper.DraftDefinitionMapper">
+<mapper namespace="org.jaguar.modules.workflow.mapper.DraftDefinitionMapper">
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="org.jaguar.modules.workflow.model.po.DraftDefinition">
@@ -14,9 +14,9 @@
 
     <select id="queryLatest" resultMap="BaseResultMap">
         SELECT a.id, a.element_id, a.name_, a.definition_type, a.version_
-        FROM t_process_draft_definition a
+        FROM jaguar_modules_workflow_draft_definition a
         RIGHT JOIN
-        (SELECT name_, MAX(version_) AS max_version FROM t_process_draft_definition GROUP BY name_) b
+        (SELECT name_, MAX(version_) AS max_version FROM jaguar_modules_workflow_draft_definition GROUP BY name_) b
         ON a.name_ = b.name_ and a.version_ = b.max_version
         <where>
             <if test="p.name != null and p.name != ''">

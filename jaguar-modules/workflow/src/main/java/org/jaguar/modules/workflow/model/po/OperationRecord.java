@@ -73,7 +73,7 @@ public class OperationRecord extends BaseModel {
      * 批次号
      */
     @TableField("batch_num")
-    private String batchNum;
+    private Long batchNum;
     /**
      * 操作人
      */

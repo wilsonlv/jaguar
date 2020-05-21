@@ -1,6 +1,7 @@
 package org.jaguar.modules.workflow.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -8,6 +9,7 @@ import org.flowable.engine.RuntimeService;
 import org.jaguar.commons.aviator.ExpressionUtil;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import org.jaguar.core.base.BaseService;
+import org.jaguar.core.exception.Assert;
 import org.jaguar.core.exception.CheckedException;
 import org.jaguar.modules.document.model.Document;
 import org.jaguar.modules.workflow.Constant;
@@ -45,16 +47,43 @@ public class FormDataService extends BaseService<FormData, FormDataMapper> {
     @Autowired
     private RuntimeService runtimeService;
     @Autowired
+    private ProcessInfoService processInfoService;
+    @Autowired
     private FormDataAttachService formDataAttachService;
+    @Autowired
+    private FormTemplateFieldService formTemplateFieldService;
 
     /**
      * 根据工单信息ID和表单字段key查询表单数据
      */
     public FormData getByProcessInfoIdAndFieldKey(Long processInfoId, String fieldKey) {
+        return this.getByProcessInfoIdAndFieldKey(processInfoId, fieldKey, 0);
+    }
+
+    /**
+     * 根据工单信息ID和表单字段key查询最新得表单数据
+     */
+    public FormData getLatestByProcessInfoIdAndFieldKey(Long processInfoId, String fieldKey) {
+        @SuppressWarnings("unchecked") int count = this.list(JaguarLambdaQueryWrapper.<FormData>newInstance()
+                .eq(FormData::getProcessInfoId, processInfoId)
+                .eq(FormData::getFieldKey, fieldKey)
+                .groupBy(FormData::getBatchNum)).size();
+
         JaguarLambdaQueryWrapper<FormData> wrapper = JaguarLambdaQueryWrapper.newInstance();
         wrapper.eq(FormData::getProcessInfoId, processInfoId)
                 .eq(FormData::getFieldKey, fieldKey)
-                .eq(FormData::getBatchNum, 0);
+                .eq(FormData::getBatchNum, count - 1);
+        return this.unique(wrapper);
+    }
+
+    /**
+     * 根据工单信息ID、表单字段key和批次号查询表单数据
+     */
+    public FormData getByProcessInfoIdAndFieldKey(Long processInfoId, String fieldKey, Integer batachNum) {
+        JaguarLambdaQueryWrapper<FormData> wrapper = JaguarLambdaQueryWrapper.newInstance();
+        wrapper.eq(FormData::getProcessInfoId, processInfoId)
+                .eq(FormData::getFieldKey, fieldKey)
+                .eq(FormData::getBatchNum, batachNum);
         return this.unique(wrapper);
     }
 
@@ -90,7 +119,7 @@ public class FormDataService extends BaseService<FormData, FormDataMapper> {
     public Map<String, String> listMapByProcessInfoId(Long processInfoId) {
         List<FormData> formDataList = this.listByProcessInfoId(processInfoId);
 
-        Map<String, String> formDataMap = new HashMap<>();
+        Map<String, String> formDataMap = new HashMap<>(formDataList.size());
         for (FormData formData : formDataList) {
             formDataMap.put(formData.getFieldKey(), formData.getValue());
         }
@@ -123,6 +152,7 @@ public class FormDataService extends BaseService<FormData, FormDataMapper> {
                         throw new CheckedException("【" + field.getKey() + "】为必填字段！");
                     }
                 }
+
                 createFormData(processInfo, field, value, sheet.getOverride());
 
                 //提交的数据的优先级大于结果值
@@ -137,7 +167,7 @@ public class FormDataService extends BaseService<FormData, FormDataMapper> {
         for (FormTemplateField field : resultValueFields) {
             if (StringUtils.isEmpty((String) field.getValue())) {
                 String value = ExpressionUtil.execute(field.getResultValue(), variables).toString();
-                createFormData(processInfo, field, value, sheet.getOverride());//
+                createFormData(processInfo, field, value, sheet.getOverride());
             }
         }
     }
@@ -160,14 +190,16 @@ public class FormDataService extends BaseService<FormData, FormDataMapper> {
         createFormData(processInfo, field, value, true);
     }
 
+
     /**
      * 附件上传
      */
     @Transactional
-    public List<FormDataAttach> upload(ProcessInfo processInfo, FormTemplateField field, List<Document> documentList) {
-        JaguarLambdaQueryWrapper<FormData> wrapper = JaguarLambdaQueryWrapper.newInstance();
-        wrapper.eq(FormData::getProcessInfoId, processInfo.getId());
-        wrapper.eq(FormData::getFormTemplateFieldId, field.getId());
+    public List<FormDataAttach> upload(ProcessInfo processInfo, FormTemplateField field, Integer batchNum, List<Document> documentList) {
+        LambdaQueryWrapper<FormData> wrapper = JaguarLambdaQueryWrapper.<FormData>newInstance()
+                .eq(FormData::getProcessInfoId, processInfo.getId())
+                .eq(FormData::getFormTemplateFieldId, field.getId())
+                .eq(FormData::getBatchNum, batchNum);
         FormData formData = this.unique(wrapper);
         if (formData == null) {
             formData = new FormData();
@@ -177,6 +209,7 @@ public class FormDataService extends BaseService<FormData, FormDataMapper> {
             formData.setFormTemplateFieldId(field.getId());
             formData.setFieldKey(field.getKey());
             formData.setFormDataPersistenceType(FormDataPersistenceType.FORM_DATA_ATTACH);
+            formData.setBatchNum(batchNum);
             formData = this.saveOrUpdate(formData);
         }
 
@@ -185,6 +218,7 @@ public class FormDataService extends BaseService<FormData, FormDataMapper> {
         //附件上传存储在FormDataAttach表中
         for (Document document : documentList) {
             FormDataAttach formDataAttach = new FormDataAttach();
+            formDataAttach.setProcessInfoId(processInfo.getId());
             formDataAttach.setFormDataId(formData.getId());
             formDataAttach.setDocumentId(document.getId());
             formDataAttach = formDataAttachService.insert(formDataAttach);
@@ -197,12 +231,19 @@ public class FormDataService extends BaseService<FormData, FormDataMapper> {
     /**
      * 保存表单数据
      */
-    private void createFormData(ProcessInfo processInfo, FormTemplateField field, String value, boolean override) {
+    private FormData createFormData(ProcessInfo processInfo, FormTemplateField field, String value, boolean override) {
         if (field.getFormTemplateFieldType() == FormTemplateFieldType.fileUpload) {
-            return;
+            return null;
         }
 
         field.setValue(value);
+
+        if (field.getUnique()) {
+            String processDefinitionName = processInfo.getProcessDefinitionId().split(":")[0];
+            if (processInfoService.checkUnique(processDefinitionName, field.getKey(), value, processInfo.getId())) {
+                throw new CheckedException("【" + field.getLabel() + "】重复");
+            }
+        }
 
         JaguarLambdaQueryWrapper<FormData> wrapper = JaguarLambdaQueryWrapper.newInstance();
         wrapper.eq(FormData::getProcessInfoId, processInfo.getId())
@@ -236,25 +277,39 @@ public class FormDataService extends BaseService<FormData, FormDataMapper> {
 
         if (field.getFormTemplateFieldType() == FormTemplateFieldType.userDefined) {
             //自定义组件由配置来实现持久化
-            formData.setFormDataPersistenceType(FormDataPersistenceType.USER_DEFINED);
 
             UserDefinedConfigAbstract userDefinedConfig = AbstractComponentConfig.resovleComponent(field.getComponentConfig(), UserDefinedConfigAbstract.class);
             //如果没有组件配置，则不需要管理
             if (userDefinedConfig == null) {
-                return;
+                return null;
             } else if (userDefinedConfig.getFormDataPersistenceType() == null && StringUtils.isBlank(userDefinedConfig.getComponentClassName())) {
-                return;
+                return null;
             }
 
             if (FormDataPersistenceType.USER_DEFINED.equals(userDefinedConfig.getFormDataPersistenceType())
                     || StringUtils.isNotBlank(userDefinedConfig.getComponentClassName())) {
                 //如果持久化方式为USER_DEFINED或配置了组件类，组使用自定义存储
 
+                formData.setFormDataPersistenceType(FormDataPersistenceType.USER_DEFINED);
                 formData = this.saveOrUpdate(formData);
                 userDefinedConfig.getBean().persist(processInfo.getId(), formData.getId(), value);
-                return;
-            } else if (!FormDataPersistenceType.VALUE.equals(userDefinedConfig.getFormDataPersistenceType())) {
-                throw new CheckedException("无效的数据存储类型：" + userDefinedConfig.getFormDataPersistenceType());
+                return formData;
+            } else if (FormDataPersistenceType.FORM_DATA_ATTACH.equals(userDefinedConfig.getFormDataPersistenceType())) {
+                formData.setFormDataPersistenceType(FormDataPersistenceType.FORM_DATA_ATTACH);
+                formData = this.saveOrUpdate(formData);
+
+                List<FormDataAttach> formDataAttachList = formDataAttachService.getByFormDataId(formData.getId());
+                FormDataAttach formDataAttach;
+                if (formDataAttachList.size() == 0) {
+                    formDataAttach = new FormDataAttach();
+                    formDataAttach.setFormDataId(formData.getId());
+                } else {
+                    formDataAttach = formDataAttachList.get(0);
+                }
+
+                formDataAttach.setValue(value);
+                formDataAttachService.saveOrUpdate(formDataAttach);
+                return formData;
             }
             //如果持久化方式为VALUE，则使用值存储
         }
@@ -280,9 +335,10 @@ public class FormDataService extends BaseService<FormData, FormDataMapper> {
 
         formData.setFormDataPersistenceType(FormDataPersistenceType.VALUE);
         formData.setValue(value);
-        this.saveOrUpdate(formData);
+        formData = this.saveOrUpdate(formData);
 
         runtimeService.setVariable(processInfo.getProcessInstanceId(), Constant.PROCESS_FORM_VARIABLE_PRE + field.getKey(), value);
+        return formData;
     }
 
     /**
@@ -296,7 +352,8 @@ public class FormDataService extends BaseService<FormData, FormDataMapper> {
      * 为扩展块填充表单数据
      */
     public List<FormTemplateSheet> fillFormDataForExtendSheet(Long processInfoId, FormTemplateSheet sheet) {
-        int count = this.list(JaguarLambdaQueryWrapper.<FormData>newInstance()
+
+        @SuppressWarnings("unchecked") int count = this.list(JaguarLambdaQueryWrapper.<FormData>newInstance()
                 .eq(FormData::getProcessInfoId, processInfoId)
                 .eq(FormData::getFormTemplateSheetId, sheet.getId())
                 .groupBy(FormData::getBatchNum)).size();
@@ -362,5 +419,22 @@ public class FormDataService extends BaseService<FormData, FormDataMapper> {
 
     public FormData getByKeyAndValueInProcessDefinition(@NotBlank String processDefinitionName, @NotBlank String key, @NotBlank String value) {
         return this.mapper.getByKeyAndValueInProcessDefinition(processDefinitionName, key, value);
+    }
+
+    public Page<FormData> queryOverride(Page<FormData> page, Long processInfoId, String fuzzyFieldLabel, String fuzzyFieldKey) {
+        return this.mapper.queryOverride(page, processInfoId, fuzzyFieldLabel, fuzzyFieldKey);
+    }
+
+    @Transactional
+    public FormData modifyValue(Long id, String value) {
+        FormData formData = this.getById(id);
+        Assert.validateId(formData, "表单数据", id);
+
+        ProcessInfo processInfo = processInfoService.getById(formData.getProcessInfoId());
+        FormTemplateField field = formTemplateFieldService.getById(formData.getFormTemplateFieldId());
+        formData = this.createFormData(processInfo, field, value, true);
+
+        processInfoService.updateById(processInfo);
+        return formData;
     }
 }

@@ -1,7 +1,8 @@
 package org.jaguar.modules.workflow.interfaces;
 
 /**
- * Created by lvws on 2019/4/27.
+ * @author lvws
+ * @since 2019/4/27.
  */
 public interface IUserDefinedComponent {
 

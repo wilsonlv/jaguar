@@ -32,7 +32,7 @@ import javax.validation.constraints.NotBlank;
 @Validated
 @RestController
 @RequestMapping("/process/form_template")
-@Api(value = "表单模版表管理", description = "表单模版表管理")
+@Api(value = "表单模版表管理")
 public class FormTemplateController extends AbstractController<FormTemplate, FormTemplateMapper, FormTemplateService> {
 
     @ApiOperation(value = "查询表单模版表")

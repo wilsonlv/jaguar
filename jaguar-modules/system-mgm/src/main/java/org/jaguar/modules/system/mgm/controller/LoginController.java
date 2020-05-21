@@ -54,7 +54,7 @@ public class LoginController extends AbstractController<Login, LoginMapper, Logi
 
     @ApiOperation(value = "修改系统登陆日志表")
     @RequiresPermissions("系统登陆日志表:新增编辑")
-    @PostMapping(value = "/update")
+    @PostMapping
     public ResponseEntity<JsonResult<Login>> update(@RequestBody @NotNull Login login) {
         return super.saveOrUpdate(login);
     }

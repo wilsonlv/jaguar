@@ -4,13 +4,13 @@ import lombok.Data;
 import org.jaguar.modules.workflow.model.po.IProcessUser;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
- * Created by lvws on 2019/3/27.
+ * @author lvws
+ * @since 2019/3/27.
  */
 @Data
 public class TaskDTO implements Serializable {

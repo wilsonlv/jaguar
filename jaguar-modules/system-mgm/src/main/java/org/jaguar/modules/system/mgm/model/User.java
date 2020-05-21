@@ -1,6 +1,5 @@
 package org.jaguar.modules.system.mgm.model;
 
-import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,7 +56,7 @@ public class User extends BaseModel {
     /**
      * 用户部门ID
      */
-    @TableField(value = "user_dept_id", strategy = FieldStrategy.IGNORED)
+    @TableField(value = "user_dept_id")
     private Long userDeptId;
     /**
      * 用户是否锁定

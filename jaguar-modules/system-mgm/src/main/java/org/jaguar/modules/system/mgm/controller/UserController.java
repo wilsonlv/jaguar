@@ -64,7 +64,7 @@ public class UserController extends AbstractController<User, UserMapper, UserSer
 
     @ApiOperation(value = "修改系统用户表")
     @RequiresPermissions("系统用户表:新增编辑")
-    @PostMapping(value = "/update")
+    @PostMapping
     public ResponseEntity<JsonResult<User>> update(@RequestBody @Valid User user) {
         if (user.getId() == null) {
             user = service.create(user);

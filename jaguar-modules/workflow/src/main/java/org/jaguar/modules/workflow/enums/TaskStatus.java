@@ -1,12 +1,22 @@
 package org.jaguar.modules.workflow.enums;
 
 /**
- * Created by lvws on 2019/3/7.
+ * @author lvws
+ * @since 2019/3/7.
  */
 public enum TaskStatus {
 
+    /**
+     * 我发起的
+     */
     I_LAUNCHED,
+    /**
+     * 待办的
+     */
     TASK_TODO,
-    TASK_DONE;
+    /**
+     * 已办的
+     */
+    TASK_DONE
 
 }

@@ -1,9 +1,11 @@
 package org.jaguar.modules.workflow.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import org.jaguar.core.base.AbstractController;
 import org.jaguar.core.web.JsonResult;
 import org.jaguar.core.web.Page;
@@ -29,14 +31,20 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "按钮实例表管理")
 public class ButtonInstController extends AbstractController<ButtonInst, ButtonInstMapper, ButtonInstService> {
 
-    @Override
     @ApiOperation(value = "查询按钮实例表")
     @RequiresPermissions("process_button_def_view")
     @GetMapping(value = "/page")
     public ResponseEntity<JsonResult<Page<ButtonInst>>> query(
-            @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<ButtonInst> page) {
+            @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<ButtonInst> page,
+            @ApiParam(value = "流程名称") @RequestParam(required = false) String processDefinitionkey,
+            @ApiParam(value = "任务名称") @RequestParam(required = false) String taskDefName) {
 
-        return super.query(page);
+        LambdaQueryWrapper<ButtonInst> wrapper = JaguarLambdaQueryWrapper.<ButtonInst>newInstance()
+                .eq(ButtonInst::getProcessDefinitionkey, processDefinitionkey)
+                .eq(ButtonInst::getTaskDefName, taskDefName);
+
+        page = service.queryWithButtonDef(page, wrapper);
+        return success(page);
     }
 
     @Override
@@ -49,7 +57,7 @@ public class ButtonInstController extends AbstractController<ButtonInst, ButtonI
 
     @ApiOperation(value = "修改按钮实例表")
     @RequiresPermissions("process_button_def_update")
-    @PostMapping(value = "/update")
+    @PostMapping
     public ResponseEntity<JsonResult<ButtonInst>> update(ButtonInst param) {
         return super.saveOrUpdate(param);
     }

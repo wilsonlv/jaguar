@@ -54,7 +54,7 @@ public class MenuController extends AbstractController<Menu, MenuMapper, MenuSer
 
     @ApiOperation(value = "修改系统菜单表")
     @RequiresPermissions("系统菜单表:新增编辑")
-    @PostMapping(value = "/update")
+    @PostMapping
     public ResponseEntity<JsonResult<Menu>> update(@RequestBody @NotNull Menu menu){
         return super.saveOrUpdate(menu);
     }

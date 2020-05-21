@@ -89,7 +89,7 @@ CREATE TABLE `jaguar_modules_system_menu` (
 
 
 DROP TABLE IF EXISTS `jaguar_modules_system_role_menu`;
-CREATE TABLE `jaguar_modules_system_menu` (
+CREATE TABLE `jaguar_modules_system_role_menu` (
   `id_`                      bigint(20) NOT NULL COMMENT 'ID',
   `role_id`                 bigint(20) NOT NULL COMMENT '角色ID',
   `menu_id`                 bigint(20) NOT NULL COMMENT '菜单ID',

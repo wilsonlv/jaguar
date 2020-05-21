@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS `t_document`;
-CREATE TABLE `t_document` (
+DROP TABLE IF EXISTS `jaguar_modules_document`;
+CREATE TABLE `jaguar_modules_document` (
   `id`            bigint(20) NOT NULL COMMENT 'ID',
   `original_name` varchar(50) NOT NULL COMMENT '原始文档名称',
   `extension_`    varchar(10) NOT NULL COMMENT '文档拓展名',

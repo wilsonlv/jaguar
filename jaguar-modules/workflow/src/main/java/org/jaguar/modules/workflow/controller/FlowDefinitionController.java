@@ -17,12 +17,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Created by lvws on 2019/3/15.
+ * @author lvws
+ * @since 2019/3/15.
  */
 @Validated
 @RestController
 @RequestMapping("/process/flow_definition")
-@Api(value = "流程定义表管理", description = "流程定义表管理")
+@Api(value = "流程定义表管理")
 public class FlowDefinitionController extends AbstractController<ProcessInfo, ProcessInfoMapper, FlowDefinitionService> {
 
     @ApiOperation(value = "查询流程定义表")

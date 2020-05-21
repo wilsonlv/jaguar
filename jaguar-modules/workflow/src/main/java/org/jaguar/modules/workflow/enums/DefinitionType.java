@@ -1,11 +1,18 @@
 package org.jaguar.modules.workflow.enums;
 
 /**
- * Created by lvws on 2019/3/6.
+ * @author lvws
+ * @since 2019/3/6.
  */
-public enum  DefinitionType {
+public enum DefinitionType {
 
+    /**
+     * 表单
+     */
     FORM,
-    FLOW;
+    /**
+     * 流程
+     */
+    FLOW
 
 }

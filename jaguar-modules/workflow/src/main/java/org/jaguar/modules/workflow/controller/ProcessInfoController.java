@@ -12,7 +12,6 @@ import org.flowable.task.api.Task;
 import org.jaguar.core.base.AbstractController;
 import org.jaguar.core.web.JsonResult;
 import org.jaguar.core.web.Page;
-import org.jaguar.modules.document.service.DocumentService;
 import org.jaguar.modules.workflow.enums.ButtonPosition;
 import org.jaguar.modules.workflow.enums.TaskStatus;
 import org.jaguar.modules.workflow.mapper.ProcessInfoMapper;
@@ -39,6 +38,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -52,7 +52,7 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping("/process/process_info")
-@Api(value = "工单信息表管理", description = "工单信息表管理")
+@Api(value = "工单信息表管理")
 public class ProcessInfoController extends AbstractController<ProcessInfo, ProcessInfoMapper, ProcessInfoService> {
 
     @Autowired
@@ -61,13 +61,12 @@ public class ProcessInfoController extends AbstractController<ProcessInfo, Proce
     private ButtonDefService buttonDefService;
     @Autowired
     private OperationRecordService operationRecordService;
-    @Autowired
-    private DocumentService documentService;
 
     @ApiOperation(value = "预发起工单")
     @RequiresPermissions("process_info_update")
     @GetMapping(value = "/pre_create/{processDefinitionKey}")
-    public ResponseEntity<JsonResult<ProcessInfo>> preCreate(@ApiParam(value = "流程定义名称", required = true) @PathVariable String processDefinitionKey) {
+    public ResponseEntity<JsonResult<ProcessInfo>> preCreate(
+            @ApiParam(value = "流程定义名称", required = true) @PathVariable String processDefinitionKey) {
 
         ProcessInfo processInfo = service.preCreate(getCurrentUserAccount(), processDefinitionKey);
         return success(processInfo);
@@ -91,7 +90,7 @@ public class ProcessInfoController extends AbstractController<ProcessInfo, Proce
     @ApiOperation(value = "处理工单")
     @RequiresPermissions("process_info_update")
     @PostMapping(value = "/handle/{taskId}")
-    public ResponseEntity<JsonResult> handle(
+    public ResponseEntity<JsonResult<?>> handle(
             @ApiParam(value = "任务ID", required = true) @PathVariable String taskId,
             @ApiParam(value = "表单数据（jsonString，{表单字段的key1:表单字段的值1,表单字段的key2:表单字段的值2}）") @RequestBody(required = false) String formDatas,
             @ApiParam(value = "是否提交") @RequestParam(required = false, defaultValue = "true") Boolean submit,
@@ -105,15 +104,29 @@ public class ProcessInfoController extends AbstractController<ProcessInfo, Proce
         return success();
     }
 
+    @ApiOperation(value = "批量处理工单")
+    @RequiresPermissions("process_info_update")
+    @PostMapping(value = "/batch_handle")
+    public ResponseEntity<JsonResult<?>> handle(
+            @ApiParam(value = "任务ID", required = true) @RequestBody @NotEmpty List<String> taskIds,
+            @ApiParam(value = "提交驳回") @RequestParam(required = false, defaultValue = "false") Boolean reject,
+            @ApiParam(value = "驳回原因") @RequestParam(required = false) String reason) {
+
+        synchronized (this) {
+            service.batchHandle(getCurrentUserAccount(), taskIds, reject, reason);
+        }
+        return success();
+    }
+
     @ApiOperation(value = "实时提交表单数据")
     @RequiresPermissions("process_info_update")
     @PostMapping(value = "/submit_formdata/{taskId}")
-    public ResponseEntity<JsonResult> submit(
+    public ResponseEntity<JsonResult<?>> submit(
             @ApiParam(value = "任务ID", required = true) @PathVariable String taskId,
             @ApiParam(value = "表单字段键值对", required = true) @RequestBody @NotNull FormDataDTO formDataDTO) {
 
         synchronized (this) {
-            service.submit(getCurrentUserAccount(), taskId, formDataDTO.getKey(), formDataDTO.getValue());
+            service.submitFormdata(getCurrentUserAccount(), taskId, formDataDTO.getKey(), formDataDTO.getValue());
         }
         return success();
     }
@@ -124,11 +137,12 @@ public class ProcessInfoController extends AbstractController<ProcessInfo, Proce
     public ResponseEntity<JsonResult<List<FormDataAttach>>> upload(
             @ApiParam(value = "任务ID", required = true) @PathVariable String taskId,
             @ApiParam(value = "字段key", required = true) @RequestParam String key,
+            @ApiParam(value = "批次号", required = true) @RequestParam @NotNull Integer batchNum,
             @ApiParam(value = "文件", required = true) @RequestParam("files") @NotEmpty List<MultipartFile> files) {
 
         List<FormDataAttach> formDataAttaches;
         synchronized (this) {
-            formDataAttaches = service.upload(getCurrentUserAccount(), taskId, key, files);
+            formDataAttaches = service.upload(getCurrentUserAccount(), taskId, key, batchNum, files);
         }
         return success(formDataAttaches);
     }
@@ -136,7 +150,7 @@ public class ProcessInfoController extends AbstractController<ProcessInfo, Proce
     @ApiOperation(value = "删除附件")
     @RequiresPermissions("process_info_update")
     @DeleteMapping(value = "/delete_attach/{taskId}")
-    public ResponseEntity<JsonResult> deleteAttach(
+    public ResponseEntity<JsonResult<?>> deleteAttach(
             @ApiParam(value = "任务ID", required = true) @PathVariable String taskId,
             @ApiParam(value = "字段key", required = true) @RequestParam Long formDataAttachId) {
 
@@ -149,7 +163,7 @@ public class ProcessInfoController extends AbstractController<ProcessInfo, Proce
     @ApiOperation(value = "任务改派")
     @RequiresPermissions("process_info_update")
     @PostMapping(value = "/reassign/{taskId}")
-    public ResponseEntity<JsonResult> reassign(
+    public ResponseEntity<JsonResult<?>> reassign(
             @ApiParam(value = "任务ID", required = true) @PathVariable String taskId,
             @ApiParam(value = "受理人账号", required = true) @RequestParam @NotBlank(message = "受让人账号为非空") String reassignee,
             @ApiParam(value = "备注") @RequestParam(required = false) String remark) {
@@ -163,8 +177,8 @@ public class ProcessInfoController extends AbstractController<ProcessInfo, Proce
     @ApiOperation(value = "删除我发起的工单")
     @RequiresPermissions("process_info_update")
     @DeleteMapping(value = "/cancel/{processInfoId}")
-    public ResponseEntity<JsonResult> delMyOwnProcess(@ApiParam(value = "工单信息ID", required = true) @PathVariable Long processInfoId,
-                                                      @ApiParam(value = "删除原因") @RequestParam @NotBlank String reason) {
+    public ResponseEntity<JsonResult<?>> delMyOwnProcess(@ApiParam(value = "工单信息ID", required = true) @PathVariable Long processInfoId,
+                                                         @ApiParam(value = "删除原因") @RequestParam @NotBlank String reason) {
 
         synchronized (this) {
             service.delete(getCurrentUserAccount(), processInfoId, reason);
@@ -175,7 +189,7 @@ public class ProcessInfoController extends AbstractController<ProcessInfo, Proce
     @ApiOperation(value = "设置工单优先级")
     @RequiresPermissions("process_info_update")
     @PostMapping(value = "/priority/{processInfoId}")
-    public ResponseEntity priority(
+    public ResponseEntity<JsonResult<?>> priority(
             @ApiParam(value = "工单信息ID", required = true) @PathVariable Long processInfoId,
             @ApiParam(value = "工单优先级", required = true) @NotNull(message = "工单优先级为非空") Integer priority) {
 
@@ -197,15 +211,18 @@ public class ProcessInfoController extends AbstractController<ProcessInfo, Proce
             @ApiParam(value = "工单编号") @RequestParam(required = false) String fuzzyNum,
             @ApiParam(value = "工单优先级") @RequestParam(required = false) Integer priority,
             @ApiParam(value = "任务状态（TASK_TODO：待办，TASK_DONE：已办，我发起的：I_LAUNCHED）", required = true)
-            @RequestParam @NotNull(message = "任务状态为非空") TaskStatus taskStatus) {
+            @RequestParam @NotNull(message = "任务状态为非空") TaskStatus taskStatus,
+            @ApiParam(value = "工单变量查询参数") @RequestParam(required = false) String processVarQueryParamsStr,
+            @ApiParam(value = "任务变量查询参数") @RequestParam(required = false) String taskVarQueryParamsStr,
+            @ApiParam(value = "携带指定的变量返回") @RequestParam(required = false) Set<String> withVars) {
 
         String currentUser = getCurrentUserAccount();
 
         IPage<ProcessInfo> processInfos;
         if (taskStatus.equals(TaskStatus.TASK_TODO)) {
-            processInfos = service.queryTasktodoList(currentUser, page, processDefinitionName, taskName, fuzzyTitle, fuzzyNum, priority);
+            processInfos = service.queryTasktodoList(currentUser, page, processDefinitionName, taskName, fuzzyTitle, fuzzyNum, priority, processVarQueryParamsStr, taskVarQueryParamsStr, withVars);
         } else {
-            processInfos = service.queryInstanceList(currentUser, page, processDefinitionName, taskStatus, fuzzyTitle, fuzzyNum, priority);
+            processInfos = service.queryInstanceList(currentUser, page, processDefinitionName, taskStatus, fuzzyTitle, fuzzyNum, priority, processVarQueryParamsStr, withVars);
         }
         return success(processInfos);
     }
@@ -226,7 +243,7 @@ public class ProcessInfoController extends AbstractController<ProcessInfo, Proce
     @GetMapping(value = "/view_page/{processInfoId}")
     public ResponseEntity<JsonResult<ProcessInfo>> viewPage(
             @ApiParam(value = "工单信息ID", required = true) @PathVariable Long processInfoId,
-            @ApiParam(value = "任务ID，默认为发起任务") String taskDefId) {
+            @ApiParam(value = "任务ID，默认为发起任务") @RequestParam(required = false) String taskDefId) {
 
         ProcessInfo processInfo = service.getViewPageByTaskDefId(processInfoId, taskDefId);
         return success(processInfo);
@@ -246,7 +263,7 @@ public class ProcessInfoController extends AbstractController<ProcessInfo, Proce
     @RequiresPermissions("process_info_view")
     @GetMapping(value = "/process_definition_view")
     public ResponseEntity<JsonResult<FlowDefinition>> processDefinitionView(
-            @ApiParam(value = "流程定义ID", required = true) @NotEmpty String processDefinitionId) {
+            @ApiParam(value = "流程定义ID", required = true) @NotBlank String processDefinitionId) {
 
         FlowDefinition flowDefinition = flowDefinitionService.getFlow(processDefinitionId);
         return success(flowDefinition);
@@ -256,7 +273,7 @@ public class ProcessInfoController extends AbstractController<ProcessInfo, Proce
     @RequiresPermissions("process_info_view")
     @GetMapping(value = "/process_info_view")
     public ResponseEntity<JsonResult<ProcessView>> processInfoView(
-            @ApiParam(value = "工单ID", required = true) @NotNull Long processInfoId) {
+            @ApiParam(value = "工单ID", required = true) @RequestParam @NotNull Long processInfoId) {
 
         ProcessView processView = service.getProcessViewByProcessInfoId(processInfoId);
         return success(processView);
@@ -265,10 +282,11 @@ public class ProcessInfoController extends AbstractController<ProcessInfo, Proce
     @ApiOperation(value = "查询按钮")
     @RequiresPermissions("process_info_view")
     @GetMapping(value = "/button/list")
-    public ResponseEntity<JsonResult<List<ButtonDef>>> buttonList(@ApiParam(value = "展示页面", required = true) @NotEmpty String showPage,
-                                                                  @ApiParam(value = "流程定义名称", required = true) @NotEmpty String processDefinitionKey,
-                                                                  @ApiParam(value = "任务定义名称") String taskDefName,
-                                                                  @ApiParam(value = "按钮位置（BUTTOM，LEFT_TOP，RIGHT_TOP）") ButtonPosition buttonPosition) {
+    public ResponseEntity<JsonResult<List<ButtonDef>>> buttonList(
+            @ApiParam(value = "展示页面", required = true) @RequestParam @NotBlank String showPage,
+            @ApiParam(value = "流程定义名称", required = true) @RequestParam @NotBlank String processDefinitionKey,
+            @ApiParam(value = "任务定义名称") @RequestParam(required = false) String taskDefName,
+            @ApiParam(value = "按钮位置（BUTTOM，LEFT_TOP，RIGHT_TOP）") @RequestParam(required = false) ButtonPosition buttonPosition) {
 
         List<ButtonDef> buttonDefs = buttonDefService.queryPageButtonList(showPage, processDefinitionKey, taskDefName, buttonPosition);
         return success(buttonDefs);
@@ -280,15 +298,6 @@ public class ProcessInfoController extends AbstractController<ProcessInfo, Proce
     public ResponseEntity<JsonResult<List<OperationRecord>>> operationRecordList(@ApiParam(value = "工单信息ID") @PathVariable Long processInfoId) {
         List<OperationRecord> operationRecords = operationRecordService.listByProcessInfoIdWithUser(processInfoId);
         return success(operationRecords);
-    }
-
-    @ApiOperation(value = "查询工单回退原因")
-    @RequiresPermissions("process_info_view")
-    @GetMapping(value = "/operation_record/go_back_reason/{taskId}")
-    public ResponseEntity<JsonResult<OperationRecord>> getTaskGobackReason(@ApiParam(value = "任务实例ID") @PathVariable String taskId) {
-
-        OperationRecord operationRecord = service.getTaskGobackReason(taskId);
-        return success(operationRecord);
     }
 
     @ApiOperation(value = "查看已办任务信息")
@@ -323,17 +332,19 @@ public class ProcessInfoController extends AbstractController<ProcessInfo, Proce
             @ApiParam(value = "流程定义名称") @RequestParam(required = false) List<String> processDefinitionName,
             @ApiParam(value = "工单标题") @RequestParam(required = false) String fuzzyTitle,
             @ApiParam(value = "工单编号") @RequestParam(required = false) String fuzzyNum,
-            @ApiParam(value = "工单优先级") @RequestParam(required = false) Integer priority) {
+            @ApiParam(value = "工单优先级") @RequestParam(required = false) Integer priority,
+            @ApiParam(value = "工单变量查询参数") @RequestParam(required = false) String processVarQueryParamsStr,
+            @ApiParam(value = "携带指定的变量返回") @RequestParam(required = false) Set<String> withVars) {
 
-        IPage<ProcessInfo> processInfos = service.queryProcessInfo(page, processDefinitionName, fuzzyTitle, fuzzyNum, priority);
-        return success(processInfos);
+        page = service.queryProcessInfo(page, processDefinitionName, fuzzyTitle, fuzzyNum, priority, processVarQueryParamsStr, withVars);
+        return success(page);
     }
 
     @ApiOperation(value = "删除工单")
     @RequiresPermissions("process_info_mgm")
     @DeleteMapping(value = "/mgm/cancel/{processInfoId}")
-    public ResponseEntity<JsonResult> del(@ApiParam(value = "工单信息ID", required = true) @PathVariable Long processInfoId,
-                                          @ApiParam(value = "删除原因") @RequestParam @NotBlank String reason) {
+    public ResponseEntity<JsonResult<?>> del(@ApiParam(value = "工单信息ID", required = true) @PathVariable Long processInfoId,
+                                             @ApiParam(value = "删除原因", required = true) @RequestParam @NotBlank String reason) {
 
         synchronized (this) {
             service.delete(getCurrentUserAccount(), processInfoId, reason);
@@ -344,10 +355,11 @@ public class ProcessInfoController extends AbstractController<ProcessInfo, Proce
     @ApiOperation(value = "挂起工单")
     @RequiresPermissions("process_info_mgm")
     @PostMapping(value = "/mgm/suspend/{processInfoId}")
-    public ResponseEntity<JsonResult> suspend(@ApiParam(value = "工单信息ID", required = true) @PathVariable Long processInfoId) {
+    public ResponseEntity<JsonResult<?>> suspend(@ApiParam(value = "工单信息ID", required = true) @PathVariable Long processInfoId,
+                                                 @ApiParam(value = "挂起原因", required = true) @RequestParam @NotBlank String reason) {
 
         synchronized (this) {
-            service.suspend(getCurrentUserAccount(), processInfoId);
+            service.suspend(getCurrentUserAccount(), processInfoId, reason);
         }
         return success();
     }
@@ -355,7 +367,7 @@ public class ProcessInfoController extends AbstractController<ProcessInfo, Proce
     @ApiOperation(value = "激活工单")
     @RequiresPermissions("process_info_mgm")
     @PostMapping(value = "/mgm/activate/{processInfoId}")
-    public ResponseEntity<JsonResult> activate(@ApiParam(value = "工单信息ID", required = true) @PathVariable Long processInfoId) {
+    public ResponseEntity<JsonResult<?>> activate(@ApiParam(value = "工单信息ID", required = true) @PathVariable Long processInfoId) {
 
         synchronized (this) {
             service.activate(getCurrentUserAccount(), processInfoId);
@@ -369,7 +381,7 @@ public class ProcessInfoController extends AbstractController<ProcessInfo, Proce
      */
     @ResponseBody
     @ExceptionHandler(value = FlowableException.class)
-    public ResponseEntity flowableExceptionHandler(Exception exception) {
+    public ResponseEntity<JsonResult<String>> flowableExceptionHandler(Exception exception) {
         exception.printStackTrace();
         Throwable rootCause = exception;
         while (rootCause.getCause() != null) {

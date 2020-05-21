@@ -57,7 +57,7 @@ public class RoleMenuController extends AbstractController<RoleMenu, RoleMenuMap
 
     @ApiOperation(value = "修改系统角色菜单表")
     @RequiresPermissions("系统角色菜单表:新增编辑")
-    @PostMapping(value = "/update")
+    @PostMapping
     public ResponseEntity<JsonResult<RoleMenu>> update(@RequestBody @NotNull RoleMenu roleMenu){
         return super.saveOrUpdate(roleMenu);
     }

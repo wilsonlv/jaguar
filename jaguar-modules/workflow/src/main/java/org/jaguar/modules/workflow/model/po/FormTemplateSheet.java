@@ -51,6 +51,9 @@ public class FormTemplateSheet extends BaseModel implements Cloneable {
     private Integer sortNo;
 
     @TableField(exist = false)
+    private Integer batchNum;
+
+    @TableField(exist = false)
     private List<FormTemplateRow> formTemplateRows = new ArrayList<>();
 
     @Override

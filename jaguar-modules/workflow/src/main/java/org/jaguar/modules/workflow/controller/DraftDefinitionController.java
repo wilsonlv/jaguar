@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiParam;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.flowable.bpmn.model.BpmnModel;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
+import org.jaguar.core.Charsets;
 import org.jaguar.core.base.AbstractController;
 import org.jaguar.core.exception.Assert;
 import org.jaguar.core.web.JsonResult;
@@ -31,6 +32,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
@@ -56,7 +58,7 @@ public class DraftDefinitionController extends AbstractController<DraftDefinitio
             @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<DraftDefinition> page,
             @ApiParam(value = "只查询最新版") @RequestParam(defaultValue = "true", required = false) Boolean latest,
             @ApiParam(value = "模糊草稿名称") @RequestParam(required = false) String fuzzyName,
-            @ApiParam(value = "草稿类型（FORM：表单，FLOW：流程，默认全部）") DefinitionType definitionType) {
+            @ApiParam(value = "草稿类型（FORM：表单，FLOW：流程，默认全部）") @RequestParam(required = false) DefinitionType definitionType) {
 
         IPage<DraftDefinition> draftDefinitionPage;
         if (latest) {
@@ -168,10 +170,6 @@ public class DraftDefinitionController extends AbstractController<DraftDefinitio
 
         DraftDefinition draftDefinition = service.getById(id);
 
-        PrintWriter writer = response.getWriter();
-        writer.write(draftDefinition.getContext());
-        writer.close();
-
         String fileName;
         if (DefinitionType.FLOW.equals(draftDefinition.getDefinitionType())) {
             fileName = draftDefinition.getName() + ".xml";
@@ -180,8 +178,11 @@ public class DraftDefinitionController extends AbstractController<DraftDefinitio
         }
 
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        response.setContentType(MediaType.MULTIPART_FORM_DATA_VALUE);
-        response.setHeader("Content-Disposition", "attachment;fileName=" + fileName);
+        response.setHeader("Content-Disposition", "attachment;fileName=" + URLEncoder.encode(fileName, Charsets.UTF_8_NAME));
+
+        PrintWriter writer = response.getWriter();
+        writer.write(draftDefinition.getContext());
+        writer.close();
     }
 
 }

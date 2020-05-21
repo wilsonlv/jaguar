@@ -22,6 +22,7 @@ public interface Constant {
     String PROCESS_FORM_VARIABLE_PRE = "form_";
 
     /*------------------  工单常量  ------------------*/
+
     String PROCESS_NUM = "processNum";
     String PROCESS_TITLE = "processTitle";
     String PROCESS_PRIORITY = "processPriority";

@@ -1,11 +1,18 @@
 package org.jaguar.modules.workflow.enums;
 
 /**
- * Created by lvws on 2019/4/4.
+ * @author lvws
+ * @since 2019/4/4.
  */
 public enum ButtonActionType {
 
-    BUILT_IN,//内置
-    ADDON//附加
+    /**
+     * 内置
+     */
+    BUILT_IN,
+    /**
+     * 附加
+     */
+    ADDON
 
 }

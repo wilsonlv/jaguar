@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.itqingning.lucy.process.mapper.OperationRecordMapper">
+<mapper namespace="org.jaguar.modules.workflow.mapper.OperationRecordMapper">
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="org.jaguar.modules.workflow.model.po.OperationRecord">
@@ -19,11 +19,11 @@
     <select id="listGroupByBatchNum" resultMap="BaseResultMap">
         SELECT * FROM (
             SELECT r1.*
-            FROM t_process_operation_record r1
+            FROM jaguar_modules_workflow_operation_record r1
             WHERE r1.batch_num IS NULL
             UNION
             SELECT r2.*
-            FROM t_process_operation_record r2
+            FROM jaguar_modules_workflow_operation_record r2
             WHERE r2.batch_num IS NOT NULL
             GROUP BY r2.batch_num) t
         WHERE t.deleted_ = 0

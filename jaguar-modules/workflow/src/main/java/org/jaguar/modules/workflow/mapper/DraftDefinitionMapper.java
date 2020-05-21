@@ -18,5 +18,5 @@ import java.util.Map;
  */
 public interface DraftDefinitionMapper extends BaseMapper<DraftDefinition> {
 
-    List<DraftDefinition> queryLatest(IPage page, @Param("p") Map<String, Object> params);
+    List<DraftDefinition> queryLatest(IPage<DraftDefinition> page, @Param("p") Map<String, Object> params);
 }

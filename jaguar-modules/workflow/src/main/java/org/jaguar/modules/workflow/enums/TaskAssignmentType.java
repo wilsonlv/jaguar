@@ -1,12 +1,22 @@
 package org.jaguar.modules.workflow.enums;
 
 /**
- * Created by lvws on 2019/3/22.
+ * @author lvws
+ * @since 2019/3/22.
  */
 public enum  TaskAssignmentType {
 
+    /**
+     * 处理人
+     */
     ASSIGNEE,
+    /**
+     * 候选人
+     */
     CANDIDATE_USER,
+    /**
+     * 候选组
+     */
     CANDIDATE_GROUP
 
 }

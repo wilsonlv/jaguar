@@ -22,6 +22,11 @@ public class FormDataAttach extends BaseModel {
     private static final long serialVersionUID = 1L;
 
     /**
+     * 工单ID
+     */
+    @TableField("process_info_id")
+    private Long processInfoId;
+    /**
      * 表单数据表ID
      */
     @TableField("form_data_id")
@@ -31,5 +36,10 @@ public class FormDataAttach extends BaseModel {
      */
     @TableField("document_id")
     private Long documentId;
+    /**
+     * 值
+     */
+    @TableField("value_")
+    private String value;
 
 }

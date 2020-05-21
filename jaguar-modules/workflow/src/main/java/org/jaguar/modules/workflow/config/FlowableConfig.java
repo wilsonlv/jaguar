@@ -12,13 +12,14 @@ import com.yworks.yfiles.server.graphml.servlets.ExportServlet;
 import javax.sql.DataSource;
 
 /**
- * Created by lvws on 2019/4/18.
+ * @author lvws
+ * @since 2019/4/18.
  */
 @Configuration
 public class FlowableConfig {
 
     @Bean
-    public ServletRegistrationBean<ExportServlet> ExportServlet() {
+    public ServletRegistrationBean<ExportServlet> exportServlet() {
         return new ServletRegistrationBean<>(new ExportServlet(), "/yfilesImageExport");
     }
 

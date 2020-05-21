@@ -6,7 +6,8 @@ import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 /**
- * Created by lvws on 2019/5/16.
+ * @author lvws
+ * @since 2019/5/16.
  */
 @Data
 public class FormDataDTO implements Serializable {

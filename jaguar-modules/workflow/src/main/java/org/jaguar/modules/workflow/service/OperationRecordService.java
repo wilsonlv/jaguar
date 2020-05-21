@@ -1,9 +1,8 @@
 package org.jaguar.modules.workflow.service;
 
-import org.jaguar.core.base.BaseService;
-
 import org.apache.commons.lang3.StringUtils;
 import org.flowable.task.api.Task;
+import org.jaguar.core.base.BaseService;
 import org.jaguar.modules.workflow.enums.ProcessOperationType;
 import org.jaguar.modules.workflow.mapper.OperationRecordMapper;
 import org.jaguar.modules.workflow.model.po.OperationRecord;
@@ -62,14 +61,22 @@ public class OperationRecordService extends BaseService<OperationRecord, Operati
      */
     @Transactional
     public void handle(Long processInfoId, Task task) {
-        this.handle(processInfoId, task, null);
+        this.handle(processInfoId, task, null, null);
     }
 
     /**
      * 处理
      */
     @Transactional
-    public void handle(Long processInfoId, Task task, String batchNum) {
+    public void handle(Long processInfoId, Task task, String reason) {
+        this.handle(processInfoId, task, reason, null);
+    }
+
+    /**
+     * 处理
+     */
+    @Transactional
+    public void handle(Long processInfoId, Task task, String reason, Long batchNum) {
         OperationRecord record = new OperationRecord();
         record.setProcessInfoId(processInfoId);
         record.setOperator(task.getAssignee());
@@ -79,6 +86,7 @@ public class OperationRecordService extends BaseService<OperationRecord, Operati
         record.setTaskInstId(task.getId());
         record.setTaskDefId(task.getTaskDefinitionKey());
         record.setBatchNum(batchNum);
+        record.setReason(reason);
         this.insert(record);
     }
 
@@ -86,7 +94,7 @@ public class OperationRecordService extends BaseService<OperationRecord, Operati
      * 改派
      */
     @Transactional
-    public void reassign(Long processInfoId, Task task, String assignee, String reassignee, String remark) {
+    public void reassign(Long processInfoId, Task task, String assignee, String reassignee, String reason) {
         OperationRecord record = new OperationRecord();
         record.setProcessInfoId(processInfoId);
         record.setOperator(assignee);
@@ -96,7 +104,7 @@ public class OperationRecordService extends BaseService<OperationRecord, Operati
         record.setTaskInstId(task.getId());
         record.setTaskDefId(task.getTaskDefinitionKey());
         record.setAssignee(reassignee);
-        record.setReason(remark);
+        record.setReason(reason);
         this.insert(record);
     }
 
@@ -126,30 +134,11 @@ public class OperationRecordService extends BaseService<OperationRecord, Operati
      * 驳回
      */
     @Transactional
-    public void reject(Long processInfoId, Task task, @NotBlank String reason, String batchNum) {
+    public void reject(Long processInfoId, Task task, @NotBlank String reason, Long batchNum) {
         OperationRecord record = new OperationRecord();
         record.setProcessInfoId(processInfoId);
         record.setOperator(task.getAssignee());
         record.setProcessOperationType(ProcessOperationType.REJECT);
-        record.setOperateTime(LocalDateTime.now());
-        record.setTaskName(task.getName());
-        record.setTaskInstId(task.getId());
-        record.setTaskDefId(task.getTaskDefinitionKey());
-        record.setReason(reason);
-        record.setBatchNum(batchNum);
-        this.insert(record);
-    }
-
-    /**
-     * 回退
-     */
-    @Deprecated
-    @Transactional
-    public void goback(Long processInfoId, Task task, @NotBlank String reason, String batchNum) {
-        OperationRecord record = new OperationRecord();
-        record.setProcessInfoId(processInfoId);
-        record.setOperator(task.getAssignee());
-        record.setProcessOperationType(ProcessOperationType.GOBACK);
         record.setOperateTime(LocalDateTime.now());
         record.setTaskName(task.getName());
         record.setTaskInstId(task.getId());

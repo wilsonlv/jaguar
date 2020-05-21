@@ -57,7 +57,7 @@ public class RoleController extends AbstractController<Role, RoleMapper, RoleSer
 
     @ApiOperation(value = "修改系统角色表")
     @RequiresPermissions("系统角色表:新增编辑")
-    @PostMapping(value = "/update")
+    @PostMapping
     public ResponseEntity<JsonResult<Role>> update(@RequestBody @NotNull Role role){
         return super.saveOrUpdate(role);
     }

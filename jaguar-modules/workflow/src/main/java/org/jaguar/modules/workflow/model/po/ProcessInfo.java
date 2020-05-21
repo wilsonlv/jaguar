@@ -4,15 +4,14 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.flowable.task.api.Task;
 import org.jaguar.core.base.BaseModel;
+import org.jaguar.modules.workflow.model.dto.ProcessTag;
 import org.jaguar.modules.workflow.model.dto.TaskDTO;
 import org.jaguar.modules.workflow.model.vo.UserTask;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -96,7 +95,12 @@ public class ProcessInfo extends BaseModel {
     @TableField(exist = false)
     private LocalDateTime endTime;
     /**
-     * 当前用户任务
+     * 工作流框架任务对象
+     */
+    @TableField(exist = false)
+    private Task task;
+    /**
+     * 当前用户任务定义
      */
     @TableField(exist = false)
     private UserTask userTask;
@@ -115,5 +119,20 @@ public class ProcessInfo extends BaseModel {
      */
     @TableField(exist = false)
     private Map<String, String> historyTasks = new LinkedHashMap<>();
+    /**
+     * 流程变量
+     */
+    @TableField(exist = false)
+    private Map<String, Object> variables = new HashMap<>();
+    /**
+     * 流程标签
+     */
+    @TableField(exist = false)
+    private List<ProcessTag> tags = new ArrayList<>();
+    /**
+     * 评论数量
+     */
+    @TableField(exist = false)
+    private Integer remarkCount;
 
 }

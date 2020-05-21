@@ -49,7 +49,7 @@ public class ButtonDefController extends AbstractController<ButtonDef, ButtonDef
 
     @ApiOperation(value = "修改按钮定义表")
     @RequiresPermissions("process_button_def_update")
-    @PostMapping(value = "/update")
+    @PostMapping
     public ResponseEntity<JsonResult<ButtonDef>> update(ButtonDef buttonDef) {
         return super.saveOrUpdate(buttonDef);
     }

@@ -57,7 +57,7 @@ public class ${table.controllerName} extends AbstractController<${entity}, ${ent
 
     @ApiOperation(value = "修改${table.comment}")
     @RequiresPermissions("${table.comment}:新增编辑")
-    @PostMapping(value = "/update")
+    @PostMapping
     public ResponseEntity<JsonResult<${entity}>> update(@RequestBody @Valid ${entity} ${table.entityPath}){
         return super.saveOrUpdate(${table.entityPath});
     }

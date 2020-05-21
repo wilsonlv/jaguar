@@ -1,13 +1,26 @@
 package org.jaguar.modules.workflow.enums;
 
 /**
- * Created by lvws on 2019/3/8.
+ * @author lvws
+ * @since 2019/3/8.
  */
 public enum TaskFieldPermission {
 
+    /**
+     * 隐藏
+     */
     HIDDEN,
+    /**
+     * 只读
+     */
     READ,
+    /**
+     * 可写
+     */
     WRITE,
-    REQUIRED;
+    /**
+     * 必填
+     */
+    REQUIRED
 
 }
