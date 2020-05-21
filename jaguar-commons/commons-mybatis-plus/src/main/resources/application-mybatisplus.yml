@@ -8,7 +8,7 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: id_worker
-      field-strategy: ignored
+      field-strategy: IGNORED
       logic-delete-value: 1
       logic-not-delete-value: 0
 
