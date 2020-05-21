@@ -17,12 +17,17 @@
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
+            <artifactId>commons-mybatis-plus</artifactId>
+            <version>${jaguar.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jaguar</groupId>
             <artifactId>commons-shiro</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>commons-mybatis-plus</artifactId>
+            <artifactId>commons-swagger</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
     </dependencies>

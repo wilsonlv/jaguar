@@ -9,6 +9,4 @@ public interface Constant {
     String LOGIN_SUCCESS = "LOGIN_SUCCESS";
     String ACCOUNT_LOCKED = "ACCOUNT_LOCKED";
 
-    String PIC_VERIFICATION_CODE = "PIC_VERIFICATION_CODE";
-
 }

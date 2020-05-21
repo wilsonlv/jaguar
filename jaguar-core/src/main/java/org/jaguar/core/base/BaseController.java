@@ -29,7 +29,7 @@ import javax.validation.ConstraintViolationException;
  */
 public abstract class BaseController {
 
-    protected final Logger logger = LogManager.getLogger(this.getClass());
+    protected static final Logger logger = LogManager.getLogger(BaseController.class);
 
     /**
      * 获取当前用户Id

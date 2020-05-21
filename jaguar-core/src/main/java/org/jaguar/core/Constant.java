@@ -18,6 +18,9 @@ public interface Constant {
      * 当前用户权限
      */
     String CURRENT_USER_AUTH_INFO = "CURRENT_USER_AUTH_INFO";
-
+    /**
+     * 图片验证码
+     */
+    String PIC_VERIFICATION_CODE = "PIC_VERIFICATION_CODE";
 
 }

@@ -3,17 +3,17 @@ package org.jaguar.modules.system.auth;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.jaguar.commons.utils.ExecutorServiceUtil;
-import org.jaguar.commons.utils.IdentifyingCode;
 import org.jaguar.core.base.AbstractController;
+import org.jaguar.core.base.controller.VerifyCodeController;
 import org.jaguar.core.exception.CheckedException;
 import org.jaguar.core.web.JsonResult;
-import org.jaguar.core.web.LoginUtil;
 import org.jaguar.modules.handlerlog.intercepter.HandlerLogInterceptor;
 import org.jaguar.modules.handlerlog.model.HandlerLog;
+import org.jaguar.modules.system.config.SystemMgmProperties;
 import org.jaguar.modules.system.mgm.mapper.UserMapper;
 import org.jaguar.modules.system.mgm.model.Login;
 import org.jaguar.modules.system.mgm.model.Menu;
@@ -27,15 +27,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 import java.util.Set;
-
-import static org.jaguar.modules.system.Constant.PIC_VERIFICATION_CODE;
 
 /**
  * @author lvws
@@ -48,57 +42,23 @@ import static org.jaguar.modules.system.Constant.PIC_VERIFICATION_CODE;
 public class AuthController extends AbstractController<User, UserMapper, UserService> {
 
     @Autowired
+    private SystemMgmProperties systemMgmProperties;
+
+    @Autowired
     private LoginService loginService;
     @Autowired
     private RoleMenuService roleMenuService;
-
-    @ApiOperation(value = "获取图片验证码")
-    @GetMapping(value = "/pic_verification_code")
-    public void randomImage(HttpServletResponse response, HttpServletRequest request) throws IOException {
-        //图片宽度
-        int width = 200;
-        //图片高度
-        int height = 80;
-        //字符串个数
-        int randomStrNum = 4;
-
-        response.setHeader("Pragma", "No-cache");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setDateHeader("Expires", 0);
-        response.setContentType("image/jpeg");
-
-        //生成验证码
-        String verifyCode = IdentifyingCode.generate(randomStrNum);
-        //保存验证码
-        HttpSession session = request.getSession();
-        session.setAttribute(PIC_VERIFICATION_CODE, verifyCode.toLowerCase());
-        //回传
-        IdentifyingCode.outputImage(width, height, response.getOutputStream(), verifyCode);
-    }
-
-    /**
-     * 验证图片验证码
-     */
-    private void verificationCode(String verifyCode) {
-        Session session = LoginUtil.getSession();
-        Object verificationCode = session.getAttribute(PIC_VERIFICATION_CODE);
-        if (verificationCode == null) {
-            throw new CheckedException("请获取图片验证码！");
-        }
-
-        session.removeAttribute(PIC_VERIFICATION_CODE);
-
-        logger.info("sessionId：{}，验证码：{}", session.getId(), verificationCode);
-        if (!verifyCode.equalsIgnoreCase((String) verificationCode)) {
-            throw new CheckedException("验证码错误！");
-        }
-    }
 
     @ApiOperation(value = "登录")
     @PostMapping(value = "/login")
     public ResponseEntity<JsonResult<User>> login(@ApiParam("登录信息") @RequestBody @Valid Login login) {
 
-//        this.verificationCode(verifyCode);
+        if (systemMgmProperties.getVerfiyCodeEnable()) {
+            if (StringUtils.isBlank(login.getVerifyCode())) {
+                throw new CheckedException("验证码为非空");
+            }
+            VerifyCodeController.verificationCode(login.getVerifyCode());
+        }
 
         HandlerLog handlerLog = HandlerLogInterceptor.HANDLER_LOG.get();
 

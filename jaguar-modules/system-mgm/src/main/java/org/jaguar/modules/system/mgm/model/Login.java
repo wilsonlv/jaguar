@@ -40,6 +40,11 @@ public class Login extends BaseModel implements AuthenticationToken {
     @TableField("credentials_")
     private String credentials;
     /**
+     * 验证码
+     */
+    @TableField("verify_code")
+    private String verifyCode;
+    /**
      * 登录IP
      */
     @TableField("login_ip")
