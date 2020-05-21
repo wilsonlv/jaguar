@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
 import org.jaguar.commons.utils.ExecutorServiceUtil;
 import org.jaguar.core.base.AbstractController;
@@ -51,7 +52,7 @@ public class AuthController extends AbstractController<User, UserMapper, UserSer
 
     @ApiOperation(value = "登录")
     @PostMapping(value = "/login")
-    public ResponseEntity<JsonResult<User>> login(@ApiParam("登录信息") @RequestBody @Valid Login login) {
+    public ResponseEntity<JsonResult<User>> login(@ApiParam("登录信息") @RequestBody @Valid Login login) throws Throwable {
 
         if (systemMgmProperties.getVerfiyCodeEnable()) {
             if (StringUtils.isBlank(login.getVerifyCode())) {
@@ -71,8 +72,11 @@ public class AuthController extends AbstractController<User, UserMapper, UserSer
             try {
                 Subject subject = SecurityUtils.getSubject();
                 subject.login(login);
-            } catch (Exception e) {
+            } catch (AuthenticationException e) {
                 login.setResultCode(HttpStatus.CONFLICT.value());
+                throw e.getCause();
+            } catch (Exception e) {
+                login.setResultCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
                 throw e;
             } finally {
                 ExecutorServiceUtil.execute(() -> loginService.insert(login));

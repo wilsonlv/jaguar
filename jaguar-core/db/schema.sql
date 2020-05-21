@@ -1,4 +1,5 @@
-CREATE TABLE `t_field_edit_log` (
+DROP TABLE IF EXISTS `jaguar_core_field_edit_log`;
+CREATE TABLE `jaguar_core_field_edit_log` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `class_name` varchar(100) NOT NULL COMMENT '类全名',
   `record_id` bigint(20) NOT NULL COMMENT '记录ID',

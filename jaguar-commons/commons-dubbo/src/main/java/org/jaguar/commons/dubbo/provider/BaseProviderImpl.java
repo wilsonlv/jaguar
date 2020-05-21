@@ -20,8 +20,6 @@ public abstract class BaseProviderImpl implements ApplicationContextAware, IBase
 
     protected static Logger logger = LogManager.getLogger();
 
-    private static final String SAVE_LOG = "saveLog";
-
     private ApplicationContext applicationContext;
 
     @Override
@@ -31,12 +29,8 @@ public abstract class BaseProviderImpl implements ApplicationContextAware, IBase
 
     @Override
     public Parameter execute(Parameter parameter) {
-        boolean logPrintEnable = !SAVE_LOG.equals(parameter.getMethod());
-
-        if (logPrintEnable) {
-            logger.info("========================================");
-            logger.info("开始请求：{}", JSON.toJSONString(parameter));
-        }
+        logger.info("========================================");
+        logger.info("开始请求：{}", JSON.toJSONString(parameter));
 
         long start = System.currentTimeMillis();
         Object service = applicationContext.getBean(parameter.getService());
@@ -78,16 +72,14 @@ public abstract class BaseProviderImpl implements ApplicationContextAware, IBase
                 response = new Parameter(result);
             }
 
-            if (logPrintEnable) {
-                if (response != null) {
-                    logger.info("完成响应：{}", JSON.toJSONString(result));
-                } else {
-                    logger.info("空响应");
-                }
-
-                logger.info("响应时间：{}ms", end - start);
-                logger.info("========================================");
+            if (response != null) {
+                logger.info("完成响应：{}", JSON.toJSONString(result));
+            } else {
+                logger.info("空响应");
             }
+
+            logger.info("响应时间：{}ms", end - start);
+            logger.info("========================================");
             return response;
         } catch (Exception e) {
             e.printStackTrace();

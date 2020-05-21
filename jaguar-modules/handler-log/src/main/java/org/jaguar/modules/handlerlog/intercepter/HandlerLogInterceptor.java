@@ -46,7 +46,7 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
     public static final ThreadLocal<HandlerLog> HANDLER_LOG = new NamedThreadLocal<>("HANDLER_LOG");
 
     @Autowired
-    protected HandlerLogService sysLogService;
+    protected HandlerLogService handlerLogService;
 
     private static UASparser uasParser = null;
 
@@ -123,7 +123,12 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
                 ExecutorServiceUtil.execute(() -> {
                     handlerLog.setDuration(duration);
                     handlerLog.setErrorMsg(ex != null ? ex.getMessage() : null);
-                    sysLogService.saveLog(handlerLog);
+                    handlerLog.setDeleted(false);
+                    try {
+                        handlerLogService.saveLog(handlerLog);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 });
             }
 

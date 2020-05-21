@@ -137,8 +137,12 @@ public abstract class BaseController {
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<JsonResult<String>> allUnknownExceptionHandler(Exception exception) {
         exception.printStackTrace();
+        Throwable e = exception;
+        while (exception.getCause() != null) {
+            e = exception.getCause();
+        }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new JsonResult<String>().setMessage(exception.getMessage()));
+                .body(new JsonResult<String>().setMessage(e.getMessage()));
     }
 
 }

@@ -62,7 +62,7 @@ public class Realm extends AuthorizingRealm {
         Login token = (Login) authenticationToken;
 
         User user = userService.getByPrincipal(token.getPrincipal());
-        if (user == null || !user.getUserPassword().equals(token.getCredentials())) {
+        if (user == null || !token.getCredentials().equals(user.getUserPassword())) {
             throw new CheckedException("用户名或密码错误");
         }
 

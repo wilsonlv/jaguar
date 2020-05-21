@@ -15,7 +15,7 @@ import org.jaguar.core.base.BaseModel;
  * @since 2019-04-10
  */
 @Data
-@TableName("t_field_edit_log")
+@TableName("jaguar_core_field_edit_log")
 @EqualsAndHashCode(callSuper = true)
 public class FieldEditLog extends BaseModel {
 
