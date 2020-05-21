@@ -9,7 +9,11 @@ import org.jaguar.core.exception.CheckedException;
 public interface IBaseProvider {
 
     /**
-     * 调用接口
+     * 调用dubbo提供者
+     *
+     * @param parameter 中间件
+     * @return 中间件
+     * @throws CheckedException e
      */
     Parameter execute(Parameter parameter) throws CheckedException;
 }

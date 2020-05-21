@@ -13,10 +13,34 @@ import java.util.Map;
  */
 public class Parameter implements Serializable {
 
-    public Parameter() {
+    private IBaseProvider provider;
+    private String service;
+    private String method;
+
+    private Long id;
+    private BaseModel model;
+    private Map<?, ?> map;
+    private Page<?> page;
+    private List<?> list;
+    private Object[] objects;
+    private Boolean flag;
+    private String str;
+    private Object object;
+
+    public static Parameter createInstance(IBaseProvider provider) {
+        return new Parameter(provider);
     }
 
-    public Parameter(String service, String method) {
+    public static Parameter createInstance(IBaseProvider provider, String service, String method) {
+        return new Parameter(provider, service, method);
+    }
+
+    public Parameter(IBaseProvider provider) {
+        this.provider = provider;
+    }
+
+    public Parameter(IBaseProvider provider, String service, String method) {
+        this.provider = provider;
         this.service = service;
         this.method = method;
     }
@@ -41,18 +65,9 @@ public class Parameter implements Serializable {
         }
     }
 
-    private String service;
-    private String method;
-
-    private Long id;
-    private BaseModel model;
-    private Map<?, ?> map;
-    private Page<?> page;
-    private List<?> list;
-    private Object[] objects;
-    private Boolean flag;
-    private String str;
-    private Object object;
+    public Parameter execute() {
+        return this.provider.execute(this);
+    }
 
     public String getService() {
         return service;
