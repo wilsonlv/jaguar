@@ -19,7 +19,6 @@ public class XmlUtil {
             JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
             StringWriter sw = new StringWriter();
-            //该值默认为false,true则不会创建即头信息,即<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             jaxbMarshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
             jaxbMarshaller.marshal(bean, sw);
             return sw.toString();

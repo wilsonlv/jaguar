@@ -1,7 +1,8 @@
 package org.jaguar.commons.data.encription;
 
 /**
- * Created by lvws on 2019/4/16.
+ * @author lvws
+ * @since 2019/4/16.
  */
 public interface Constant {
 

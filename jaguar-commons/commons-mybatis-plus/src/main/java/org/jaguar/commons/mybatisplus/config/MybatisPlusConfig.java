@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @since 2019/4/17.
  */
 @Configuration
-@MapperScan("com.**.mapper*")
 @EnableTransactionManagement(proxyTargetClass = true)
 public class MybatisPlusConfig {
 

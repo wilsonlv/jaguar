@@ -1,6 +1,6 @@
 mybatis-plus:
   mapper-refresh: true
-  type-aliases-package: com.**.model*
+  type-aliases-package: org.jaguar.**.model*, com.**.model*
   mapper-locations: classpath*:**/mapper/xml/*.xml
   configuration:
     call-setters-on-nulls: true

@@ -9,7 +9,7 @@ server:
 
 spring:
   profiles:
-    include: core, mybatisplus, shiro, swagger, code-generator, system-mgm, dubbo
+    include: core, mybatisplus, redis, shiro, swagger, code-generator, system-mgm, dubbo
     active: dev
 
 logging:

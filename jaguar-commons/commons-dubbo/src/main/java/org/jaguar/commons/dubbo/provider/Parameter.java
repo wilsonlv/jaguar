@@ -13,7 +13,6 @@ import java.util.Map;
  */
 public class Parameter implements Serializable {
 
-    private IBaseProvider provider;
     private String service;
     private String method;
 
@@ -27,20 +26,18 @@ public class Parameter implements Serializable {
     private String str;
     private Object object;
 
-    public static Parameter createInstance(IBaseProvider provider) {
-        return new Parameter(provider);
+    public static Parameter createInstance() {
+        return new Parameter();
     }
 
-    public static Parameter createInstance(IBaseProvider provider, String service, String method) {
-        return new Parameter(provider, service, method);
+    public static Parameter createInstance(String service, String method) {
+        return new Parameter(service, method);
     }
 
-    public Parameter(IBaseProvider provider) {
-        this.provider = provider;
+    public Parameter() {
     }
 
-    public Parameter(IBaseProvider provider, String service, String method) {
-        this.provider = provider;
+    public Parameter(String service, String method) {
         this.service = service;
         this.method = method;
     }
@@ -63,10 +60,6 @@ public class Parameter implements Serializable {
         } else {
             this.object = result;
         }
-    }
-
-    public Parameter execute() {
-        return this.provider.execute(this);
     }
 
     public String getService() {
