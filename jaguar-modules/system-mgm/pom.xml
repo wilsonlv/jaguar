@@ -10,6 +10,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>system-mgm</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>system-mgm-sdk</module>
+        <module>system-mgm-server</module>
+    </modules>
 
     <dependencies>
         <dependency>

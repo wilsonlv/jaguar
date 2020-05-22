@@ -10,6 +10,8 @@ import java.io.Serializable;
  */
 public interface IBaseProvider extends Serializable {
 
+    String VERSION = "1.0.0";
+
     /**
      * 调用dubbo提供者
      *
