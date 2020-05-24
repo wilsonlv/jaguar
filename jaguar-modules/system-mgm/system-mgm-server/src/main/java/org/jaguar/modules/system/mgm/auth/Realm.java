@@ -1,4 +1,4 @@
-package org.jaguar.modules.system.auth;
+package org.jaguar.modules.system.mgm.auth;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;

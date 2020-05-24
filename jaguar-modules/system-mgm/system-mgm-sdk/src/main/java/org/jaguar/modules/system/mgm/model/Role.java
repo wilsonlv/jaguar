@@ -6,7 +6,7 @@ import lombok.Data;
 
 import lombok.EqualsAndHashCode;
 import org.jaguar.core.base.BaseModel;
-import org.jaguar.modules.system.enums.RoleDataScope;
+import org.jaguar.modules.system.mgm.enums.RoleDataScope;
 
 /**
  * <p>

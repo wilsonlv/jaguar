@@ -1,4 +1,4 @@
-package org.jaguar.modules.system;
+package org.jaguar.modules.system.mgm;
 
 /**
  * @author lvws

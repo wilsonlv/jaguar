@@ -1,4 +1,4 @@
-package org.jaguar.modules.system.auth;
+package org.jaguar.modules.system.mgm.auth;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,7 +14,7 @@ import org.jaguar.core.exception.CheckedException;
 import org.jaguar.core.web.JsonResult;
 import org.jaguar.modules.handlerlog.intercepter.HandlerLogInterceptor;
 import org.jaguar.modules.handlerlog.model.HandlerLog;
-import org.jaguar.modules.system.config.SystemMgmProperties;
+import org.jaguar.modules.system.mgm.config.SystemMgmProperties;
 import org.jaguar.modules.system.mgm.mapper.UserMapper;
 import org.jaguar.modules.system.mgm.model.Login;
 import org.jaguar.modules.system.mgm.model.Menu;

@@ -1,4 +1,4 @@
-package org.jaguar.modules.system.config;
+package org.jaguar.modules.system.mgm.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -2,8 +2,8 @@ package org.jaguar.modules.system.mgm.service;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jaguar.core.base.BaseService;
-import org.jaguar.modules.system.enums.MenuType;
-import org.jaguar.modules.system.enums.RoleMenuPermission;
+import org.jaguar.modules.system.mgm.enums.MenuType;
+import org.jaguar.modules.system.mgm.enums.RoleMenuPermission;
 import org.jaguar.modules.system.mgm.mapper.RoleMenuMapper;
 import org.jaguar.modules.system.mgm.model.Menu;
 import org.jaguar.modules.system.mgm.model.RoleMenu;

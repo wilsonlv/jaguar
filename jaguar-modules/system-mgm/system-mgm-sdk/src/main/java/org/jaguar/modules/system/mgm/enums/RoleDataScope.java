@@ -1,4 +1,4 @@
-package org.jaguar.modules.system.enums;
+package org.jaguar.modules.system.mgm.enums;
 
 /**
  * @author lvws

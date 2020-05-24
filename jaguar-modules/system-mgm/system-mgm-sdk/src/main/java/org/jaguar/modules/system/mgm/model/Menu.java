@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jaguar.core.base.BaseModel;
-import org.jaguar.modules.system.enums.MenuType;
+import org.jaguar.modules.system.mgm.enums.MenuType;
 
 import java.util.List;
 
