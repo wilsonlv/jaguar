@@ -16,8 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * <p>
  * 系统登陆日志表  前端控制器
@@ -28,7 +26,7 @@ import javax.validation.constraints.NotNull;
  */
 @Validated
 @RestController
-@RequestMapping("/system/login")
+@RequestMapping("/system/mgm/login")
 @Api(value = "系统登陆日志表管理")
 public class LoginController extends AbstractController<Login, LoginMapper, LoginService> {
 
@@ -55,7 +53,7 @@ public class LoginController extends AbstractController<Login, LoginMapper, Logi
     @ApiOperation(value = "修改系统登陆日志表")
     @RequiresPermissions("系统登陆日志表:新增编辑")
     @PostMapping
-    public ResponseEntity<JsonResult<Login>> update(@RequestBody @NotNull Login login) {
+    public ResponseEntity<JsonResult<Login>> update(@RequestBody Login login) {
         return super.saveOrUpdate(login);
     }
 

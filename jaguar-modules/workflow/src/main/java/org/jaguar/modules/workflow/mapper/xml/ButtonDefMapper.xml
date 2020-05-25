@@ -4,7 +4,7 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="org.jaguar.modules.workflow.model.po.ButtonDef">
-        <result column="id" property="id"/>
+        <result column="id_" property="id"/>
         <result column="name_" property="name"/>
         <result column="label_" property="label"/>
         <result column="button_action_type" property="buttonActionType"/>

@@ -34,6 +34,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -123,7 +124,7 @@ public class ProcessInfoController extends AbstractController<ProcessInfo, Proce
     @PostMapping(value = "/submit_formdata/{taskId}")
     public ResponseEntity<JsonResult<?>> submit(
             @ApiParam(value = "任务ID", required = true) @PathVariable String taskId,
-            @ApiParam(value = "表单字段键值对", required = true) @RequestBody @NotNull FormDataDTO formDataDTO) {
+            @ApiParam(value = "表单字段键值对", required = true) @RequestBody @Valid FormDataDTO formDataDTO) {
 
         synchronized (this) {
             service.submitFormdata(getCurrentUserAccount(), taskId, formDataDTO.getKey(), formDataDTO.getValue());

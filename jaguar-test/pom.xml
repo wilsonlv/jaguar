@@ -14,7 +14,12 @@
     <dependencies>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>system-mgm</artifactId>
+            <artifactId>system-mgm-sdk</artifactId>
+            <version>${jaguar.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jaguar</groupId>
+            <artifactId>system-mgm-server</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
         <dependency>

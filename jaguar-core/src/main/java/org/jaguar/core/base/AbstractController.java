@@ -7,6 +7,8 @@ import org.jaguar.core.web.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 /**
  * @author lvws
  * @since 2019/5/6
@@ -25,6 +27,11 @@ public abstract class AbstractController<T extends BaseModel,
                                                      Wrapper<T> queryWrapper) {
         page = service.query(page, queryWrapper);
         return success(page);
+    }
+
+    public ResponseEntity<JsonResult<List<T>>> list() {
+        List<T> list = service.list();
+        return success(list);
     }
 
     public ResponseEntity<JsonResult<T>> getById(Long id) {

@@ -4,7 +4,7 @@
 
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="org.jaguar.modules.system.mgm.model.User">
-		<id column="id" property="id" />
+		<id column="id_" property="id" />
 		<result column="user_account" property="userAccount" />
 		<result column="user_phone" property="userPhone" />
 		<result column="user_email" property="userEmail" />

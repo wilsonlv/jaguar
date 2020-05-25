@@ -4,7 +4,7 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="baseResultMap" type="org.jaguar.modules.document.model.Document">
-        <id property="id" column="id"/>
+        <id property="id" column="id_"/>
         <result property="originalName" column="original_name"/>
         <result property="extension" column="extension_"/>
         <result property="absolutePath" column="absolute_path"/>

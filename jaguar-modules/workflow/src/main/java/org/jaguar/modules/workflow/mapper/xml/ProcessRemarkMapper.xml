@@ -4,7 +4,7 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="baseResultMap" type="org.jaguar.modules.workflow.model.po.ProcessRemark">
-        <id property="id" column="id"/>
+        <id property="id" column="id_"/>
         <result property="processInfoId" column="process_info_id"/>
         <result property="remarkUser" column="remark_user"/>
         <result property="remarkTime" column="remark_time"/>

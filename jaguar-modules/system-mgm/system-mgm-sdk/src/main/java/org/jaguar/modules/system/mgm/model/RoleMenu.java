@@ -3,10 +3,11 @@ package org.jaguar.modules.system.mgm.model;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-
 import lombok.EqualsAndHashCode;
 import org.jaguar.core.base.BaseModel;
 import org.jaguar.modules.system.mgm.enums.RoleMenuPermission;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>
@@ -26,19 +27,23 @@ public class RoleMenu extends BaseModel {
     /**
      * 角色ID
      */
-	@TableField("role_id")
-	private Long roleId;
+    @NotNull(message = "角色ID为非空")
+    @TableField("role_id")
+    private Long roleId;
     /**
      * 菜单ID
      */
-	@TableField("menu_id")
-	private Long menuId;
+    @NotNull(message = "菜单ID为非空")
+    @TableField("menu_id")
+    private Long menuId;
     /**
      * 角色菜单权限（READ，VIEW，UPDATE，DEL）
      */
-	@TableField("role_menu_permission")
-	private RoleMenuPermission roleMenuPermission;
+    @NotNull(message = "角色菜单权限为非空")
+    @TableField("role_menu_permission")
+    private RoleMenuPermission roleMenuPermission;
 
-	@TableField(exist = false)
-	private Menu menu;
+    @TableField(exist = false)
+    private Menu menu;
+
 }

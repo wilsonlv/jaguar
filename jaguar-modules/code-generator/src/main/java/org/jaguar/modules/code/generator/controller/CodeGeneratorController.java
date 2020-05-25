@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.Valid;
 
 /**
  * @author lvws
@@ -56,7 +56,7 @@ public class CodeGeneratorController extends AbstractController<CodeGenerator, C
 
     @ApiOperation(value = "生成代码")
     @PostMapping(value = "/generate")
-    public ResponseEntity<JsonResult<?>> generate(@RequestBody @NotNull CodeGenerator codeGenerator) {
+    public ResponseEntity<JsonResult<?>> generate(@RequestBody @Valid CodeGenerator codeGenerator) {
 
         if (StringUtils.isBlank(codeGenerator.getOutputDir())) {
             codeGenerator.setOutputDir(codeGeneratorProperties.getDefaultOutputDir());

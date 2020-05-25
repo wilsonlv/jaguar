@@ -7,6 +7,8 @@ import lombok.EqualsAndHashCode;
 import org.jaguar.core.base.BaseModel;
 import org.jaguar.modules.system.mgm.enums.MenuType;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -27,6 +29,7 @@ public class Menu extends BaseModel {
     /**
      * 菜单名称
      */
+    @NotBlank(message = "菜单名称为非空")
     @TableField("menu_name")
     private String menuName;
     /**
@@ -57,9 +60,13 @@ public class Menu extends BaseModel {
     /**
      * 菜单类型（MENU，FUNCTION）
      */
+    @NotNull(message = "菜单类型为非空")
     @TableField("menu_type")
     private MenuType menuType;
 
     @TableField(exist = false)
     private List<Menu> children;
+
+    @TableField(exist = false)
+    private RoleMenu roleMenu;
 }

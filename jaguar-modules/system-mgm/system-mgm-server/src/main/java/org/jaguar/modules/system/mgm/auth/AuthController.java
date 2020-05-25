@@ -104,10 +104,10 @@ public class AuthController extends AbstractController<User, UserMapper, UserSer
     }
 
     @ApiOperation(value = "获取当前用户授权菜单")
-    @GetMapping(value = "/menu/tree")
-    public ResponseEntity<JsonResult<List<Menu>>> menuTree() {
+    @GetMapping(value = "/menu/tree/view_permission")
+    public ResponseEntity<JsonResult<List<Menu>>> menuTreeViewPermission() {
 
-        List<Menu> menuTree = roleMenuService.treeMenuByUserId(getCurrentUser());
+        List<Menu> menuTree = roleMenuService.menuTreeViewPermissionByUserId(getCurrentUser());
         return success(menuTree);
     }
 

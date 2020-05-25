@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jaguar.core.base.BaseModel;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * <p>
  * 系统用户角色表
@@ -24,15 +26,20 @@ public class UserRole extends BaseModel {
     /**
      * 用户ID
      */
+    @NotNull(message = "用户ID为非空")
     @TableField("user_id")
     private Long userId;
     /**
      * 角色ID
      */
+    @NotNull(message = "角色ID为非空")
     @TableField("role_id")
     private Long roleId;
 
     @TableField(exist = false)
     private Role role;
+
+    @TableField(exist = false)
+    private User user;
 
 }
