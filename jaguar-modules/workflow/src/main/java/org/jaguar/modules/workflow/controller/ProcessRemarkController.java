@@ -14,6 +14,7 @@ import org.jaguar.modules.workflow.service.ProcessRemarkService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -33,7 +34,7 @@ public class ProcessRemarkController extends AbstractController<ProcessRemark, P
     @ApiOperation(value = "查询工单备注表")
     @GetMapping("/page")
     public ResponseEntity<JsonResult<Page<ProcessRemark>>> page(
-            @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<ProcessRemark> page,
+            @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<ProcessRemark> page,
             @ApiParam(value = "工单ID", required = true) @RequestParam Long processInfoId) {
 
         JaguarLambdaQueryWrapper<ProcessRemark> wrapper = new JaguarLambdaQueryWrapper<>();

@@ -16,6 +16,7 @@ import org.jaguar.modules.code.generator.service.CodeGeneratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 
@@ -34,7 +35,7 @@ public class CodeGeneratorController extends AbstractController<CodeGenerator, C
     @ApiOperation(value = "查询数据库表")
     @GetMapping(value = "/show_tables")
     public ResponseEntity<JsonResult<Page<CodeGenerator>>> showTables(
-            @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<CodeGenerator> page,
+            @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<CodeGenerator> page,
             @ApiParam(value = "模糊表名") @RequestParam(required = false) String fuzzyTableName) {
 
         if (ArrayUtils.isEmpty(page.ascs()) && ArrayUtils.isEmpty(page.descs())) {

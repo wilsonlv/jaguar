@@ -2,7 +2,6 @@ package org.jaguar.modules.workflow.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.jaguar.core.base.AbstractController;
 import org.jaguar.core.web.JsonResult;
@@ -13,6 +12,7 @@ import org.jaguar.modules.workflow.service.ButtonDefService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 
 /**
@@ -34,7 +34,7 @@ public class ButtonDefController extends AbstractController<ButtonDef, ButtonDef
     @RequiresPermissions("process_button_def_view")
     @GetMapping(value = "/page")
     public ResponseEntity<JsonResult<Page<ButtonDef>>> query(
-            @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<ButtonDef> page) {
+            @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<ButtonDef> page) {
 
         return super.query(page);
     }

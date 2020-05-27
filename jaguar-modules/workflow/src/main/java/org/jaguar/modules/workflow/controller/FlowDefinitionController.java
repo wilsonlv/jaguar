@@ -15,6 +15,7 @@ import org.jaguar.modules.workflow.service.FlowDefinitionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @author lvws
@@ -30,7 +31,7 @@ public class FlowDefinitionController extends AbstractController<ProcessInfo, Pr
     @RequiresPermissions("process_flow_definition_view")
     @GetMapping(value = "/page")
     public ResponseEntity<JsonResult<Page<FlowDefinition>>> page(
-            @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<FlowDefinition> page,
+            @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<FlowDefinition> page,
             @ApiParam(value = "流程名称") @RequestParam(required = false) String name,
             @ApiParam(value = "模糊流程名称") @RequestParam(required = false) String fuzzyName,
             @ApiParam(value = "只查询最新版") @RequestParam(required = false, defaultValue = "true") Boolean latest) {

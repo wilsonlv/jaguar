@@ -16,6 +16,7 @@ import org.jaguar.modules.workflow.service.FormTemplateService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -39,7 +40,7 @@ public class FormTemplateController extends AbstractController<FormTemplate, For
     @RequiresPermissions("process_form_template_view")
     @GetMapping(value = "/page")
     public ResponseEntity<JsonResult<Page<FormTemplate>>> page(
-            @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<FormTemplate> page,
+            @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<FormTemplate> page,
             @ApiParam(value = "表单名称") @RequestParam(required = false) String name,
             @ApiParam(value = "模糊表单名称") @RequestParam(required = false) String fuzzyName,
             @ApiParam(value = "表单元素ID") @RequestParam(required = false) String elementId,

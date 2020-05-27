@@ -15,6 +15,7 @@ import org.jaguar.modules.workflow.service.OperationRecordService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * <p>
@@ -34,7 +35,7 @@ public class OperationRecordController extends AbstractController<OperationRecor
     @RequiresPermissions("process_operation_record_view")
     @GetMapping(value = "/page")
     public ResponseEntity<JsonResult<Page<OperationRecord>>> page(
-            @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<OperationRecord> page,
+            @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<OperationRecord> page,
             @ApiParam(value = "工单信息ID") @RequestParam(required = false) Long processInfoId,
             @ApiParam(value = "操作人账号") @RequestParam(required = false) String operator,
             @ApiParam(value = "操作类型") @RequestParam(required = false) ProcessOperationType processOperationType,

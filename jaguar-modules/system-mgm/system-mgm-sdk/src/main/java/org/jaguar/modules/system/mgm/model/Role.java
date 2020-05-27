@@ -2,6 +2,8 @@ package org.jaguar.modules.system.mgm.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jaguar.core.base.BaseModel;
@@ -21,6 +23,7 @@ import java.util.List;
  * @since 2019-11-08
  */
 @Data
+@ApiModel
 @TableName("jaguar_modules_system_role")
 @EqualsAndHashCode(callSuper = true)
 public class Role extends BaseModel {
@@ -30,22 +33,26 @@ public class Role extends BaseModel {
     /**
      * 角色名称
      */
+    @ApiModelProperty(value = "角色名称", required = true)
     @NotBlank(message = "角色名称为非空")
     @TableField("role_name")
     private String roleName;
     /**
      * 角色数据权限（OWNER、DEPT、ALL）
      */
+    @ApiModelProperty(value = "角色数据权限", required = true)
     @NotNull(message = "角色数据权限为非空")
     @TableField("role_data_scope")
     private RoleDataScope roleDataScope;
     /**
      * 角色是否锁定
      */
+    @ApiModelProperty(value = "角色是否锁定", required = true)
     @NotNull(message = "角色是否锁定为非空")
     @TableField("role_locked")
     private Boolean roleLocked;
 
+    @ApiModelProperty(hidden = true)
     @TableField(exist = false)
     private List<UserRole> userRoleList = new ArrayList<>();
 

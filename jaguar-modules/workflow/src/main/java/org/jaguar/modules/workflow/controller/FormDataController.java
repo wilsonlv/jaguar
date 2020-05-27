@@ -13,6 +13,7 @@ import org.jaguar.modules.workflow.service.FormDataService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -31,7 +32,7 @@ public class FormDataController extends AbstractController<FormData, FormDataMap
     @RequiresPermissions("process_info_mgm")
     @GetMapping(value = "/page")
     public ResponseEntity<JsonResult<Page<FormData>>> page(
-            @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<FormData> page,
+            @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<FormData> page,
             @ApiParam(value = "工单ID", required = true) @RequestParam @NotNull Long processInfoId,
             @ApiParam(value = "模糊字段标签") @RequestParam(required = false) String fuzzyFieldLabel,
             @ApiParam(value = "模糊字段Key") @RequestParam(required = false) String fuzzyFieldKey) {

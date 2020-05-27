@@ -16,8 +16,7 @@ import org.jaguar.modules.system.mgm.service.RoleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.constraints.NotNull;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * <p>
@@ -38,7 +37,7 @@ public class RoleController extends AbstractController<Role, RoleMapper, RoleSer
     @RequiresPermissions("系统角色表:读取")
     @GetMapping(value = "/page")
     public ResponseEntity<JsonResult<Page<Role>>> page(
-            @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<Role> page,
+            @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<Role> page,
             @ApiParam(value = "模糊角色名称") @RequestParam(required = false) String fuzzyRoleName,
             @ApiParam(value = "角色数据权限（OWNER、DEPT、ALL）") @RequestParam(required = false) RoleDataScope roleDataScope,
             @ApiParam(value = "角色是否锁定") @RequestParam(required = false) Boolean roleLocked) {

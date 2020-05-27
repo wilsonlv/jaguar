@@ -21,11 +21,11 @@ import org.jaguar.modules.workflow.model.po.FormTemplate;
 import org.jaguar.modules.workflow.model.vo.FlowDefinition;
 import org.jaguar.modules.workflow.service.DraftDefinitionService;
 import org.jaguar.modules.workflow.util.Bpmn20Util;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -55,7 +55,7 @@ public class DraftDefinitionController extends AbstractController<DraftDefinitio
     @RequiresPermissions("process_draft_definition_view")
     @GetMapping(value = "/page")
     public ResponseEntity<JsonResult<Page<DraftDefinition>>> page(
-            @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<DraftDefinition> page,
+            @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<DraftDefinition> page,
             @ApiParam(value = "只查询最新版") @RequestParam(defaultValue = "true", required = false) Boolean latest,
             @ApiParam(value = "模糊草稿名称") @RequestParam(required = false) String fuzzyName,
             @ApiParam(value = "草稿类型（FORM：表单，FLOW：流程，默认全部）") @RequestParam(required = false) DefinitionType definitionType) {

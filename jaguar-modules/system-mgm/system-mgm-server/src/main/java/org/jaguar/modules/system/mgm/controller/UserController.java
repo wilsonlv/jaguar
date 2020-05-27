@@ -16,6 +16,7 @@ import org.jaguar.modules.system.mgm.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 
@@ -38,7 +39,7 @@ public class UserController extends AbstractController<User, UserMapper, UserSer
     @RequiresPermissions("系统用户表:读取")
     @GetMapping(value = "/page")
     public ResponseEntity<JsonResult<Page<User>>> page(
-            @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<User> page,
+            @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<User> page,
             @ApiParam(value = "模糊用户信息") @RequestParam(required = false) String fuzzyUserInfo,
             @ApiParam(value = "锁定状态") @RequestParam(required = false) Boolean userLocked) {
 

@@ -2,6 +2,7 @@ package org.jaguar.modules.system.mgm.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jaguar.core.base.BaseModel;
@@ -26,19 +27,23 @@ public class UserRole extends BaseModel {
     /**
      * 用户ID
      */
+    @ApiModelProperty(value = "用户ID", required = true)
     @NotNull(message = "用户ID为非空")
     @TableField("user_id")
     private Long userId;
     /**
      * 角色ID
      */
+    @ApiModelProperty(value = "角色ID", required = true)
     @NotNull(message = "角色ID为非空")
     @TableField("role_id")
     private Long roleId;
 
+    @ApiModelProperty(hidden = true)
     @TableField(exist = false)
     private Role role;
 
+    @ApiModelProperty(hidden = true)
     @TableField(exist = false)
     private User user;
 

@@ -9,6 +9,7 @@ import org.jaguar.core.exception.BaseException;
 import org.jaguar.core.web.JsonResult;
 import org.jaguar.core.web.LoginUtil;
 import org.jaguar.core.web.Page;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.ObjectError;
@@ -127,6 +128,17 @@ public abstract class BaseController {
     public ResponseEntity<JsonResult<String>> baseExceptionHandler(BaseException exception) {
         exception.printStackTrace();
         return ResponseEntity.status(exception.getHttpStatus())
+                .body(new JsonResult<String>().setMessage(exception.getMessage()));
+    }
+
+    /**
+     * 数据库数据访问异常
+     */
+    @ResponseBody
+    @ExceptionHandler(value = DataAccessException.class)
+    public ResponseEntity<JsonResult<String>> dataAccessException(DataAccessException exception) {
+        exception.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new JsonResult<String>().setMessage(exception.getMessage()));
     }
 

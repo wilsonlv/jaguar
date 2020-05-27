@@ -15,6 +15,7 @@ import org.jaguar.modules.workflow.service.ButtonInstService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 
 /**
@@ -35,7 +36,7 @@ public class ButtonInstController extends AbstractController<ButtonInst, ButtonI
     @RequiresPermissions("process_button_def_view")
     @GetMapping(value = "/page")
     public ResponseEntity<JsonResult<Page<ButtonInst>>> query(
-            @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<ButtonInst> page,
+            @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<ButtonInst> page,
             @ApiParam(value = "流程名称") @RequestParam(required = false) String processDefinitionkey,
             @ApiParam(value = "任务名称") @RequestParam(required = false) String taskDefName) {
 

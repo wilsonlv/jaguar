@@ -33,6 +33,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -205,7 +206,7 @@ public class ProcessInfoController extends AbstractController<ProcessInfo, Proce
     @RequiresPermissions("process_info_view")
     @GetMapping(value = "/page")
     public ResponseEntity<JsonResult<Page<ProcessInfo>>> page(
-            @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<ProcessInfo> page,
+            @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<ProcessInfo> page,
             @ApiParam(value = "流程定义名称") @RequestParam(required = false) List<String> processDefinitionName,
             @ApiParam(value = "工单任务名称") @RequestParam(required = false) List<String> taskName,
             @ApiParam(value = "工单标题") @RequestParam(required = false) String fuzzyTitle,
@@ -329,7 +330,7 @@ public class ProcessInfoController extends AbstractController<ProcessInfo, Proce
     @RequiresPermissions("process_info_mgm")
     @GetMapping(value = "/mgm/page")
     public ResponseEntity<JsonResult<Page<ProcessInfo>>> mgmPage(
-            @ApiParam(value = "分页信息") com.baomidou.mybatisplus.extension.plugins.pagination.Page<ProcessInfo> page,
+            @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<ProcessInfo> page,
             @ApiParam(value = "流程定义名称") @RequestParam(required = false) List<String> processDefinitionName,
             @ApiParam(value = "工单标题") @RequestParam(required = false) String fuzzyTitle,
             @ApiParam(value = "工单编号") @RequestParam(required = false) String fuzzyNum,
