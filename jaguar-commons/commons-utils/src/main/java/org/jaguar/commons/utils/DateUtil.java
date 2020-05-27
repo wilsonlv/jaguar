@@ -108,4 +108,24 @@ public class DateUtil {
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 
+    /**
+     * 获取当前日期
+     */
+    public static String getDate() {
+        return formatDate(LocalDate.now());
+    }
+
+    /**
+     * 获取当前日期时间
+     */
+    public static String getDateTime() {
+        return formatDateTime(LocalDateTime.now());
+    }
+
+    /**
+     * 按格式获取当前日期时间
+     */
+    public static String getDateTime(DateTimePattern pattern) {
+        return format(new Date(), pattern);
+    }
 }

@@ -9,17 +9,19 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jaguar-modules</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>numbering</artifactId>
 
-    <modules>
-        <module>code-generator</module>
-        <module>document</module>
-        <module>handler-log</module>
-        <module>malice-prevention</module>
-        <module>numbering</module>
-        <module>system-mgm</module>
-        <module>workflow</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.jaguar</groupId>
+            <artifactId>jaguar-core</artifactId>
+            <version>${jaguar.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jaguar</groupId>
+            <artifactId>commons-aviator</artifactId>
+            <version>${jaguar.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>

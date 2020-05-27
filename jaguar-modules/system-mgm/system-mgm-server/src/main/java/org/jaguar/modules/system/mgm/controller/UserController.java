@@ -34,7 +34,6 @@ import javax.validation.Valid;
 @Api(value = "系统用户表管理")
 public class UserController extends AbstractController<User, UserMapper, UserService> {
 
-
     @ApiOperation(value = "查询系统用户表")
     @RequiresPermissions("系统用户表:读取")
     @GetMapping(value = "/page")

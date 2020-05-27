@@ -9,9 +9,20 @@ import org.apache.commons.lang3.StringUtils;
 public class NumberUtil {
 
     /**
-     * 字符串数字递增
+     * 字符串数字自增
      */
-    public static String autoIncrease(String num) {
+    public static String increase(String num) {
+        return increase(num, 1);
+    }
+
+    /**
+     * 字符串数字按步数递增
+     *
+     * @param num  字符串数字
+     * @param step 步数
+     * @return 结果
+     */
+    public static String increase(String num, int step) {
         if (StringUtils.isBlank(num)) {
             throw new IllegalArgumentException(num);
         }
@@ -23,10 +34,24 @@ public class NumberUtil {
             builder.append("0");
         }
 
-        return builder.append(++l).substring(builder.length() - num.length());
+        return builder.append(l + step).substring(builder.length() - num.length());
     }
 
+    /**
+     * 字符串数字自减
+     */
     public static String decrease(String num) {
+        return decrease(num, 1);
+    }
+
+    /**
+     * 字符串数字按步数递减
+     *
+     * @param num  字符串数字
+     * @param step 步数
+     * @return 结果
+     */
+    public static String decrease(String num, int step) {
         if (StringUtils.isBlank(num)) {
             throw new IllegalArgumentException(num);
         }
@@ -38,15 +63,7 @@ public class NumberUtil {
             builder.append("0");
         }
 
-        return builder.append(--l).substring(builder.length() - num.length());
-    }
-
-    public static void main(String[] args) {
-        String s = autoIncrease("0001");
-        System.out.println(s);
-
-        String decrease = decrease("0001");
-        System.out.println(decrease);
+        return builder.append(l - step).substring(builder.length() - num.length());
     }
 
 }
