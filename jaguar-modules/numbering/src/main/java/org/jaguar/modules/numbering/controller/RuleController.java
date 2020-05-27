@@ -35,7 +35,7 @@ import javax.validation.Valid;
 public class RuleController extends AbstractController<Rule, RuleMapper, RuleService> {
 
     @ApiOperation(value = "查询编号规则表")
-    @RequiresPermissions("编号规则序列表:读取")
+    @RequiresPermissions("编号规则表:读取")
     @GetMapping(value = "/page")
     public ResponseEntity<JsonResult<Page<Rule>>> page(
             @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<Rule> page,
@@ -47,14 +47,14 @@ public class RuleController extends AbstractController<Rule, RuleMapper, RuleSer
     }
 
     @ApiOperation(value = "编号规则表详情")
-    @RequiresPermissions("编号规则序列表:读取")
+    @RequiresPermissions("编号规则表:读取")
     @GetMapping(value = "/{id}")
     public ResponseEntity<JsonResult<Rule>> detail(@PathVariable Long id) {
         return super.getById(id);
     }
 
     @ApiOperation(value = "更新编号规则")
-    @RequiresPermissions("编号规则序列表:新增编辑")
+    @RequiresPermissions("编号规则表管理:新增编辑")
     @PostMapping
     public ResponseEntity<JsonResult<Rule>> update(@RequestBody @Valid Rule entity) {
         synchronized (this) {
@@ -64,7 +64,7 @@ public class RuleController extends AbstractController<Rule, RuleMapper, RuleSer
     }
 
     @ApiOperation(value = "删除编号规则表")
-    @RequiresPermissions("numbering_rule_del")
+    @RequiresPermissions("编号规则表:删除")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<JsonResult<?>> del(@PathVariable Long id) {
         return super.delete(id);

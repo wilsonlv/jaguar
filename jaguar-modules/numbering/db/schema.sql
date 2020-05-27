@@ -32,7 +32,7 @@ CREATE TABLE `jaguar_modules_numbering_rule_item`
     `update_time`              timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4 COMMENT ='编号规则条目';
+  DEFAULT CHARSET = utf8mb4 COMMENT ='编号规则条目表';
 
 DROP TABLE IF EXISTS `jaguar_modules_numbering_rule_serial`;
 CREATE TABLE `jaguar_modules_numbering_rule_serial`

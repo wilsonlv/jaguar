@@ -66,10 +66,12 @@ public class UserController extends AbstractController<User, UserMapper, UserSer
     @RequiresPermissions("系统用户表:新增编辑")
     @PostMapping
     public ResponseEntity<JsonResult<User>> update(@RequestBody @Valid User user) {
-        if (user.getId() == null) {
-            user = service.create(user);
-        } else {
-            user = service.modify(user);
+        synchronized (this) {
+            if (user.getId() == null) {
+                user = service.create(user);
+            } else {
+                user = service.modify(user);
+            }
         }
         return success(user);
     }

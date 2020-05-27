@@ -62,8 +62,9 @@ public class RoleController extends AbstractController<Role, RoleMapper, RoleSer
     @RequiresPermissions("系统角色表:新增编辑")
     @PostMapping
     public ResponseEntity<JsonResult<Role>> update(@RequestBody Role role) {
-
-        role = service.createOrUpdate(role);
+        synchronized (this) {
+            role = service.createOrUpdate(role);
+        }
         return success(role);
     }
 

@@ -12,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * <p>
  * 系统用户角色表  前端控制器
@@ -32,8 +30,9 @@ public class UserRoleController extends AbstractController<UserRole, UserRoleMap
     @RequiresPermissions("系统用户角色表:新增编辑")
     @PostMapping
     public ResponseEntity<JsonResult<UserRole>> create(@RequestBody UserRole userRole) {
-
-        userRole = service.create(userRole);
+        synchronized (this) {
+            userRole = service.create(userRole);
+        }
         return success(userRole);
     }
 

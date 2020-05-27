@@ -78,5 +78,4 @@ public class MenuService extends BaseService<Menu, MenuMapper> {
         roleMenuService.delete(JaguarLambdaQueryWrapper.<RoleMenu>newInstance().eq(RoleMenu::getMenuId, id));
     }
 
-
 }

@@ -75,7 +75,7 @@ public class RoleMenuService extends BaseService<RoleMenu, RoleMenuMapper> {
     }
 
     @Transactional
-    public synchronized RoleMenu change(RoleMenu roleMenu) {
+    public RoleMenu change(RoleMenu roleMenu) {
         Role role = roleService.getById(roleMenu.getRoleId());
         Assert.validateId(role, "角色", roleMenu.getRoleId());
 

@@ -46,7 +46,9 @@ public class RoleMenuController extends AbstractController<RoleMenu, RoleMenuMap
     @RequiresPermissions("系统角色菜单表:新增编辑")
     @PostMapping
     public ResponseEntity<JsonResult<RoleMenu>> change(@RequestBody @Valid RoleMenu roleMenu) {
-        roleMenu = service.change(roleMenu);
+        synchronized (this) {
+            roleMenu = service.change(roleMenu);
+        }
         return success(roleMenu);
     }
 

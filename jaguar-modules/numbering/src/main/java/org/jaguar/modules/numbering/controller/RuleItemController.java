@@ -14,9 +14,11 @@ import org.jaguar.modules.numbering.mapper.RuleItemMapper;
 import org.jaguar.modules.numbering.model.RuleItem;
 import org.jaguar.modules.numbering.service.RuleItemService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 
@@ -28,13 +30,14 @@ import javax.validation.constraints.NotNull;
  * @author lvws
  * @since 2019-04-02
  */
+@Validated
 @RestController
-@Api(value = "编号规则条目管理")
 @RequestMapping("/numbering/rule_item")
+@Api(value = "编号规则条目")
 public class RuleItemController extends AbstractController<RuleItem, RuleItemMapper, RuleItemService> {
 
     @ApiOperation(value = "查询编号规则条目")
-    @RequiresPermissions("numbering_rule_view")
+    @RequiresPermissions("编号规则条目表:读取")
     @GetMapping(value = "/page")
     public ResponseEntity<JsonResult<Page<RuleItem>>> page(
             @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<RuleItem> page,
@@ -47,21 +50,21 @@ public class RuleItemController extends AbstractController<RuleItem, RuleItemMap
     }
 
     @ApiOperation(value = "编号规则条目详情")
-    @RequiresPermissions("numbering_rule_view")
+    @RequiresPermissions("编号规则条目表:读取")
     @GetMapping(value = "/{id}")
     public ResponseEntity<JsonResult<RuleItem>> detail(@PathVariable Long id) {
         return super.getById(id);
     }
 
     @ApiOperation(value = "更新编号规则条目")
-    @RequiresPermissions("numbering_rule_update")
+    @RequiresPermissions("编号规则条目表:新增编辑")
     @PostMapping(value = "/update")
-    public ResponseEntity<JsonResult<RuleItem>> update(@RequestBody RuleItem ruleItem) {
+    public ResponseEntity<JsonResult<RuleItem>> update(@RequestBody @Valid RuleItem ruleItem) {
         return super.saveOrUpdate(ruleItem);
     }
 
     @ApiOperation(value = "删除编号规则条目")
-    @RequiresPermissions("numbering_rule_del")
+    @RequiresPermissions("编号规则条目表:删除")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<JsonResult<?>> del(@PathVariable Long id) {
         return super.delete(id);

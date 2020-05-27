@@ -125,7 +125,9 @@ public class AuthController extends AbstractController<User, UserMapper, UserSer
             @ApiParam(value = "旧密码", required = true) @RequestParam String oldPassword,
             @ApiParam(value = "新密码", required = true) @RequestParam String newPassword) {
 
-        service.modifyPassword(getCurrentUser(), oldPassword, newPassword);
+        synchronized (this) {
+            service.modifyPassword(getCurrentUser(), oldPassword, newPassword);
+        }
         return success();
     }
 }
