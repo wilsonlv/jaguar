@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jaguar.core.base.service.FieldEditLogService;
+import org.jaguar.core.exception.Assert;
 import org.jaguar.core.exception.CheckedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +59,8 @@ public abstract class BaseService<T extends BaseModel, M extends com.baomidou.my
         entity.setUpdateTime(LocalDateTime.now());
 
         T org = this.getById(entity.getId());
+        Assert.validateId(org, "实体", entity.getId());
+
         try {
             fieldEditLogService.logUpdation(org, entity);
         } catch (IllegalAccessException e) {
@@ -160,6 +163,7 @@ public abstract class BaseService<T extends BaseModel, M extends com.baomidou.my
         return this.count(queryWrapper) > 0;
     }
 
+    @SuppressWarnings("unchecked")
     public <N> List<N> listObjects(Wrapper<T> queryWrapper) {
         List<Object> objects = mapper.selectObjs(queryWrapper);
         return (List<N>) objects;
