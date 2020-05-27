@@ -74,7 +74,7 @@ public class UserController extends AbstractController<User, UserMapper, UserSer
         return success(user);
     }
 
-    @ApiOperation(value = "删除系统用户表")
+    @ApiOperation(value = "锁定解锁用户")
     @RequiresPermissions("系统用户表:新增编辑")
     @PostMapping(value = "/toggle_lock/{id}")
     public ResponseEntity<JsonResult<Boolean>> toggleLock(@PathVariable Long id) {

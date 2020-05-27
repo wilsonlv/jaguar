@@ -17,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.validation.constraints.NotNull;
+
 
 /**
  * <p>
@@ -36,7 +38,7 @@ public class RuleItemController extends AbstractController<RuleItem, RuleItemMap
     @GetMapping(value = "/page")
     public ResponseEntity<JsonResult<Page<RuleItem>>> page(
             @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<RuleItem> page,
-            @ApiParam(value = "编号规则ID") Long ruleId) {
+            @ApiParam(value = "编号规则ID", required = true) @RequestParam @NotNull Long ruleId) {
 
         LambdaQueryWrapper<RuleItem> wrapper = JaguarLambdaQueryWrapper.<RuleItem>newInstance()
                 .eq(RuleItem::getRuleId, ruleId)

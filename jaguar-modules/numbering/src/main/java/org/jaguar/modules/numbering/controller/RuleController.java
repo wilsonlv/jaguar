@@ -39,7 +39,7 @@ public class RuleController extends AbstractController<Rule, RuleMapper, RuleSer
     @GetMapping(value = "/page")
     public ResponseEntity<JsonResult<Page<Rule>>> page(
             @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<Rule> page,
-            @ApiParam(value = "模糊编号规则名称") String fuzzyName) {
+            @ApiParam(value = "模糊编号规则名称") @RequestParam(required = false) String fuzzyName) {
 
         LambdaQueryWrapper<Rule> wrapper = JaguarLambdaQueryWrapper.<Rule>newInstance()
                 .eq(Rule::getName, fuzzyName);
