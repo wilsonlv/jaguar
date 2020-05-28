@@ -37,7 +37,7 @@ import javax.validation.constraints.NotNull;
 public class RuleItemController extends AbstractController<RuleItem, RuleItemMapper, RuleItemService> {
 
     @ApiOperation(value = "查询编号规则条目")
-    @RequiresPermissions("编号规则条目表:读取")
+    @RequiresPermissions("编号规则表:读取")
     @GetMapping(value = "/page")
     public ResponseEntity<JsonResult<Page<RuleItem>>> page(
             @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<RuleItem> page,
@@ -50,21 +50,21 @@ public class RuleItemController extends AbstractController<RuleItem, RuleItemMap
     }
 
     @ApiOperation(value = "编号规则条目详情")
-    @RequiresPermissions("编号规则条目表:读取")
+    @RequiresPermissions("编号规则表:读取")
     @GetMapping(value = "/{id}")
     public ResponseEntity<JsonResult<RuleItem>> detail(@PathVariable Long id) {
         return super.getById(id);
     }
 
     @ApiOperation(value = "更新编号规则条目")
-    @RequiresPermissions("编号规则条目表:新增编辑")
+    @RequiresPermissions("编号规则表:新增编辑")
     @PostMapping(value = "/update")
     public ResponseEntity<JsonResult<RuleItem>> update(@RequestBody @Valid RuleItem ruleItem) {
         return super.saveOrUpdate(ruleItem);
     }
 
     @ApiOperation(value = "删除编号规则条目")
-    @RequiresPermissions("编号规则条目表:删除")
+    @RequiresPermissions("编号规则表:删除")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<JsonResult<?>> del(@PathVariable Long id) {
         return super.delete(id);

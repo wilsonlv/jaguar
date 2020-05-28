@@ -54,7 +54,7 @@ public class RuleController extends AbstractController<Rule, RuleMapper, RuleSer
     }
 
     @ApiOperation(value = "更新编号规则")
-    @RequiresPermissions("编号规则表管理:新增编辑")
+    @RequiresPermissions("编号规则表:新增编辑")
     @PostMapping
     public ResponseEntity<JsonResult<Rule>> update(@RequestBody @Valid Rule entity) {
         synchronized (this) {

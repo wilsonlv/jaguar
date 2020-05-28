@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserRoleController extends AbstractController<UserRole, UserRoleMapper, UserRoleService> {
 
     @ApiOperation(value = "修改系统用户角色表")
-    @RequiresPermissions("系统用户角色表:新增编辑")
+    @RequiresPermissions("用户角色管理")
     @PostMapping
     public ResponseEntity<JsonResult<UserRole>> create(@RequestBody UserRole userRole) {
         synchronized (this) {
@@ -37,7 +37,7 @@ public class UserRoleController extends AbstractController<UserRole, UserRoleMap
     }
 
     @ApiOperation(value = "删除系统用户角色表")
-    @RequiresPermissions("系统用户角色表:删除")
+    @RequiresPermissions("用户角色管理")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<JsonResult<?>> del(@PathVariable Long id) {
         return super.delete(id);
