@@ -184,7 +184,7 @@ CREATE TABLE `jaguar_modules_workflow_form_template_sheet`
 
 
 DROP TABLE IF EXISTS `jaguar_modules_workflow_process_info`;
-CREATE TABLE `jaguar_modules_workflow_info`
+CREATE TABLE `jaguar_modules_workflow_process_info`
 (
     `id`                    bigint(20)  NOT NULL COMMENT 'ID',
     `process_definition_id` varchar(45) NOT NULL COMMENT '流程定义ID',

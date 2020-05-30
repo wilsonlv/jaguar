@@ -2,7 +2,6 @@ package org.jaguar.modules.system.mgm.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.jaguar.core.base.AbstractController;
 import org.jaguar.core.web.JsonResult;
@@ -15,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -34,9 +32,8 @@ public class RoleMenuController extends AbstractController<RoleMenu, RoleMenuMap
 
     @ApiOperation(value = "查询系统角色菜单表")
     @RequiresPermissions("系统角色菜单表:读取")
-    @GetMapping(value = "/tree_menu_with_role_permission")
-    public ResponseEntity<JsonResult<List<Menu>>> treeMenuWithRolePermission(
-            @ApiParam(required = true, value = "角色ID") @RequestParam @NotNull Long roleId) {
+    @GetMapping(value = "/tree_menu_with_role_permission/{roleId}")
+    public ResponseEntity<JsonResult<List<Menu>>> treeMenuWithRolePermission(@PathVariable Long roleId) {
 
         List<Menu> menuList = service.treeMenuWithRolePermission(roleId);
         return success(menuList);

@@ -49,7 +49,8 @@ public class RoleMenuService extends BaseService<RoleMenu, RoleMenuMapper> {
     public List<Menu> treeMenuWithRolePermission(Long roleId) {
         List<Menu> menuTree = menuService.tree();
         for (Menu menu : menuTree) {
-            RoleMenu roleMenu = this.unique(JaguarLambdaQueryWrapper.<RoleMenu>newInstance().eq(RoleMenu::getMenuId, menu.getId())
+            RoleMenu roleMenu = this.unique(JaguarLambdaQueryWrapper.<RoleMenu>newInstance()
+                    .eq(RoleMenu::getMenuId, menu.getId())
                     .eq(RoleMenu::getRoleId, roleId));
             menu.setRoleMenu(roleMenu);
 
@@ -66,7 +67,8 @@ public class RoleMenuService extends BaseService<RoleMenu, RoleMenuMapper> {
      */
     private void recursionChildrenRoleMenuPermission(Menu parent, Long roleId) {
         for (Menu child : parent.getChildren()) {
-            RoleMenu roleMenu = this.unique(JaguarLambdaQueryWrapper.<RoleMenu>newInstance().eq(RoleMenu::getMenuId, child.getId())
+            RoleMenu roleMenu = this.unique(JaguarLambdaQueryWrapper.<RoleMenu>newInstance()
+                    .eq(RoleMenu::getMenuId, child.getId())
                     .eq(RoleMenu::getRoleId, roleId));
             child.setRoleMenu(roleMenu);
 
@@ -97,7 +99,7 @@ public class RoleMenuService extends BaseService<RoleMenu, RoleMenuMapper> {
                 this.delete(persistRoleMenu.getId());
             } else {
                 persistRoleMenu.setRoleMenuPermission(roleMenu.getRoleMenuPermission());
-                roleMenu = this.updateById(roleMenu);
+                roleMenu = this.updateById(persistRoleMenu);
             }
         }
         return roleMenu;
