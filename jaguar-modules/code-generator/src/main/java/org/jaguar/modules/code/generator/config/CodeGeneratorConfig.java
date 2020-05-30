@@ -91,24 +91,4 @@ public class CodeGeneratorConfig {
         return config;
     }
 
-    /*@Bean
-    public AutoGenerator autoGenerator(GlobalConfig globalConfig, DataSourceConfig dataSourceConfig,
-                                       StrategyConfig strategyConfig, PackageConfig packageConfig,
-                                       TemplateConfig templateConfig) {
-
-        AutoGenerator generator = new AutoGenerator();
-        // 全局配置
-        generator.setGlobalConfig(globalConfig);
-        // 数据源配置
-        generator.setDataSource(dataSourceConfig);
-        // 策略配置
-        generator.setStrategy(strategyConfig);
-        // 包配置
-        generator.setPackageInfo(packageConfig);
-        // 模版配置
-        generator.setTemplate(templateConfig);
-        return generator;
-    }*/
-
-
 }

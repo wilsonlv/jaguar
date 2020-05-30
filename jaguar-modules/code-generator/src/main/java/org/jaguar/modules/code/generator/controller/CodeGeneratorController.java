@@ -52,6 +52,7 @@ public class CodeGeneratorController extends AbstractController<CodeGenerator, C
         JSONObject config = new JSONObject();
         config.put("defaultOutputDir", codeGeneratorProperties.getDefaultOutputDir());
         config.put("defaultParentPackage", codeGeneratorProperties.getDefaultParentPackage());
+        config.put("defaultTablePrefix", codeGeneratorProperties.getDefaultTablePrefix());
         return success(config);
     }
 
@@ -64,6 +65,9 @@ public class CodeGeneratorController extends AbstractController<CodeGenerator, C
         }
         if (StringUtils.isBlank(codeGenerator.getParentPackage())) {
             codeGenerator.setParentPackage(codeGeneratorProperties.getDefaultParentPackage());
+        }
+        if (StringUtils.isBlank(codeGenerator.getTablePrefix())) {
+            codeGenerator.setTablePrefix(codeGeneratorProperties.getDefaultTablePrefix());
         }
 
         service.generate(codeGenerator);

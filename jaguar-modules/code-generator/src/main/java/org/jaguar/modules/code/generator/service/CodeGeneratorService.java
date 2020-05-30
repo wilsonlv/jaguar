@@ -2,6 +2,7 @@ package org.jaguar.modules.code.generator.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
+import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
 import org.apache.commons.lang3.StringUtils;
 import org.jaguar.core.base.BaseService;
@@ -49,9 +50,9 @@ public class CodeGeneratorService extends BaseService<CodeGenerator, CodeGenerat
 
         if (StringUtils.isNotBlank(codeGenerator.getModuleName())) {
             packageConfig.setModuleName(codeGenerator.getModuleName());
-            strategyConfig.setTablePrefix("t_" + codeGenerator.getModuleName());
+            strategyConfig.setTablePrefix(codeGenerator.getTablePrefix() + codeGenerator.getModuleName());
         } else {
-            strategyConfig.setTablePrefix("t_");
+            strategyConfig.setTablePrefix(codeGenerator.getTablePrefix());
         }
 
         AutoGenerator generator = new AutoGenerator();
@@ -65,6 +66,7 @@ public class CodeGeneratorService extends BaseService<CodeGenerator, CodeGenerat
         generator.setPackageInfo(packageConfig);
         // 模版配置
         generator.setTemplate(templateConfig);
+
         generator.execute();
     }
 }

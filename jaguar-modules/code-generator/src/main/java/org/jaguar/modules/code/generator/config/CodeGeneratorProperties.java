@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "jaguar.code-generator")
 public class CodeGeneratorProperties {
 
+    private String defaultTablePrefix;
     private String defaultOutputDir;
     private String defaultParentPackage;
 
