@@ -1,8 +1,9 @@
 jaguar:
-  code-generator:
-    default-output-dir: code_genertor/
-    default-parent-package: org.jaguar.modules
-    default-table-prefix: t_
+  modules:
+    code-generator:
+      default-output-dir: code_genertor/
+      default-parent-package: org.jaguar.modules
+      default-table-prefix: t_
 
 logging:
   level:

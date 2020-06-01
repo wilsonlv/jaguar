@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "jaguar.code-generator")
+@ConfigurationProperties(prefix = "jaguar.modules.code-generator")
 public class CodeGeneratorProperties {
 
     private String defaultTablePrefix;
