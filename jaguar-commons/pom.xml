@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>commons-activemq</module>
         <module>commons-aviator</module>
         <module>commons-data-encription</module>
         <module>commons-dubbo</module>
