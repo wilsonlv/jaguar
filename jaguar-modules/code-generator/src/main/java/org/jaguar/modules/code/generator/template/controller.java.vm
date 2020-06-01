@@ -44,7 +44,6 @@ public class ${table.controllerName} extends AbstractController<${entity}, ${ent
         @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<${entity}> page) {
 
         LambdaQueryWrapper<${entity}> wrapper = new JaguarLambdaQueryWrapper<>();
-        wrapper.setEntity(${table.entityPath});
         return super.query(page, wrapper);
     }
 
