@@ -14,6 +14,22 @@
     <dependencies>
         <dependency>
             <groupId>org.jaguar</groupId>
+            <artifactId>commons-data-encription</artifactId>
+            <version>${jaguar.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jaguar</groupId>
+            <artifactId>handler-log</artifactId>
+            <version>${jaguar.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jaguar</groupId>
+            <artifactId>document</artifactId>
+            <version>${jaguar.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jaguar</groupId>
             <artifactId>system-mgm-sdk</artifactId>
             <version>${jaguar.version}</version>
         </dependency>

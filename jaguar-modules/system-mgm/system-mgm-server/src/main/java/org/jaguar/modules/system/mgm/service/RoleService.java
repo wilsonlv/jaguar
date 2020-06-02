@@ -45,7 +45,7 @@ public class RoleService extends BaseService<Role, RoleMapper> {
     @Transactional
     public Role createOrUpdate(Role role) {
         Role unique = this.unique(JaguarLambdaQueryWrapper.<Role>newInstance().eq(Role::getRoleName, role));
-        Assert.duplicate(unique, role, "角色名称重复");
+        Assert.duplicate(unique, role, "角色名称");
         return this.saveOrUpdate(role);
     }
 
