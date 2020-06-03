@@ -16,6 +16,7 @@
         <module>code-generator</module>
         <module>document</module>
         <module>handler-log</module>
+        <module>jasper-report</module>
         <module>malice-prevention</module>
         <module>numbering</module>
         <module>system-mgm</module>
