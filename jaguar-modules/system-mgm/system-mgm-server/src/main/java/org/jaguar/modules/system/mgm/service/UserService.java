@@ -38,17 +38,17 @@ public class UserService extends BaseService<User, UserMapper> {
                 .eq(User::getUserAccount, account));
     }
 
-    public User getByPhone(String phone) {
+    public User getByPhone(@NotBlank String phone) {
         return this.unique(JaguarLambdaQueryWrapper.<User>newInstance()
                 .eq(User::getUserPhone, phone));
     }
 
-    public User getByEmail(String email) {
+    public User getByEmail(@NotBlank String email) {
         return this.unique(JaguarLambdaQueryWrapper.<User>newInstance()
                 .eq(User::getUserEmail, email));
     }
 
-    public User getByPrincipal(String principal) {
+    public User getByPrincipal(@NotBlank String principal) {
         return this.unique(JaguarLambdaQueryWrapper.<User>newInstance()
                 .eq(User::getUserAccount, principal)
                 .or().eq(User::getUserPhone, principal)
@@ -129,7 +129,7 @@ public class UserService extends BaseService<User, UserMapper> {
         Assert.validateId(persist, "用户", user.getId());
 
         if (!persist.getUserAccount().equals(user.getUserAccount())) {
-            throw new CheckedException("用户账号不修改");
+            throw new CheckedException("用户账号不可修改");
         }
 
         if (StringUtils.isNotBlank(user.getUserPhone())) {

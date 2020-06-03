@@ -1,9 +1,9 @@
 jaguar:
   modules:
     document:
-      file-path: D:\\lims\\upload\\document
-      temp-dir: D:\\lims\\upload\\temp
+      file-path: D:\\jaguar\\upload\\document
+      temp-dir: D:\\jaguar\\upload\\temp
 
 server:
   tomcat:
-    basedir: D:\\lims\\upload\\temp
+    basedir: D:\\jaguar\\upload\\temp
