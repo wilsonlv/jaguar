@@ -13,7 +13,7 @@ import org.jaguar.core.base.BaseModel;
  * @date 2019-11-01 10:23:09
  */
 @Data
-@TableName("t_document")
+@TableName("jaguar_modules_document")
 @EqualsAndHashCode(callSuper = true)
 public class Document extends BaseModel {
 
