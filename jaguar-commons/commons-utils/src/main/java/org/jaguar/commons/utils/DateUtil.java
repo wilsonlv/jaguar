@@ -128,4 +128,12 @@ public class DateUtil {
     public static String getDateTime(DateTimePattern pattern) {
         return format(new Date(), pattern);
     }
+
+    /**
+     * 获取当前时间
+     */
+    public static String getTime() {
+        return formatTime(new Date());
+    }
+
 }

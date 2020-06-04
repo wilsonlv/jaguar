@@ -2,6 +2,7 @@ package org.jaguar.modules.document.service;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
+import org.jaguar.commons.utils.DateUtil;
 import org.jaguar.core.base.BaseService;
 import org.jaguar.core.exception.CheckedException;
 import org.jaguar.modules.document.config.DocumentProperties;
@@ -14,9 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,7 +44,8 @@ public class DocumentService extends BaseService<Document, DocumentMapper> {
         String parentFileDir = documentProperties.getFilePath() + File.separator + LocalDate.now() + File.separator;
         File parent = new File(parentFileDir);
         if (parent.exists() || parent.mkdirs()) {
-            return parentFileDir + LocalTime.now() + fileName;
+
+            return parentFileDir + DateUtil.format(new Date(), DateUtil.DateTimePattern.HHMMSS) + fileName;
         } else {
             throw new CheckedException("目录创建失败！");
         }
@@ -56,7 +58,7 @@ public class DocumentService extends BaseService<Document, DocumentMapper> {
         String parentFileDir = documentProperties.getTempDir() + File.separator + LocalDate.now() + File.separator;
         File parent = new File(parentFileDir);
         if (parent.exists() || parent.mkdirs()) {
-            return parentFileDir + LocalTime.now() + fileName;
+            return parentFileDir + DateUtil.format(new Date(), DateUtil.DateTimePattern.HHMMSS) + fileName;
         } else {
             throw new CheckedException("目录创建失败！");
         }
