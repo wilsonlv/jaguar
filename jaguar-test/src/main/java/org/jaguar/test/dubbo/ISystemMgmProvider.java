@@ -1,6 +1,6 @@
 package org.jaguar.test.dubbo;
 
-import org.jaguar.commons.dubbo.provider.IBaseProvider;
+import org.jaguar.support.dubbo.base.IBaseProvider;
 
 /**
  * @author lvws

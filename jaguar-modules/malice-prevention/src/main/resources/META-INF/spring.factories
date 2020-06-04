@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    org.jaguar.modules.malice.prevention.config.MalicePreventionConfig,\
-    org.jaguar.modules.malice.prevention.config.MalicePreventionProperties

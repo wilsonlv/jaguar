@@ -3,22 +3,20 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>jaguar</artifactId>
+        <artifactId>jaguar-support</artifactId>
         <groupId>org.jaguar</groupId>
         <version>master</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jaguar-modules</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>handler-log</artifactId>
 
-    <modules>
-        <module>code-generator</module>
-        <module>document</module>
-        <module>jasper-report</module>
-        <module>numbering</module>
-        <module>system-mgm</module>
-        <module>workflow</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.jaguar</groupId>
+            <artifactId>jaguar-core</artifactId>
+            <version>${jaguar.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>

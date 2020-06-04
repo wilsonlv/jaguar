@@ -3,35 +3,30 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>jaguar</artifactId>
+        <artifactId>jaguar-support</artifactId>
         <groupId>org.jaguar</groupId>
         <version>master</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jaguar-test</artifactId>
+    <artifactId>malice-prevention</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>org.jaguar</groupId>
-            <artifactId>system-mgm-sdk</artifactId>
-            <version>${jaguar.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>system-mgm-server</artifactId>
+            <artifactId>commons-redis</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>code-generator</artifactId>
-            <version>${jaguar.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jaguar</groupId>
-            <artifactId>dubbo</artifactId>
+            <artifactId>commons-utils</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
     </dependencies>
-
 </project>

@@ -1,7 +1,7 @@
 package org.jaguar.test.dubbo;
 
 import org.apache.dubbo.config.annotation.Service;
-import org.jaguar.commons.dubbo.provider.BaseProviderImpl;
+import org.jaguar.support.dubbo.base.BaseProviderImpl;
 
 /**
  * @author lvws

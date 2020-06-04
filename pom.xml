@@ -13,6 +13,7 @@
         <module>jaguar-core</module>
         <module>jaguar-modules</module>
         <module>jaguar-test</module>
+        <module>jaguar-support</module>
     </modules>
 
     <properties>

@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS `jaguar_modules_document`;
 CREATE TABLE `jaguar_modules_document`
 (
-    `id`            bigint(20)   NOT NULL COMMENT 'ID',
+    `id_`            bigint(20)   NOT NULL COMMENT 'ID',
     `original_name` varchar(50)  NOT NULL COMMENT '原始文档名称',
     `extension_`    varchar(10)  NOT NULL COMMENT '文档拓展名',
     `absolute_path` varchar(100) NOT NULL COMMENT '文档绝对路径',
@@ -11,6 +11,6 @@ CREATE TABLE `jaguar_modules_document`
     `create_time`   timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_by`     bigint(20) unsigned   DEFAULT NULL COMMENT '最新修改人',
     `update_time`   timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id_`)
 ) ENGINE = InnoDB
   CHARSET = utf8mb4 COMMENT ='文档上传表';
