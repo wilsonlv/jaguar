@@ -113,7 +113,7 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
             handlerLog.setStatus(response.getStatus());
 
             LocalDateTime endTime = LocalDateTime.now();
-            long duration = Duration.between(endTime, handlerLog.getAccessTime()).toMillis();
+            long duration = Duration.between(handlerLog.getAccessTime(), endTime).toMillis();
 
             if (handlerLog.getRequestUri().contains(shiroProperties.getLoginUrl())) {
                 log.warn("用户[{}@{}]没有登录", handlerLog.getClientHost(), handlerLog.getUserAgent());

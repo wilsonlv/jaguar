@@ -83,8 +83,7 @@ public class AuthController extends AbstractController<User, UserMapper, UserSer
             }
         }
 
-        User user = service.getById(getCurrentUser());
-        return success(user);
+        return getPersonalInfo();
     }
 
     @ApiOperation(value = "退出登陆")
