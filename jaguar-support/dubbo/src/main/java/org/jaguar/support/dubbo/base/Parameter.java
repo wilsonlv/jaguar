@@ -29,6 +29,16 @@ public class Parameter implements Serializable {
 
     private Long currentUserId;
 
+    public static final String GET_BY_ID = "getById";
+    public static final String INSERT = "insert";
+    public static final String UPDATE_BY_ID = "updateById";
+    public static final String SAVE_OR_UPDATE = "saveOrUpdate";
+    public static final String DELETE = "delete";
+
+    public static Parameter createInstance(String service) {
+        return createInstance(service, null);
+    }
+
     public static Parameter createInstance(String service, String method) {
         return new Parameter(LoginUtil.getCurrentUser(), service, method);
     }
@@ -160,4 +170,35 @@ public class Parameter implements Serializable {
     protected Long getCurrentUserId() {
         return this.currentUserId;
     }
+
+    public Parameter getById(Long id) {
+        this.id = id;
+        this.method = GET_BY_ID;
+        return this;
+    }
+
+    public Parameter insert(BaseModel model) {
+        this.model = model;
+        this.method = INSERT;
+        return this;
+    }
+
+    public Parameter updateById(BaseModel model) {
+        this.model = model;
+        this.method = UPDATE_BY_ID;
+        return this;
+    }
+
+    public Parameter saveOrUpdate(BaseModel model) {
+        this.model = model;
+        this.method = SAVE_OR_UPDATE;
+        return this;
+    }
+
+    public Parameter delete(Long id) {
+        this.id = id;
+        this.method = DELETE;
+        return this;
+    }
+
 }
