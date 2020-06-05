@@ -2,6 +2,7 @@ package org.jaguar.support.dubbo.base;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jaguar.core.base.BaseModel;
+import org.jaguar.core.web.LoginUtil;
 
 import java.io.Serializable;
 import java.util.List;
@@ -26,23 +27,19 @@ public class Parameter implements Serializable {
     private String str;
     private Object object;
 
-    public static Parameter createInstance() {
-        return new Parameter();
-    }
+    private Long currentUserId;
 
     public static Parameter createInstance(String service, String method) {
-        return new Parameter(service, method);
+        return new Parameter(LoginUtil.getCurrentUser(), service, method);
     }
 
-    public Parameter() {
-    }
-
-    public Parameter(String service, String method) {
+    protected Parameter(Long currentUserId, String service, String method) {
+        this.currentUserId = currentUserId;
         this.service = service;
         this.method = method;
     }
 
-    public Parameter(Object result) {
+    protected Parameter(Object result) {
         if (result instanceof Long) {
             this.id = (Long) result;
         } else if (result instanceof BaseModel) {
@@ -158,5 +155,9 @@ public class Parameter implements Serializable {
     public Parameter setObject(Object object) {
         this.object = object;
         return this;
+    }
+
+    protected Long getCurrentUserId() {
+        return this.currentUserId;
     }
 }

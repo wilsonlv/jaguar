@@ -5,6 +5,7 @@ import com.esotericsoftware.reflectasm.MethodAccess;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jaguar.core.base.BaseModel;
+import org.jaguar.core.base.BaseService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -34,6 +35,8 @@ public abstract class BaseProviderImpl implements ApplicationContextAware, IBase
 
         long start = System.currentTimeMillis();
         Object service = applicationContext.getBean(parameter.getService());
+        BaseService.CURRENT_USER.set(parameter.getCurrentUserId());
+
         try {
             Long id = parameter.getId();
             String str = parameter.getStr();
@@ -84,6 +87,8 @@ public abstract class BaseProviderImpl implements ApplicationContextAware, IBase
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
+        } finally {
+            BaseService.CURRENT_USER.remove();
         }
     }
 }
