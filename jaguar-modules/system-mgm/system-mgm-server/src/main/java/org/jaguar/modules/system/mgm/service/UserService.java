@@ -73,7 +73,7 @@ public class UserService extends BaseService<User, UserMapper> {
             throw new CheckedException("密码错误");
         }
 
-        if (SecurityUtil.checkPassword(newPassword)) {
+        if (!SecurityUtil.checkPassword(newPassword)) {
             throw new CheckedException("密码格式为包含数字，字母大小写的6-20位字符串！");
         }
 
