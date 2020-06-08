@@ -1,6 +1,7 @@
 package org.jaguar.modules.jasperreport.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -29,7 +30,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.Collections;
-import java.util.Map;
 
 /**
  * @author lvws
@@ -55,9 +55,10 @@ public class JasperReportsController extends BaseController {
     public void preview(HttpServletResponse response,
                         @ApiParam(value = "模版ID", required = true) @PathVariable Long templateId,
                         @ApiParam(value = "导出类型") @RequestParam(required = false, defaultValue = "PDF") ExportType exportType,
-                        @ApiParam(value = "参数", required = true) @RequestParam Map<String, Object> params) throws JRException, IOException {
+                        @ApiParam(value = "参数", required = true) @RequestParam @NotBlank String jsonParamStr) throws JRException, IOException {
 
-        JasperPrint jasperPrint = jasperReportsService.print(templateId, params);
+        JSONObject jsonParams = JSONObject.parseObject(jsonParamStr);
+        JasperPrint jasperPrint = jasperReportsService.print(templateId, jsonParams);
 
         ServletOutputStream outputStream = response.getOutputStream();
         this.jasperExport(jasperPrint, outputStream, exportType);
@@ -70,9 +71,10 @@ public class JasperReportsController extends BaseController {
                        @ApiParam(value = "模版ID", required = true) @PathVariable Long templateId,
                        @ApiParam(value = "文件名称", required = true) @RequestParam @NotBlank String fileName,
                        @ApiParam(value = "导出类型", required = true) @RequestParam @NotNull ExportType exportType,
-                       @ApiParam(value = "参数", required = true) @RequestParam Map<String, Object> params) throws JRException, IOException {
+                       @ApiParam(value = "参数", required = true) @RequestParam @NotBlank String jsonParamStr) throws JRException, IOException {
 
-        JasperPrint jasperPrint = jasperReportsService.print(templateId, params);
+        JSONObject jsonParams = JSONObject.parseObject(jsonParamStr);
+        JasperPrint jasperPrint = jasperReportsService.print(templateId, jsonParams);
 
         response.setContentType("multipart/form-data;charset=" + Charsets.UTF_8_NAME);
         response.setHeader("Content-Disposition", "attachment;fileName=" + URLEncoder.encode(fileName, Charsets.UTF_8_NAME));
