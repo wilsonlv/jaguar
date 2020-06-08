@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jaguar.core.base.BaseModel;
+import org.jaguar.modules.document.model.Document;
 
 import javax.validation.constraints.NotBlank;
 
@@ -46,5 +47,8 @@ public class Template extends BaseModel {
     @ApiModelProperty(value = "文档ID")
     @TableField("document_id")
     private Long documentId;
+
+    @TableField(exist = false)
+    private Document document;
 
 }
