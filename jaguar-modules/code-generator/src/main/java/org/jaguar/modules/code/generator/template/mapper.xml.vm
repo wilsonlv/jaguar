@@ -9,12 +9,9 @@
 #if(${baseResultMap})
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="${package.Entity}.${entity}">
+		<id property="id" column="id_"/>
 #foreach($field in ${table.fields})
-#if(${field.keyFlag})
-		<id column="${field.name}" property="${field.propertyName}" />
-#else
-		<result column="${field.name}" property="${field.propertyName}" />
-#end
+	<result column="${field.name}" property="${field.propertyName}" />
 #end
 	</resultMap>
 #end
