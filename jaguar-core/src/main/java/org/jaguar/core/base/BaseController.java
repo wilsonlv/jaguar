@@ -125,10 +125,10 @@ public abstract class BaseController {
      */
     @ResponseBody
     @ExceptionHandler(value = BaseException.class)
-    public ResponseEntity<JsonResult<String>> baseExceptionHandler(BaseException exception) {
+    public ResponseEntity<JsonResult<Object>> baseExceptionHandler(BaseException exception) {
         exception.printStackTrace();
         return ResponseEntity.status(exception.getHttpStatus())
-                .body(new JsonResult<String>().setMessage(exception.getMessage()));
+                .body(new JsonResult<>().setData(exception.getData()).setMessage(exception.getMessage()));
     }
 
     /**

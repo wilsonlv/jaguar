@@ -9,7 +9,14 @@ import org.springframework.http.HttpStatus;
  */
 public abstract class BaseException extends RuntimeException {
 
+    protected Object data;
+
     public BaseException() {
+    }
+
+    public BaseException(Object data, String message) {
+        super(message);
+        this.data = data;
     }
 
     public BaseException(String message) {
@@ -26,6 +33,7 @@ public abstract class BaseException extends RuntimeException {
 
     /**
      * 异常对应的的状态码
+     *
      * @return 状态码枚举类
      */
     public abstract HttpStatus getHttpStatus();
@@ -35,4 +43,7 @@ public abstract class BaseException extends RuntimeException {
         return StringUtils.isBlank(super.getMessage()) ? getHttpStatus().getReasonPhrase() : super.getMessage();
     }
 
+    public Object getData() {
+        return data;
+    }
 }
