@@ -44,8 +44,7 @@ public class RoleMenu extends BaseModel {
     /**
      * 角色菜单权限（READ，VIEW，UPDATE，DEL）
      */
-    @ApiModelProperty(value = "角色菜单权限", required = true)
-    @NotNull(message = "角色菜单权限为非空")
+    @ApiModelProperty(value = "角色菜单权限")
     @TableField("role_menu_permission")
     private RoleMenuPermission roleMenuPermission;
 
