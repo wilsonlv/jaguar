@@ -32,10 +32,9 @@
     </resultMap>
 
     <select id="listViewMenusByRoleIdsAndParentId" resultMap="MenuResultMap">
-        SELECT
-        m.*
+        SELECT m.*
         FROM jaguar_modules_system_role_menu rm
-        LEFT JOIN jaguar_modules_system_menu m ON m.id_ = rm.menu_id
+                 LEFT JOIN jaguar_modules_system_menu m ON m.id_ = rm.menu_id
         <where>
             rm.deleted_ = 0
             AND m.deleted_ = 0
@@ -59,10 +58,13 @@
     </select>
 
     <select id="listMaxPermissionsWithMenuByRoleIds" resultMap="BaseResultMap">
-        SELECT
-        rm.id_, rm.role_id, rm.menu_id, MAX(rm.role_menu_permission) AS role_menu_permission,m.*
+        SELECT rm.id_,
+               rm.role_id,
+               rm.menu_id,
+               MAX(rm.role_menu_permission) AS role_menu_permission,
+               m.*
         FROM jaguar_modules_system_role_menu rm
-        LEFT JOIN jaguar_modules_system_menu m ON m.id_ = rm.menu_id
+                 LEFT JOIN jaguar_modules_system_menu m ON m.id_ = rm.menu_id
         <where>
             rm.deleted_ = 0
             AND m.deleted_ = 0

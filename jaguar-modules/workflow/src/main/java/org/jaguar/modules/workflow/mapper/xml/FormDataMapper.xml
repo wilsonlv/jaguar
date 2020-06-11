@@ -15,24 +15,26 @@
     </resultMap>
 
     <select id="getByKeyAndValueInProcessDefinition" resultMap="BaseResultMap">
-        SELECT
-               d.*
+        SELECT d.*
         FROM jaguar_modules_workflow_form_data d
-        INNER JOIN jaguar_modules_workflow_info info on info.id = d.process_info_id
-        INNER JOIN act_re_procdef def on def.ID_ = info.process_definition_id
-        WHERE def.NAME_ = #{processDefinitionName} AND d.field_key = #{key} AND d.value_ = #{value}
-            AND info.deleted_ = 0
+                 INNER JOIN jaguar_modules_workflow_info info on info.id = d.process_info_id
+                 INNER JOIN act_re_procdef def on def.ID_ = info.process_definition_id
+        WHERE def.NAME_ = #{processDefinitionName}
+          AND d.field_key = #{key}
+          AND d.value_ = #{value}
+          AND info.deleted_ = 0
         LIMIT 0, 1
     </select>
-    
+
     <select id="queryOverride" resultMap="BaseResultMap">
-        SELECT 
-               d.*, f.label_
+        SELECT d.*,
+               f.label_
         FROM jaguar_modules_workflow_form_data d
-        LEFT JOIN jaguar_modules_workflow_form_template_sheet s ON s.id = d.form_template_sheet_id
-        LEFT JOIN jaguar_modules_workflow_form_template_field f ON f.id = d.form_template_field_id
-        LEFT JOIN jaguar_modules_workflow_form_template_row r ON r.id = f.form_template_row_id
-        WHERE s.override_ = 1
+                 LEFT JOIN jaguar_modules_workflow_form_template_sheet s ON s.id = d.form_template_sheet_id
+                 LEFT JOIN jaguar_modules_workflow_form_template_field f ON f.id = d.form_template_field_id
+                 LEFT JOIN jaguar_modules_workflow_form_template_row r ON r.id = f.form_template_row_id
+        <where>
+            s.override_ = 1
             AND d.process_info_id = #{processInfoId}
             <if test="fuzzyFieldKey != null and fuzzyFieldKey != ''">
                 AND d.field_key LIKE CONCAT('%', #{fuzzyFieldKey}, '%')
@@ -40,6 +42,7 @@
             <if test="fuzzyFieldLabel != null and fuzzyFieldLabel != ''">
                 AND f.label_ LIKE CONCAT('%', #{fuzzyFieldLabel}, '%')
             </if>
+        </where>
         ORDER BY s.sort_no, r.sort_no, f.sort_no
     </select>
 </mapper>

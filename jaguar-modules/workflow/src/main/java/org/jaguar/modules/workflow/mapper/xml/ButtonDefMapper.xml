@@ -20,7 +20,7 @@
     <select id="queryButtonInstList" resultMap="BaseResultMap">
         SELECT bd.*, bi.params_
         FROM jaguar_modules_workflow_button_inst bi
-        LEFT JOIN jaguar_modules_workflow_button_def bd on bd.id = bi.button_def_id
+                 LEFT JOIN jaguar_modules_workflow_button_def bd on bd.id = bi.button_def_id
         <where>
             bi.deleted_ = 0 AND bd.deleted_ = 0
             <if test="p.showPage != null and p.showPage != ''">

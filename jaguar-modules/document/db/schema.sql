@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS `jaguar_modules_document`;
 CREATE TABLE `jaguar_modules_document`
 (
-    `id_`            bigint(20)   NOT NULL COMMENT 'ID',
+    `id_`           bigint(20)   NOT NULL COMMENT 'ID',
     `original_name` varchar(50)  NOT NULL COMMENT '原始文档名称',
     `extension_`    varchar(10)  NOT NULL COMMENT '文档拓展名',
     `absolute_path` varchar(100) NOT NULL COMMENT '文档绝对路径',

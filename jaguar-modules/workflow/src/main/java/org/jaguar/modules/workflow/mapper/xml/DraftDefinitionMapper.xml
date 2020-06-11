@@ -15,9 +15,9 @@
     <select id="queryLatest" resultMap="BaseResultMap">
         SELECT a.id, a.element_id, a.name_, a.definition_type, a.version_
         FROM jaguar_modules_workflow_draft_definition a
-        RIGHT JOIN
-        (SELECT name_, MAX(version_) AS max_version FROM jaguar_modules_workflow_draft_definition GROUP BY name_) b
-        ON a.name_ = b.name_ and a.version_ = b.max_version
+                 RIGHT JOIN
+             (SELECT name_, MAX(version_) AS max_version FROM jaguar_modules_workflow_draft_definition GROUP BY name_) b
+             ON a.name_ = b.name_ and a.version_ = b.max_version
         <where>
             <if test="p.name != null and p.name != ''">
                 AND a.name_ = #{p.name}

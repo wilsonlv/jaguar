@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS `jaguar_modules_numbering_rule`;
 CREATE TABLE `jaguar_modules_numbering_rule`
 (
-    `id_`           bigint(20)  NOT NULL COMMENT 'ID',
+    `id_`          bigint(20)  NOT NULL COMMENT 'ID',
     `name_`        varchar(50) NOT NULL COMMENT '规则名称',
     `description_` varchar(100)         DEFAULT NULL COMMENT '描述',
     `deleted_`     tinyint(1)  NOT NULL DEFAULT '0' COMMENT '逻辑删除标记(0--正常 1--删除)',
@@ -16,7 +16,7 @@ CREATE TABLE `jaguar_modules_numbering_rule`
 DROP TABLE IF EXISTS `jaguar_modules_numbering_rule_item`;
 CREATE TABLE `jaguar_modules_numbering_rule_item`
 (
-    `id_`                       bigint(20)  NOT NULL COMMENT 'ID',
+    `id_`                      bigint(20)  NOT NULL COMMENT 'ID',
     `rule_id`                  bigint(20)  NOT NULL COMMENT '编号规则ID',
     `numbering_rule_item_type` varchar(20) NOT NULL COMMENT '类型（固定类型：FIXED，日期类型：DATETIME，流水号：SERIAL_NUMBER，sql查询：SQL_QUERY）',
     `level_`                   tinyint(1)           DEFAULT NULL COMMENT '流水序列等级',
@@ -37,7 +37,7 @@ CREATE TABLE `jaguar_modules_numbering_rule_item`
 DROP TABLE IF EXISTS `jaguar_modules_numbering_rule_serial`;
 CREATE TABLE `jaguar_modules_numbering_rule_serial`
 (
-    `id_`            bigint(20)  NOT NULL COMMENT 'ID',
+    `id_`           bigint(20)  NOT NULL COMMENT 'ID',
     `rule_id`       bigint(20)  NOT NULL COMMENT '编号规则ID',
     `rule_item_id`  bigint(20)  NOT NULL COMMENT '编号规则条目ID',
     `parttern_`     varchar(50) NOT NULL COMMENT '格式',

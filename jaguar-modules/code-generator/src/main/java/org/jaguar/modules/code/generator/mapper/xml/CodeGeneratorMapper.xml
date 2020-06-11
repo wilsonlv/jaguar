@@ -10,7 +10,8 @@
     </resultMap>
 
     <select id="showTables" resultMap="BaseResultMap">
-        SELECT table_name, table_comment, create_time FROM information_schema.tables
+        SELECT table_name, table_comment, create_time
+        FROM information_schema.tables
         <where>
             table_schema = #{schema}
             <if test="fuzzyTableName != null and fuzzyTableName != ''">
