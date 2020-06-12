@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import javax.annotation.Nonnull;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -49,11 +50,11 @@ public abstract class BaseProviderImpl implements ApplicationContextAware, IBase
             Object result;
             MethodAccess methodAccess = MethodAccess.get(service.getClass());
             if (id != null) {
-                result = methodAccess.invoke(service, parameter.getMethod(), id);
+                result = methodAccess.invoke(service, parameter.getMethod(), new Class[]{Serializable.class}, id);
             } else if (str != null) {
-                result = methodAccess.invoke(service, parameter.getMethod(), str);
+                result = methodAccess.invoke(service, parameter.getMethod(), new Class[]{String.class}, str);
             } else if (flag != null) {
-                result = methodAccess.invoke(service, parameter.getMethod(), flag);
+                result = methodAccess.invoke(service, parameter.getMethod(), new Class[]{Boolean.class}, flag);
             } else if (model != null) {
                 result = methodAccess.invoke(service, parameter.getMethod(), model);
             } else if (list != null) {
