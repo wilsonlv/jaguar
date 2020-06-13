@@ -14,22 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>system-mgm-sdk</artifactId>
-            <version>${jaguar.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jaguar</groupId>
-            <artifactId>system-mgm-server</artifactId>
-            <version>${jaguar.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jaguar</groupId>
-            <artifactId>code-generator</artifactId>
-            <version>${jaguar.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jaguar</groupId>
-            <artifactId>dubbo</artifactId>
+            <artifactId>jaguar-core</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
     </dependencies>

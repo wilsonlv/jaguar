@@ -1,5 +1,0 @@
-jaguar:
-  modules:
-    system:
-      mgm:
-        verfiy-code-enable: false

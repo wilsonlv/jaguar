@@ -7,6 +7,7 @@ import org.jaguar.commons.utils.IpUtil;
 import org.jaguar.support.malice.prevention.config.MalicePreventionProperties;
 import org.jaguar.support.malice.prevention.model.IpAccess;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -29,12 +30,15 @@ public class MaliceIpInterceptor extends HandlerInterceptorAdapter {
     private static final String IP_ACCESS_PREFIX = "IpAccess:";
 
     @Autowired
+    private ServerProperties serverProperties;
+    @Autowired
     private RedisCacheManager redisCacheManager;
     @Autowired
     private MalicePreventionProperties malicePreventionProperties;
 
+
     private String namespace() {
-        return redisCacheManager.getNamespace();
+        return serverProperties.getServlet().getApplicationDisplayName();
     }
 
     private String getIpAccessKey(String host) {

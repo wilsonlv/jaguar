@@ -1,8 +1,6 @@
 package org.jaguar.commons.redis.cache;
 
-import org.jaguar.commons.redis.config.RedisProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -22,17 +20,6 @@ public class RedisCacheManager {
     @Autowired
     private RedisTemplate<String, Serializable> redisTemplate;
 
-    @Autowired
-    private RedisProperties redisProperties;
-
-    public Integer getExpiration() {
-        return redisProperties.getExpiration();
-    }
-
-    public String getNamespace() {
-        return redisProperties.getNamespace();
-    }
-
     /**
      * 模糊匹配
      */
@@ -44,40 +31,21 @@ public class RedisCacheManager {
      * 根据key获取vlaue，并刷新缓存的过期时间
      */
     public Object get(String key) {
-        return get(key, true);
+        return redisTemplate.boundValueOps(key).get();
     }
 
     /**
-     * 根据key获取vlaue
-     *
-     * @param fresh 是否刷新缓存的过期时间
-     *              true：是
-     *              flase：否
-     */
-    public Object get(String key, boolean fresh) {
-        BoundValueOperations<String, Serializable> operations = redisTemplate.boundValueOps(key);
-        if (fresh) {
-            operations.expire(getExpiration(), TimeUnit.SECONDS);
-        }
-        return operations.get();
-    }
-
-    /**
-     * 设置key-value，默认有效期
+     * 设置key-value（有效期永久）
      */
     public void set(String key, Serializable value) {
-        set(key, value, getExpiration());
+        redisTemplate.boundValueOps(key).set(value);
     }
 
     /**
-     * 设置key-value和有效期，-1为永久
+     * 设置key-value和有效期
      */
     public void set(String key, Serializable value, int seconds) {
-        if (seconds == -1) {
-            redisTemplate.boundValueOps(key).set(value);
-        } else {
-            redisTemplate.boundValueOps(key).set(value, seconds, TimeUnit.SECONDS);
-        }
+        redisTemplate.boundValueOps(key).set(value, seconds, TimeUnit.SECONDS);
     }
 
     /**

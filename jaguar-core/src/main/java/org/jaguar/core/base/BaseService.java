@@ -38,6 +38,7 @@ public abstract class BaseService<T extends BaseModel, M extends com.baomidou.my
     @Transactional
     public T insert(T entity) {
         LocalDateTime now = LocalDateTime.now();
+        entity.setId(null);
         entity.setCreateBy(CURRENT_USER.get());
         entity.setCreateTime(now);
         entity.setUpdateBy(CURRENT_USER.get());

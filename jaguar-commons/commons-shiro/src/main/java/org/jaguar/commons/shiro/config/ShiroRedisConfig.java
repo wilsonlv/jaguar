@@ -4,9 +4,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
-import org.jaguar.commons.redis.config.RedisProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,9 +20,9 @@ import org.springframework.context.annotation.Configuration;
 public class ShiroRedisConfig {
 
     @Autowired
-    private RedisProperties redisProperties;
-    @Autowired
     private ServerProperties serverProperties;
+    @Autowired
+    private RedisProperties redisProperties;
 
     public int expire() {
         long seconds = serverProperties.getServlet().getSession().getTimeout().getSeconds();
@@ -32,7 +32,7 @@ public class ShiroRedisConfig {
     @Bean
     public RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
-        redisManager.setHost(redisProperties.getHost() + ":" + redisProperties.getPort());
+        redisManager.setHost(redisProperties.getHost() + ":" + redisProperties.getHost());
         redisManager.setDatabase(redisProperties.getDatabase());
         if (StringUtils.isNotBlank(redisProperties.getPassword())) {
             redisManager.setPassword(redisProperties.getPassword());
@@ -43,9 +43,10 @@ public class ShiroRedisConfig {
     @Bean
     public RedisSessionDAO redisSessionDAO(RedisManager redisManager) {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
-        redisSessionDAO.setKeyPrefix(redisProperties.getNamespace() + ":" + redisSessionDAO.getKeyPrefix());
         redisSessionDAO.setRedisManager(redisManager);
         redisSessionDAO.setExpire(expire());
+        redisSessionDAO.setKeyPrefix(serverProperties.getServlet().getApplicationDisplayName() +
+                ":" + redisSessionDAO.getKeyPrefix());
         return redisSessionDAO;
     }
 
@@ -54,7 +55,8 @@ public class ShiroRedisConfig {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
         redisCacheManager.setRedisManager(redisManager);
         redisCacheManager.setExpire(expire());
-        redisCacheManager.setKeyPrefix(redisProperties.getNamespace() + ":" + redisCacheManager.getKeyPrefix());
+        redisCacheManager.setKeyPrefix(serverProperties.getServlet().getApplicationDisplayName()
+                + ":" + redisCacheManager.getKeyPrefix());
         return redisCacheManager;
     }
 
