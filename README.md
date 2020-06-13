@@ -1,7 +1,7 @@
 # jaguar
 
 #### 介绍
-jaguar是基于springboot V2.0.1的开发框架，主要技术选型有
+jaguar是基于springboot V2.2.0-RELEASE 的开发框架，主要技术选型有
 - 核心框架：Spring Boot + Spring Framework + MyBatis-Plus
 - 缓存管理：Redis
 - 数据库连接池：Alibaba Druid
