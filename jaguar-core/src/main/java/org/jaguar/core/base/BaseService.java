@@ -12,7 +12,6 @@ import org.jaguar.core.exception.CheckedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -86,7 +85,7 @@ public abstract class BaseService<T extends BaseModel, M extends com.baomidou.my
     }
 
     @Transactional
-    public void delete(Serializable id) {
+    public void delete(Long id) {
         T entity = this.getById(id);
         if (entity == null) {
             throw new CheckedException("无效的ID：" + id);
@@ -110,7 +109,7 @@ public abstract class BaseService<T extends BaseModel, M extends com.baomidou.my
         }
     }
 
-    public T getById(Serializable id) {
+    public T getById(Long id) {
         return mapper.selectById(id);
     }
 

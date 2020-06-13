@@ -4,14 +4,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.jaguar.commons.utils.AccurateCalculator;
 import org.jaguar.core.base.BaseModel;
 
-import java.io.Serializable;
-
 /**
  * @author lvws
  * @since 2019年2月27日
  */
 public final class Assert {
-
 
     private static final String VALIDATE_ID = "无效的%sID【%s】";
     private static final String VALIDATE_PROPERTY = "无效的%s【%s】";
@@ -22,7 +19,13 @@ public final class Assert {
         return String.format(key, args);
     }
 
-    public static void validateId(Object object, String name, Serializable id) {
+    public static void validateId(Object object, String name, String id) {
+        if (object == null) {
+            throw new CheckedException(getMessage(VALIDATE_ID, name, id));
+        }
+    }
+
+    public static void validateId(Object object, String name, Long id) {
         if (object == null) {
             throw new CheckedException(getMessage(VALIDATE_ID, name, id));
         }
