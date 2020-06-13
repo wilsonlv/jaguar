@@ -32,7 +32,7 @@ public class ShiroRedisConfig {
     @Bean
     public RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
-        redisManager.setHost(redisProperties.getHost() + ":" + redisProperties.getHost());
+        redisManager.setHost(redisProperties.getHost() + ":" + redisProperties.getPort());
         redisManager.setDatabase(redisProperties.getDatabase());
         if (StringUtils.isNotBlank(redisProperties.getPassword())) {
             redisManager.setPassword(redisProperties.getPassword());
