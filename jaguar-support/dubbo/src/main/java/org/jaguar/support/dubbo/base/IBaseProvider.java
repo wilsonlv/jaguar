@@ -1,5 +1,6 @@
 package org.jaguar.support.dubbo.base;
 
+import org.jaguar.core.exception.BadRequestException;
 import org.jaguar.core.exception.CheckedException;
 
 import java.io.Serializable;
@@ -17,7 +18,8 @@ public interface IBaseProvider extends Serializable {
      *
      * @param parameter 中间件
      * @return 中间件
-     * @throws CheckedException e
+     * @throws CheckedException    e
+     * @throws BadRequestException e
      */
-    Parameter execute(Parameter parameter) throws CheckedException;
+    Parameter execute(Parameter parameter) throws CheckedException, BadRequestException;
 }
