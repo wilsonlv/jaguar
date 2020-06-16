@@ -18,6 +18,7 @@
         <module>commons-data-encription</module>
         <module>commons-enums</module>
         <module>commons-mybatis-plus</module>
+        <module>commons-qrcode</module>
         <module>commons-redis</module>
         <module>commons-shiro</module>
         <module>commons-swagger</module>

@@ -3,6 +3,7 @@ package org.jaguar.commons.data.encription;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.regex.Pattern;
 
@@ -131,7 +132,7 @@ public final class SecurityUtil {
      */
     public static String signRSA(String data, String privateKey) {
         try {
-            byte[] sign = RSACoder.sign(data.getBytes(Constant.CHARSET_UTF_8), decryptBASE64(privateKey));
+            byte[] sign = RSACoder.sign(data.getBytes(StandardCharsets.UTF_8), decryptBASE64(privateKey));
             return encryptBASE64(sign);
         } catch (Exception e) {
             throw new RuntimeException("签名错误，错误信息：", e);
@@ -143,30 +144,30 @@ public final class SecurityUtil {
      */
     public static boolean verifyRSA(String data, String publicKey, String sign) {
         try {
-            return RSACoder.verify(data.getBytes(Constant.CHARSET_UTF_8), decryptBASE64(publicKey), decryptBASE64(sign));
+            return RSACoder.verify(data.getBytes(StandardCharsets.UTF_8), decryptBASE64(publicKey), decryptBASE64(sign));
         } catch (Exception e) {
             throw new RuntimeException("验签错误，错误信息：", e);
         }
     }
 
     /**
-     * RSA私钥加密
+     * RSA公钥加密
      */
-    public static String encryptRSAPrivate(String data, String privateKey) {
+    public static String encryptRSAPublic(String data, String publicKey) {
         try {
-            return encryptBASE64(RSACoder.encryptByPrivateKey(data.getBytes(Constant.CHARSET_UTF_8), decryptBASE64(privateKey)));
+            return encryptBASE64(RSACoder.encryptByPublicKey(data.getBytes(StandardCharsets.UTF_8), decryptBASE64(publicKey)));
         } catch (Exception e) {
-            throw new RuntimeException("解密错误，错误信息：", e);
+            throw new RuntimeException("加密错误，错误信息：", e);
         }
     }
 
     /**
-     * RSA公钥解密
+     * RSA私钥解密
      */
-    public static String decryptRSAPublic(String cryptData, String publicKey) {
+    public static String decryptRSAPrivate(String cryptData, String privateKey) {
         try {
             // 把字符串解码为字节数组，并解密
-            return new String(RSACoder.decryptByPublicKey(decryptBASE64(cryptData), decryptBASE64(publicKey)));
+            return new String(RSACoder.decryptByPrivateKey(decryptBASE64(cryptData), decryptBASE64(privateKey)));
         } catch (Exception e) {
             throw new RuntimeException("解密错误，错误信息：", e);
         }

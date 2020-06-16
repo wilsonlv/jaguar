@@ -6,9 +6,6 @@ package org.jaguar.commons.data.encription;
  */
 public interface Constant {
 
-
-    String CHARSET_UTF_8 = "UTF-8";
-
     String ALGORITHM_DES = "DES";
 
     String ALGORITHM_RSA = "RSA";

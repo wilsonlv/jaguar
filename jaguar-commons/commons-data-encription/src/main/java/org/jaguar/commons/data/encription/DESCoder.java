@@ -6,6 +6,7 @@ package org.jaguar.commons.data.encription;
 import javax.crypto.*;
 import javax.crypto.spec.DESKeySpec;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -45,11 +46,7 @@ public class DESCoder {
         // 初始化，设置为解密模式
         cipher.init(Cipher.DECRYPT_MODE, k);
         // 执行操作
-        try {
-            return new String(cipher.doFinal(data), Constant.CHARSET_UTF_8);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        return new String(cipher.doFinal(data), StandardCharsets.UTF_8);
     }
 
     /**
@@ -64,11 +61,7 @@ public class DESCoder {
         // 初始化，设置为加密模式
         cipher.init(Cipher.ENCRYPT_MODE, k);
         // 执行操作
-        try {
-            return cipher.doFinal(data.getBytes(Constant.CHARSET_UTF_8));
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        return cipher.doFinal(data.getBytes(StandardCharsets.UTF_8));
     }
 
     /**
