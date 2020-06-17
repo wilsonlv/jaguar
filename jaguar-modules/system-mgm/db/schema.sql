@@ -25,6 +25,7 @@ CREATE TABLE `jaguar_modules_system_login`
     `id_`                bigint(20)  NOT NULL COMMENT 'ID',
     `principal_`         varchar(50) NOT NULL COMMENT '登陆主体',
     `credentials_`       varchar(50) NOT NULL COMMENT '登陆凭证',
+    `password_free`      tinyint(1)  NOT NULL COMMENT '免密登录',
     `verify_code`        varchar(10) NOT NULL COMMENT '验证码',
     `login_ip`           varchar(50) NOT NULL COMMENT '登陆IP',
     `login_time`         datetime    NOT NULL COMMENT '登陆时间',

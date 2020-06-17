@@ -45,6 +45,12 @@ public class Login extends BaseModel implements AuthenticationToken {
     @TableField("credentials_")
     private String credentials;
     /**
+     * 免密登录
+     */
+    @ApiModelProperty(value = "免密登录", hidden = true)
+    @TableField("password_free")
+    private Boolean passwordFree;
+    /**
      * 验证码
      */
     @ApiModelProperty(value = "验证码")
