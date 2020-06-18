@@ -12,7 +12,7 @@ public class ExecutorServiceUtil {
 
     private static final ThreadFactory FACTORY = new BasicThreadFactory.Builder().namingPattern("schedule-pool-%d").daemon(true).build();
 
-    private static final ScheduledExecutorService SERVICE = new ScheduledThreadPoolExecutor(20, FACTORY);
+    public static final ScheduledExecutorService SERVICE = new ScheduledThreadPoolExecutor(20, FACTORY);
 
     public static Future<?> execute(Runnable task) {
         Future<?> submit = null;
