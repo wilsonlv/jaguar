@@ -88,8 +88,11 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
             handlerLog.setMethod(request.getMethod());
             handlerLog.setUserAgent(getUserAgent(request));
             handlerLog.setParameters(JSONObject.toJSONString(request.getParameterMap()));
+
+            log.info("客户端ip: {}", handlerLog.getClientHost());
             try {
                 handlerLog.setCreateBy(LoginUtil.getCurrentUser());
+                log.info("用户id: {}", handlerLog.getCreateBy());
             } catch (Exception ignored) {
                 log.warn("用户[{}@{}]匿名请求", handlerLog.getClientHost(), handlerLog.getUserAgent());
             }
@@ -124,6 +127,7 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
                     handlerLog.setDuration(duration);
                     handlerLog.setErrorMsg(ex != null ? ex.getMessage() : null);
                     handlerLog.setDeleted(false);
+                    handlerLog.setCreateTime(endTime);
                     try {
                         handlerLogService.saveLog(handlerLog);
                     } catch (Exception e) {
