@@ -14,9 +14,9 @@ CREATE TABLE `jaguar_modules_handler_log`
     `error_msg`     text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin         NULL COMMENT '客户端引擎',
     `duration_`     int(11)                                                NULL DEFAULT NULL COMMENT '响应时长',
     `deleted_`      tinyint(1)                                             NULL DEFAULT 0 COMMENT '逻辑删除标记(0--正常 1--删除)',
-    `create_by`     bigint(20) UNSIGNED                                    NOT NULL COMMENT '创建人',
+    `create_by`     bigint(20) UNSIGNED                                    NULL COMMENT '创建人',
     `create_time`   timestamp(0)                                           NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
-    `update_by`     bigint(20) UNSIGNED                                    NOT NULL COMMENT '最新修改人',
+    `update_by`     bigint(20) UNSIGNED                                    NULL COMMENT '最新修改人',
     `update_time`   timestamp(0)                                           NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '更新时间',
     PRIMARY KEY (`id_`) USING BTREE
 ) ENGINE = MyISAM
