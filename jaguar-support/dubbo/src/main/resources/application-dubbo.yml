@@ -1,7 +1,6 @@
 dubbo:
   application:
     name: ${project.artifactId}
-    qos-port: 22000
   registry:
     address: zookeeper://127.0.0.1:2181
     file: ./dubbo/${dubbo.application.name}.cache
