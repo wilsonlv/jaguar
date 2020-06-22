@@ -8,8 +8,6 @@ dubbo:
     name: dubbo
     port: 18080
     threads: 100
-  scan:
-    base-packages: org.jaguar
 
 logging:
   level:
