@@ -1,6 +1,7 @@
 package org.jaguar.support.dubbo.base;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.shiro.UnavailableSecurityManagerException;
 import org.jaguar.core.base.BaseModel;
 import org.jaguar.core.web.LoginUtil;
 
@@ -40,7 +41,14 @@ public class Parameter implements Serializable {
     }
 
     public static Parameter createInstance(String service, String method) {
-        return new Parameter(LoginUtil.getCurrentUser(), service, method);
+        Long currentUser;
+        try {
+            currentUser = LoginUtil.getCurrentUser();
+        } catch (UnavailableSecurityManagerException e) {
+            currentUser = null;
+        }
+
+        return new Parameter(currentUser, service, method);
     }
 
     protected Parameter(Long currentUserId, String service, String method) {
