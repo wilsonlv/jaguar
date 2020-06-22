@@ -13,6 +13,6 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "jaguar.modules.system.mgm")
 public class SystemMgmProperties {
 
-    private Boolean verfiyCodeEnable;
+    private Boolean verifyCodeEnable;
 
 }

@@ -2,4 +2,4 @@ jaguar:
   modules:
     system:
       mgm:
-        verfiy-code-enable: true
+        verify-code-enable: true

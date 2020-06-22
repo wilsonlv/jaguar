@@ -54,7 +54,7 @@ public class AuthController extends AbstractController<User, UserMapper, UserSer
     @PostMapping(value = "/login")
     public ResponseEntity<JsonResult<User>> login(@ApiParam("登录信息") @RequestBody @Valid Login login) throws Throwable {
 
-        if (systemMgmProperties.getVerfiyCodeEnable()) {
+        if (systemMgmProperties.getVerifyCodeEnable()) {
             if (StringUtils.isBlank(login.getVerifyCode())) {
                 throw new CheckedException("验证码为非空");
             }
