@@ -8,6 +8,8 @@ dubbo:
     name: dubbo
     port: 18080
     threads: 100
+  consumer:
+    timeout: 30000
 
 logging:
   level:
