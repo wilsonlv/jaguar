@@ -58,7 +58,7 @@ public class AuthController extends AbstractController<User, UserMapper, UserSer
             if (StringUtils.isBlank(login.getVerifyCode())) {
                 throw new CheckedException("验证码为非空");
             }
-            VerifyCodeController.verificationCode(login.getVerifyCode());
+            VerifyCodeController.verifyCode(login.getVerifyCode());
         }
 
         HandlerLog handlerLog = HandlerLogInterceptor.HANDLER_LOG.get();

@@ -25,13 +25,12 @@ import static org.jaguar.core.Constant.PIC_VERIFICATION_CODE;
  */
 @Validated
 @RestController
-@RequestMapping("/verification_code")
+@RequestMapping("/verify_code")
 @Api(value = "验证码管理")
 public class VerifyCodeController extends BaseController {
 
-
     @ApiOperation(value = "获取图片验证码")
-    @GetMapping(value = "/pic")
+    @GetMapping
     public void randomImage(HttpServletResponse response, HttpServletRequest request) throws IOException {
         //图片宽度
         int width = 200;
@@ -57,7 +56,7 @@ public class VerifyCodeController extends BaseController {
     /**
      * 验证图片验证码
      */
-    public static void verificationCode(String verifyCode) {
+    public static void verifyCode(String verifyCode) {
         Session session = LoginUtil.getSession();
         Object verificationCode = session.getAttribute(PIC_VERIFICATION_CODE);
         if (verificationCode == null) {
