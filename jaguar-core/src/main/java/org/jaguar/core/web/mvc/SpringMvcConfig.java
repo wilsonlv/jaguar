@@ -75,7 +75,14 @@ public class SpringMvcConfig implements WebMvcConfigurer {
                 if (StringUtils.isBlank(source)) {
                     return null;
                 }
-                return LocalDateTime.parse(source, DateTimeFormatter.ofPattern(DateUtil.DateTimePattern.YYYY_MM_DD_HH_MM_SS.toString()));
+
+                DateUtil.DateTimePattern pattern;
+                if (source.length() == 16) {
+                    pattern = DateUtil.DateTimePattern.YYYY_MM_DD_HH_MM;
+                } else {
+                    pattern = DateUtil.DateTimePattern.YYYY_MM_DD_HH_MM_SS;
+                }
+                return LocalDateTime.parse(source, DateTimeFormatter.ofPattern(pattern.toString()));
             }
         };
     }

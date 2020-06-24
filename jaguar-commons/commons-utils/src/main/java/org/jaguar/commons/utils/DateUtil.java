@@ -25,6 +25,7 @@ public class DateUtil {
         /**
          * 时间格式
          */
+        HH_MM("HH:mm"),
         HHMMSS("HHmmss"),
         HH_MM_SS("HH:mm:ss"),
         HH_MM_SS_SSS("HH:mm:ss.SSS"),
@@ -38,6 +39,7 @@ public class DateUtil {
         /**
          * 日期+时间
          */
+        YYYY_MM_DD_HH_MM("yyyy-MM-dd HH:mm"),
         YYYY_MM_DD_HH_MM_SS("yyyy-MM-dd HH:mm:ss"),
         YYYY_MM_DD_HH_MM_SS_SSS("yyyy-MM-dd HH:mm:ss.SSS");
 
