@@ -91,13 +91,21 @@ public abstract class BaseService<T extends BaseModel, M extends com.baomidou.my
         if (entity == null) {
             throw new CheckedException("无效的ID：" + id);
         }
+        this.delete(entity);
+    }
+
+    @Transactional
+    public void delete(T entity) {
+        if (entity.getId() == null) {
+            throw new CheckedException("无法删除ID为空的实体");
+        }
         entity.setUpdateBy(CURRENT_USER.get());
         entity.setUpdateTime(LocalDateTime.now());
         this.updateById(entity);
 
-        boolean success = SqlHelper.delBool(mapper.deleteById(id));
+        boolean success = SqlHelper.delBool(mapper.deleteById(entity.getId()));
         if (!success) {
-            log.error("实体ID：" + id);
+            log.error("实体ID：" + entity.getId());
             throw new CheckedException("数据删除失败！");
         }
     }
