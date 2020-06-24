@@ -13,16 +13,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Component
 public class HandlerLogConfig implements WebMvcConfigurer {
 
+    private static final String PATH_PATTERNS = "/**";
+
     @Autowired
     private HandlerLogInterceptor handlerLogInterceptor;
 
-    private static final String PATH_PATTERNS = "/**";
-
-    private static final String[] EXCLUDE_PATH_PATTERNS = new String[]{"/*.ico"};
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(handlerLogInterceptor).addPathPatterns(PATH_PATTERNS).excludePathPatterns(EXCLUDE_PATH_PATTERNS);
+        registry.addInterceptor(handlerLogInterceptor).addPathPatterns(PATH_PATTERNS).order(10);
     }
 
 }

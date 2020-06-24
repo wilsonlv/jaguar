@@ -16,6 +16,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class MalicePreventionConfig implements WebMvcConfigurer {
 
+    private static final String PATH_PATTERNS = "/**";
+
     @Autowired
     private MaliceIpInterceptor maliceIpInterceptor;
     @Autowired
@@ -23,17 +25,13 @@ public class MalicePreventionConfig implements WebMvcConfigurer {
     @Autowired
     private MalicePreventionProperties malicePreventionProperties;
 
-    private static final String PATH_PATTERNS = "/**";
-
-    private static final String[] EXCLUDE_PATH_PATTERNS = new String[]{"/*.ico"};
-
     @Override
     public void addInterceptors(@NonNull InterceptorRegistry registry) {
         if (malicePreventionProperties.getIpEnable()) {
-            registry.addInterceptor(maliceIpInterceptor).addPathPatterns(PATH_PATTERNS).excludePathPatterns(EXCLUDE_PATH_PATTERNS);
+            registry.addInterceptor(maliceIpInterceptor).addPathPatterns(PATH_PATTERNS).order(5);
         }
         if (malicePreventionProperties.getSessionEnable()) {
-            registry.addInterceptor(maliceSessionInterceptor).addPathPatterns(PATH_PATTERNS).excludePathPatterns(EXCLUDE_PATH_PATTERNS);
+            registry.addInterceptor(maliceSessionInterceptor).addPathPatterns(PATH_PATTERNS).order(5);
         }
     }
 
