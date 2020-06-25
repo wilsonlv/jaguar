@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jaguar.core.base.BaseModel;
+import org.jaguar.modules.document.interfaces.DocumentPersistence;
 
 /**
  * 文档上传表
@@ -15,7 +16,7 @@ import org.jaguar.core.base.BaseModel;
 @Data
 @TableName("jaguar_modules_document")
 @EqualsAndHashCode(callSuper = true)
-public class Document extends BaseModel {
+public class Document extends BaseModel implements DocumentPersistence {
 
     /**
      * 原始文档名称
@@ -38,4 +39,8 @@ public class Document extends BaseModel {
     @TableField("total_space")
     private Long totalSpace;
 
+    @Override
+    public String getFilePath() {
+        return absolutePath;
+    }
 }

@@ -2,10 +2,13 @@ package org.jaguar.modules.jasperreport.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.commons.lang3.StringUtils;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import org.jaguar.core.base.BaseService;
+import org.jaguar.core.context.SpringContext;
 import org.jaguar.core.exception.Assert;
-import org.jaguar.modules.document.model.Document;
+import org.jaguar.modules.document.interfaces.DocumentPersistence;
+import org.jaguar.modules.document.interfaces.DocumentPersistenceService;
 import org.jaguar.modules.document.service.DocumentService;
 import org.jaguar.modules.jasperreport.mapper.TemplateMapper;
 import org.jaguar.modules.jasperreport.model.Template;
@@ -33,12 +36,29 @@ public class TemplateService extends BaseService<Template, TemplateMapper> {
                 .eq(Template::getTemplateName, name));
     }
 
+    public DocumentPersistence getDocumentPersistence(Template template) {
+        DocumentPersistenceService service = this.getDocumentPersistenceService(template);
+        return service.getById(template.getFileId());
+    }
+
+    public DocumentPersistenceService getDocumentPersistenceService(Template template) {
+        DocumentPersistenceService documentPersistenceService;
+        if (StringUtils.isNotBlank(template.getTemplateUserDefinedPersistBean())) {
+            documentPersistenceService = (DocumentPersistenceService)
+                    SpringContext.getBean(template.getTemplateUserDefinedPersistBean());
+        } else {
+            documentPersistenceService = documentService;
+        }
+        return documentPersistenceService;
+    }
+
     public Page<Template> queryWithDocument(Page<Template> page, LambdaQueryWrapper<Template> wrapper) {
         page = this.query(page, wrapper);
         for (Template template : page.getRecords()) {
-            if (template.getDocumentId() != null) {
-                Document document = documentService.getById(template.getDocumentId());
-                template.setDocument(document);
+            if (template.getFileId() != null) {
+                DocumentPersistenceService service = this.getDocumentPersistenceService(template);
+                DocumentPersistence documentPersistence = service.getById(template.getFileId());
+                template.setDocumentPersistence(documentPersistence);
             }
         }
         return page;
@@ -56,8 +76,10 @@ public class TemplateService extends BaseService<Template, TemplateMapper> {
         Template template = this.getById(id);
         Assert.validateId(template, "模板", id);
 
-        Document document = documentService.upload(file);
-        template.setDocumentId(document.getId());
+        DocumentPersistenceService service = this.getDocumentPersistenceService(template);
+        DocumentPersistence documentPersistence = service.persist(file);
+
+        template.setFileId(documentPersistence.getId());
         return this.updateById(template);
     }
 }

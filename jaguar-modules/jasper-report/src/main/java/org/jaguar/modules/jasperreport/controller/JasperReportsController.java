@@ -17,7 +17,7 @@ import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import org.jaguar.commons.enums.ExportType;
 import org.jaguar.core.Charsets;
 import org.jaguar.core.base.BaseController;
-import org.jaguar.modules.jasperreport.service.JasperReportsService;
+import org.jaguar.modules.jasperreport.service.JasperReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +48,7 @@ public class JasperReportsController extends BaseController {
     }
 
     @Autowired
-    private JasperReportsService jasperReportsService;
+    private JasperReportService jasperReportService;
 
     @ApiOperation(value = "预览")
     @GetMapping("/preview/{templateId}")
@@ -58,7 +58,7 @@ public class JasperReportsController extends BaseController {
                         @ApiParam(value = "参数", required = true) @RequestParam @NotBlank String jsonParamStr) throws JRException, IOException {
 
         JSONObject jsonParams = JSONObject.parseObject(jsonParamStr);
-        JasperPrint jasperPrint = jasperReportsService.print(templateId, jsonParams);
+        JasperPrint jasperPrint = jasperReportService.print(templateId, jsonParams);
 
         ServletOutputStream outputStream = response.getOutputStream();
         this.jasperExport(jasperPrint, outputStream, exportType);
@@ -74,7 +74,7 @@ public class JasperReportsController extends BaseController {
                        @ApiParam(value = "参数", required = true) @RequestParam @NotBlank String jsonParamStr) throws JRException, IOException {
 
         JSONObject jsonParams = JSONObject.parseObject(jsonParamStr);
-        JasperPrint jasperPrint = jasperReportsService.print(templateId, jsonParams);
+        JasperPrint jasperPrint = jasperReportService.print(templateId, jsonParams);
 
         response.setContentType("multipart/form-data;charset=" + Charsets.UTF_8_NAME);
         response.setHeader("Content-Disposition", "attachment;fileName=" + URLEncoder.encode(fileName, Charsets.UTF_8_NAME));

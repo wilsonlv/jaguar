@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jaguar.core.base.BaseModel;
-import org.jaguar.modules.document.model.Document;
+import org.jaguar.modules.document.interfaces.DocumentPersistence;
 
 import javax.validation.constraints.NotBlank;
 
@@ -42,13 +42,19 @@ public class Template extends BaseModel {
     @TableField("template_type")
     private String templateType;
     /**
-     * 文档ID
+     * 模板自定义存储bean
      */
-    @ApiModelProperty(value = "文档ID")
-    @TableField("document_id")
-    private Long documentId;
+    @ApiModelProperty(value = "模板自定义存储bean")
+    @TableField("template_user_defined_persist_bean")
+    private String templateUserDefinedPersistBean;
+    /**
+     * 文件ID
+     */
+    @ApiModelProperty(value = "文件ID")
+    @TableField("file_id")
+    private Long fileId;
 
     @TableField(exist = false)
-    private Document document;
+    private DocumentPersistence documentPersistence;
 
 }

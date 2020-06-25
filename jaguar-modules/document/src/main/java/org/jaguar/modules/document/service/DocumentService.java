@@ -6,6 +6,8 @@ import org.jaguar.commons.utils.DateUtil;
 import org.jaguar.core.base.BaseService;
 import org.jaguar.core.exception.CheckedException;
 import org.jaguar.modules.document.config.DocumentProperties;
+import org.jaguar.modules.document.interfaces.DocumentPersistence;
+import org.jaguar.modules.document.interfaces.DocumentPersistenceService;
 import org.jaguar.modules.document.mapper.DocumentMapper;
 import org.jaguar.modules.document.model.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,7 @@ import java.util.List;
  * @date 2019-11-01 10:23:09
  */
 @Service
-public class DocumentService extends BaseService<Document, DocumentMapper> {
+public class DocumentService extends BaseService<Document, DocumentMapper> implements DocumentPersistenceService {
 
     @Autowired
     private DocumentProperties documentProperties;
@@ -99,4 +101,8 @@ public class DocumentService extends BaseService<Document, DocumentMapper> {
         return documentList;
     }
 
+    @Override
+    public DocumentPersistence persist(MultipartFile file) {
+        return this.upload(file);
+    }
 }

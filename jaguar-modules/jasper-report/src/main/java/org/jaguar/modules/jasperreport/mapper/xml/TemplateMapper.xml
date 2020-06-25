@@ -7,7 +7,8 @@
         <id column="id" property="id"/>
         <result column="template_name" property="templateName"/>
         <result column="template_type" property="templateType"/>
-        <result column="document_id" property="documentId"/>
+        <result column="template_user_defined_persist_bean" property="templateUserDefinedPersistBean"/>
+        <result column="file_id" property="fileId"/>
     </resultMap>
 
 
