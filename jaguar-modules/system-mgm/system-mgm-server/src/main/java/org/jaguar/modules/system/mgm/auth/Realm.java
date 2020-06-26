@@ -76,6 +76,7 @@ public class Realm extends AuthorizingRealm {
 
         HandlerLog handlerLog = HandlerLogInterceptor.HANDLER_LOG.get();
         handlerLog.setCreateBy(user.getId());
+        token.setUserId(user.getId());
 
         //查询用户权限
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
