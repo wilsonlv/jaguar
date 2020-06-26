@@ -25,10 +25,25 @@ public class LoginService extends BaseService<Login, LoginMapper> {
      * @param clientType 客户端类型
      * @return 登录日志
      */
-    public Login findLatestByUserIdAndClient(Long userId, ClientType clientType) {
+    public Login findLatestByUserIdAndClientType(Long userId, ClientType clientType) {
         return this.unique(JaguarLambdaQueryWrapper.<Login>newInstance()
                 .eq(Login::getUserId, userId)
                 .eq(Login::getClientType, clientType)
+                .orderByDesc(Login::getLoginTime)
+                .last("limit 1"));
+    }
+
+    /**
+     * 根据用户ID和sessionId查询登录日志
+     *
+     * @param userId    用户ID
+     * @param sessionId sessionId
+     * @return 登录日志
+     */
+    public Login findLatestByUserIdAndSessionId(Long userId, String sessionId) {
+        return this.unique(JaguarLambdaQueryWrapper.<Login>newInstance()
+                .eq(Login::getUserId, userId)
+                .eq(Login::getSessionId, sessionId)
                 .orderByDesc(Login::getLoginTime)
                 .last("limit 1"));
     }
