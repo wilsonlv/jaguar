@@ -1,5 +1,7 @@
 package org.jaguar.modules.system.mgm.service;
 
+import org.jaguar.commons.enums.ClientType;
+import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import org.jaguar.core.base.BaseService;
 import org.jaguar.modules.system.mgm.mapper.LoginMapper;
 import org.jaguar.modules.system.mgm.model.Login;
@@ -15,5 +17,20 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class LoginService extends BaseService<Login, LoginMapper> {
+
+    /**
+     * 根据用户ID和客户端类型查询登录日志
+     *
+     * @param userId     用户ID
+     * @param clientType 客户端类型
+     * @return 登录日志
+     */
+    public Login findLatestByUserIdAndClient(Long userId, ClientType clientType) {
+        return this.unique(JaguarLambdaQueryWrapper.<Login>newInstance()
+                .eq(Login::getUserId, userId)
+                .eq(Login::getClientType, clientType)
+                .orderByDesc(Login::getLoginTime)
+                .last("limit 1"));
+    }
 
 }
