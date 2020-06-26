@@ -1,5 +1,6 @@
 package org.jaguar.modules.workflow.config;
 
+import com.yworks.yfiles.server.graphml.servlets.ExportServlet;
 import org.flowable.engine.*;
 import org.flowable.spring.ProcessEngineFactoryBean;
 import org.flowable.spring.SpringProcessEngineConfiguration;
@@ -7,7 +8,6 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
-import com.yworks.yfiles.server.graphml.servlets.ExportServlet;
 
 import javax.sql.DataSource;
 
@@ -42,27 +42,27 @@ public class FlowableConfig {
     }
 
     @Bean
-    public RepositoryService repositoryService(ProcessEngine processEngine) throws Exception {
+    public RepositoryService repositoryService(ProcessEngine processEngine) {
         return processEngine.getRepositoryService();
     }
 
     @Bean
-    public RuntimeService runtimeService(ProcessEngine processEngine) throws Exception {
+    public RuntimeService runtimeService(ProcessEngine processEngine) {
         return processEngine.getRuntimeService();
     }
 
     @Bean
-    public TaskService taskService(ProcessEngine processEngine) throws Exception {
+    public TaskService taskService(ProcessEngine processEngine) {
         return processEngine.getTaskService();
     }
 
     @Bean
-    public HistoryService historyService(ProcessEngine processEngine) throws Exception {
+    public HistoryService historyService(ProcessEngine processEngine) {
         return processEngine.getHistoryService();
     }
 
     @Bean
-    public ManagementService managementService(ProcessEngine processEngine) throws Exception {
+    public ManagementService managementService(ProcessEngine processEngine) {
         return processEngine.getManagementService();
     }
 

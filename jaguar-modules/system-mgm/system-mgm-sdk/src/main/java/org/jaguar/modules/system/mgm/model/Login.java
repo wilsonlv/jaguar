@@ -112,5 +112,11 @@ public class Login extends BaseModel implements AuthenticationToken {
     @ApiModelProperty(value = "设备唯一编号")
     @TableField("device_imei")
     private String deviceImei;
+    /**
+     * 已登录的用户ID
+     */
+    @ApiModelProperty(value = "已登录的用户ID", hidden = true)
+    @TableField("user_id")
+    private Long userId;
 
 }

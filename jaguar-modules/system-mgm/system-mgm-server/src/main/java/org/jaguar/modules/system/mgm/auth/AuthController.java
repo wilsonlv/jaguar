@@ -12,8 +12,6 @@ import org.jaguar.core.base.AbstractController;
 import org.jaguar.core.base.controller.VerifyCodeController;
 import org.jaguar.core.exception.CheckedException;
 import org.jaguar.core.web.JsonResult;
-import org.jaguar.support.handlerlog.intercepter.HandlerLogInterceptor;
-import org.jaguar.support.handlerlog.model.HandlerLog;
 import org.jaguar.modules.system.mgm.config.SystemMgmProperties;
 import org.jaguar.modules.system.mgm.mapper.UserMapper;
 import org.jaguar.modules.system.mgm.model.Login;
@@ -22,6 +20,8 @@ import org.jaguar.modules.system.mgm.model.User;
 import org.jaguar.modules.system.mgm.service.LoginService;
 import org.jaguar.modules.system.mgm.service.RoleMenuService;
 import org.jaguar.modules.system.mgm.service.UserService;
+import org.jaguar.support.handlerlog.intercepter.HandlerLogInterceptor;
+import org.jaguar.support.handlerlog.model.HandlerLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,19 +68,17 @@ public class AuthController extends AbstractController<User, UserMapper, UserSer
         login.setSessionId(handlerLog.getSessionId());
         login.setResultCode(HttpStatus.OK.value());
 
-        synchronized (login.getPrincipal().intern()) {
-            try {
-                Subject subject = SecurityUtils.getSubject();
-                subject.login(login);
-            } catch (AuthenticationException e) {
-                login.setResultCode(HttpStatus.CONFLICT.value());
-                throw e.getCause();
-            } catch (Exception e) {
-                login.setResultCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-                throw e;
-            } finally {
-                ExecutorServiceUtil.execute(() -> loginService.insert(login));
-            }
+        try {
+            Subject subject = SecurityUtils.getSubject();
+            subject.login(login);
+        } catch (AuthenticationException e) {
+            login.setResultCode(HttpStatus.CONFLICT.value());
+            throw e.getCause();
+        } catch (Exception e) {
+            login.setResultCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            throw e;
+        } finally {
+            ExecutorServiceUtil.execute(() -> loginService.insert(login));
         }
 
         return getPersonalInfo();
