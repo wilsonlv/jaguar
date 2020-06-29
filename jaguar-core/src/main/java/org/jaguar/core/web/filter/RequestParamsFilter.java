@@ -31,6 +31,8 @@ public class RequestParamsFilter implements Filter {
 
         logger.info("====================请求来啦====================");
         logger.info("请求uri：{}", request.getRequestURI());
+        logger.info("请求方式：{}", request.getMethod());
+
         logger.info("请求参数：");
         Enumeration<String> parameterNames = servletRequest.getParameterNames();
         while (parameterNames.hasMoreElements()) {

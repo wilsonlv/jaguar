@@ -59,7 +59,7 @@ public class AccurateCalculator {
 
     public static AccurateCalculator add(Object num1, Object num2, int scale) {
         BigDecimal result = bigDecimal(num1).add(bigDecimal(num2));
-        return new AccurateCalculator(result.setScale(scale, BigDecimal.ROUND_HALF_EVEN));
+        return new AccurateCalculator(result.setScale(scale, BigDecimal.ROUND_HALF_EVEN), scale);
     }
 
 
@@ -69,7 +69,7 @@ public class AccurateCalculator {
 
     public static AccurateCalculator subtract(Object num1, Object num2, int scale) {
         BigDecimal result = bigDecimal(num1).subtract(bigDecimal(num2));
-        return new AccurateCalculator(result.setScale(scale, BigDecimal.ROUND_HALF_EVEN));
+        return new AccurateCalculator(result.setScale(scale, BigDecimal.ROUND_HALF_EVEN), scale);
     }
 
 
@@ -79,7 +79,7 @@ public class AccurateCalculator {
 
     public static AccurateCalculator multiply(Object num1, Object num2, int scale) {
         BigDecimal result = bigDecimal(num1).multiply(bigDecimal(num2));
-        return new AccurateCalculator(result.setScale(scale, BigDecimal.ROUND_HALF_EVEN));
+        return new AccurateCalculator(result.setScale(scale, BigDecimal.ROUND_HALF_EVEN), scale);
     }
 
 
@@ -95,7 +95,7 @@ public class AccurateCalculator {
 
     private BigDecimal money = bigDecimal();
 
-    public int scale = DEFAULT_SCALE;
+    private int scale = DEFAULT_SCALE;
 
     public BigDecimal getMoney() {
         return money;
@@ -135,6 +135,15 @@ public class AccurateCalculator {
 
     public AccurateCalculator divide(Object num) {
         return divide(this, num, this.scale);
+    }
+
+    public int getScale() {
+        return scale;
+    }
+
+    public AccurateCalculator setScale(int scale) {
+        this.scale = scale;
+        return this;
     }
 
     @Override
