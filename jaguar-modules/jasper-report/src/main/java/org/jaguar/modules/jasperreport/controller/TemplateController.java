@@ -55,7 +55,8 @@ public class TemplateController extends AbstractController<Template, TemplateMap
     @RequiresPermissions("jasperReport模板表:读取")
     @GetMapping(value = "/{id}")
     public ResponseEntity<JsonResult<Template>> detail(@PathVariable Long id) {
-        return super.getById(id);
+        Template template = service.getDetail(id);
+        return success(template);
     }
 
     @ApiOperation(value = "修改jasperReport模板表")

@@ -56,12 +56,22 @@ public class TemplateService extends BaseService<Template, TemplateMapper> {
         page = this.query(page, wrapper);
         for (Template template : page.getRecords()) {
             if (template.getFileId() != null) {
-                DocumentPersistenceService service = this.getDocumentPersistenceService(template);
-                DocumentPersistence documentPersistence = service.getById(template.getFileId());
+                DocumentPersistence documentPersistence = this.getDocumentPersistence(template);
                 template.setDocumentPersistence(documentPersistence);
             }
         }
         return page;
+    }
+
+    public Template getDetail(Long id) {
+        Template template = this.getById(id);
+        Assert.validateId(template, "模板", id);
+
+        if (template.getFileId() != null) {
+            DocumentPersistence documentPersistence = this.getDocumentPersistence(template);
+            template.setDocumentPersistence(documentPersistence);
+        }
+        return template;
     }
 
     @Transactional
