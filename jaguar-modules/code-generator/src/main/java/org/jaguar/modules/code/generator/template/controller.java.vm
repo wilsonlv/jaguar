@@ -1,0 +1,71 @@
+package ${package.Controller};
+
+import ${package.Entity}.${entity};
+import ${package.Mapper}.${entity}Mapper;
+import ${package.ServiceImpl}.${entity}Service;
+
+import org.jaguar.core.web.JsonResult;
+import org.jaguar.core.base.AbstractController;
+import org.jaguar.core.web.Page;
+import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
+
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+
+import javax.validation.Valid;
+
+/**
+ * <p>
+ * ${table.comment}  前端控制器
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Validated
+@RestController
+@RequestMapping("/${package.ModuleName}/${table.entityPath}")
+@Api(value = "${table.comment}管理")
+public class ${table.controllerName} extends AbstractController<${entity}, ${entity}Mapper, ${entity}Service> {
+
+
+    @ApiOperation(value = "查询${table.comment}")
+    @RequiresPermissions("${table.comment}:读取")
+    @GetMapping(value = "/page")
+    public ResponseEntity<JsonResult<Page<${entity}>>> page(
+        @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<${entity}> page) {
+
+        LambdaQueryWrapper<${entity}> wrapper = new JaguarLambdaQueryWrapper<>();
+        return super.query(page, wrapper);
+    }
+
+    @ApiOperation(value = "${table.comment}详情")
+    @RequiresPermissions("${table.comment}:读取")
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<JsonResult<${entity}>> detail(@PathVariable Long id){
+        return super.getById(id);
+    }
+
+    @ApiOperation(value = "修改${table.comment}")
+    @RequiresPermissions("${table.comment}:新增编辑")
+    @PostMapping
+    public ResponseEntity<JsonResult<${entity}>> update(@RequestBody @Valid ${entity} ${table.entityPath}){
+        return super.saveOrUpdate(${table.entityPath});
+    }
+
+    @ApiOperation(value = "删除${table.comment}")
+    @RequiresPermissions("${table.comment}:删除")
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<JsonResult<?>> del(@PathVariable Long id){
+        return super.delete(id);
+    }
+
+}

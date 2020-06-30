@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jaguar.modules.workflow.mapper.OperationRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.jaguar.modules.workflow.model.po.OperationRecord">
+        <result column="process_info_id" property="processInfoId"/>
+        <result column="operator_" property="operator"/>
+        <result column="process_operation_type" property="processOperationType"/>
+        <result column="operate_time" property="operateTime"/>
+        <result column="task_name" property="taskName"/>
+        <result column="task_inst_id" property="taskInstId"/>
+        <result column="task_def_id" property="taskDefId"/>
+        <result column="assignee_" property="assignee"/>
+        <result column="reason_" property="reason"/>
+        <result column="batch_num" property="batchNum"/>
+    </resultMap>
+
+    <select id="listGroupByBatchNum" resultMap="BaseResultMap">
+        SELECT *
+        FROM (
+                 SELECT r1.*
+                 FROM jaguar_modules_workflow_operation_record r1
+                 WHERE r1.batch_num IS NULL
+                 UNION
+                 SELECT r2.*
+                 FROM jaguar_modules_workflow_operation_record r2
+                 WHERE r2.batch_num IS NOT NULL
+                 GROUP BY r2.batch_num) t
+        WHERE t.deleted_ = 0
+          AND t.process_info_id = #{processInfoId}
+        ORDER BY t.operate_time
+    </select>
+
+</mapper>

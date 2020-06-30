@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jaguar.modules.system.mgm.mapper.RoleMenuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.jaguar.modules.system.mgm.model.RoleMenu">
+        <id column="id_" property="id"/>
+        <result column="role_id" property="roleId"/>
+        <result column="menu_id" property="menuId"/>
+        <result column="role_menu_permission" property="roleMenuPermission"/>
+        <association property="menu" javaType="org.jaguar.modules.system.mgm.model.Menu">
+            <result column="menu_id" property="id"/>
+            <result column="menu_name" property="menuName"/>
+            <result column="menu_parent_id" property="menuParentId"/>
+            <result column="menu_icon" property="menuIcon"/>
+            <result column="menu_page_uri" property="menuPageUri"/>
+            <result column="menu_sort_no" property="menuSortNo"/>
+            <result column="menu_auth_name" property="menuAuthName"/>
+            <result column="menu_type" property="menuType"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="MenuResultMap" type="org.jaguar.modules.system.mgm.model.Menu">
+        <id column="id_" property="id"/>
+        <result column="menu_name" property="menuName"/>
+        <result column="menu_parent_id" property="menuParentId"/>
+        <result column="menu_icon" property="menuIcon"/>
+        <result column="menu_page_uri" property="menuPageUri"/>
+        <result column="menu_sort_no" property="menuSortNo"/>
+        <result column="menu_auth_name" property="menuAuthName"/>
+        <result column="menu_type" property="menuType"/>
+    </resultMap>
+
+    <select id="listViewMenusByRoleIdsAndParentId" resultMap="MenuResultMap">
+        SELECT m.*
+        FROM jaguar_modules_system_role_menu rm
+                 LEFT JOIN jaguar_modules_system_menu m ON m.id_ = rm.menu_id
+        <where>
+            rm.deleted_ = 0
+            AND m.deleted_ = 0
+            AND m.menu_type = 'MENU'
+            AND rm.role_menu_permission like 'READ_VIEW%'
+            AND rm.role_id in
+            <foreach collection="roleIds" item="roleId" open="(" separator="," close=")">
+                #{roleId}
+            </foreach>
+            <if test="parentId != null">
+                <if test="parentId == 0">
+                    AND m.menu_parent_id IS NULL
+                </if>
+                <if test="parentId != 0">
+                    AND m.menu_parent_id = #{parentId}
+                </if>
+            </if>
+        </where>
+        GROUP BY rm.menu_id
+        ORDER BY m.menu_sort_no
+    </select>
+
+    <select id="listMaxPermissionsWithMenuByRoleIds" resultMap="BaseResultMap">
+        SELECT rm.id_,
+               rm.role_id,
+               rm.menu_id,
+               MAX(rm.role_menu_permission) AS role_menu_permission,
+               m.*
+        FROM jaguar_modules_system_role_menu rm
+                 LEFT JOIN jaguar_modules_system_menu m ON m.id_ = rm.menu_id
+        <where>
+            rm.deleted_ = 0
+            AND m.deleted_ = 0
+            AND rm.role_id in
+            <foreach collection="roleIds" item="roleId" open="(" separator="," close=")">
+                #{roleId}
+            </foreach>
+        </where>
+        GROUP BY rm.menu_id
+        ORDER BY m.menu_sort_no
+    </select>
+</mapper>

@@ -1,0 +1,9 @@
+jaguar:
+  modules:
+    document:
+      file-path: D:\\jaguar\\upload\\document
+      temp-dir: D:\\jaguar\\upload\\temp
+
+server:
+  tomcat:
+    basedir: D:\\jaguar\\upload\\temp

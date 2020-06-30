@@ -4,33 +4,30 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.jaguar</groupId>
+    <groupId>org.jaguar</groupId>
     <artifactId>jaguar</artifactId>
     <packaging>pom</packaging>
-    <version>3.0</version>
+    <version>master</version>
     <modules>
+        <module>jaguar-commons</module>
         <module>jaguar-core</module>
-        <module>jaguar-redis</module>
-        <module>jaguar-mybatis-plus</module>
-        <module>jaguar-dubbo</module>
-        <module>jaguar-shiro</module>
-        <module>jaguar-sys-log</module>
-        <module>jaguar-malice</module>
-        <module>jaguar-web</module>
-        <module>jaguar-aviator</module>
-        <module>jaguar-swagger</module>
-        <module>jaguar-data-encription</module>
-        <module>jaguar-process</module>
+        <module>jaguar-modules</module>
         <module>jaguar-test</module>
-        <module>jaguar-generator</module>
+        <module>jaguar-support</module>
     </modules>
 
     <properties>
+        <jaguar.version>master</jaguar.version>
+
         <java.version>1.8</java.version>
-        <spring-boot.version>2.0.1.RELEASE</spring-boot.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
+        <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
         <spring.version>5.0.5.RELEASE</spring.version>
-        <mybatis-plus.version>3.0.4</mybatis-plus.version>
-        <mysql.version>5.1.39</mysql.version>
+        <mybatis-plus.version>3.1.0</mybatis-plus.version>
+        <mysql.version>8.0.18</mysql.version>
 
         <swagger.version>1.5.10</swagger.version>
         <fastjson.version>1.2.23</fastjson.version>
@@ -134,8 +131,9 @@
 
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
                 <configuration>
-                    <source>1.8</source>
+                    <source>${java.version}</source>
                     <target>${java.version}</target>
                 </configuration>
             </plugin>

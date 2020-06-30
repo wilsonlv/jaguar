@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    org.jaguar.commons.mybatisplus.config.MybatisMapperRefreshProperties,\
+    org.jaguar.commons.mybatisplus.config.MybatisPlusConfig,\
+    org.jaguar.commons.mybatisplus.config.MybatisMapperRefreshConfig

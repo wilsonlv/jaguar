@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>system-mgm</artifactId>
+        <groupId>org.jaguar</groupId>
+        <version>master</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>system-mgm-server</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jaguar</groupId>
+            <artifactId>commons-data-encription</artifactId>
+            <version>${jaguar.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jaguar</groupId>
+            <artifactId>handler-log</artifactId>
+            <version>${jaguar.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jaguar</groupId>
+            <artifactId>document</artifactId>
+            <version>${jaguar.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jaguar</groupId>
+            <artifactId>system-mgm-sdk</artifactId>
+            <version>${jaguar.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>

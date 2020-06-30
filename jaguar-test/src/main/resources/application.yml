@@ -1,8 +1,19 @@
 server:
-  port: 8080
+  port: 8088
   servlet:
+    session:
+      timeout: 3600
     application-display-name: jaguar-test
+  tomcat:
+    uri-encoding: UTF-8
 
 spring:
   profiles:
+    include: core, mybatisplus, redis, shiro, swagger, code-generator, system-mgm, dubbo
     active: dev
+
+logging:
+  level:
+    org.jaguar: debug
+    com.baomidou.mybatisplus.extension.spring: debug
+    springfox: error
