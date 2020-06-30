@@ -10,7 +10,3 @@ dubbo:
     threads: 100
   consumer:
     timeout: 30000
-
-logging:
-  level:
-    org.apache.dubbo: debug

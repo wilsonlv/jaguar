@@ -2,8 +2,7 @@ package org.jaguar.support.dubbo.base;
 
 import com.alibaba.fastjson.JSON;
 import com.esotericsoftware.reflectasm.MethodAccess;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.jaguar.core.base.BaseModel;
 import org.jaguar.core.base.BaseService;
 import org.springframework.context.ApplicationContext;
@@ -17,9 +16,8 @@ import java.util.Map;
  * @author lvws
  * @since 2019/5/23.
  */
+@Slf4j
 public abstract class BaseProviderImpl implements ApplicationContextAware, IBaseProvider {
-
-    protected static Logger logger = LogManager.getLogger();
 
     private ApplicationContext applicationContext;
 
@@ -30,8 +28,8 @@ public abstract class BaseProviderImpl implements ApplicationContextAware, IBase
 
     @Override
     public Parameter execute(Parameter parameter) {
-        logger.info("========================================");
-        logger.info("开始请求：{}", JSON.toJSONString(parameter));
+        log.info("========================================");
+        log.info("开始请求：{}", JSON.toJSONString(parameter));
 
         long start = System.currentTimeMillis();
         Object service = applicationContext.getBean(parameter.getService());
@@ -75,14 +73,16 @@ public abstract class BaseProviderImpl implements ApplicationContextAware, IBase
                 response = new Parameter(result);
             }
 
-            if (response != null) {
-                logger.info("完成响应：{}", JSON.toJSONString(result));
-            } else {
-                logger.info("空响应");
+            if (log.isDebugEnabled()) {
+                if (response != null) {
+                    log.debug("完成响应：{}", JSON.toJSONString(result));
+                } else {
+                    log.debug("空响应");
+                }
             }
 
-            logger.info("响应时间：{}ms", end - start);
-            logger.info("========================================");
+            log.info("响应时间：{}ms", end - start);
+            log.info("========================================");
             return response;
         } catch (Exception e) {
             e.printStackTrace();
