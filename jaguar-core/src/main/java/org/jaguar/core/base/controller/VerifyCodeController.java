@@ -2,6 +2,7 @@ package org.jaguar.core.base.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.session.Session;
 import org.jaguar.commons.utils.IdentifyingCode;
 import org.jaguar.core.base.BaseController;
@@ -23,6 +24,7 @@ import static org.jaguar.core.Constant.PIC_VERIFICATION_CODE;
  * @author lvws
  * @since 2020/5/21
  */
+@Slf4j
 @Validated
 @RestController
 @RequestMapping("/verify_code")
@@ -65,7 +67,9 @@ public class VerifyCodeController extends BaseController {
 
         session.removeAttribute(PIC_VERIFICATION_CODE);
 
-        logger.info("sessionId：{}，验证码：{}", session.getId(), verificationCode);
+        if (log.isDebugEnabled()) {
+            log.debug("sessionId：{}，验证码：{}", session.getId(), verificationCode);
+        }
         if (!verifyCode.equalsIgnoreCase((String) verificationCode)) {
             throw new CheckedException("验证码错误！");
         }
