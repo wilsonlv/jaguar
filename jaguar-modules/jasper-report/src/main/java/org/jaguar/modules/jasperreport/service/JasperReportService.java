@@ -37,7 +37,7 @@ public class JasperReportService {
     private static final String HTTPS = "https";
 
     @Transactional
-    public JasperPrint print(Long templateId, Map<String, Object> params) throws JRException, MalformedURLException {
+    public JasperReport report(Long templateId) throws JRException, MalformedURLException {
         Template template = templateService.getById(templateId);
         Assert.validateId(template, "模版", templateId);
 
@@ -53,6 +53,12 @@ public class JasperReportService {
         } else {
             jasperReport = (JasperReport) JRLoader.loadObject(new File(documentPersistence.getFilePath()));
         }
+        return jasperReport;
+    }
+
+    @Transactional
+    public JasperPrint print(Long templateId, Map<String, Object> params) throws JRException, MalformedURLException {
+        JasperReport jasperReport = this.report(templateId);
 
         JasperPrint jasperPrint;
         Connection connection = null;
