@@ -136,8 +136,8 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
                 });
             }
 
-            String message = "响应uri: {}; 开始时间: {}; 结束时间: {}; 耗时: {}s;";
-            log.info(message, handlerLog.getRequestUri(),
+            String message = "响应uri: {}; 响应状态码：{}; 开始时间: {}; 结束时间: {}; 耗时: {}s;";
+            log.info(message, handlerLog.getRequestUri(), handlerLog.getStatus(),
                     DateUtil.formatDateTime(handlerLog.getAccessTime(), DateUtil.DateTimePattern.YYYY_MM_DD_HH_MM_SS_SSS),
                     DateUtil.formatDateTime(endTime, DateUtil.DateTimePattern.YYYY_MM_DD_HH_MM_SS_SSS),
                     duration / 1000.00);
