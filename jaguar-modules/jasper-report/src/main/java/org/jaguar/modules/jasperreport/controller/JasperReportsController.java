@@ -10,10 +10,8 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.HtmlExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
-import net.sf.jasperreports.export.SimpleExporterInput;
-import net.sf.jasperreports.export.SimpleHtmlExporterOutput;
-import net.sf.jasperreports.export.SimpleHtmlReportConfiguration;
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
+import net.sf.jasperreports.export.*;
 import org.jaguar.commons.enums.ExportType;
 import org.jaguar.core.Charsets;
 import org.jaguar.core.base.BaseController;
@@ -41,10 +39,14 @@ import java.util.Collections;
 @Api(value = "JasperReport报表管理")
 public class JasperReportsController extends BaseController {
 
-    private static final SimpleHtmlReportConfiguration REPORT_CONFIGURATION = new SimpleHtmlReportConfiguration();
+    private static final SimpleHtmlReportConfiguration SIMPLE_HTML_REPORT_CONFIGURATION = new SimpleHtmlReportConfiguration();
+
+    private static final SimpleXlsxReportConfiguration SIMPLE_XLSX_REPORT_CONFIGURATION = new SimpleXlsxReportConfiguration();
 
     static {
-        REPORT_CONFIGURATION.setEmbedImage(true);
+        SIMPLE_HTML_REPORT_CONFIGURATION.setEmbedImage(true);
+        SIMPLE_XLSX_REPORT_CONFIGURATION.setWhitePageBackground(false);
+        SIMPLE_XLSX_REPORT_CONFIGURATION.setDetectCellType(true);
     }
 
     @Autowired
@@ -98,11 +100,19 @@ public class JasperReportsController extends BaseController {
                 break;
             }
             case HTML: {
-                HtmlExporter exporter = new HtmlExporter();
-                exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-                exporter.setExporterOutput(new SimpleHtmlExporterOutput(outputStream));
-                exporter.setConfiguration(REPORT_CONFIGURATION);
-                exporter.exportReport();
+                HtmlExporter htmlExporter = new HtmlExporter();
+                htmlExporter.setConfiguration(SIMPLE_HTML_REPORT_CONFIGURATION);
+                htmlExporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+                htmlExporter.setExporterOutput(new SimpleHtmlExporterOutput(outputStream));
+                htmlExporter.exportReport();
+                break;
+            }
+            case EXCEL: {
+                JRXlsxExporter jrXlsxExporter = new JRXlsxExporter();
+                jrXlsxExporter.setConfiguration(SIMPLE_XLSX_REPORT_CONFIGURATION);
+                jrXlsxExporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+                jrXlsxExporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputStream));
+                jrXlsxExporter.exportReport();
                 break;
             }
             default:
