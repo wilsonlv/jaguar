@@ -28,7 +28,12 @@
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>document</artifactId>
+            <artifactId>document-sdk</artifactId>
+            <version>${jaguar.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jaguar</groupId>
+            <artifactId>document-server</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
 

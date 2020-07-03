@@ -3,30 +3,15 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>jaguar-modules</artifactId>
+        <artifactId>document</artifactId>
         <groupId>org.jaguar</groupId>
         <version>master</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jasper-report</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>jasper-report-sdk</module>
-        <module>jasper-report-server</module>
-    </modules>
+    <artifactId>document-server</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>org.jaguar</groupId>
-            <artifactId>jaguar-core</artifactId>
-            <version>${jaguar.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jaguar</groupId>
-            <artifactId>commons-enums</artifactId>
-            <version>${jaguar.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
             <artifactId>document-sdk</artifactId>
