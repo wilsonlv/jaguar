@@ -7,6 +7,7 @@ import org.jaguar.commons.utils.IpUtil;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -39,6 +40,11 @@ public class RequestParamsFilter implements Filter {
         logger.info("请求uri：{}", request.getRequestURI());
         logger.info("请求方式：{}", request.getMethod());
         logger.info("客户端ip: {}", IpUtil.getHost(request));
+
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            logger.info("请求cookie：{}，ID：{}", cookie.getName(), cookie.getValue());
+        }
 
         logger.info("请求参数：");
         Enumeration<String> parameterNames = servletRequest.getParameterNames();
