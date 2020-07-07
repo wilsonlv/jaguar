@@ -42,8 +42,10 @@ public class RequestParamsFilter implements Filter {
         logger.info("客户端ip: {}", IpUtil.getHost(request));
 
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            logger.info("请求cookie：{}，ID：{}", cookie.getName(), cookie.getValue());
+        if (cookies != null && cookies.length > 0) {
+            for (Cookie cookie : cookies) {
+                logger.info("请求cookie：{}，ID：{}", cookie.getName(), cookie.getValue());
+            }
         }
 
         logger.info("请求参数：");
