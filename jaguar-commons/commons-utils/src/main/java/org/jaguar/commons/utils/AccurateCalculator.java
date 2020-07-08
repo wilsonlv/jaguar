@@ -121,6 +121,14 @@ public class AccurateCalculator {
         return money.toString();
     }
 
+    public boolean positive() {
+        return this.money.doubleValue() > 0;
+    }
+
+    public boolean negative() {
+        return this.money.doubleValue() < 0;
+    }
+
     public AccurateCalculator add(Object num) {
         return add(this, num, this.scale);
     }
