@@ -150,8 +150,8 @@ public abstract class BaseController {
     public ResponseEntity<JsonResult<String>> allUnknownExceptionHandler(Exception exception) {
         log.error(ExceptionUtil.getStackTraceAsString(exception));
         Throwable e = exception;
-        while (exception.getCause() != null) {
-            e = exception.getCause();
+        while (e.getCause() != null) {
+            e = e.getCause();
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new JsonResult<String>().setMessage(e.getMessage()));
