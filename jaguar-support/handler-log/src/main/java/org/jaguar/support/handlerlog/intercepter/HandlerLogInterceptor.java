@@ -7,7 +7,7 @@ import cz.mallat.uasparser.UserAgentInfo;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.jaguar.commons.shiro.config.ShiroProperties;
-import org.jaguar.commons.utils.DateUtil;
+import org.jaguar.commons.utils.ExceptionUtil;
 import org.jaguar.commons.utils.ExecutorServiceUtil;
 import org.jaguar.commons.utils.IpUtil;
 import org.jaguar.core.base.BaseService;
@@ -89,7 +89,6 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
             handlerLog.setUserAgent(getUserAgent(request));
             handlerLog.setParameters(JSONObject.toJSONString(request.getParameterMap()));
 
-            log.info("客户端ip: {}", handlerLog.getClientHost());
             try {
                 handlerLog.setCreateBy(LoginUtil.getCurrentUser());
                 log.info("用户id: {}", handlerLog.getCreateBy());
@@ -105,45 +104,37 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
     }
 
     @Override
-    public void afterCompletion(@NonNull final HttpServletRequest request, @NonNull final HttpServletResponse response, @NonNull Object handler,
-                                final Exception ex) throws Exception {
+    public void afterCompletion(@NonNull final HttpServletRequest request, @NonNull final HttpServletResponse response,
+                                @NonNull Object handler, final Exception handlerException) throws Exception {
 
         if (handler instanceof HandlerMethod && !(ERROR.equals(request.getRequestURI()))) {
             final HandlerLog handlerLog = HANDLER_LOG.get();
-            HANDLER_LOG.remove();
-            BaseService.CURRENT_USER.remove();
-
             handlerLog.setStatus(response.getStatus());
 
-            LocalDateTime endTime = LocalDateTime.now();
-            long duration = Duration.between(handlerLog.getAccessTime(), endTime).toMillis();
+            HANDLER_LOG.remove();
+            BaseService.CURRENT_USER.remove();
 
             if (handlerLog.getRequestUri().contains(shiroProperties.getLoginUrl())) {
                 log.warn("用户[{}@{}]没有登录", handlerLog.getClientHost(), handlerLog.getUserAgent());
             } else if (handlerLog.getRequestUri().contains(shiroProperties.getUnauthorizedUrl())) {
                 log.warn("用户[{}@{}@{}]没有权限", handlerLog.getCreateBy(), handlerLog.getClientHost(), handlerLog.getUserAgent());
             } else {
+                LocalDateTime endTime = LocalDateTime.now();
                 ExecutorServiceUtil.execute(() -> {
+                    long duration = Duration.between(handlerLog.getAccessTime(), endTime).toMillis();
                     handlerLog.setDuration(duration);
-                    handlerLog.setErrorMsg(ex != null ? ex.getMessage() : null);
+                    handlerLog.setErrorMsg(ExceptionUtil.getStackTraceAsString(handlerException));
                     handlerLog.setDeleted(false);
                     handlerLog.setCreateTime(endTime);
                     try {
                         handlerLogService.saveLog(handlerLog);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        log.error(ExceptionUtil.getStackTraceAsString(e));
                     }
                 });
             }
-
-            String message = "响应uri: {}; 开始时间: {}; 结束时间: {}; 耗时: {}s;";
-            log.info(message, handlerLog.getRequestUri(),
-                    DateUtil.formatDateTime(handlerLog.getAccessTime(), DateUtil.DateTimePattern.YYYY_MM_DD_HH_MM_SS_SSS),
-                    DateUtil.formatDateTime(endTime, DateUtil.DateTimePattern.YYYY_MM_DD_HH_MM_SS_SSS),
-                    duration / 1000.00);
-
         }
-        super.afterCompletion(request, response, handler, ex);
+        super.afterCompletion(request, response, handler, handlerException);
     }
 
 }

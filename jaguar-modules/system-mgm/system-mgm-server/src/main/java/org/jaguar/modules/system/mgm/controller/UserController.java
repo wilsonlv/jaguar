@@ -76,6 +76,14 @@ public class UserController extends AbstractController<User, UserMapper, UserSer
         return success(user);
     }
 
+    @ApiOperation(value = "重置密码")
+    @RequiresPermissions("系统用户表:新增编辑")
+    @PostMapping(value = "/reset_password/{id}")
+    public ResponseEntity<JsonResult<String>> resetPassword(@PathVariable Long id) {
+        String resetPassword = service.resetPassword(id);
+        return success(resetPassword);
+    }
+
     @ApiOperation(value = "锁定解锁用户")
     @RequiresPermissions("系统用户表:新增编辑")
     @PostMapping(value = "/toggle_lock/{id}")

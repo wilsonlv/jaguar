@@ -147,25 +147,27 @@ public class RoleMenuService extends BaseService<RoleMenu, RoleMenuMapper> {
         Set<String> permissions = new HashSet<>();
 
         List<Long> roleIds = userRoleService.listRoleIdsByUserId(currentUser);
-        List<RoleMenu> roleMenuList = this.mapper.listMaxPermissionsWithMenuByRoleIds(roleIds);
-        for (RoleMenu roleMenu : roleMenuList) {
-            Menu menu = roleMenu.getMenu();
+        if (roleIds.size() > 0) {
+            List<RoleMenu> roleMenuList = this.mapper.listMaxPermissionsWithMenuByRoleIds(roleIds);
+            for (RoleMenu roleMenu : roleMenuList) {
+                Menu menu = roleMenu.getMenu();
 
-            switch (menu.getMenuType()) {
-                case MENU: {
-                    if (StringUtils.isNotBlank(menu.getMenuAuthName()) && roleMenu.getRoleMenuPermission() != null) {
-                        List<String> roleMenuPermissions = roleMenu.getRoleMenuPermission().permissions();
-                        for (String roleMenuPermission : roleMenuPermissions) {
-                            permissions.add(menu.getMenuAuthName() + ':' + roleMenuPermission);
+                switch (menu.getMenuType()) {
+                    case MENU: {
+                        if (StringUtils.isNotBlank(menu.getMenuAuthName()) && roleMenu.getRoleMenuPermission() != null) {
+                            List<String> roleMenuPermissions = roleMenu.getRoleMenuPermission().permissions();
+                            for (String roleMenuPermission : roleMenuPermissions) {
+                                permissions.add(menu.getMenuAuthName() + ':' + roleMenuPermission);
+                            }
                         }
+                        break;
                     }
-                    break;
+                    case FUNCTION: {
+                        permissions.add(menu.getMenuAuthName());
+                        break;
+                    }
+                    default:
                 }
-                case FUNCTION: {
-                    permissions.add(menu.getMenuAuthName());
-                    break;
-                }
-                default:
             }
         }
         return permissions;

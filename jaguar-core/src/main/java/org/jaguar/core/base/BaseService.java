@@ -35,13 +35,20 @@ public abstract class BaseService<T extends BaseModel, M extends com.baomidou.my
      */
     public static final ThreadLocal<Long> CURRENT_USER = new ThreadLocal<>();
 
+    private long getCurrentUser() {
+        Long currentUser = CURRENT_USER.get();
+        return currentUser != null ? currentUser : 0L;
+    }
+
     @Transactional
     public T insert(T entity) {
+        long currentUser = this.getCurrentUser();
+
         LocalDateTime now = LocalDateTime.now();
         entity.setId(null);
-        entity.setCreateBy(CURRENT_USER.get());
+        entity.setCreateBy(currentUser);
         entity.setCreateTime(now);
-        entity.setUpdateBy(CURRENT_USER.get());
+        entity.setUpdateBy(currentUser);
         entity.setUpdateTime(now);
 
         boolean success = SqlHelper.retBool(mapper.insert(entity));
@@ -55,7 +62,8 @@ public abstract class BaseService<T extends BaseModel, M extends com.baomidou.my
 
     @Transactional
     public T updateById(T entity) {
-        entity.setUpdateBy(CURRENT_USER.get());
+        long currentUser = this.getCurrentUser();
+        entity.setUpdateBy(currentUser);
         entity.setUpdateTime(LocalDateTime.now());
 
         T org = this.getById(entity.getId());
@@ -99,7 +107,9 @@ public abstract class BaseService<T extends BaseModel, M extends com.baomidou.my
         if (entity.getId() == null) {
             throw new CheckedException("无法删除ID为空的实体");
         }
-        entity.setUpdateBy(CURRENT_USER.get());
+
+        long currentUser = this.getCurrentUser();
+        entity.setUpdateBy(currentUser);
         entity.setUpdateTime(LocalDateTime.now());
         this.updateById(entity);
 

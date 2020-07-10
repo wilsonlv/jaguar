@@ -24,12 +24,6 @@
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>document</artifactId>
-            <version>${jaguar.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jaguar</groupId>
             <artifactId>system-mgm-sdk</artifactId>
             <version>${jaguar.version}</version>
         </dependency>

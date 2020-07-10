@@ -112,7 +112,7 @@ public class UserService extends BaseService<User, UserMapper> {
             Assert.duplicate(byEmail, user, "邮箱");
         }
 
-        String password = IdentifyingCode.generate(6);
+        String password = IdentifyingCode.generate(12);
         user.setUserPassword(password);
         user = this.insert(user);
 
@@ -156,7 +156,7 @@ public class UserService extends BaseService<User, UserMapper> {
         User user = this.getById(id);
         Assert.validateId(user, "用户", id);
 
-        String password = IdentifyingCode.generate(6);
+        String password = IdentifyingCode.generate(12);
         user.setUserPassword(password);
 
         this.updateById(user);
@@ -172,4 +172,5 @@ public class UserService extends BaseService<User, UserMapper> {
         user = this.updateById(user);
         return user.getUserLocked();
     }
+
 }

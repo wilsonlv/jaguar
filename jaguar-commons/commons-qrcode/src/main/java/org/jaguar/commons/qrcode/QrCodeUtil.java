@@ -23,6 +23,8 @@ public class QrCodeUtil {
 
     private static final String CHARACTERSET = "UTF-8";
 
+    private static final String FORMAT = "png";
+
     static {
         HINTS.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
         HINTS.put(EncodeHintType.CHARACTER_SET, CHARACTERSET);
@@ -32,7 +34,7 @@ public class QrCodeUtil {
         BitMatrix bitMatrix = new MultiFormatWriter()
                 .encode(content, BarcodeFormat.QR_CODE, width, height, HINTS);
 
-        MatrixToImageWriter.writeToStream(bitMatrix, content, out);
+        MatrixToImageWriter.writeToStream(bitMatrix, FORMAT, out);
     }
 
 }
