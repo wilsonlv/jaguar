@@ -4,6 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 
 /**
@@ -50,6 +52,28 @@ public class IpUtil {
             }
         }
         return ip;
+    }
+
+    /**
+     * 获取主机MAC地址
+     *
+     * @return 主机MAC地址
+     * @throws UnknownHostException e
+     * @throws SocketException      e
+     */
+    public static String getHostMacAddress() throws UnknownHostException, SocketException {
+        NetworkInterface netInterface = NetworkInterface.getByInetAddress(InetAddress.getLocalHost());
+        byte[] macAddr = netInterface.getHardwareAddress();
+
+        StringBuilder address = new StringBuilder();
+        for (byte b : macAddr) {
+            String postion = Integer.toHexString(b & 0xff);
+            if (postion.length() == 1) {
+                postion = "0" + postion;
+            }
+            address.append(postion).append('-');
+        }
+        return address.deleteCharAt(address.length() - 1).toString();
     }
 
 }
