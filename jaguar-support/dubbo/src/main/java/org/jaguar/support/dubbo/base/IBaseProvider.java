@@ -1,5 +1,6 @@
 package org.jaguar.support.dubbo.base;
 
+import org.apache.shiro.authc.AuthenticationException;
 import org.jaguar.core.exception.BadRequestException;
 import org.jaguar.core.exception.CheckedException;
 
@@ -21,5 +22,5 @@ public interface IBaseProvider extends Serializable {
      * @throws CheckedException    e
      * @throws BadRequestException e
      */
-    Parameter execute(Parameter parameter) throws CheckedException, BadRequestException;
+    Parameter execute(Parameter parameter) throws CheckedException, BadRequestException, AuthenticationException;
 }
