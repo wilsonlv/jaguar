@@ -19,8 +19,9 @@ public interface IBaseProvider extends Serializable {
      *
      * @param parameter 中间件
      * @return 中间件
-     * @throws CheckedException    e
-     * @throws BadRequestException e
+     * @throws CheckedException        e
+     * @throws BadRequestException     e
+     * @throws AuthenticationException e
      */
     Parameter execute(Parameter parameter) throws CheckedException, BadRequestException, AuthenticationException;
 }
