@@ -9,7 +9,7 @@
         <result column="role_id" property="roleId"/>
         <association property="role" javaType="org.jaguar.modules.system.mgm.model.Role">
             <result column="role_name" property="roleName"/>
-            <result column="role_data_scope" property="roleDataScope"/>
+            <result column="role_data_scope" property="dataScope"/>
             <result column="role_locked" property="roleLocked"/>
         </association>
         <association property="user" javaType="org.jaguar.modules.system.mgm.model.User">

@@ -9,7 +9,6 @@ import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import org.jaguar.core.base.AbstractController;
 import org.jaguar.core.web.JsonResult;
 import org.jaguar.core.web.Page;
-import org.jaguar.modules.system.mgm.enums.RoleDataScope;
 import org.jaguar.modules.system.mgm.mapper.RoleMapper;
 import org.jaguar.modules.system.mgm.model.Role;
 import org.jaguar.modules.system.mgm.service.RoleService;
@@ -39,12 +38,10 @@ public class RoleController extends AbstractController<Role, RoleMapper, RoleSer
     public ResponseEntity<JsonResult<Page<Role>>> page(
             @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<Role> page,
             @ApiParam(value = "模糊角色名称") @RequestParam(required = false) String fuzzyRoleName,
-            @ApiParam(value = "角色数据权限（OWNER、DEPT、ALL）") @RequestParam(required = false) RoleDataScope roleDataScope,
             @ApiParam(value = "角色是否锁定") @RequestParam(required = false) Boolean roleLocked) {
 
         LambdaQueryWrapper<Role> wrapper = new JaguarLambdaQueryWrapper<>();
         wrapper.like(Role::getRoleName, fuzzyRoleName)
-                .eq(Role::getRoleDataScope, roleDataScope)
                 .eq(Role::getRoleLocked, roleLocked);
 
         page = service.queryWithUser(page, wrapper);

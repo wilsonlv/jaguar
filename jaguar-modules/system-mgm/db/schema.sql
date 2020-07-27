@@ -30,19 +30,20 @@ CREATE TABLE `jaguar_modules_system_login`
 DROP TABLE IF EXISTS `jaguar_modules_system_user`;
 CREATE TABLE `jaguar_modules_system_user`
 (
-    `id_`            bigint(20)                                            NOT NULL COMMENT 'ID',
-    `user_account`   varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '用户账号（唯一）',
-    `user_phone`     varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '用户手机号（唯一）',
-    `user_email`     varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '用户邮箱（唯一）',
-    `user_password`  varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '用户密码',
-    `user_nick_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '用户昵称',
-    `user_dept_id`   bigint(20)                                            NULL DEFAULT NULL COMMENT '用户部门ID',
-    `user_locked`    tinyint(1)                                            NULL DEFAULT 0 COMMENT '用户是否锁定',
-    `deleted_`       tinyint(1)                                            NULL DEFAULT 0 COMMENT '逻辑删除标记(0--正常 1--删除)',
-    `create_by`      bigint(20) UNSIGNED                                   NOT NULL COMMENT '创建人',
-    `create_time`    timestamp(0)                                          NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
-    `update_by`      bigint(20) UNSIGNED                                   NOT NULL COMMENT '最新修改人',
-    `update_time`    timestamp(0)                                          NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+    `id_`             bigint(20)                                            NOT NULL COMMENT 'ID',
+    `user_account`    varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '用户账号（唯一）',
+    `user_phone`      varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '用户手机号（唯一）',
+    `user_email`      varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '用户邮箱（唯一）',
+    `user_password`   varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '用户密码',
+    `user_nick_name`  varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '用户昵称',
+    `user_dept_id`    bigint(20)                                            NULL DEFAULT NULL COMMENT '用户部门ID',
+    `user_locked`     tinyint(1)                                            NULL DEFAULT 0 COMMENT '用户是否锁定',
+    `user_data_scope` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '用户数据权限（PERSONAL、LEVEL、UNLIMIT）',
+    `deleted_`        tinyint(1)                                            NULL DEFAULT 0 COMMENT '逻辑删除标记(0--正常 1--删除)',
+    `create_by`       bigint(20) UNSIGNED                                   NOT NULL COMMENT '创建人',
+    `create_time`     timestamp(0)                                          NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+    `update_by`       bigint(20) UNSIGNED                                   NOT NULL COMMENT '最新修改人',
+    `update_time`     timestamp(0)                                          NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '更新时间',
     PRIMARY KEY (`id_`) USING BTREE,
     UNIQUE INDEX `user_account` (`user_account`) USING BTREE,
     UNIQUE INDEX `user_phone` (`user_phone`) USING BTREE,
@@ -55,15 +56,14 @@ CREATE TABLE `jaguar_modules_system_user`
 DROP TABLE IF EXISTS `jaguar_modules_system_role`;
 CREATE TABLE `jaguar_modules_system_role`
 (
-    `id_`             bigint(20)                                            NOT NULL COMMENT 'ID',
-    `role_name`       varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '角色名称',
-    `role_data_scope` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin  NOT NULL COMMENT '角色数据权限（OWNER、DEPT、ALL）',
-    `role_locked`     tinyint(1)                                            NULL DEFAULT 0 COMMENT '角色是否锁定',
-    `deleted_`        tinyint(1)                                            NULL DEFAULT 0 COMMENT '逻辑删除标记(0--正常 1--删除)',
-    `create_by`       bigint(20) UNSIGNED                                   NOT NULL COMMENT '创建人',
-    `create_time`     timestamp(0)                                          NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
-    `update_by`       bigint(20) UNSIGNED                                   NOT NULL COMMENT '最新修改人',
-    `update_time`     timestamp(0)                                          NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+    `id_`         bigint(20)                                            NOT NULL COMMENT 'ID',
+    `role_name`   varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '角色名称',
+    `role_locked` tinyint(1)                                            NULL DEFAULT 0 COMMENT '角色是否锁定',
+    `deleted_`    tinyint(1)                                            NULL DEFAULT 0 COMMENT '逻辑删除标记(0--正常 1--删除)',
+    `create_by`   bigint(20) UNSIGNED                                   NOT NULL COMMENT '创建人',
+    `create_time` timestamp(0)                                          NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+    `update_by`   bigint(20) UNSIGNED                                   NOT NULL COMMENT '最新修改人',
+    `update_time` timestamp(0)                                          NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '更新时间',
     PRIMARY KEY (`id_`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4

@@ -10,6 +10,7 @@ import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import org.jaguar.core.base.AbstractController;
 import org.jaguar.core.web.JsonResult;
 import org.jaguar.core.web.Page;
+import org.jaguar.modules.system.mgm.enums.DataScope;
 import org.jaguar.modules.system.mgm.mapper.UserMapper;
 import org.jaguar.modules.system.mgm.model.User;
 import org.jaguar.modules.system.mgm.service.UserService;
@@ -40,10 +41,12 @@ public class UserController extends AbstractController<User, UserMapper, UserSer
     public ResponseEntity<JsonResult<Page<User>>> page(
             @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<User> page,
             @ApiParam(value = "模糊用户信息") @RequestParam(required = false) String fuzzyUserInfo,
+            @ApiParam(value = "角色数据权限（PERSONAL、LEVEL、UNLIMIT）") @RequestParam(required = false) DataScope userDataScope,
             @ApiParam(value = "锁定状态") @RequestParam(required = false) Boolean userLocked) {
 
         LambdaQueryWrapper<User> wrapper = JaguarLambdaQueryWrapper.<User>newInstance()
-                .eq(User::getUserLocked, userLocked);
+                .eq(User::getUserLocked, userLocked)
+                .eq(User::getUserDataScope, userDataScope);
         if (StringUtils.isNotBlank(fuzzyUserInfo)) {
             wrapper.and(w -> w.like(User::getUserAccount, fuzzyUserInfo).or()
                     .like(User::getUserPhone, fuzzyUserInfo).or()

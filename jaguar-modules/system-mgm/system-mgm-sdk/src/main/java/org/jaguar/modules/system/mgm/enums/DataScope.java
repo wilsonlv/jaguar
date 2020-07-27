@@ -4,19 +4,19 @@ package org.jaguar.modules.system.mgm.enums;
  * @author lvws
  * @since 2019/11/20
  */
-public enum RoleDataScope {
+public enum DataScope {
 
     /**
-     * 个人
+     * 个人的
      */
-    OWNER,
+    PERSONAL,
     /**
-     * 部门
+     * 本级及子级别的
      */
-    DEPT,
+    LEVEL,
     /**
-     * 全部
+     * 无限制
      */
-    ALL
+    UNLIMIT
 
 }

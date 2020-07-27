@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jaguar.core.base.BaseModel;
-import org.jaguar.modules.system.mgm.enums.RoleDataScope;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -37,13 +36,6 @@ public class Role extends BaseModel {
     @NotBlank(message = "角色名称为非空")
     @TableField("role_name")
     private String roleName;
-    /**
-     * 角色数据权限（OWNER、DEPT、ALL）
-     */
-    @ApiModelProperty(value = "角色数据权限", required = true)
-    @NotNull(message = "角色数据权限为非空")
-    @TableField("role_data_scope")
-    private RoleDataScope roleDataScope;
     /**
      * 角色是否锁定
      */

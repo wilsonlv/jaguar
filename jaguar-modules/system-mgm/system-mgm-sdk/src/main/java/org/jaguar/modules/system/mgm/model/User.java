@@ -8,9 +8,11 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jaguar.core.base.BaseModel;
+import org.jaguar.modules.system.mgm.enums.DataScope;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,11 +65,12 @@ public class User extends BaseModel {
     @TableField("user_nick_name")
     private String userNickName;
     /**
-     * 用户部门ID
+     * 个人数据权限（PERSONAL、LEVEL、UNLIMIT）
      */
-    @ApiModelProperty(value = "用户部门ID")
-    @TableField(value = "user_dept_id")
-    private Long userDeptId;
+    @ApiModelProperty(value = "个人数据权限", required = true)
+    @NotNull(message = "个人数据权限为非空")
+    @TableField("user_data_scope")
+    private DataScope userDataScope;
     /**
      * 用户是否锁定
      */
