@@ -17,6 +17,6 @@ public enum DataScope {
     /**
      * 无限制
      */
-    UNLIMIT
+    UNLIMITED
 
 }

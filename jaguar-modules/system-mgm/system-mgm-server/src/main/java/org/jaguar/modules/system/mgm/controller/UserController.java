@@ -41,7 +41,7 @@ public class UserController extends AbstractController<User, UserMapper, UserSer
     public ResponseEntity<JsonResult<Page<User>>> page(
             @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<User> page,
             @ApiParam(value = "模糊用户信息") @RequestParam(required = false) String fuzzyUserInfo,
-            @ApiParam(value = "角色数据权限（PERSONAL、LEVEL、UNLIMIT）") @RequestParam(required = false) DataScope userDataScope,
+            @ApiParam(value = "角色数据权限（PERSONAL、LEVEL、UNLIMITED）") @RequestParam(required = false) DataScope userDataScope,
             @ApiParam(value = "锁定状态") @RequestParam(required = false) Boolean userLocked) {
 
         LambdaQueryWrapper<User> wrapper = JaguarLambdaQueryWrapper.<User>newInstance()
