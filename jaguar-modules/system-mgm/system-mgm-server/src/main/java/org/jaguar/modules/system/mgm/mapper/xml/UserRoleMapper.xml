@@ -9,7 +9,6 @@
         <result column="role_id" property="roleId"/>
         <association property="role" javaType="org.jaguar.modules.system.mgm.model.Role">
             <result column="role_name" property="roleName"/>
-            <result column="role_data_scope" property="dataScope"/>
             <result column="role_locked" property="roleLocked"/>
         </association>
         <association property="user" javaType="org.jaguar.modules.system.mgm.model.User">
@@ -23,7 +22,6 @@
     <select id="listWithRoleByUserId" resultMap="BaseResultMap">
         SELECT ur.*,
                r.role_name,
-               r.role_data_scope,
                r.role_locked
         FROM jaguar_modules_system_user_role ur
                  LEFT JOIN jaguar_modules_system_role r ON r.id_ = ur.role_id

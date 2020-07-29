@@ -6,7 +6,6 @@
 	<resultMap id="BaseResultMap" type="org.jaguar.modules.system.mgm.model.Role">
 		<id column="id_" property="id" />
 		<result column="role_name" property="roleName" />
-		<result column="role_data_scope" property="dataScope" />
 		<result column="role_locked" property="roleLocked" />
 	</resultMap>
 
