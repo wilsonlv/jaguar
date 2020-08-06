@@ -11,9 +11,13 @@ public enum DataScope {
      */
     PERSONAL,
     /**
-     * 本级及子级别的
+     * 个人及子级别
      */
-    LEVEL,
+    SUBLEVEL,
+    /**
+     * 个人及本级
+     */
+    CURRENT_LEVEL,
     /**
      * 无限制
      */

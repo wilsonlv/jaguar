@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jaguar.core.base.BaseModel;
 import org.jaguar.modules.system.mgm.enums.DataScope;
-import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -65,7 +64,7 @@ public class User extends BaseModel {
     @TableField("user_nick_name")
     private String userNickName;
     /**
-     * 个人数据权限（PERSONAL、LEVEL、UNLIMIT）
+     * 个人数据权限
      */
     @ApiModelProperty(value = "个人数据权限", required = true)
     @NotNull(message = "个人数据权限为非空")
