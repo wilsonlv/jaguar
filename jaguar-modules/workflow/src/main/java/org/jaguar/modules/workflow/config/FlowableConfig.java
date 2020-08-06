@@ -1,10 +1,8 @@
 package org.jaguar.modules.workflow.config;
 
-import com.yworks.yfiles.server.graphml.servlets.ExportServlet;
 import org.flowable.engine.*;
 import org.flowable.spring.ProcessEngineFactoryBean;
 import org.flowable.spring.SpringProcessEngineConfiguration;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -17,11 +15,6 @@ import javax.sql.DataSource;
  */
 @Configuration
 public class FlowableConfig {
-
-    @Bean
-    public ServletRegistrationBean<ExportServlet> exportServlet() {
-        return new ServletRegistrationBean<>(new ExportServlet(), "/yfilesImageExport");
-    }
 
     @Bean
     public SpringProcessEngineConfiguration springProcessEngineConfiguration(
