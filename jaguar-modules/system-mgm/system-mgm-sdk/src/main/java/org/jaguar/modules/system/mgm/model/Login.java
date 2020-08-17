@@ -118,5 +118,11 @@ public class Login extends BaseModel implements AuthenticationToken {
     @ApiModelProperty(value = "已登录的用户ID", hidden = true)
     @TableField("user_id")
     private Long userId;
+    /**
+     * 系统名称
+     */
+    @ApiModelProperty(value = "系统名称")
+    @TableField("system_name")
+    private String systemName;
 
 }
