@@ -23,6 +23,7 @@ import org.jaguar.modules.system.mgm.service.UserService;
 import org.jaguar.support.handlerlog.intercepter.HandlerLogInterceptor;
 import org.jaguar.support.handlerlog.model.HandlerLog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -42,6 +43,8 @@ import java.util.Set;
 @Api(value = "个人登录和权限管理")
 public class AuthController extends AbstractController<User, UserMapper, UserService> {
 
+    @Autowired
+    private ServerProperties serverProperties;
     @Autowired
     private SystemMgmProperties systemMgmProperties;
 
@@ -67,6 +70,7 @@ public class AuthController extends AbstractController<User, UserMapper, UserSer
         login.setLoginTime(handlerLog.getAccessTime());
         login.setSessionId(handlerLog.getSessionId());
         login.setResultCode(HttpStatus.OK.value());
+        login.setSystemName(serverProperties.getServlet().getApplicationDisplayName());
 
         try {
             Subject subject = SecurityUtils.getSubject();
