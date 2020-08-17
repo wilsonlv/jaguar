@@ -66,6 +66,7 @@ public class AuthController extends AbstractController<User, UserMapper, UserSer
 
         HandlerLog handlerLog = HandlerLogInterceptor.HANDLER_LOG.get();
 
+        login.setPasswordFree(false);
         login.setLoginIp(handlerLog.getClientHost());
         login.setLoginTime(handlerLog.getAccessTime());
         login.setSessionId(handlerLog.getSessionId());
