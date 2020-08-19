@@ -17,6 +17,7 @@ CREATE TABLE `jaguar_modules_system_login`
     `device_imei`        varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '设备唯一编号',
     `user_id`            bigint(20)                                            NULL DEFAULT NULL COMMENT '已登录的用户ID',
     `system_name`        varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '系统名称',
+    `tenant_`            varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '租户',
     `deleted_`           tinyint(1)                                            NULL DEFAULT 0 COMMENT '逻辑删除标记(0--正常 1--删除)',
     `create_by`          bigint(20) UNSIGNED                                   NULL COMMENT '创建人',
     `create_time`        timestamp(0)                                          NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',

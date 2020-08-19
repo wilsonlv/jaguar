@@ -124,5 +124,10 @@ public class Login extends BaseModel implements AuthenticationToken {
     @ApiModelProperty(value = "系统名称")
     @TableField("system_name")
     private String systemName;
-
+    /**
+     * 租户
+     */
+    @ApiModelProperty(value = "租户")
+    @TableField("tenant_")
+    private String tenant;
 }
