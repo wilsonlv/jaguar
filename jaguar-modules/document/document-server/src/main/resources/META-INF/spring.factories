@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  org.jaguar.modules.document.DocumentProperties
+  org.jaguar.modules.document.config.DocumentProperties
