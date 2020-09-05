@@ -2,7 +2,6 @@ package org.jaguar.commons.utils;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -14,7 +13,7 @@ import java.util.Random;
  */
 public class IdentifyingCode {
 
-    public static final String VERIFY_CODES = "abcdefghjklmnpqrstuvwxyz123456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+    public static final String VERIFY_CODES = "abcdefghijkmnpqrstuvwxyz123456789ABCDEFGHJKLMNPQRSTUVWXYZ";
     public static final String VERIFY_CODES_NUM = "123456789";
     private static final Random RANDOM = new Random();
 
@@ -52,7 +51,7 @@ public class IdentifyingCode {
     public static void outputImage(int w, int h, OutputStream os, String code) throws IOException {
         int verifySize = code.length();
         BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-        Random rand = new Random();
+//        Random rand = new Random();
         Graphics2D g2 = image.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -92,14 +91,14 @@ public class IdentifyingCode {
         shear(g2, w, h, c);
 
         g2.setColor(getRandColor(100, 160));
-        int fontSize = h - 4;
+        int fontSize = h - 20;
         Font font = new Font("Algerian", Font.ITALIC, fontSize);
         g2.setFont(font);
         char[] chars = code.toCharArray();
         for (int i = 0; i < verifySize; i++) {
-            AffineTransform affine = new AffineTransform();
+            /*AffineTransform affine = new AffineTransform();
             affine.setToRotation(Math.PI / 4 * rand.nextDouble() * (rand.nextBoolean() ? 1 : -1), w / verifySize * i + (fontSize >> 1), h >> 1);
-            g2.setTransform(affine);
+            g2.setTransform(affine);*/
             g2.drawChars(chars, i, 1, ((w - 10) / verifySize) * i + 5, h / 2 + fontSize / 2 - 10);
         }
 
