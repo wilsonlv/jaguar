@@ -23,6 +23,7 @@
         <module>commons-shiro</module>
         <module>commons-swagger</module>
         <module>commons-utils</module>
+        <module>commons-websocket</module>
     </modules>
 
 </project>
