@@ -8,6 +8,8 @@ import java.io.Serializable;
  */
 public class JsonResult<T> implements Serializable {
 
+    public static final String SUCCESS_MSG = "成功";
+
     private T data;
     private String message;
 

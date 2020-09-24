@@ -45,17 +45,18 @@ public abstract class BaseController {
         return LoginUtil.getCurrentUserAccount();
     }
 
+
     protected ResponseEntity<JsonResult<?>> success() {
-        return ResponseEntity.ok(new JsonResult<>());
+        return ResponseEntity.ok(new JsonResult<>().setMessage(JsonResult.SUCCESS_MSG));
     }
 
     protected <T> ResponseEntity<JsonResult<T>> success(T data) {
-        return ResponseEntity.ok(new JsonResult<>(data));
+        return ResponseEntity.ok(new JsonResult<>(data).setMessage(JsonResult.SUCCESS_MSG));
     }
 
     protected <T> ResponseEntity<JsonResult<Page<T>>> success(IPage<T> data) {
         Page<T> page = Page.convert(data);
-        return ResponseEntity.ok(new JsonResult<>(page));
+        return ResponseEntity.ok(new JsonResult<>(page).setMessage(JsonResult.SUCCESS_MSG));
     }
 
     /**
