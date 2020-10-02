@@ -1,8 +1,14 @@
-package org.jaguar.support.redis.cache;
+package com.itqkjy.cache;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.jaguar.core.base.BaseModel;
 import org.jaguar.core.base.BaseService;
+import org.jaguar.core.base.service.FieldEditLogService;
+import org.jaguar.core.exception.Assert;
+import org.jaguar.core.exception.CheckedException;
+import org.jaguar.support.redis.cache.EntityCacheableStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -13,6 +19,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 import static org.jaguar.support.redis.cache.EntityCacheableStrategy.ALWAYS;
@@ -22,8 +29,11 @@ import static org.jaguar.support.redis.cache.EntityCacheableStrategy.NON_TRANSAC
  * @author lvws
  * @since 2020/9/16
  */
+@Slf4j
 public abstract class AbstractRedisCacheService<T extends BaseModel, M extends BaseMapper<T>> extends BaseService<T, M> {
 
+    @Autowired
+    private FieldEditLogService fieldEditLogService;
     @Autowired
     protected RedisTemplate<String, Serializable> redisTemplate;
 
@@ -31,12 +41,11 @@ public abstract class AbstractRedisCacheService<T extends BaseModel, M extends B
         return NON_TRANSACTIONAL;
     }
 
-    /**
-     * 直接把结果缓存
-     *
-     * @param id 实体ID
-     * @return 实体
-     */
+    private long getCurrentUser() {
+        Long currentUser = (Long) CURRENT_USER.get();
+        return currentUser != null ? currentUser : 0L;
+    }
+
     public T getCache(Long id) {
         String cacheKey = this.getCacheKey(id);
         BoundValueOperations<String, Serializable> operations = redisTemplate.boundValueOps(cacheKey);
@@ -106,7 +115,25 @@ public abstract class AbstractRedisCacheService<T extends BaseModel, M extends B
         String cacheKey = this.getCacheKey(entity.getId());
         redisTemplate.delete(cacheKey);
 
-        entity = super.updateById(entity);
+        long currentUser = this.getCurrentUser();
+        entity.setUpdateBy(currentUser);
+        entity.setUpdateTime(LocalDateTime.now());
+        T org = this.mapper.selectById(entity.getId());
+        Assert.validateId(org, "实体", entity.getId());
+
+        try {
+            this.fieldEditLogService.logUpdation(org, entity);
+        } catch (IllegalAccessException var6) {
+            throw new CheckedException(var6);
+        }
+
+        boolean success = SqlHelper.retBool(this.mapper.updateById(entity));
+        if (!success) {
+            log.error("实体信息：" + entity.toString());
+            throw new CheckedException("数据更新失败！");
+        } else {
+            entity = this.mapper.selectById(entity.getId());
+        }
 
         if (TransactionSynchronizationManager.isSynchronizationActive()) {
             EntityCacheableStrategy strategy = this.getEntityCacheableStrategy();
