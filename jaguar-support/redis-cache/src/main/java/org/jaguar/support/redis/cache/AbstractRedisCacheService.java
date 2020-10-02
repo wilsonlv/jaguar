@@ -1,4 +1,4 @@
-package com.itqkjy.cache;
+package org.jaguar.support.redis.cache;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
@@ -8,7 +8,6 @@ import org.jaguar.core.base.BaseService;
 import org.jaguar.core.base.service.FieldEditLogService;
 import org.jaguar.core.exception.Assert;
 import org.jaguar.core.exception.CheckedException;
-import org.jaguar.support.redis.cache.EntityCacheableStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
