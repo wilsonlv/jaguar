@@ -30,9 +30,12 @@ public class ShiroSessionConfig {
     public SessionManager sessionManager(@Value("${jaguar.shiro.cookie-name}") String cookieName,
                                          @Autowired(required = false) SessionDAO sessionDAO) {
 
+        SimpleCookie simpleCookie = new SimpleCookie(cookieName);
+        simpleCookie.setMaxAge(60 * 60 * 24 * 365);
+
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setGlobalSessionTimeout(expire() * 1000);
-        sessionManager.setSessionIdCookie(new SimpleCookie(cookieName));
+        sessionManager.setSessionIdCookie(simpleCookie);
         sessionManager.getSessionListeners().add(new SessionListener());
         if (sessionDAO != null) {
             sessionManager.setSessionDAO(sessionDAO);
