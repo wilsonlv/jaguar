@@ -13,6 +13,7 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.connection.lettuce.LettucePoolingClientConfiguration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.io.Serializable;
@@ -32,7 +33,7 @@ public class RedisConfig {
 
     @Bean("keySerializer")
     public StringRedisSerializer keySerializer() {
-        return new StringRedisSerializer();
+        return (StringRedisSerializer) RedisSerializer.string();
     }
 
     @Bean("valueSerializer")
@@ -46,7 +47,9 @@ public class RedisConfig {
             LettuceClientConfiguration clientConfiguration = LettuceClientConfiguration.builder()
                     .readFrom(ReadFrom.REPLICA_PREFERRED).build();
 
-            RedisStaticMasterReplicaConfiguration configuration = new RedisStaticMasterReplicaConfiguration(redisProperties.getHost());
+            RedisStaticMasterReplicaConfiguration configuration = new RedisStaticMasterReplicaConfiguration(redisProperties.getHost(), redisProperties.getPort());
+            configuration.setDatabase(redisProperties.getDatabase());
+            configuration.setPassword(redisProperties.getPassword());
             for (String slave : replicaProperties.getSlaves()) {
                 String[] hostPort = slave.split(":");
                 configuration.addNode(hostPort[0], Integer.parseInt(hostPort[1]));
@@ -80,6 +83,8 @@ public class RedisConfig {
         redisTemplate.setConnectionFactory(lettuceConnectionFactory);
         redisTemplate.setKeySerializer(keySerializer);
         redisTemplate.setValueSerializer(valueSerializer);
+        redisTemplate.setHashKeySerializer(keySerializer);
+        redisTemplate.setHashValueSerializer(valueSerializer);
         return redisTemplate;
     }
 }
