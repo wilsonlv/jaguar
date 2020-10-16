@@ -28,7 +28,7 @@ import static org.jaguar.core.Constant.PIC_VERIFICATION_CODE;
 @Validated
 @RestController
 @RequestMapping("/verify_code")
-@Api(value = "验证码管理")
+@Api(tags = "验证码管理")
 public class VerifyCodeController extends BaseController {
 
     @ApiOperation(value = "获取图片验证码")

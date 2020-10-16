@@ -31,7 +31,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @Validated
 @RestController
 @RequestMapping("/system/mgm/login")
-@Api(value = "系统登陆日志表管理")
+@Api(tags = "系统登陆日志表管理")
 public class LoginController extends AbstractController<Login, LoginMapper, LoginService> {
 
 

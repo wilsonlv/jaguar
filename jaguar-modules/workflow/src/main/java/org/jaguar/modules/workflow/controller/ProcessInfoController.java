@@ -54,7 +54,7 @@ import java.util.Set;
 @Validated
 @RestController
 @RequestMapping("/process/process_info")
-@Api(value = "工单信息表管理")
+@Api(tags = "工单信息表管理")
 public class ProcessInfoController extends AbstractController<ProcessInfo, ProcessInfoMapper, ProcessInfoService> {
 
     @Autowired

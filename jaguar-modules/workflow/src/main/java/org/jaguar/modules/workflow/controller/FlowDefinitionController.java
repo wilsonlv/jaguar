@@ -24,7 +24,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @Validated
 @RestController
 @RequestMapping("/process/flow_definition")
-@Api(value = "流程定义表管理")
+@Api(tags = "流程定义表管理")
 public class FlowDefinitionController extends AbstractController<ProcessInfo, ProcessInfoMapper, FlowDefinitionService> {
 
     @ApiOperation(value = "查询流程定义表")

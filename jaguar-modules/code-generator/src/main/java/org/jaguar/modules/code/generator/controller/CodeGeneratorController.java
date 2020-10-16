@@ -25,7 +25,7 @@ import javax.validation.Valid;
  * @since 2019/4/30.
  */
 @RestController
-@Api(value = "代码生成管理")
+@Api(tags = "代码生成管理")
 @RequestMapping("/code_generator")
 public class CodeGeneratorController extends AbstractController<CodeGenerator, CodeGeneratorMapper, CodeGeneratorService> {
 

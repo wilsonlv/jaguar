@@ -48,7 +48,7 @@ import java.util.HashMap;
 @Validated
 @RestController
 @RequestMapping("/process/draft_definition")
-@Api(value = "草稿表管理")
+@Api(tags = "草稿表管理")
 public class DraftDefinitionController extends AbstractController<DraftDefinition, DraftDefinitionMapper, DraftDefinitionService> {
 
     @ApiOperation(value = "查询草稿表")

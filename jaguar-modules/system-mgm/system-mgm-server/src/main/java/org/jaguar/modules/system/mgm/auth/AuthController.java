@@ -40,7 +40,7 @@ import java.util.Set;
 @Validated
 @RestController
 @RequestMapping("/auth")
-@Api(value = "个人登录和权限管理")
+@Api(tags = "个人登录和权限管理")
 public class AuthController extends AbstractController<User, UserMapper, UserService> {
 
     @Autowired

@@ -32,7 +32,7 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping("/document")
-@Api(value = "文档上传表管理")
+@Api(tags = "文档上传表管理")
 public class DocumentController extends AbstractController<Document, DocumentMapper, DocumentService> {
 
     @ApiOperation(value = "上传文档")

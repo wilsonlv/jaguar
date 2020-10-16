@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
 @Validated
 @RestController
 @RequestMapping("/process/process_remark")
-@Api(value = "工单备注表管理")
+@Api(tags = "工单备注表管理")
 public class ProcessRemarkController extends AbstractController<ProcessRemark, ProcessRemarkMapper, ProcessRemarkService> {
 
     @ApiOperation(value = "查询工单备注表")

@@ -36,7 +36,7 @@ import java.util.Collections;
 @Validated
 @RestController
 @RequestMapping("/jasper_reports")
-@Api(value = "JasperReport报表管理")
+@Api(tags = "JasperReport报表管理")
 public class JasperReportsController extends BaseController {
 
     private static final SimpleHtmlReportConfiguration SIMPLE_HTML_REPORT_CONFIGURATION = new SimpleHtmlReportConfiguration();

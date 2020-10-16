@@ -12,7 +12,7 @@
     <artifactId>commons-swagger</artifactId>
 
     <properties>
-        <springfox.version>2.6.1</springfox.version>
+        <springfox.version>2.7.0</springfox.version>
     </properties>
 
     <dependencies>

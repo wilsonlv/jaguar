@@ -25,7 +25,7 @@ import javax.validation.constraints.NotNull;
 @Validated
 @RestController
 @RequestMapping("/process/form_data")
-@Api(value = "表单数据表管理")
+@Api(tags = "表单数据表管理")
 public class FormDataController extends AbstractController<FormData, FormDataMapper, FormDataService> {
 
     @ApiOperation(value = "查询表单数据表")

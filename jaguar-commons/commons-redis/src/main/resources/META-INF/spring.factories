@@ -1,4 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
     org.jaguar.commons.redis.config.RedisConfig,\
-    org.jaguar.commons.redis.cache.RedisCacheManager,\
     org.jaguar.commons.redis.config.ReplicaProperties

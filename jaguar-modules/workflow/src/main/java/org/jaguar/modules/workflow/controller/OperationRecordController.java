@@ -28,7 +28,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @Validated
 @RestController
 @RequestMapping("/process/operation_record")
-@Api(value = "工单操作记录表管理")
+@Api(tags = "工单操作记录表管理")
 public class OperationRecordController extends AbstractController<OperationRecord, OperationRecordMapper, OperationRecordService> {
 
     @ApiOperation(value = "查询工单操作记录表")

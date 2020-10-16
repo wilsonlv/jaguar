@@ -26,7 +26,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @Validated
 @RestController
 @RequestMapping("/process/button_def")
-@Api(value = "按钮定义表管理")
+@Api(tags = "按钮定义表管理")
 public class ButtonDefController extends AbstractController<ButtonDef, ButtonDefMapper, ButtonDefService> {
 
     @Override

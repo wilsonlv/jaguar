@@ -28,7 +28,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @Validated
 @RestController
 @RequestMapping("/system/mgm/role")
-@Api(value = "系统角色表管理")
+@Api(tags = "系统角色表管理")
 public class RoleController extends AbstractController<Role, RoleMapper, RoleService> {
 
 

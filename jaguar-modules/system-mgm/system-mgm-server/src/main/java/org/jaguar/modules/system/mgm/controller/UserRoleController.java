@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @RestController
 @RequestMapping("/system/mgm/user_role")
-@Api(value = "系统用户角色表管理")
+@Api(tags = "系统用户角色表管理")
 public class UserRoleController extends AbstractController<UserRole, UserRoleMapper, UserRoleService> {
 
     @ApiOperation(value = "修改系统用户角色表")

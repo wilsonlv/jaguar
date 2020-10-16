@@ -29,7 +29,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @Validated
 @RestController
 @RequestMapping("/process/button_inst")
-@Api(value = "按钮实例表管理")
+@Api(tags = "按钮实例表管理")
 public class ButtonInstController extends AbstractController<ButtonInst, ButtonInstMapper, ButtonInstService> {
 
     @ApiOperation(value = "查询按钮实例表")

@@ -32,7 +32,7 @@ import javax.validation.constraints.NotNull;
 @Validated
 @RestController
 @RequestMapping("/jasper_report/template")
-@Api(value = "jasperReport模板表管理")
+@Api(tags = "jasperReport模板表管理")
 public class TemplateController extends AbstractController<Template, TemplateMapper, TemplateService> {
 
 

@@ -26,7 +26,7 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping("/system/mgm/menu")
-@Api(value = "系统菜单表管理")
+@Api(tags = "系统菜单表管理")
 public class MenuController extends AbstractController<Menu, MenuMapper, MenuService> {
 
     @ApiOperation(value = "查询系统菜单表")

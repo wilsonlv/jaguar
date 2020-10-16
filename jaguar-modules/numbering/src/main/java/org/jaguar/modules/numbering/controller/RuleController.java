@@ -31,7 +31,7 @@ import javax.validation.Valid;
 @Validated
 @RestController
 @RequestMapping("/numbering/rule")
-@Api(value = "编号规则表管理")
+@Api(tags = "编号规则表管理")
 public class RuleController extends AbstractController<Rule, RuleMapper, RuleService> {
 
     @ApiOperation(value = "查询编号规则表")

@@ -33,7 +33,7 @@ import javax.validation.constraints.NotNull;
 @Validated
 @RestController
 @RequestMapping("/numbering/rule_item")
-@Api(value = "编号规则条目")
+@Api(tags = "编号规则条目")
 public class RuleItemController extends AbstractController<RuleItem, RuleItemMapper, RuleItemService> {
 
     @ApiOperation(value = "查询编号规则条目")

@@ -27,7 +27,7 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping("/system/mgm/role_menu")
-@Api(value = "系统角色菜单表管理")
+@Api(tags = "系统角色菜单表管理")
 public class RoleMenuController extends AbstractController<RoleMenu, RoleMenuMapper, RoleMenuService> {
 
     @ApiOperation(value = "查询系统角色菜单表")
