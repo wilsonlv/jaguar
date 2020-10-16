@@ -20,11 +20,17 @@ public class SessionAccess implements Serializable {
     /**
      * 冻结IP
      */
-    private Integer freezing;
+    private Boolean freezing = false;
 
     /**
      * 冻结时间
      */
     private LocalDateTime freezingTime;
 
+    public SessionAccess() {
+    }
+
+    public SessionAccess(String sessionId) {
+        this.sessionId = sessionId;
+    }
 }

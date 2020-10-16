@@ -1,13 +1,14 @@
 package org.jaguar.support.malice.prevention.interceptor;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jaguar.commons.redis.cache.RedisCacheManager;
+import lombok.extern.slf4j.Slf4j;
 import org.jaguar.commons.utils.IpUtil;
 import org.jaguar.support.malice.prevention.config.MalicePreventionProperties;
 import org.jaguar.support.malice.prevention.model.SessionAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.data.redis.core.BoundListOperations;
+import org.springframework.data.redis.core.BoundValueOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -15,25 +16,25 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * @author lvws
  * @since 2018/11/9.
  */
+@Slf4j
 @Component
 public class MaliceSessionInterceptor extends HandlerInterceptorAdapter {
-
-    private final Logger logger = LogManager.getLogger(getClass());
 
     private static final String SESSION_ACCESS_PREFIX = "SessionAccess:";
 
     @Autowired
     private ServerProperties serverProperties;
     @Autowired
-    private RedisCacheManager redisCacheManager;
-    @Autowired
     private MalicePreventionProperties malicePreventionProperties;
+    @Autowired
+    private RedisTemplate<String, Serializable> redisTemplate;
 
 
     private String namespace() {
@@ -69,55 +70,55 @@ public class MaliceSessionInterceptor extends HandlerInterceptorAdapter {
         String sessionAccessKey = getSessionAccessKey(sessionId);
         String sessionAccessTimeKey = getSessionAccessTimeKey(sessionId);
 
-        SessionAccess sessionAccess = (SessionAccess) redisCacheManager.get(sessionAccessKey);
-        if (sessionAccess == null) {
-            sessionAccess = new SessionAccess();
-            sessionAccess.setSessionId(sessionId);
-            sessionAccess.setFreezing(0);
-            redisCacheManager.set(sessionAccessKey, sessionAccess);
+        SessionAccess sessionAccess = new SessionAccess(sessionId);
+        BoundValueOperations<String, Serializable> sessionAccessKeyOperations = redisTemplate.boundValueOps(sessionAccessKey);
+        BoundListOperations<String, Serializable> sessionAccessTimeKeyOperations = redisTemplate.boundListOps(sessionAccessTimeKey);
 
-            redisCacheManager.rightPush(sessionAccessTimeKey, accessTime);
+        if (sessionAccessKeyOperations.setIfAbsent(sessionAccess)) {
+            sessionAccessTimeKeyOperations.rightPush(accessTime);
             return super.preHandle(request, response, handler);
         }
 
-        if (sessionAccess.getFreezing() == 1) {
+        sessionAccess = (SessionAccess) sessionAccessKeyOperations.get();
+        if (sessionAccess.getFreezing()) {
             if (sessionAccess.getFreezingTime().plusNanos(freezingPeriod).isAfter(accessTime)) {
                 response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
-                logger.warn("To intercept a malicious request : {} , host ip is : {} , sessionId is : {}", url, host, sessionId);
+                log.warn("To intercept a malicious request : {} , host ip is : {} , sessionId is : {}", url, host, sessionId);
                 return false;
             } else {
-                sessionAccess.setFreezing(0);
+                sessionAccess.setFreezing(false);
                 sessionAccess.setFreezingTime(null);
-                redisCacheManager.set(sessionAccessKey, sessionAccess);
+                sessionAccessKeyOperations.set(sessionAccess);
+
+                sessionAccessTimeKeyOperations.leftPop();
+                sessionAccessTimeKeyOperations.rightPush(sessionAccess);
+                return super.preHandle(request, response, handler);
             }
         }
 
-        if (maxRecentAccessTimeNum <= redisCacheManager.lsize(sessionAccessTimeKey)) {
+        Long size = sessionAccessTimeKeyOperations.size();
+        if (size >= maxRecentAccessTimeNum) {
             //如果达到最大访问次数
-
-            LocalDateTime firstDate = (LocalDateTime) redisCacheManager.lrange(sessionAccessTimeKey, 0, 1).get(0);
-            LocalDateTime endDate = (LocalDateTime) redisCacheManager.lrange(sessionAccessTimeKey, maxRecentAccessTimeNum - 1, maxRecentAccessTimeNum).get(0);
+            LocalDateTime firstDate = (LocalDateTime) sessionAccessTimeKeyOperations.index(0);
+            LocalDateTime endDate = (LocalDateTime) sessionAccessTimeKeyOperations.index(maxRecentAccessTimeNum - 1);
 
             if (firstDate.plusNanos(minRequestIntervalTime).isBefore(endDate)) {
-                redisCacheManager.leftPop(sessionAccessTimeKey);
-                redisCacheManager.rightPush(sessionAccessTimeKey, accessTime);
+                sessionAccessTimeKeyOperations.leftPop();
+                sessionAccessTimeKeyOperations.rightPush(accessTime);
+                return super.preHandle(request, response, handler);
             } else {
                 //如果时间差小于等于最小间隔，则可认为是恶意攻击
-
-                if (sessionAccess.getFreezing() == 0) {
-                    sessionAccess.setFreezing(1);
-                    sessionAccess.setFreezingTime(accessTime);
-                    redisCacheManager.set(sessionAccessKey, sessionAccess);
-                }
+                sessionAccess.setFreezing(true);
+                sessionAccess.setFreezingTime(accessTime);
+                sessionAccessKeyOperations.set(sessionAccess);
 
                 response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
-                logger.warn("To intercept a malicious request : {} , host ip is : {} , sessionId is : {}", url, host, sessionId);
+                log.warn("To intercept a malicious request : {} , host ip is : {} , sessionId is : {}", url, host, sessionId);
                 return false;
             }
         } else {
-            redisCacheManager.rightPush(sessionAccessTimeKey, accessTime);
+            sessionAccessTimeKeyOperations.rightPush(sessionAccessTimeKey, accessTime);
+            return super.preHandle(request, response, handler);
         }
-
-        return super.preHandle(request, response, handler);
     }
 }

@@ -18,13 +18,19 @@ public class IpAccess implements Serializable {
     private String address;
 
     /**
-     * 冻结IP
+     * 是否冻结
      */
-    private Integer freezing;
+    private Boolean freezing = false;
 
     /**
      * 冻结时间
      */
     private LocalDateTime freezingTime;
 
+    public IpAccess() {
+    }
+
+    public IpAccess(String address) {
+        this.address = address;
+    }
 }
