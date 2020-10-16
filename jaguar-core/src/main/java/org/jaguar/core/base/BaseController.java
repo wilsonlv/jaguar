@@ -127,6 +127,7 @@ public abstract class BaseController {
     @ExceptionHandler(value = BaseException.class)
     public ResponseEntity<JsonResult<Object>> baseExceptionHandler(BaseException exception) {
         log.error(exception.getMessage());
+        log.error(exception.getStackTrace()[0].toString());
         return ResponseEntity.status(exception.getHttpStatus())
                 .body(new JsonResult<>().setData(exception.getData()).setMessage(exception.getMessage()));
     }
