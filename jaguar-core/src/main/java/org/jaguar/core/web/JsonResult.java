@@ -12,6 +12,7 @@ public class JsonResult<T> implements Serializable {
 
     private T data;
     private String message;
+    private final Long timestamp = System.currentTimeMillis();
 
     public JsonResult() {
     }
@@ -36,5 +37,9 @@ public class JsonResult<T> implements Serializable {
     public JsonResult<T> setMessage(String message) {
         this.message = message;
         return this;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
     }
 }
