@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @author lvws
- * @since  2019/4/18.
+ * @since 2019/4/18.
  */
 @Data
 @Configuration
@@ -20,8 +20,6 @@ public class ShiroProperties {
     private String unauthorizedUrl;
 
     private String filterChainDefinitions;
-
-    private Boolean redisSessionEnable;
 
     private Boolean authcEnable;
 }
