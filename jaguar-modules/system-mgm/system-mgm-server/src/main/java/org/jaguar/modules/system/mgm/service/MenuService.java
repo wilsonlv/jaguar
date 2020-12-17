@@ -8,6 +8,7 @@ import org.jaguar.modules.system.mgm.mapper.MenuMapper;
 import org.jaguar.modules.system.mgm.model.Menu;
 import org.jaguar.modules.system.mgm.model.RoleMenu;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ import java.util.List;
 @Service
 public class MenuService extends BaseService<Menu, MenuMapper> {
 
+    @Lazy
     @Autowired
     private RoleMenuService roleMenuService;
 

@@ -190,7 +190,6 @@ public class RedisSessionDAO extends AbstractSessionDAO {
             return null;
         }
 
-        log.debug("read session from memory");
         return sessionInMemory.getSession();
     }
 

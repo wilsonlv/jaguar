@@ -9,17 +9,17 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.jaguar.core.context.SpringContext;
 import org.jaguar.core.exception.CheckedException;
 import org.jaguar.core.web.LoginUtil;
-import org.jaguar.support.handlerlog.intercepter.HandlerLogInterceptor;
-import org.jaguar.support.handlerlog.model.HandlerLog;
 import org.jaguar.modules.system.mgm.model.Login;
 import org.jaguar.modules.system.mgm.model.User;
 import org.jaguar.modules.system.mgm.service.RoleMenuService;
 import org.jaguar.modules.system.mgm.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jaguar.support.handlerlog.intercepter.HandlerLogInterceptor;
+import org.jaguar.support.handlerlog.model.HandlerLog;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
@@ -28,13 +28,26 @@ import java.util.Set;
  * @since 2019-11-05
  */
 @Slf4j
-@Service
+@Component
 public class Realm extends AuthorizingRealm {
 
-    @Autowired
     private UserService userService;
-    @Autowired
+
     private RoleMenuService roleMenuService;
+
+    public UserService getUserService() {
+        if (userService == null) {
+            userService = SpringContext.getBean(UserService.class);
+        }
+        return userService;
+    }
+
+    public RoleMenuService getRoleMenuService() {
+        if (roleMenuService == null) {
+            roleMenuService = SpringContext.getBean(RoleMenuService.class);
+        }
+        return roleMenuService;
+    }
 
     @Override
     public Class<?> getAuthenticationTokenClass() {
@@ -61,7 +74,7 @@ public class Realm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         Login token = (Login) authenticationToken;
 
-        User user = userService.getByPrincipal(token.getPrincipal());
+        User user = getUserService().getByPrincipal(token.getPrincipal());
         if (user == null || !token.getCredentials().equals(user.getUserPassword())) {
             throw new CheckedException("用户名或密码错误");
         }
@@ -80,7 +93,7 @@ public class Realm extends AuthorizingRealm {
 
         //查询用户权限
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        Set<String> permissions = roleMenuService.listPermissionByUserId(user.getId());
+        Set<String> permissions = getRoleMenuService().listPermissionByUserId(user.getId());
         info.addStringPermissions(permissions);
         LoginUtil.saveCurrentUserAuthInfo(info);
 

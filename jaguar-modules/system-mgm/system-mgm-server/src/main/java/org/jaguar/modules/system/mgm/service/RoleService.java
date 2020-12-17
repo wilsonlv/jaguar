@@ -11,6 +11,7 @@ import org.jaguar.modules.system.mgm.model.Role;
 import org.jaguar.modules.system.mgm.model.RoleMenu;
 import org.jaguar.modules.system.mgm.model.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,8 +28,10 @@ import java.util.List;
 @Service
 public class RoleService extends BaseService<Role, RoleMapper> {
 
+    @Lazy
     @Autowired
     private UserRoleService userRoleService;
+    @Lazy
     @Autowired
     private RoleMenuService roleMenuService;
 

@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 public class AopConfig {
 
     @Bean
-    public DefaultAdvisorAutoProxyCreator shiroProxyCreator() {
+    public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator() {
         DefaultAdvisorAutoProxyCreator proxyCreator = new DefaultAdvisorAutoProxyCreator();
         proxyCreator.setProxyTargetClass(true);
         return proxyCreator;
