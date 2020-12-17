@@ -48,7 +48,7 @@ public class RedisSessionDAO extends AbstractSessionDAO {
 
     private static final int MILLISECONDS_IN_A_SECOND = 1000;
 
-    private RedisTemplate<String, SimpleSession> redisManager;
+    private RedisTemplate<String, Serializable> redisManager;
     private static ThreadLocal<Map<Serializable, SessionInMemory>> sessionsInThread = new ThreadLocal<>();
 
     @Override
@@ -71,7 +71,7 @@ public class RedisSessionDAO extends AbstractSessionDAO {
             throw new UnknownSessionException("session or session id is null");
         }
 
-        BoundValueOperations<String, SimpleSession> operations = this.redisManager.boundValueOps(getRedisSessionKey(session.getId()));
+        BoundValueOperations<String, Serializable> operations = this.redisManager.boundValueOps(getRedisSessionKey(session.getId()));
         if (expire == DEFAULT_EXPIRE) {
             operations.set((SimpleSession) session, session.getTimeout(), TimeUnit.MILLISECONDS);
             return;
@@ -136,7 +136,7 @@ public class RedisSessionDAO extends AbstractSessionDAO {
             }
         }
 
-        Session session = redisManager.boundValueOps(getRedisSessionKey(sessionId)).get();
+        Session session = (Session) redisManager.boundValueOps(getRedisSessionKey(sessionId)).get();
         if (this.sessionInMemoryEnabled) {
             setSessionToThreadLocal(sessionId, session);
         }
@@ -202,11 +202,11 @@ public class RedisSessionDAO extends AbstractSessionDAO {
         return this.keyPrefix + sessionId;
     }
 
-    public RedisTemplate<String, SimpleSession> getRedisManager() {
+    public RedisTemplate<String, Serializable> getRedisManager() {
         return redisManager;
     }
 
-    public void setRedisManager(RedisTemplate<String, SimpleSession> redisManager) {
+    public void setRedisManager(RedisTemplate<String, Serializable> redisManager) {
         this.redisManager = redisManager;
     }
 

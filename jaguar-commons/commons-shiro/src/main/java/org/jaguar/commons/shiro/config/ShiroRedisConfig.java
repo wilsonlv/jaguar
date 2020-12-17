@@ -13,9 +13,10 @@ import org.springframework.data.redis.connection.RedisStaticMasterReplicaConfigu
 import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+import java.io.Serializable;
 
 /**
  * @author lvws
@@ -36,8 +37,8 @@ public class ShiroRedisConfig {
     }
 
     @Bean
-    public RedisTemplate<String, SimpleSession> redisManager(LettuceConnectionFactory lettuceConnectionFactory,
-                                                             StringRedisSerializer keySerializer) {
+    public RedisTemplate<String, Serializable> redisManager(LettuceConnectionFactory lettuceConnectionFactory,
+                                                            StringRedisSerializer keySerializer) {
         if (shiroRedisProperties.getReplicaEnable()) {
             LettuceClientConfiguration clientConfiguration = LettuceClientConfiguration.builder()
                     .readFrom(ReadFrom.REPLICA_PREFERRED).build();
@@ -53,7 +54,7 @@ public class ShiroRedisConfig {
             lettuceConnectionFactory = new LettuceConnectionFactory(configuration, clientConfiguration);
         }
 
-        RedisTemplate<String, SimpleSession> redisTemplate = new RedisTemplate<>();
+        RedisTemplate<String, Serializable> redisTemplate = new RedisTemplate<>();
         redisTemplate.setKeySerializer(keySerializer);
         redisTemplate.setValueSerializer(RedisSerializer.java(SimpleSession.class.getClassLoader()));
         redisTemplate.setConnectionFactory(lettuceConnectionFactory);
@@ -62,7 +63,7 @@ public class ShiroRedisConfig {
     }
 
     @Bean
-    public RedisSessionDAO redisSessionDAO(RedisTemplate<String, SimpleSession> redisManager) {
+    public RedisSessionDAO redisSessionDAO(RedisTemplate<String, Serializable> redisManager) {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
         redisSessionDAO.setRedisManager(redisManager);
         redisSessionDAO.setExpire(expire());
@@ -72,7 +73,7 @@ public class ShiroRedisConfig {
     }
 
     @Bean
-    public ShiroRedisCacheManager shiroCacheManager(RedisTemplate<String, SimpleSession> redisManager) {
+    public ShiroRedisCacheManager shiroCacheManager(RedisTemplate<String, Serializable> redisManager) {
         ShiroRedisCacheManager shiroRedisCacheManager = new ShiroRedisCacheManager();
         shiroRedisCacheManager.setRedisManager(redisManager);
         shiroRedisCacheManager.setExpire(expire());

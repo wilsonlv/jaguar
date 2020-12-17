@@ -8,7 +8,6 @@ package org.jaguar.commons.shiro;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
-import org.apache.shiro.session.mgt.SimpleSession;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.CollectionUtils;
 import org.crazycake.shiro.exception.CacheManagerPrincipalIdNotAssignedException;
@@ -16,6 +15,7 @@ import org.crazycake.shiro.exception.PrincipalIdNullException;
 import org.crazycake.shiro.exception.PrincipalInstanceException;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class RedisCache<K, V> implements Cache<K, V> {
 
-    private final RedisTemplate<String, SimpleSession> redisManager;
+    private final RedisTemplate<String, Serializable> redisManager;
     private String keyPrefix = ShiroRedisCacheManager.DEFAULT_CACHE_KEY_PREFIX;
     private final int expire;
     private String principalIdFieldName = ShiroRedisCacheManager.DEFAULT_PRINCIPAL_ID_FIELD_NAME;
@@ -35,7 +35,7 @@ public class RedisCache<K, V> implements Cache<K, V> {
      * @param expire               expire
      * @param principalIdFieldName id field name of principal object
      */
-    public RedisCache(RedisTemplate<String, SimpleSession> redisManager, String prefix, int expire, String principalIdFieldName) {
+    public RedisCache(RedisTemplate<String, Serializable> redisManager, String prefix, int expire, String principalIdFieldName) {
         if (redisManager == null) {
             throw new IllegalArgumentException("redisManager cannot be null.");
         }
@@ -77,7 +77,7 @@ public class RedisCache<K, V> implements Cache<K, V> {
 
         String redisCacheKey = getRedisCacheKey(key);
         log.debug("put key [" + redisCacheKey + "]");
-        redisManager.boundValueOps(redisCacheKey).set((SimpleSession) value, expire, TimeUnit.SECONDS);
+        redisManager.boundValueOps(redisCacheKey).set((Serializable) value, expire, TimeUnit.SECONDS);
         return value;
     }
 
@@ -89,7 +89,7 @@ public class RedisCache<K, V> implements Cache<K, V> {
         }
 
         String redisCacheKey = getRedisCacheKey(key);
-        SimpleSession rawValue = (SimpleSession) redisManager.boundValueOps(redisCacheKey);
+        Serializable rawValue = redisManager.boundValueOps(redisCacheKey).get();
         redisManager.delete(redisCacheKey);
         return (V) rawValue;
     }

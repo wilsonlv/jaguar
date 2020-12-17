@@ -3,7 +3,6 @@ package org.jaguar.commons.shiro;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import org.apache.shiro.cache.CacheManager;
-import org.apache.shiro.session.mgt.SimpleSession;
 import org.crazycake.shiro.RedisCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +23,7 @@ public class ShiroRedisCacheManager implements CacheManager {
     // fast lookup by name map
     private final ConcurrentMap<String, Cache<String, Serializable>> caches = new ConcurrentHashMap<>();
 
-    private RedisTemplate<String, SimpleSession> redisManager;
+    private RedisTemplate<String, Serializable> redisManager;
 
     // expire time in seconds
     public static final int DEFAULT_EXPIRE = 1800;
@@ -51,11 +50,11 @@ public class ShiroRedisCacheManager implements CacheManager {
         return cache;
     }
 
-    public RedisTemplate<String, SimpleSession> getRedisManager() {
+    public RedisTemplate<String, Serializable> getRedisManager() {
         return redisManager;
     }
 
-    public void setRedisManager(RedisTemplate<String, SimpleSession> redisManager) {
+    public void setRedisManager(RedisTemplate<String, Serializable> redisManager) {
         this.redisManager = redisManager;
     }
 
