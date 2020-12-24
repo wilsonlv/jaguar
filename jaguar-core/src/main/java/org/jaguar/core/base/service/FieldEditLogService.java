@@ -47,7 +47,7 @@ public class FieldEditLogService {
 
     @Autowired
     private FieldEditLogMapper fieldEditLogMapper;
-    @Value("${mybatis-plus.global-config.db-config.field-strategy}")
+    @Value("${mybatis-plus.global-config.db-config.update-strategy}")
     private FieldStrategy fieldStrategy;
 
     @Transactional
@@ -74,7 +74,7 @@ public class FieldEditLogService {
                 if (!annotation.exist()) {
                     continue;
                 }
-                strategy = annotation.strategy();
+                strategy = annotation.updateStrategy();
             } else {
                 strategy = fieldStrategy;
             }

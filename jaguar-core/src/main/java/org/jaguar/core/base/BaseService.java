@@ -1,11 +1,12 @@
 package org.jaguar.core.base;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ArrayUtils;
 import org.jaguar.core.base.service.FieldEditLogService;
 import org.jaguar.core.exception.Assert;
 import org.jaguar.core.exception.CheckedException;
@@ -35,7 +36,7 @@ public abstract class BaseService<T extends BaseModel, M extends com.baomidou.my
      */
     public static final ThreadLocal<Long> CURRENT_USER = new ThreadLocal<>();
 
-    private long getCurrentUser() {
+    protected long getCurrentUser() {
         Long currentUser = CURRENT_USER.get();
         return currentUser != null ? currentUser : 0L;
     }
@@ -113,11 +114,7 @@ public abstract class BaseService<T extends BaseModel, M extends com.baomidou.my
         entity.setUpdateTime(LocalDateTime.now());
         this.updateById(entity);
 
-        boolean success = SqlHelper.delBool(mapper.deleteById(entity.getId()));
-        if (!success) {
-            log.error("实体ID：" + entity.getId());
-            throw new CheckedException("数据删除失败！");
-        }
+        mapper.deleteById(entity.getId());
     }
 
     @Transactional
@@ -140,21 +137,31 @@ public abstract class BaseService<T extends BaseModel, M extends com.baomidou.my
         if (throwEx) {
             return mapper.selectOne(queryWrapper);
         }
-        return SqlHelper.getObject(mapper.selectList(queryWrapper));
+
+        List<T> list = mapper.selectList(queryWrapper);
+        if (CollectionUtils.isNotEmpty(list)) {
+            int size = list.size();
+            if (size > 1) {
+                log.warn(String.format("Warn: execute Method There are  %s results.", size));
+            }
+            return list.get(0);
+        } else {
+            return null;
+        }
     }
 
     public Page<T> query(Page<T> page, Wrapper<T> queryWrapper) {
-        if (ArrayUtils.isEmpty(page.ascs()) && ArrayUtils.isEmpty(page.descs())) {
-            page.setDesc(DEFAULT_ORDER_COLUMN);
+        if (page.getOrders().size() == 0) {
+            page.addOrder(new OrderItem(DEFAULT_ORDER_COLUMN, false));
         }
-        return (Page<T>) mapper.selectPage(page, queryWrapper);
+        return mapper.selectPage(page, queryWrapper);
     }
 
-    public Page<Map<String, Object>> queryMaps(Page<T> page, Wrapper<T> queryWrapper) {
-        if (ArrayUtils.isEmpty(page.ascs()) && ArrayUtils.isEmpty(page.descs())) {
-            page.setDesc(DEFAULT_ORDER_COLUMN);
+    public Page<Map<String, Object>> queryMaps(Page<Map<String, Object>> page, Wrapper<T> queryWrapper) {
+        if (page.getOrders().size() == 0) {
+            page.addOrder(new OrderItem(DEFAULT_ORDER_COLUMN, false));
         }
-        return (Page<Map<String, Object>>) mapper.selectMapsPage(page, queryWrapper);
+        return mapper.selectMapsPage(page, queryWrapper);
     }
 
     public List<T> list() {

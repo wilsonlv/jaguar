@@ -15,7 +15,7 @@ CREATE TABLE `jaguar_core_field_edit_log`
     PRIMARY KEY (`id_`) USING BTREE,
     INDEX `class_name_index` (`class_name`) USING BTREE,
     INDEX `record_id_index` (`record_id`) USING BTREE
-) ENGINE = MyISAM
+) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_bin COMMENT = '字段编辑日志表'
   ROW_FORMAT = Dynamic;

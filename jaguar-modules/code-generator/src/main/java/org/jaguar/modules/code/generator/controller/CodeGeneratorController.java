@@ -1,10 +1,10 @@
 package org.jaguar.modules.code.generator.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jaguar.core.base.AbstractController;
 import org.jaguar.core.web.JsonResult;
@@ -38,8 +38,8 @@ public class CodeGeneratorController extends AbstractController<CodeGenerator, C
             @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<CodeGenerator> page,
             @ApiParam(value = "模糊表名") @RequestParam(required = false) String fuzzyTableName) {
 
-        if (ArrayUtils.isEmpty(page.ascs()) && ArrayUtils.isEmpty(page.descs())) {
-            page.setDesc("table_name");
+        if (page.getOrders().size() == 0) {
+            page.addOrder(new OrderItem("table_name", false));
         }
 
         page = service.showTables(page, fuzzyTableName);

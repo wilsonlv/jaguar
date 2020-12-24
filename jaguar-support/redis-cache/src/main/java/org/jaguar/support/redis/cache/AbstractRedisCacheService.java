@@ -40,9 +40,11 @@ public abstract class AbstractRedisCacheService<T extends BaseModel, M extends B
         return NON_TRANSACTIONAL;
     }
 
-    private long getCurrentUser() {
-        Long currentUser = (Long) CURRENT_USER.get();
-        return currentUser != null ? currentUser : 0L;
+    /**
+     * TimeUnit.DAYS
+     */
+    public int getTimeout() {
+        return 15;
     }
 
     public T getCache(Long id) {
@@ -53,7 +55,7 @@ public abstract class AbstractRedisCacheService<T extends BaseModel, M extends B
         T cacheEntity = (T) operations.get();
         if (cacheEntity == null) {
             cacheEntity = super.getById(id);
-            operations.set(cacheEntity, 30, TimeUnit.DAYS);
+            operations.set(cacheEntity, getTimeout(), TimeUnit.DAYS);
         }
         return cacheEntity;
     }
@@ -75,7 +77,7 @@ public abstract class AbstractRedisCacheService<T extends BaseModel, M extends B
                     }
                 }
                 case ALWAYS: {
-                    operations.set(cacheEntity, 30, TimeUnit.DAYS);
+                    operations.set(cacheEntity, getTimeout(), TimeUnit.DAYS);
                 }
                 default:
             }
@@ -99,7 +101,7 @@ public abstract class AbstractRedisCacheService<T extends BaseModel, M extends B
                         @Override
                         public void afterCommit() {
                             if (strategy == ALWAYS) {
-                                redisTemplate.boundValueOps(cacheKey).set(finalEntity, 30, TimeUnit.DAYS);
+                                redisTemplate.boundValueOps(cacheKey).set(finalEntity, getTimeout(), TimeUnit.DAYS);
                             }
                         }
                     }
@@ -148,7 +150,7 @@ public abstract class AbstractRedisCacheService<T extends BaseModel, M extends B
                                     break;
                                 }
                                 case ALWAYS: {
-                                    redisTemplate.boundValueOps(cacheKey).set(finalEntity, 30, TimeUnit.DAYS);
+                                    redisTemplate.boundValueOps(cacheKey).set(finalEntity, getTimeout(), TimeUnit.DAYS);
                                 }
                                 default:
                             }

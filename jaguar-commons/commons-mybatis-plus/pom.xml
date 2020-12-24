@@ -11,7 +11,7 @@
     <artifactId>commons-mybatis-plus</artifactId>
 
     <properties>
-        <druid.version>1.1.10</druid.version>
+        <druid.version>1.2.4</druid.version>
     </properties>
 
     <dependencies>
