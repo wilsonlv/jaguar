@@ -1,7 +1,6 @@
 package org.jaguar.commons.data.encription;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+import org.apache.commons.codec.binary.Base64;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -55,9 +54,9 @@ public final class SecurityUtil {
     /**
      * BASE64编码
      */
-    public static String encryptBASE64(byte[] data) {
+    public static String encryptBase64(byte[] data) {
         try {
-            return new BASE64Encoder().encode(data);
+            return new String(Base64.encodeBase64(data), StandardCharsets.UTF_8);
         } catch (Exception e) {
             throw new RuntimeException("加密错误，错误信息：", e);
         }
@@ -66,9 +65,9 @@ public final class SecurityUtil {
     /**
      * BASE64解码
      */
-    public static byte[] decryptBASE64(String key) {
+    public static byte[] decryptBase64(String key) {
         try {
-            return new BASE64Decoder().decodeBuffer(key);
+            return Base64.decodeBase64(key.getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
             throw new RuntimeException("解密错误，错误信息：", e);
         }
@@ -88,7 +87,7 @@ public final class SecurityUtil {
     public static String encryptDes(String data, byte[] key) {
         try {
             byte[] encrypt = DESCoder.encrypt(data, key);
-            return encryptBASE64(encrypt);
+            return encryptBase64(encrypt);
         } catch (Exception e) {
             throw new RuntimeException("加密错误，错误信息：", e);
         }
@@ -106,14 +105,14 @@ public final class SecurityUtil {
      */
     public static String decryptDes(String encryptData, byte[] key) {
         try {
-            return DESCoder.decrypt(decryptBASE64(encryptData), key);
+            return DESCoder.decrypt(decryptBase64(encryptData), key);
         } catch (Exception e) {
             throw new RuntimeException("解密错误，错误信息：", e);
         }
     }
 
 
-    public static String encodeMD5(String value) {
+    public static String encodeMd5(String value) {
         if (value == null) {
             return null;
         }
@@ -130,10 +129,10 @@ public final class SecurityUtil {
     /**
      * RSA私钥签名
      */
-    public static String signRSA(String data, String privateKey) {
+    public static String signRsa(String data, String privateKey) {
         try {
-            byte[] sign = RSACoder.sign(data.getBytes(StandardCharsets.UTF_8), decryptBASE64(privateKey));
-            return encryptBASE64(sign);
+            byte[] sign = RSACoder.sign(data.getBytes(StandardCharsets.UTF_8), decryptBase64(privateKey));
+            return encryptBase64(sign);
         } catch (Exception e) {
             throw new RuntimeException("签名错误，错误信息：", e);
         }
@@ -142,9 +141,9 @@ public final class SecurityUtil {
     /**
      * RSA公钥验签
      */
-    public static boolean verifyRSA(String data, String publicKey, String sign) {
+    public static boolean verifyRsa(String data, String publicKey, String sign) {
         try {
-            return RSACoder.verify(data.getBytes(StandardCharsets.UTF_8), decryptBASE64(publicKey), decryptBASE64(sign));
+            return RSACoder.verify(data.getBytes(StandardCharsets.UTF_8), decryptBase64(publicKey), decryptBase64(sign));
         } catch (Exception e) {
             throw new RuntimeException("验签错误，错误信息：", e);
         }
@@ -153,9 +152,9 @@ public final class SecurityUtil {
     /**
      * RSA公钥加密
      */
-    public static String encryptRSAPublic(String data, String publicKey) {
+    public static String encryptRsaPublic(String data, String publicKey) {
         try {
-            return encryptBASE64(RSACoder.encryptByPublicKey(data.getBytes(StandardCharsets.UTF_8), decryptBASE64(publicKey)));
+            return encryptBase64(RSACoder.encryptByPublicKey(data.getBytes(StandardCharsets.UTF_8), decryptBase64(publicKey)));
         } catch (Exception e) {
             throw new RuntimeException("加密错误，错误信息：", e);
         }
@@ -164,10 +163,10 @@ public final class SecurityUtil {
     /**
      * RSA私钥解密
      */
-    public static String decryptRSAPrivate(String cryptData, String privateKey) {
+    public static String decryptRsaPrivate(String cryptData, String privateKey) {
         try {
             // 把字符串解码为字节数组，并解密
-            return new String(RSACoder.decryptByPrivateKey(decryptBASE64(cryptData), decryptBASE64(privateKey)));
+            return new String(RSACoder.decryptByPrivateKey(decryptBase64(cryptData), decryptBase64(privateKey)));
         } catch (Exception e) {
             throw new RuntimeException("解密错误，错误信息：", e);
         }
@@ -177,7 +176,7 @@ public final class SecurityUtil {
      * 数据库密码加密
      */
     public static String encryptPassword(String password) {
-        return encodeMD5(encryptDes(password));
+        return encodeMd5(encryptDes(password));
     }
 
     /**
@@ -185,11 +184,6 @@ public final class SecurityUtil {
      */
     public static boolean checkPassword(String password) {
         return PASSWORD_PATTERN.matcher(password).matches();
-    }
-
-    public static void main(String[] args) {
-//        System.out.println(encryptPassword("admin"));
-        System.out.println(encryptPassword("NlYvNE"));
     }
 
 }
