@@ -5,7 +5,9 @@ import com.googlecode.aviator.AviatorEvaluator;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -14,17 +16,19 @@ import java.util.List;
  */
 public class ExportManager implements Closeable {
 
-    private final Writer writer;
+    private final OutputStreamWriter writer;
     private final List<ExportColumn> exportColumnList;
 
-    public ExportManager(Writer writer, List<ExportColumn> exportColumnList) throws IOException {
-        this.writer = writer;
+    public ExportManager(OutputStream outputStream, List<ExportColumn> exportColumnList) throws IOException {
+        this.writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
         this.exportColumnList = exportColumnList;
 
         this.build();
     }
 
     private void build() throws IOException {
+        writer.write(new String(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF}));
+
         for (int i = 0; i < exportColumnList.size(); i++) {
             ExportColumn exportColumn = exportColumnList.get(i);
             this.writer.append(exportColumn.getLabel());
