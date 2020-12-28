@@ -47,10 +47,14 @@ public class ExportManager implements Closeable {
             for (int i = 0; i < exportColumnList.size(); i++) {
                 ExportColumn exportColumn = exportColumnList.get(i);
                 Object result = AviatorEvaluator.execute(exportColumn.getKey(), item);
-                String resultStr = String.valueOf(result).replaceAll(",", "，")
-                        .replaceAll("'", "‘")
-                        .replace("\"", "“");
-                this.writer.write(resultStr + "\t");
+                if (result == null) {
+                    this.writer.append("");
+                } else {
+                    String resultStr = String.valueOf(result).replaceAll(",", "，")
+                            .replaceAll("'", "‘")
+                            .replace("\"", "“");
+                    this.writer.write(resultStr + "\t");
+                }
 
                 if (i != exportColumnList.size() - 1) {
                     this.writer.append(',');
