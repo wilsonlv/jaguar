@@ -50,7 +50,7 @@ public class ExportManager implements Closeable {
                 String resultStr = String.valueOf(result).replaceAll(",", "，")
                         .replaceAll("'", "‘")
                         .replace("\"", "“");
-                this.writer.write(resultStr);
+                this.writer.write(resultStr + "\t");
 
                 if (i != exportColumnList.size() - 1) {
                     this.writer.append(',');

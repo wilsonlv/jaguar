@@ -13,9 +13,11 @@ public class DemoExportData implements Serializable {
 
     private String name;
     private Integer sex;
+    private Long num;
 
-    public DemoExportData(String name, Integer sex) {
+    public DemoExportData(String name, Integer sex, Long num) {
         this.name = name;
         this.sex = sex;
+        this.num = num;
     }
 }
