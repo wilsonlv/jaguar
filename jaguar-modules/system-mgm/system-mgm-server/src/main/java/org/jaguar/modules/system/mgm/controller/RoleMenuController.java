@@ -9,7 +9,6 @@ import org.jaguar.modules.system.mgm.mapper.RoleMenuMapper;
 import org.jaguar.modules.system.mgm.model.Menu;
 import org.jaguar.modules.system.mgm.model.RoleMenu;
 import org.jaguar.modules.system.mgm.service.RoleMenuService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +32,7 @@ public class RoleMenuController extends AbstractController<RoleMenu, RoleMenuMap
     @ApiOperation(value = "查询系统角色菜单表")
     @RequiresPermissions("系统角色菜单表:读取")
     @GetMapping(value = "/tree_menu_with_role_permission/{roleId}")
-    public ResponseEntity<JsonResult<List<Menu>>> treeMenuWithRolePermission(@PathVariable Long roleId) {
+    public JsonResult<List<Menu>> treeMenuWithRolePermission(@PathVariable Long roleId) {
 
         List<Menu> menuList = service.treeMenuWithRolePermission(roleId);
         return success(menuList);
@@ -42,7 +41,7 @@ public class RoleMenuController extends AbstractController<RoleMenu, RoleMenuMap
     @ApiOperation(value = "修改系统角色菜单表")
     @RequiresPermissions("系统角色菜单表:新增编辑")
     @PostMapping
-    public ResponseEntity<JsonResult<RoleMenu>> change(@RequestBody @Valid RoleMenu roleMenu) {
+    public JsonResult<RoleMenu> change(@RequestBody @Valid RoleMenu roleMenu) {
         synchronized (this) {
             roleMenu = service.change(roleMenu);
         }

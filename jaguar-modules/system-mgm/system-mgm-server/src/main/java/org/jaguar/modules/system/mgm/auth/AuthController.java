@@ -25,7 +25,6 @@ import org.jaguar.support.handlerlog.model.HandlerLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,7 +54,7 @@ public class AuthController extends AbstractController<User, UserMapper, UserSer
 
     @ApiOperation(value = "登录")
     @PostMapping(value = "/login")
-    public ResponseEntity<JsonResult<User>> login(@ApiParam("登录信息") @RequestBody @Valid Login login) throws Throwable {
+    public JsonResult<User> login(@ApiParam("登录信息") @RequestBody @Valid Login login) throws Throwable {
 
         if (systemMgmProperties.getVerifyCodeEnable()) {
             if (StringUtils.isBlank(login.getVerifyCode())) {
@@ -91,7 +90,7 @@ public class AuthController extends AbstractController<User, UserMapper, UserSer
 
     @ApiOperation(value = "退出登陆")
     @PostMapping(value = "/logout")
-    public ResponseEntity<JsonResult<?>> logout() {
+    public JsonResult<?> logout() {
 
         SecurityUtils.getSubject().logout();
         return success();
@@ -99,7 +98,7 @@ public class AuthController extends AbstractController<User, UserMapper, UserSer
 
     @ApiOperation(value = "用户信息")
     @GetMapping(value = "/info")
-    public ResponseEntity<JsonResult<User>> getPersonalInfo() {
+    public JsonResult<User> getPersonalInfo() {
 
         User user = service.getDetail(getCurrentUser());
         return success(user);
@@ -107,7 +106,7 @@ public class AuthController extends AbstractController<User, UserMapper, UserSer
 
     @ApiOperation(value = "获取当前用户授权菜单")
     @GetMapping(value = "/menu/tree/view_permission")
-    public ResponseEntity<JsonResult<List<Menu>>> menuTreeViewPermission() {
+    public JsonResult<List<Menu>> menuTreeViewPermission() {
 
         List<Menu> menuTree = roleMenuService.menuTreeViewPermissionByUserId(getCurrentUser());
         return success(menuTree);
@@ -115,7 +114,7 @@ public class AuthController extends AbstractController<User, UserMapper, UserSer
 
     @ApiOperation(value = "获取当前用户接口权限")
     @GetMapping(value = "/permission/list")
-    public ResponseEntity<JsonResult<Set<String>>> permissionList() {
+    public JsonResult<Set<String>> permissionList() {
 
         Set<String> permissions = roleMenuService.listPermissionByUserId(getCurrentUser());
         return success(permissions);
@@ -123,7 +122,7 @@ public class AuthController extends AbstractController<User, UserMapper, UserSer
 
     @ApiOperation(value = "修改密码")
     @PostMapping(value = "/modify_password")
-    public ResponseEntity<JsonResult<?>> modifyPassword(
+    public JsonResult<?> modifyPassword(
             @ApiParam(value = "旧密码", required = true) @RequestParam String oldPassword,
             @ApiParam(value = "新密码", required = true) @RequestParam String newPassword) {
 

@@ -1,14 +1,15 @@
 package org.jaguar.modules.document.service;
 
-import org.jaguar.modules.document.interfaces.DocumentPersistence;
-import org.jaguar.modules.document.interfaces.DocumentPersistenceService;
-import org.jaguar.modules.document.mapper.DocumentMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import org.jaguar.commons.utils.DateUtil;
 import org.jaguar.core.base.BaseService;
 import org.jaguar.core.exception.CheckedException;
 import org.jaguar.modules.document.config.DocumentProperties;
+import org.jaguar.modules.document.interfaces.DocumentPersistence;
+import org.jaguar.modules.document.interfaces.DocumentPersistenceService;
+import org.jaguar.modules.document.mapper.DocumentMapper;
 import org.jaguar.modules.document.model.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ import java.util.List;
  * @author lvws
  * @date 2019-11-01 10:23:09
  */
+@Slf4j
 @Service
 public class DocumentService extends BaseService<Document, DocumentMapper> implements DocumentPersistenceService {
 
@@ -85,7 +87,8 @@ public class DocumentService extends BaseService<Document, DocumentMapper> imple
             try {
                 file.transferTo(new File(filePath));
             } catch (IOException e) {
-                throw new CheckedException(e);
+                log.error(e.getMessage(), e);
+                throw new CheckedException(e.getMessage());
             }
 
             Document document = new Document();

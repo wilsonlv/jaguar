@@ -1,6 +1,5 @@
 package org.jaguar.modules.document.controller;
 
-import org.jaguar.modules.document.mapper.DocumentMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -9,9 +8,9 @@ import org.jaguar.core.base.AbstractController;
 import org.jaguar.core.exception.Assert;
 import org.jaguar.core.exception.CheckedException;
 import org.jaguar.core.web.JsonResult;
+import org.jaguar.modules.document.mapper.DocumentMapper;
 import org.jaguar.modules.document.model.Document;
 import org.jaguar.modules.document.service.DocumentService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,7 +36,7 @@ public class DocumentController extends AbstractController<Document, DocumentMap
 
     @ApiOperation(value = "上传文档")
     @PostMapping("/upload")
-    public ResponseEntity<JsonResult<List<Document>>> upload(
+    public JsonResult<List<Document>> upload(
             @ApiParam(value = "文件", required = true) @RequestParam("files") @NotEmpty List<MultipartFile> files) {
 
         List<Document> documentList = service.upload(files);

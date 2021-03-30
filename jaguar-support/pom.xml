@@ -13,7 +13,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>dubbo</module>
         <module>field-edit-log</module>
         <module>handler-log</module>
         <module>redis-cache</module>

@@ -12,6 +12,10 @@ public class CheckedException extends BaseException {
         super(message);
     }
 
+    public CheckedException(Throwable cause) {
+        super(cause);
+    }
+
     @Override
     public ResultCode getResultCode() {
         return ResultCode.CONFLICT;

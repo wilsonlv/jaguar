@@ -12,7 +12,6 @@ import org.jaguar.core.web.Page;
 import org.jaguar.modules.system.mgm.mapper.RoleMapper;
 import org.jaguar.modules.system.mgm.model.Role;
 import org.jaguar.modules.system.mgm.service.RoleService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -35,7 +34,7 @@ public class RoleController extends AbstractController<Role, RoleMapper, RoleSer
     @ApiOperation(value = "查询系统角色表")
     @RequiresPermissions("系统角色表:读取")
     @GetMapping(value = "/page")
-    public ResponseEntity<JsonResult<Page<Role>>> page(
+    public JsonResult<Page<Role>> page(
             @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<Role> page,
             @ApiParam(value = "模糊角色名称") @RequestParam(required = false) String fuzzyRoleName,
             @ApiParam(value = "角色是否锁定") @RequestParam(required = false) Boolean roleLocked) {
@@ -51,14 +50,14 @@ public class RoleController extends AbstractController<Role, RoleMapper, RoleSer
     @ApiOperation(value = "系统角色表详情")
     @RequiresPermissions("系统角色表:读取")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<JsonResult<Role>> detail(@PathVariable Long id) {
+    public JsonResult<Role> detail(@PathVariable Long id) {
         return super.getById(id);
     }
 
     @ApiOperation(value = "修改系统角色表")
     @RequiresPermissions("系统角色表:新增编辑")
     @PostMapping
-    public ResponseEntity<JsonResult<Role>> update(@RequestBody Role role) {
+    public JsonResult<Role> update(@RequestBody Role role) {
         synchronized (this) {
             role = service.createOrUpdate(role);
         }
@@ -68,7 +67,7 @@ public class RoleController extends AbstractController<Role, RoleMapper, RoleSer
     @ApiOperation(value = "删除系统角色表")
     @RequiresPermissions("系统角色表:删除")
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<JsonResult<?>> del(@PathVariable Long id) {
+    public JsonResult<?> del(@PathVariable Long id) {
 
         service.deleteWithRoleMenu(id);
         return success();

@@ -29,7 +29,7 @@ public class UserRoleController extends AbstractController<UserRole, UserRoleMap
     @ApiOperation(value = "修改系统用户角色表")
     @RequiresPermissions("用户角色管理")
     @PostMapping
-    public ResponseEntity<JsonResult<UserRole>> create(@RequestBody UserRole userRole) {
+    public JsonResult<UserRole> create(@RequestBody UserRole userRole) {
         synchronized (this) {
             userRole = service.create(userRole);
         }
@@ -39,7 +39,7 @@ public class UserRoleController extends AbstractController<UserRole, UserRoleMap
     @ApiOperation(value = "删除系统用户角色表")
     @RequiresPermissions("用户角色管理")
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<JsonResult<?>> del(@PathVariable Long id) {
+    public JsonResult<?> del(@PathVariable Long id) {
         return super.delete(id);
     }
 

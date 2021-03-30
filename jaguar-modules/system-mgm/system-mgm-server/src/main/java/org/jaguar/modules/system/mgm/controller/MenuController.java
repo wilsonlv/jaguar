@@ -8,7 +8,6 @@ import org.jaguar.core.web.JsonResult;
 import org.jaguar.modules.system.mgm.mapper.MenuMapper;
 import org.jaguar.modules.system.mgm.model.Menu;
 import org.jaguar.modules.system.mgm.service.MenuService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +31,7 @@ public class MenuController extends AbstractController<Menu, MenuMapper, MenuSer
     @ApiOperation(value = "查询系统菜单表")
     @RequiresPermissions("系统菜单表:读取")
     @GetMapping(value = "/tree")
-    public ResponseEntity<JsonResult<List<Menu>>> tree() {
+    public JsonResult<List<Menu>> tree() {
         List<Menu> menuTree = service.tree();
         return success(menuTree);
     }
@@ -40,15 +39,14 @@ public class MenuController extends AbstractController<Menu, MenuMapper, MenuSer
     @ApiOperation(value = "系统菜单表详情")
     @RequiresPermissions("系统菜单表:读取")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<JsonResult<Menu>> detail(@PathVariable Long id) {
+    public JsonResult<Menu> detail(@PathVariable Long id) {
         return super.getById(id);
     }
 
     @ApiOperation(value = "修改系统菜单表")
     @RequiresPermissions("系统菜单表:新增编辑")
     @PostMapping
-    public ResponseEntity<JsonResult<Menu>> update(@RequestBody @Valid Menu menu) {
-
+    public JsonResult<Menu> update(@RequestBody @Valid Menu menu) {
         menu = service.createOrUpdate(menu);
         return success(menu);
     }
@@ -56,8 +54,7 @@ public class MenuController extends AbstractController<Menu, MenuMapper, MenuSer
     @ApiOperation(value = "删除系统菜单表")
     @RequiresPermissions("系统菜单表:删除")
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<JsonResult<?>> del(@PathVariable Long id) {
-
+    public JsonResult<?> del(@PathVariable Long id) {
         service.deleteWithRoleMenuId(id);
         return success();
     }

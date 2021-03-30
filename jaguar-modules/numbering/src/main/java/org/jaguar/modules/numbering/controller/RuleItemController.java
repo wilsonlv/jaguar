@@ -13,7 +13,6 @@ import org.jaguar.core.web.Page;
 import org.jaguar.modules.numbering.mapper.RuleItemMapper;
 import org.jaguar.modules.numbering.model.RuleItem;
 import org.jaguar.modules.numbering.service.RuleItemService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -39,7 +38,7 @@ public class RuleItemController extends AbstractController<RuleItem, RuleItemMap
     @ApiOperation(value = "查询编号规则条目")
     @RequiresPermissions("编号规则表:读取")
     @GetMapping(value = "/page")
-    public ResponseEntity<JsonResult<Page<RuleItem>>> page(
+    public JsonResult<Page<RuleItem>> page(
             @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<RuleItem> page,
             @ApiParam(value = "编号规则ID", required = true) @RequestParam @NotNull Long ruleId) {
 
@@ -52,21 +51,21 @@ public class RuleItemController extends AbstractController<RuleItem, RuleItemMap
     @ApiOperation(value = "编号规则条目详情")
     @RequiresPermissions("编号规则表:读取")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<JsonResult<RuleItem>> detail(@PathVariable Long id) {
+    public JsonResult<RuleItem> detail(@PathVariable Long id) {
         return super.getById(id);
     }
 
     @ApiOperation(value = "更新编号规则条目")
     @RequiresPermissions("编号规则表:新增编辑")
     @PostMapping(value = "/update")
-    public ResponseEntity<JsonResult<RuleItem>> update(@RequestBody @Valid RuleItem ruleItem) {
+    public JsonResult<RuleItem> update(@RequestBody @Valid RuleItem ruleItem) {
         return super.saveOrUpdate(ruleItem);
     }
 
     @ApiOperation(value = "删除编号规则条目")
     @RequiresPermissions("编号规则表:删除")
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<JsonResult<?>> del(@PathVariable Long id) {
+    public JsonResult<?> del(@PathVariable Long id) {
         return super.delete(id);
     }
 

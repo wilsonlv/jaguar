@@ -12,7 +12,6 @@ import org.jaguar.core.web.Page;
 import org.jaguar.modules.system.mgm.mapper.LoginMapper;
 import org.jaguar.modules.system.mgm.model.Login;
 import org.jaguar.modules.system.mgm.service.LoginService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +37,7 @@ public class LoginController extends AbstractController<Login, LoginMapper, Logi
     @ApiOperation(value = "查询系统登陆日志表")
     @RequiresPermissions("系统登陆日志表:读取")
     @GetMapping(value = "/page")
-    public ResponseEntity<JsonResult<Page<Login>>> page(
+    public JsonResult<Page<Login>> page(
             @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<Login> page,
             @ApiParam(value = "查询信息") Login login) {
 
@@ -50,7 +49,7 @@ public class LoginController extends AbstractController<Login, LoginMapper, Logi
     @ApiOperation(value = "系统登陆日志表详情")
     @RequiresPermissions("系统登陆日志表:读取")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<JsonResult<Login>> detail(@PathVariable Long id) {
+    public JsonResult<Login> detail(@PathVariable Long id) {
         return super.getById(id);
     }
 

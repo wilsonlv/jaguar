@@ -14,7 +14,6 @@ import org.jaguar.modules.system.mgm.enums.DataScope;
 import org.jaguar.modules.system.mgm.mapper.UserMapper;
 import org.jaguar.modules.system.mgm.model.User;
 import org.jaguar.modules.system.mgm.service.UserService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -38,7 +37,7 @@ public class UserController extends AbstractController<User, UserMapper, UserSer
     @ApiOperation(value = "查询系统用户表")
     @RequiresPermissions("系统用户表:读取")
     @GetMapping(value = "/page")
-    public ResponseEntity<JsonResult<Page<User>>> page(
+    public JsonResult<Page<User>> page(
             @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<User> page,
             @ApiParam(value = "模糊用户信息") @RequestParam(required = false) String fuzzyUserInfo,
             @ApiParam(value = "角色数据权限（PERSONAL：个人的，SUBLEVEL：个人及子级别，CURRENT_LEVEL：个人及本级，UNLIMITED：无限制）")
@@ -61,7 +60,7 @@ public class UserController extends AbstractController<User, UserMapper, UserSer
     @ApiOperation(value = "系统用户表详情")
     @RequiresPermissions("系统用户表:读取")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<JsonResult<User>> detail(@PathVariable Long id) {
+    public JsonResult<User> detail(@PathVariable Long id) {
         User user = service.getDetail(id);
         return success(user);
     }
@@ -69,7 +68,7 @@ public class UserController extends AbstractController<User, UserMapper, UserSer
     @ApiOperation(value = "修改系统用户表")
     @RequiresPermissions("系统用户表:新增编辑")
     @PostMapping
-    public ResponseEntity<JsonResult<User>> update(@RequestBody @Valid User user) {
+    public JsonResult<User> update(@RequestBody @Valid User user) {
         synchronized (this) {
             if (user.getId() == null) {
                 user = service.create(user);
@@ -83,7 +82,7 @@ public class UserController extends AbstractController<User, UserMapper, UserSer
     @ApiOperation(value = "重置密码")
     @RequiresPermissions("系统用户表:新增编辑")
     @PostMapping(value = "/reset_password/{id}")
-    public ResponseEntity<JsonResult<String>> resetPassword(@PathVariable Long id) {
+    public JsonResult<String> resetPassword(@PathVariable Long id) {
         String resetPassword = service.resetPassword(id);
         return success(resetPassword);
     }
@@ -91,8 +90,7 @@ public class UserController extends AbstractController<User, UserMapper, UserSer
     @ApiOperation(value = "锁定解锁用户")
     @RequiresPermissions("系统用户表:新增编辑")
     @PostMapping(value = "/toggle_lock/{id}")
-    public ResponseEntity<JsonResult<Boolean>> toggleLock(@PathVariable Long id) {
-
+    public JsonResult<Boolean> toggleLock(@PathVariable Long id) {
         Boolean userLocked = service.toggleLock(id);
         return success(userLocked);
     }

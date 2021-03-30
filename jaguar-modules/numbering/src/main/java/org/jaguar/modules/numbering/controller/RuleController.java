@@ -12,7 +12,6 @@ import org.jaguar.core.web.Page;
 import org.jaguar.modules.numbering.mapper.RuleMapper;
 import org.jaguar.modules.numbering.model.Rule;
 import org.jaguar.modules.numbering.service.RuleService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -37,7 +36,7 @@ public class RuleController extends AbstractController<Rule, RuleMapper, RuleSer
     @ApiOperation(value = "查询编号规则表")
     @RequiresPermissions("编号规则表:读取")
     @GetMapping(value = "/page")
-    public ResponseEntity<JsonResult<Page<Rule>>> page(
+    public JsonResult<Page<Rule>> page(
             @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<Rule> page,
             @ApiParam(value = "模糊编号规则名称") @RequestParam(required = false) String fuzzyName) {
 
@@ -49,14 +48,14 @@ public class RuleController extends AbstractController<Rule, RuleMapper, RuleSer
     @ApiOperation(value = "编号规则表详情")
     @RequiresPermissions("编号规则表:读取")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<JsonResult<Rule>> detail(@PathVariable Long id) {
+    public JsonResult<Rule> detail(@PathVariable Long id) {
         return super.getById(id);
     }
 
     @ApiOperation(value = "更新编号规则")
     @RequiresPermissions("编号规则表:新增编辑")
     @PostMapping
-    public ResponseEntity<JsonResult<Rule>> update(@RequestBody @Valid Rule entity) {
+    public JsonResult<Rule> update(@RequestBody @Valid Rule entity) {
         synchronized (this) {
             entity = service.createOrUpdate(entity);
         }
@@ -66,7 +65,7 @@ public class RuleController extends AbstractController<Rule, RuleMapper, RuleSer
     @ApiOperation(value = "删除编号规则表")
     @RequiresPermissions("编号规则表:删除")
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<JsonResult<?>> del(@PathVariable Long id) {
+    public JsonResult<?> del(@PathVariable Long id) {
         return super.delete(id);
     }
 
