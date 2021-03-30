@@ -12,7 +12,7 @@ import javax.websocket.server.ServerEndpointConfig;
  */
 public class WsSpringConfigurator extends ServerEndpointConfig.Configurator implements ApplicationContextAware {
 
-    private static volatile ApplicationContext context;
+    private static ApplicationContext context;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

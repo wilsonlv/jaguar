@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class RichModel extends BaseModel {
+public class FieldEditLogable extends BaseModel {
 
     @TableField("create_by")
     private Long createBy;

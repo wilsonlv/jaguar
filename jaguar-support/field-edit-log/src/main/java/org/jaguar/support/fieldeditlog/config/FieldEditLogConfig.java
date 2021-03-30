@@ -1,6 +1,6 @@
-package org.jaguar.support.handlerlog.config;
+package org.jaguar.support.fieldeditlog.config;
 
-import org.jaguar.support.handlerlog.intercepter.HandlerLogInterceptor;
+import org.jaguar.support.fieldeditlog.intercepter.FieldEditLogInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -9,19 +9,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * @author lvws
- * @since 2019/1/24
+ * @since 2021/3/30
  */
 @Component
-public class HandlerLogConfig implements WebMvcConfigurer {
+public class FieldEditLogConfig implements WebMvcConfigurer {
 
     private static final String PATH_PATTERNS = "/**";
 
     @Autowired
-    private HandlerLogInterceptor handlerLogInterceptor;
+    private FieldEditLogInterceptor fieldEditLogInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(handlerLogInterceptor).addPathPatterns(PATH_PATTERNS).order(10);
+        registry.addInterceptor(fieldEditLogInterceptor).addPathPatterns(PATH_PATTERNS).order(50);
     }
 
 }

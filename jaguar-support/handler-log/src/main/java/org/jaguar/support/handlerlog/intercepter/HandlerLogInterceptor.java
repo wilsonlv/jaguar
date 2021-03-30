@@ -10,7 +10,6 @@ import org.jaguar.commons.shiro.config.ShiroProperties;
 import org.jaguar.commons.utils.ExceptionUtil;
 import org.jaguar.commons.utils.ExecutorServiceUtil;
 import org.jaguar.commons.utils.IpUtil;
-import org.jaguar.core.base.BaseService;
 import org.jaguar.core.web.LoginUtil;
 import org.jaguar.support.handlerlog.model.HandlerLog;
 import org.jaguar.support.handlerlog.service.HandlerLogService;
@@ -97,7 +96,6 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
             }
 
             HANDLER_LOG.set(handlerLog);
-            BaseService.CURRENT_USER.set(handlerLog.getCreateBy());
         }
 
         return super.preHandle(request, response, handler);
@@ -112,7 +110,6 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
             handlerLog.setStatus(response.getStatus());
 
             HANDLER_LOG.remove();
-            BaseService.CURRENT_USER.remove();
 
             if (handlerLog.getRequestUri().contains(shiroProperties.getLoginUrl())) {
                 log.warn("用户[{}@{}]没有登录", handlerLog.getClientHost(), handlerLog.getUserAgent());

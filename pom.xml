@@ -116,11 +116,7 @@
         </dependency>
 
         <!-- 第三方工具包 -->
-        <!--<dependency>
-            <groupId>cz.mallat.uasparser</groupId>
-            <artifactId>uasparser</artifactId>
-            <version>0.6.2</version>
-        </dependency>
+        <!--
         <dependency>
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
