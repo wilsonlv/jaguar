@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.jaguar.support.fieldeditlog.RichModel;
+import org.jaguar.support.fieldeditlog.FieldEditLogable;
 
 /**
  * <p>
@@ -15,9 +15,9 @@ import org.jaguar.support.fieldeditlog.RichModel;
  * @since 2019-04-10
  */
 @Data
-@TableName("jaguar_core_field_edit_log")
+@TableName("jaguar_support_field_edit_log")
 @EqualsAndHashCode(callSuper = true)
-public class FieldEditLog extends RichModel {
+public class FieldEditLog extends FieldEditLogable {
 
     private static final long serialVersionUID = 1L;
 

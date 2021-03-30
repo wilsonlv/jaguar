@@ -3,9 +3,14 @@ package org.jaguar.support.fieldeditlog.service;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.jaguar.support.fieldeditlog.RichModel;
+import org.jaguar.core.base.BaseService;
+import org.jaguar.core.exception.CheckedException;
+import org.jaguar.core.exception.DataCrudException;
+import org.jaguar.support.fieldeditlog.FieldEditLogable;
 import org.jaguar.support.fieldeditlog.mapper.FieldEditLogMapper;
 import org.jaguar.support.fieldeditlog.model.FieldEditLog;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +31,9 @@ import java.util.List;
  * @author lvws
  * @since 2019-04-10
  */
+@Slf4j
 @Service
-public class FieldEditLogService {
+public class FieldEditLogService<T extends FieldEditLogable, M extends BaseMapper<T>> extends BaseService<T, M> {
 
     private static final String ID = "id";
     private static final String CREATE_BY = "createBy";
@@ -45,13 +51,23 @@ public class FieldEditLogService {
         add(SERIAL_VERSION_UID);
     }};
 
+    /**
+     * 通过FieldEditLogInterceptor日志拦截器来设置
+     */
+    public static final ThreadLocal<Long> CURRENT_USER = new ThreadLocal<>();
+
+    public long getCurrentUser() {
+        Long currentUser = CURRENT_USER.get();
+        return currentUser != null ? currentUser : 0L;
+    }
+
     @Autowired
     private FieldEditLogMapper fieldEditLogMapper;
     @Value("${mybatis-plus.global-config.db-config.update-strategy}")
     private FieldStrategy fieldStrategy;
 
     @Transactional
-    public <T extends RichModel> void logEidt(T org, T update) throws IllegalAccessException {
+    public void logEidt(T org, T update) throws IllegalAccessException {
         Long recordId = update.getId();
         Long lastUpdateBy = org.getUpdateBy();
         LocalDateTime lastUpdateTime = org.getUpdateTime();
@@ -120,7 +136,85 @@ public class FieldEditLogService {
         }
     }
 
-    public IPage<FieldEditLog> page(IPage<FieldEditLog> page, Wrapper<FieldEditLog> wrapper) {
-        return fieldEditLogMapper.selectPage(page, wrapper);
+    @Override
+    @Transactional
+    public T insert(T entity) {
+        long currentUser = getCurrentUser();
+
+        LocalDateTime now = LocalDateTime.now();
+        entity.setCreateBy(currentUser);
+        entity.setCreateTime(now);
+        entity.setUpdateBy(currentUser);
+        entity.setUpdateTime(now);
+
+        boolean success = SqlHelper.retBool(this.mapper.insert(entity));
+        if (!success) {
+            log.error("数据插入失败，实体信息：" + entity.toString());
+            throw new DataCrudException("数据插入失败！");
+        }
+
+        return this.getById(entity.getId());
     }
+
+    @Override
+    @Transactional
+    public T updateById(T entity) {
+        entity.setUpdateBy(this.getCurrentUser());
+        entity.setUpdateTime(LocalDateTime.now());
+
+        T org = this.getById(entity.getId());
+        try {
+            this.logEidt(org, entity);
+        } catch (IllegalAccessException e) {
+            log.error(e.getMessage(), e);
+            throw new CheckedException(e.getMessage());
+        }
+
+        boolean success = SqlHelper.retBool(this.mapper.updateById(entity));
+        if (!success) {
+            log.error("数据更新失败，实体信息：" + entity.toString());
+            throw new DataCrudException("数据更新失败！");
+        }
+
+        return this.getById(entity.getId());
+    }
+
+    @Override
+    @Transactional
+    public T saveOrUpdate(T entity) {
+        if (entity.getId() == null) {
+            return this.insert(entity);
+        } else {
+            return this.updateById(entity);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        T entity = this.getById(id);
+        if (entity == null) {
+            throw new DataCrudException("无效的ID：" + id);
+        }
+        entity.setUpdateBy(this.getCurrentUser());
+        entity.setUpdateTime(LocalDateTime.now());
+        this.updateById(entity);
+
+        boolean success = SqlHelper.retBool(mapper.deleteById(id));
+        if (!success) {
+            log.error("数据删除失败，实体ID：" + id);
+            throw new DataCrudException("数据删除失败！");
+        }
+    }
+
+    @Override
+    @Transactional
+    public void delete(Wrapper<T> wrapper) {
+        List<T> entitys = mapper.selectList(wrapper);
+        for (T entity : entitys) {
+            this.delete(entity.getId());
+        }
+    }
+
+
 }

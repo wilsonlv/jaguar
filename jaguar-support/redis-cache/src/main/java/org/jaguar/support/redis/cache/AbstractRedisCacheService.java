@@ -7,7 +7,7 @@ import org.jaguar.core.base.BaseModel;
 import org.jaguar.core.base.BaseService;
 import org.jaguar.core.exception.Assert;
 import org.jaguar.core.exception.CheckedException;
-import org.jaguar.support.fieldeditlog.RichModel;
+import org.jaguar.support.fieldeditlog.FieldEditLogable;
 import org.jaguar.support.fieldeditlog.service.FieldEditLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundValueOperations;
@@ -117,19 +117,20 @@ public abstract class AbstractRedisCacheService<T extends BaseModel, M extends B
         String cacheKey = this.getCacheKey(entity.getId());
         redisTemplate.delete(cacheKey);
 
-        long currentUser = this.getCurrentUser();
+        long currentUser = this.fieldEditLogService.getCurrentUser();
         T org = this.mapper.selectById(entity.getId());
         Assert.validateId(org, "实体", entity.getId());
 
-        if (entity instanceof RichModel) {
-            RichModel richModel = (RichModel) entity;
-            try {
-                richModel.setUpdateBy(currentUser);
-                richModel.setUpdateTime(LocalDateTime.now());
+        if (entity instanceof FieldEditLogable) {
+            FieldEditLogable fieldEditLogable = (FieldEditLogable) entity;
+            fieldEditLogable.setUpdateBy(currentUser);
+            fieldEditLogable.setUpdateTime(LocalDateTime.now());
 
-                this.fieldEditLogService.logEidt((RichModel) org, richModel);
-            } catch (IllegalAccessException var6) {
-                throw new CheckedException(var6);
+            try {
+                this.fieldEditLogService.logEidt((FieldEditLogable) org, fieldEditLogable);
+            } catch (IllegalAccessException e) {
+                log.error(e.getMessage(), e);
+                throw new CheckedException(e.getMessage());
             }
         }
 

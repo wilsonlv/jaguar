@@ -72,5 +72,10 @@ public class HandlerLog extends BaseModel {
      */
     @TableField("duration_")
     private Long duration;
+    /**
+     * 创建人
+     */
+    @TableField("create_by")
+    private Long createBy;
 
 }
