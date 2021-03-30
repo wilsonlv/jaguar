@@ -1,7 +1,7 @@
 package org.jaguar.core.exception;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.HttpStatus;
+import org.jaguar.core.web.ResultCode;
 
 /**
  * @author lvws
@@ -36,11 +36,11 @@ public abstract class BaseException extends RuntimeException {
      *
      * @return 状态码枚举类
      */
-    public abstract HttpStatus getHttpStatus();
+    public abstract ResultCode getResultCode();
 
     @Override
     public String getMessage() {
-        return StringUtils.isBlank(super.getMessage()) ? getHttpStatus().getReasonPhrase() : super.getMessage();
+        return StringUtils.isBlank(super.getMessage()) ? getResultCode().getReasonPhrase() : super.getMessage();
     }
 
     public Object getData() {

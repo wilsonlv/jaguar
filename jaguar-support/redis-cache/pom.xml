@@ -22,6 +22,11 @@
             <artifactId>commons-redis</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jaguar</groupId>
+            <artifactId>field-edit-log</artifactId>
+            <version>${jaguar.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

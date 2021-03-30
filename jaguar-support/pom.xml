@@ -14,8 +14,8 @@
 
     <modules>
         <module>dubbo</module>
+        <module>field-edit-log</module>
         <module>handler-log</module>
-        <module>malice-prevention</module>
         <module>redis-cache</module>
     </modules>
 

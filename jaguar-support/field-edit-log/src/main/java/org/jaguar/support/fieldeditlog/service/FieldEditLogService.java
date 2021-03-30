@@ -1,13 +1,13 @@
-package org.jaguar.core.base.service;
+package org.jaguar.support.fieldeditlog.service;
 
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.commons.lang3.StringUtils;
-import org.jaguar.core.base.BaseModel;
-import org.jaguar.core.base.mapper.FieldEditLogMapper;
-import org.jaguar.core.base.model.FieldEditLog;
+import org.jaguar.support.fieldeditlog.RichModel;
+import org.jaguar.support.fieldeditlog.mapper.FieldEditLogMapper;
+import org.jaguar.support.fieldeditlog.model.FieldEditLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -51,7 +51,7 @@ public class FieldEditLogService {
     private FieldStrategy fieldStrategy;
 
     @Transactional
-    public <T extends BaseModel> void logUpdation(T org, T update) throws IllegalAccessException {
+    public <T extends RichModel> void logEidt(T org, T update) throws IllegalAccessException {
         Long recordId = update.getId();
         Long lastUpdateBy = org.getUpdateBy();
         LocalDateTime lastUpdateTime = org.getUpdateTime();

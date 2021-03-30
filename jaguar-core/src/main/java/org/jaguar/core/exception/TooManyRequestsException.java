@@ -1,6 +1,6 @@
 package org.jaguar.core.exception;
 
-import org.springframework.http.HttpStatus;
+import org.jaguar.core.web.ResultCode;
 
 /**
  * @author lvws
@@ -15,16 +15,8 @@ public class TooManyRequestsException extends BaseException {
         super(message);
     }
 
-    public TooManyRequestsException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public TooManyRequestsException(Throwable cause) {
-        super(cause);
-    }
-
     @Override
-    public HttpStatus getHttpStatus() {
-        return HttpStatus.TOO_MANY_REQUESTS;
+    public ResultCode getResultCode() {
+        return ResultCode.TOO_MANY_REQUESTS;
     }
 }

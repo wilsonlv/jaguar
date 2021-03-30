@@ -15,7 +15,7 @@
     <modules>
         <module>code-generator</module>
         <module>document</module>
-        <module>jasper-report</module>
+<!--        <module>jasper-report</module>-->
         <module>numbering</module>
         <module>system-mgm</module>
         <module>workflow</module>

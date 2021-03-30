@@ -5,9 +5,10 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.jaguar.core.base.BaseModel;
 import org.jaguar.core.base.BaseService;
-import org.jaguar.core.base.service.FieldEditLogService;
 import org.jaguar.core.exception.Assert;
 import org.jaguar.core.exception.CheckedException;
+import org.jaguar.support.fieldeditlog.RichModel;
+import org.jaguar.support.fieldeditlog.service.FieldEditLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -117,15 +118,19 @@ public abstract class AbstractRedisCacheService<T extends BaseModel, M extends B
         redisTemplate.delete(cacheKey);
 
         long currentUser = this.getCurrentUser();
-        entity.setUpdateBy(currentUser);
-        entity.setUpdateTime(LocalDateTime.now());
         T org = this.mapper.selectById(entity.getId());
         Assert.validateId(org, "实体", entity.getId());
 
-        try {
-            this.fieldEditLogService.logUpdation(org, entity);
-        } catch (IllegalAccessException var6) {
-            throw new CheckedException(var6);
+        if (entity instanceof RichModel) {
+            RichModel richModel = (RichModel) entity;
+            try {
+                richModel.setUpdateBy(currentUser);
+                richModel.setUpdateTime(LocalDateTime.now());
+
+                this.fieldEditLogService.logEidt((RichModel) org, richModel);
+            } catch (IllegalAccessException var6) {
+                throw new CheckedException(var6);
+            }
         }
 
         boolean success = SqlHelper.retBool(this.mapper.updateById(entity));

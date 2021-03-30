@@ -1,6 +1,6 @@
 package org.jaguar.core.exception;
 
-import org.springframework.http.HttpStatus;
+import org.jaguar.core.web.ResultCode;
 
 /**
  * @author lvws
@@ -13,7 +13,7 @@ public class BadRequestException extends BaseException {
     }
 
     @Override
-    public HttpStatus getHttpStatus() {
-        return HttpStatus.BAD_REQUEST;
+    public ResultCode getResultCode() {
+        return ResultCode.BAD_REQUEST;
     }
 }

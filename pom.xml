@@ -24,8 +24,10 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
-        <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
-        <spring.version>5.0.5.RELEASE</spring.version>
+        <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
+        <spring-cloud.version>Hoxton.SR3</spring-cloud.version>
+        <spring-cloud-alibaba.version>2.2.1.RELEASE</spring-cloud-alibaba.version>
+
         <mybatis-plus.version>3.4.1</mybatis-plus.version>
         <mysql.version>8.0.18</mysql.version>
 
@@ -40,6 +42,20 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -93,12 +109,12 @@
         </dependency>
 
         <!-- servlet -->
-        <dependency>
+        <!--<dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
             <scope>provided</scope>
-        </dependency>
+        </dependency>-->
 
         <!--  Lombok  -->
         <dependency>
@@ -108,7 +124,7 @@
         </dependency>
 
         <!-- 第三方工具包 -->
-        <dependency>
+        <!--<dependency>
             <groupId>cz.mallat.uasparser</groupId>
             <artifactId>uasparser</artifactId>
             <version>0.6.2</version>
@@ -117,7 +133,7 @@
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
             <version>3.21.0-GA</version>
-        </dependency>
+        </dependency>-->
 
     </dependencies>
 

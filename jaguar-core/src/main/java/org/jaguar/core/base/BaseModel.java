@@ -21,24 +21,14 @@ import java.time.LocalDateTime;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class BaseModel implements Serializable {
 
-    @TableId(value = "id_", type = IdType.ID_WORKER)
+    @TableId(value = "id_", type = IdType.ASSIGN_ID)
     private Long id;
 
-    @JsonIgnore
-    @TableField("create_by")
-    private Long createBy;
-
-    @JsonIgnore
     @TableField("create_time")
     private LocalDateTime createTime;
 
-    @JsonIgnore
-    @TableField("update_by")
-    private Long updateBy;
-
-    @JsonIgnore
-    @TableField("update_time")
-    private LocalDateTime updateTime;
+    @TableField("remark_")
+    private String remark;
 
     @JsonIgnore
     @TableField("deleted_")

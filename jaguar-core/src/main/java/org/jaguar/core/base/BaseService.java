@@ -7,9 +7,9 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
-import org.jaguar.core.base.service.FieldEditLogService;
 import org.jaguar.core.exception.Assert;
 import org.jaguar.core.exception.CheckedException;
+import org.jaguar.core.exception.DataCrudException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,36 +26,19 @@ public abstract class BaseService<T extends BaseModel, M extends com.baomidou.my
 
     @Autowired
     protected M mapper;
-    @Autowired
-    private FieldEditLogService fieldEditLogService;
 
     public static final String DEFAULT_ORDER_COLUMN = "id_";
 
-    /**
-     * 通过SysLogInterceptor日志拦截器来设置
-     */
-    public static final ThreadLocal<Long> CURRENT_USER = new ThreadLocal<>();
-
-    protected long getCurrentUser() {
-        Long currentUser = CURRENT_USER.get();
-        return currentUser != null ? currentUser : 0L;
-    }
 
     @Transactional
     public T insert(T entity) {
-        long currentUser = this.getCurrentUser();
-
-        LocalDateTime now = LocalDateTime.now();
         entity.setId(null);
-        entity.setCreateBy(currentUser);
-        entity.setCreateTime(now);
-        entity.setUpdateBy(currentUser);
-        entity.setUpdateTime(now);
+        entity.setCreateTime(LocalDateTime.now());
 
-        boolean success = SqlHelper.retBool(mapper.insert(entity));
+        boolean success = SqlHelper.retBool(this.mapper.insert(entity));
         if (!success) {
             log.error("实体信息：" + entity.toString());
-            throw new CheckedException("数据插入失败！");
+            throw new DataCrudException("数据插入失败！");
         }
 
         return this.getById(entity.getId());
@@ -63,23 +46,10 @@ public abstract class BaseService<T extends BaseModel, M extends com.baomidou.my
 
     @Transactional
     public T updateById(T entity) {
-        long currentUser = this.getCurrentUser();
-        entity.setUpdateBy(currentUser);
-        entity.setUpdateTime(LocalDateTime.now());
-
-        T org = this.getById(entity.getId());
-        Assert.validateId(org, "实体", entity.getId());
-
-        try {
-            fieldEditLogService.logUpdation(org, entity);
-        } catch (IllegalAccessException e) {
-            throw new CheckedException(e);
-        }
-
-        boolean success = SqlHelper.retBool(mapper.updateById(entity));
+        boolean success = SqlHelper.retBool(this.mapper.updateById(entity));
         if (!success) {
             log.error("实体信息：" + entity.toString());
-            throw new CheckedException("数据更新失败！");
+            throw new DataCrudException("数据更新失败！");
         }
 
         return this.getById(entity.getId());
@@ -96,37 +66,28 @@ public abstract class BaseService<T extends BaseModel, M extends com.baomidou.my
 
     @Transactional
     public void delete(Long id) {
-        T entity = this.getById(id);
-        if (entity == null) {
-            throw new CheckedException("无效的ID：" + id);
+        Assert.notNull(id, "ID");
+
+        boolean success = SqlHelper.retBool(this.mapper.deleteById(id));
+        if (!success) {
+            log.error("实体ID：" + id);
+            throw new DataCrudException("数据删除失败！");
         }
-        this.delete(entity);
     }
 
     @Transactional
     public void delete(T entity) {
-        if (entity.getId() == null) {
-            throw new CheckedException("无法删除ID为空的实体");
-        }
-
-        long currentUser = this.getCurrentUser();
-        entity.setUpdateBy(currentUser);
-        entity.setUpdateTime(LocalDateTime.now());
-        this.updateById(entity);
-
-        mapper.deleteById(entity.getId());
+        Assert.notNull(entity.getId(), "ID");
+        this.delete(entity.getId());
     }
 
     @Transactional
     public void delete(Wrapper<T> wrapper) {
-        List<T> entitys = mapper.selectList(wrapper);
-        for (T entity : entitys) {
-            this.delete(entity.getId());
-        }
+        this.mapper.delete(wrapper);
     }
 
     public T getById(Long id) {
-        return mapper.selectById(id);
+        return this.mapper.selectById(id);
     }
 
     public T unique(Wrapper<T> queryWrapper) {

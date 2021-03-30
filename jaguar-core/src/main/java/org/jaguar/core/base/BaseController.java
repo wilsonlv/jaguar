@@ -8,9 +8,8 @@ import org.jaguar.core.exception.BaseException;
 import org.jaguar.core.web.JsonResult;
 import org.jaguar.core.web.LoginUtil;
 import org.jaguar.core.web.Page;
+import org.jaguar.core.web.ResultCode;
 import org.springframework.dao.DataAccessException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -45,17 +44,17 @@ public abstract class BaseController {
     }
 
 
-    protected ResponseEntity<JsonResult<?>> success() {
-        return ResponseEntity.ok(new JsonResult<>().setMessage(JsonResult.SUCCESS_MSG));
+    protected JsonResult<?> success() {
+        return new JsonResult<>(ResultCode.OK, null, JsonResult.SUCCESS_MSG);
     }
 
-    protected <T> ResponseEntity<JsonResult<T>> success(T data) {
-        return ResponseEntity.ok(new JsonResult<>(data).setMessage(JsonResult.SUCCESS_MSG));
+    protected <T> JsonResult<T> success(T data) {
+        return new JsonResult<>(ResultCode.OK, data, JsonResult.SUCCESS_MSG);
     }
 
-    protected <T> ResponseEntity<JsonResult<Page<T>>> success(IPage<T> data) {
+    protected <T> JsonResult<Page<T>> success(IPage<T> data) {
         Page<T> page = Page.convert(data);
-        return ResponseEntity.ok(new JsonResult<>(page).setMessage(JsonResult.SUCCESS_MSG));
+        return new JsonResult<>(ResultCode.OK, page, JsonResult.SUCCESS_MSG);
     }
 
     /**
@@ -63,15 +62,14 @@ public abstract class BaseController {
      */
     @ResponseBody
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
-    public ResponseEntity<JsonResult<String>> methodArgumentNotValidException(MethodArgumentNotValidException exception) {
+    public JsonResult<String> methodArgumentNotValidException(MethodArgumentNotValidException exception) {
         log.error(exception.getMessage());
         StringBuilder errorMessage = new StringBuilder();
         for (ObjectError objectError : exception.getBindingResult().getAllErrors()) {
             errorMessage.append("【").append(objectError.getDefaultMessage()).append("】");
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new JsonResult<String>().setMessage(errorMessage.toString()));
+        return new JsonResult<>(ResultCode.BAD_REQUEST, null, errorMessage.toString());
     }
 
     /**
@@ -79,10 +77,9 @@ public abstract class BaseController {
      */
     @ResponseBody
     @ExceptionHandler(value = {MethodArgumentTypeMismatchException.class, ConstraintViolationException.class, MissingServletRequestParameterException.class})
-    public ResponseEntity<JsonResult<String>> badRequestExceptionHandler(Exception exception) {
+    public JsonResult<String> badRequestExceptionHandler(Exception exception) {
         log.error(exception.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new JsonResult<String>().setMessage(exception.getMessage()));
+        return new JsonResult<>(ResultCode.BAD_REQUEST, null, exception.getMessage());
     }
 
     /**
@@ -90,10 +87,9 @@ public abstract class BaseController {
      */
     @ResponseBody
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<JsonResult<String>> httpRequestMethodNotSupportedExceptionHandler(Exception exception) {
+    public JsonResult<String> httpRequestMethodNotSupportedExceptionHandler(Exception exception) {
         log.error(exception.getMessage());
-        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
-                .body(new JsonResult<String>().setMessage(exception.getMessage()));
+        return new JsonResult<>(ResultCode.METHOD_NOT_ALLOWED, null, exception.getMessage());
     }
 
     /**
@@ -101,10 +97,9 @@ public abstract class BaseController {
      */
     @ResponseBody
     @ExceptionHandler(value = {AuthenticationException.class})
-    public ResponseEntity<JsonResult<String>> authenticationExceptionHandler(Exception exception) {
+    public JsonResult<String> authenticationExceptionHandler(Exception exception) {
         log.error(exception.getMessage());
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(new JsonResult<String>().setMessage(exception.getMessage()));
+        return new JsonResult<>(ResultCode.FORBIDDEN, null, exception.getMessage());
     }
 
     /**
@@ -112,12 +107,11 @@ public abstract class BaseController {
      */
     @ResponseBody
     @ExceptionHandler(value = {UnauthorizedException.class})
-    public ResponseEntity<JsonResult<String>> unauthorizedExceptionHandler(Exception exception) {
+    public JsonResult<String> unauthorizedExceptionHandler(Exception exception) {
         String message = exception.getMessage();
         log.error(message);
         String permission = message.substring(message.indexOf('[') + 1, message.length() - 1);
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(new JsonResult<String>().setMessage("对不起，您没有【" + permission + "】操作权限！"));
+        return new JsonResult<>(ResultCode.FORBIDDEN, null, "对不起，您没有【" + permission + "】操作权限！");
     }
 
     /**
@@ -125,11 +119,9 @@ public abstract class BaseController {
      */
     @ResponseBody
     @ExceptionHandler(value = BaseException.class)
-    public ResponseEntity<JsonResult<Object>> baseExceptionHandler(BaseException exception) {
+    public JsonResult<Object> baseExceptionHandler(BaseException exception) {
         log.error(exception.getMessage());
-        log.error(exception.getStackTrace()[0].toString());
-        return ResponseEntity.status(exception.getHttpStatus())
-                .body(new JsonResult<>().setData(exception.getData()).setMessage(exception.getMessage()));
+        return new JsonResult<>(exception.getResultCode(), exception.getData(), exception.getMessage());
     }
 
     /**
@@ -137,10 +129,9 @@ public abstract class BaseController {
      */
     @ResponseBody
     @ExceptionHandler(value = DataAccessException.class)
-    public ResponseEntity<JsonResult<String>> dataAccessException(DataAccessException exception) {
+    public JsonResult<String> dataAccessException(DataAccessException exception) {
         log.error(exception.getMessage(), exception);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new JsonResult<String>().setMessage(exception.getMessage()));
+        return new JsonResult<>(ResultCode.INTERNAL_SERVER_ERROR, null, exception.getMessage());
     }
 
     /**
@@ -148,14 +139,13 @@ public abstract class BaseController {
      */
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
-    public ResponseEntity<JsonResult<String>> allUnknownExceptionHandler(Exception exception) {
+    public JsonResult<String> allUnknownExceptionHandler(Exception exception) {
         log.error(exception.getMessage(), exception);
         Throwable e = exception;
         while (e.getCause() != null) {
             e = e.getCause();
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new JsonResult<String>().setMessage(e.getMessage()));
+        return new JsonResult<>(ResultCode.INTERNAL_SERVER_ERROR, null, e.getMessage());
     }
 
 }

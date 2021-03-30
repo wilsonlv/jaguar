@@ -1,6 +1,6 @@
 package org.jaguar.core.exception;
 
-import org.springframework.http.HttpStatus;
+import org.jaguar.core.web.ResultCode;
 
 /**
  * @author lvws
@@ -8,23 +8,12 @@ import org.springframework.http.HttpStatus;
  */
 public class CheckedException extends BaseException {
 
-    public CheckedException() {
-    }
-
     public CheckedException(String message) {
         super(message);
     }
 
-    public CheckedException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public CheckedException(Throwable cause) {
-        super(cause);
-    }
-
     @Override
-    public HttpStatus getHttpStatus() {
-        return HttpStatus.CONFLICT;
+    public ResultCode getResultCode() {
+        return ResultCode.CONFLICT;
     }
 }
