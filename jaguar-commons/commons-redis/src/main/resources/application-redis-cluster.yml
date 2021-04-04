@@ -1,8 +1,6 @@
 spring:
   redis:
     database: 0
-    host: 127.0.0.1
-    port: 6379
     password:
     timeout: 2000
     lettuce:
@@ -12,4 +10,7 @@ spring:
         max-active: 8
         max-wait: 1000
         time-between-eviction-runs: 100000
+    cluster:
+      nodes: 127.0.0.1:6379,127.0.0.1:6380,127.0.0.1:6381,127.0.0.1:6382,127.0.0.1:6383,127.0.0.1:6384
+      max-redirects: 3
 

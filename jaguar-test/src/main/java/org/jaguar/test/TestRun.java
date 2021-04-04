@@ -1,5 +1,6 @@
 package org.jaguar.test;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import junit.framework.TestCase;
 
 /**
@@ -8,5 +9,8 @@ import junit.framework.TestCase;
  */
 public class TestRun extends TestCase {
 
+    public static void main(String[] args) throws JsonProcessingException {
+
+    }
 
 }

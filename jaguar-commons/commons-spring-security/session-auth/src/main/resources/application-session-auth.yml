@@ -1,0 +1,10 @@
+spring:
+  session:
+    store-type: redis
+
+jaguar:
+  spring:
+    security:
+      session:
+        failure-handler: org.jaguar.commons.springsecurity.commonconfig.handler.LoginExceptionHandler
+        success-handler:

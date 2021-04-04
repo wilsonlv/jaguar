@@ -1,6 +1,7 @@
 package org.jaguar.commons.data.encription;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.Md5Crypt;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

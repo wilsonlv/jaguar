@@ -4,6 +4,7 @@
 package org.jaguar.commons.data.encription;
 
 import javax.crypto.Cipher;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -185,7 +186,7 @@ public class RSACoder {
         // 实例化密钥对儿生成器
         KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(Constant.ALGORITHM_RSA);
         // 初始化密钥对儿生成器
-        keyPairGen.initialize(Constant.KEY_SIZE);
+        keyPairGen.initialize(2048);
         // 生成密钥对儿
         KeyPair keyPair = keyPairGen.generateKeyPair();
         // 公钥
@@ -194,8 +195,12 @@ public class RSACoder {
         RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
         // 封装密钥
         Map<String, Object> keyMap = new HashMap<>(2);
-        keyMap.put(Constant.PUBLIC_KEY, publicKey);
-        keyMap.put(Constant.PRIVATE_KEY, privateKey);
+        keyMap.put(Constant.PUBLIC_KEY, SecurityUtil.encryptBase64(publicKey.getEncoded()));
+        keyMap.put(Constant.PRIVATE_KEY, SecurityUtil.encryptBase64(privateKey.getEncoded()));
         return keyMap;
+    }
+
+    public static void main(String[] args) throws Exception {
+        System.out.println(initKey());
     }
 }
