@@ -1,6 +1,6 @@
 package org.jaguar.commons.springsecurity.commonconfig;
 
-import org.jaguar.commons.springsecurity.commonconfig.handler.UnAuthExceptionHandler;
+import org.jaguar.commons.springsecurity.commonconfig.handler.AuthExceptionHandler;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SpringSecurityConfig {
 
     @Bean
-    public UnAuthExceptionHandler authenticationExceptionHandler() {
-        return new UnAuthExceptionHandler();
+    public AuthExceptionHandler authenticationExceptionHandler() {
+        return new AuthExceptionHandler();
     }
 
     @ConditionalOnMissingBean

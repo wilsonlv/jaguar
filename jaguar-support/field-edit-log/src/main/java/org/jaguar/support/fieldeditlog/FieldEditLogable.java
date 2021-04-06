@@ -3,7 +3,7 @@ package org.jaguar.support.fieldeditlog;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.jaguar.core.base.BaseModel;
+import org.jaguar.commons.basecrud.BaseModel;
 
 import java.time.LocalDateTime;
 

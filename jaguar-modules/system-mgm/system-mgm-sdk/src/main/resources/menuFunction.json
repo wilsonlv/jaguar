@@ -1,0 +1,24 @@
+[
+  {
+    "type": "MENU",
+    "name": "用户管理",
+    "icon": "",
+    "page": "/sys/user",
+    "permission":"用户管理",
+    "children":[]
+  },
+  {
+    "type": "MENU",
+    "name": "角色管理",
+    "icon": "",
+    "page": "/sys/role",
+    "permission":"角色管理",
+    "children":[
+      {
+        "type": "FUNCTION",
+        "name": "权限管理",
+        "permission":"权限管理"
+      }
+    ]
+  }
+]

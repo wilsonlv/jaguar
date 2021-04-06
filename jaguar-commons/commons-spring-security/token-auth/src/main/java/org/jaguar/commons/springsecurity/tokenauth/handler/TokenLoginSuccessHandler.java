@@ -5,6 +5,7 @@ import org.jaguar.commons.springsecurity.tokenauth.config.SecurityTokenPropertie
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import javax.servlet.ServletException;
@@ -36,9 +37,12 @@ public class TokenLoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        principal.getAuthorities().clear();
+
         String token = tokenFactory.createToken(authentication.getName());
         redisTemplate.boundValueOps("spring:security:token:" + authentication.getName() + ":" + token)
-                .set(authentication, securityTokenProperties.getTimeout(), TimeUnit.SECONDS);
+                .set(principal, securityTokenProperties.getTimeout(), TimeUnit.SECONDS);
 
         try (PrintWriter writer = response.getWriter()) {
             writer.write(token);

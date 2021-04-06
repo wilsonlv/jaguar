@@ -1,22 +1,22 @@
 package org.jaguar.test.model;
 
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 
 /**
  * @author lvws
  * @since 2021/4/2
  */
+@Data
 public class UserAuthority implements GrantedAuthority {
 
     private String authority;
 
-    public UserAuthority(String authority) {
-        this.authority = authority;
+    public UserAuthority() {
     }
 
-    @Override
-    public String getAuthority() {
-        return authority;
+    public UserAuthority(String authority) {
+        this.authority = authority;
     }
 
     @Override

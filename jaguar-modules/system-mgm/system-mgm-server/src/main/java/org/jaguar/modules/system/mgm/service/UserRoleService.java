@@ -1,9 +1,8 @@
 package org.jaguar.modules.system.mgm.service;
 
+import org.jaguar.commons.basecrud.Assert;
+import org.jaguar.commons.basecrud.BaseService;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import org.jaguar.core.base.BaseService;
-import org.jaguar.core.exception.Assert;
-import org.jaguar.core.exception.CheckedException;
 import org.jaguar.modules.system.mgm.mapper.UserRoleMapper;
 import org.jaguar.modules.system.mgm.model.Role;
 import org.jaguar.modules.system.mgm.model.User;
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,16 +27,14 @@ import java.util.List;
 public class UserRoleService extends BaseService<UserRole, UserRoleMapper> {
 
     @Autowired
-    private UserService userService;
-    @Autowired
     private RoleService roleService;
 
-    public List<UserRole> listWithUserByRoleId(Long roleId) {
-        return this.mapper.listWithUserByRoleId(roleId);
+    public List<User> listUserByRoleId(@NotNull Long roleId) {
+        return this.mapper.listUserByRoleId(roleId);
     }
 
-    public List<UserRole> listWithRoleByUserId(Long userId) {
-        return this.mapper.listWithRoleByUserId(userId);
+    public List<Role> listRoleByUserId(Long userId) {
+        return this.mapper.listRoleByUserId(userId);
     }
 
     public List<Long> listRoleIdsByUserId(Long userId) {
@@ -51,19 +49,32 @@ public class UserRoleService extends BaseService<UserRole, UserRoleMapper> {
         return roleIds;
     }
 
+    /**
+     * 用户关联角色
+     *
+     * @param userId  用户ID
+     * @param roleIds 角色ID集合
+     */
     @Transactional
-    public UserRole create(UserRole userRole) {
-        User user = userService.getById(userRole.getUserId());
-        Assert.validateId(user, "用户", userRole.getUserId());
+    public void relateRoles(Long userId, List<Long> roleIds) {
+        for (Long roleId : roleIds) {
+            Role role = roleService.getById(roleId);
+            Assert.validateId(role, "角色", roleId);
 
-        Role role = roleService.getById(userRole.getRoleId());
-        Assert.validateId(role, "角色", userRole.getRoleId());
+            if (this.exists(JaguarLambdaQueryWrapper.<UserRole>newInstance()
+                    .eq(UserRole::getUserId, userId)
+                    .eq(UserRole::getRoleId, roleId))) {
+                continue;
+            }
 
-        if (this.exists(JaguarLambdaQueryWrapper.<UserRole>newInstance()
-                .eq(UserRole::getUserId, userRole.getUserId())
-                .eq(UserRole::getRoleId, userRole.getRoleId()))) {
-            throw new CheckedException("该用户角色已存在！");
+            UserRole userRole = new UserRole();
+            userRole.setUserId(userId);
+            userRole.setRoleId(roleId);
+            this.insert(userRole);
         }
-        return this.saveOrUpdate(userRole);
+
+        this.delete(JaguarLambdaQueryWrapper.<UserRole>newInstance()
+                .eq(UserRole::getUserId, userId)
+                .notIn(UserRole::getRoleId, roleIds));
     }
 }

@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import org.jaguar.core.base.AbstractController;
+import org.jaguar.commons.basecrud.BaseController;
 import org.jaguar.core.web.JsonResult;
 import org.jaguar.core.web.Page;
 import org.jaguar.modules.system.mgm.mapper.LoginMapper;
@@ -38,7 +38,7 @@ public class LoginController extends AbstractController<Login, LoginMapper, Logi
     @RequiresPermissions("系统登陆日志表:读取")
     @GetMapping(value = "/page")
     public JsonResult<Page<Login>> page(
-            @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<Login> page,
+            @ApiIgnore IPage<Login> page,
             @ApiParam(value = "查询信息") Login login) {
 
         LambdaQueryWrapper<Login> wrapper = new JaguarLambdaQueryWrapper<>();

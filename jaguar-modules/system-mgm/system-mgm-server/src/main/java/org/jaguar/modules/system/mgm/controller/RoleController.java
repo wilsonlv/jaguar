@@ -1,20 +1,24 @@
 package org.jaguar.modules.system.mgm.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.jaguar.commons.basecrud.BaseController;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import org.jaguar.core.base.AbstractController;
-import org.jaguar.core.web.JsonResult;
-import org.jaguar.core.web.Page;
+import org.jaguar.commons.web.JsonResult;
+import org.jaguar.modules.system.mgm.dto.MenuFunction;
 import org.jaguar.modules.system.mgm.mapper.RoleMapper;
 import org.jaguar.modules.system.mgm.model.Role;
 import org.jaguar.modules.system.mgm.service.RoleService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
+
+import javax.validation.Valid;
+import java.util.List;
 
 /**
  * <p>
@@ -28,36 +32,37 @@ import springfox.documentation.annotations.ApiIgnore;
 @RestController
 @RequestMapping("/system/mgm/role")
 @Api(tags = "系统角色表管理")
-public class RoleController extends AbstractController<Role, RoleMapper, RoleService> {
-
+public class RoleController extends BaseController<Role, RoleMapper, RoleService> {
 
     @ApiOperation(value = "查询系统角色表")
-    @RequiresPermissions("系统角色表:读取")
+    @PreAuthorize("hasAuthority('角色管理')")
     @GetMapping(value = "/page")
-    public JsonResult<Page<Role>> page(
-            @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<Role> page,
+    public JsonResult<IPage<Role>> page(
+            @ApiIgnore IPage<Role> page,
             @ApiParam(value = "模糊角色名称") @RequestParam(required = false) String fuzzyRoleName,
-            @ApiParam(value = "角色是否锁定") @RequestParam(required = false) Boolean roleLocked) {
+            @ApiParam(value = "角色是否启用") @RequestParam(required = false) Boolean roleEnable) {
 
-        LambdaQueryWrapper<Role> wrapper = new JaguarLambdaQueryWrapper<>();
-        wrapper.like(Role::getRoleName, fuzzyRoleName)
-                .eq(Role::getRoleLocked, roleLocked);
+        LambdaQueryWrapper<Role> wrapper = JaguarLambdaQueryWrapper.<Role>newInstance().
+                like(Role::getRoleName, fuzzyRoleName)
+                .eq(Role::getRoleEnable, roleEnable);
 
         page = service.queryWithUser(page, wrapper);
         return success(page);
     }
 
     @ApiOperation(value = "系统角色表详情")
-    @RequiresPermissions("系统角色表:读取")
+    @PreAuthorize("hasAuthority('角色管理')")
     @GetMapping(value = "/{id}")
     public JsonResult<Role> detail(@PathVariable Long id) {
-        return super.getById(id);
+
+        Role role = service.getDetail(id);
+        return success(role);
     }
 
     @ApiOperation(value = "修改系统角色表")
-    @RequiresPermissions("系统角色表:新增编辑")
+    @PreAuthorize("hasAuthority('角色管理')")
     @PostMapping
-    public JsonResult<Role> update(@RequestBody Role role) {
+    public JsonResult<Role> update(@Valid @RequestBody Role role) {
         synchronized (this) {
             role = service.createOrUpdate(role);
         }
@@ -65,12 +70,18 @@ public class RoleController extends AbstractController<Role, RoleMapper, RoleSer
     }
 
     @ApiOperation(value = "删除系统角色表")
-    @RequiresPermissions("系统角色表:删除")
+    @PreAuthorize("hasAuthority('角色管理')")
     @DeleteMapping(value = "/{id}")
     public JsonResult<?> del(@PathVariable Long id) {
 
-        service.deleteWithRoleMenu(id);
+        service.checkAnddelete(id);
         return success();
     }
 
+    @ApiOperation(value = "获取所有菜单和功能")
+    @PreAuthorize("hasAuthority('角色管理')")
+    @GetMapping(value = "/menu_functions")
+    public JsonResult<List<MenuFunction>> menuFunctions() {
+        return success(MenuFunction.MENU_FUNCTIONS);
+    }
 }

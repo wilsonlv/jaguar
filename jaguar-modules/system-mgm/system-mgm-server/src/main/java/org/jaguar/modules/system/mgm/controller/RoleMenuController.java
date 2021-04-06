@@ -3,7 +3,7 @@ package org.jaguar.modules.system.mgm.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.jaguar.core.base.AbstractController;
+import org.jaguar.commons.basecrud.BaseController;
 import org.jaguar.core.web.JsonResult;
 import org.jaguar.modules.system.mgm.mapper.RoleMenuMapper;
 import org.jaguar.modules.system.mgm.model.Menu;

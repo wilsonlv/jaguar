@@ -7,17 +7,21 @@ package org.jaguar.modules.system.mgm.enums;
 public enum DataScope {
 
     /**
-     * 个人的
+     * 个人
      */
     PERSONAL,
     /**
-     * 个人及子级别
+     * 本级
+     */
+    CURRENT_LEVEL,
+    /**
+     * 个人及子级
      */
     SUBLEVEL,
     /**
-     * 个人及本级
+     * 本级及子级
      */
-    CURRENT_LEVEL,
+    CURRENT_AND_SUBLEVEL,
     /**
      * 无限制
      */

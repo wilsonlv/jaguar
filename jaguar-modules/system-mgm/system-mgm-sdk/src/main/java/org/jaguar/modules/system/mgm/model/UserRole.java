@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.jaguar.core.base.BaseModel;
+import org.jaguar.commons.basecrud.BaseModel;
 
 import javax.validation.constraints.NotNull;
 
@@ -38,13 +38,5 @@ public class UserRole extends BaseModel {
     @NotNull(message = "角色ID为非空")
     @TableField("role_id")
     private Long roleId;
-
-    @ApiModelProperty(hidden = true)
-    @TableField(exist = false)
-    private Role role;
-
-    @ApiModelProperty(hidden = true)
-    @TableField(exist = false)
-    private User user;
 
 }

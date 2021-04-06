@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import org.jaguar.modules.document.interfaces.DocumentPersistence;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.jaguar.core.base.BaseModel;
+import org.jaguar.commons.basecrud.BaseModel;
 
 /**
  * 文档上传表

@@ -4,10 +4,10 @@ import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import lombok.Data;
-import org.jaguar.core.base.AbstractController;
-import org.jaguar.core.base.BaseMapper;
-import org.jaguar.core.base.BaseModel;
-import org.jaguar.core.base.BaseService;
+import org.jaguar.commons.basecrud.BaseController;
+import org.jaguar.commons.basecrud.BaseMapper;
+import org.jaguar.commons.basecrud.BaseModel;
+import org.jaguar.commons.basecrud.BaseService;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -61,7 +61,7 @@ public class CodeGeneratorConfig {
         // 自定义 service 实现类父类
         strategy.setSuperServiceImplClass(BaseService.class.getName());
         // 自定义 controller 父类
-        strategy.setSuperControllerClass(AbstractController.class.getName());
+        strategy.setSuperControllerClass(BaseController.class.getName());
         // controller mapping 驼峰转连字符
         strategy.setControllerMappingHyphenStyle(true);
         return strategy;

@@ -6,12 +6,15 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.jaguar.core.base.BaseModel;
+import org.jaguar.commons.basecrud.BaseModel;
+import org.jaguar.modules.system.mgm.dto.MenuFunction;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -37,15 +40,27 @@ public class Role extends BaseModel {
     @TableField("role_name")
     private String roleName;
     /**
-     * 角色是否锁定
+     * 角色是否启用
      */
-    @ApiModelProperty(value = "角色是否锁定", required = true)
-    @NotNull(message = "角色是否锁定为非空")
-    @TableField("role_locked")
-    private Boolean roleLocked;
+    @ApiModelProperty(value = "角色是否启用", required = true)
+    @NotNull(message = "角色是否启用为非空")
+    @TableField("role_enable")
+    private Boolean roleEnable;
+
+    @ApiModelProperty(value = "菜单和功能名称集合")
+    @TableField(exist = false)
+    private Set<String> menuFunctionNames = new HashSet<>();
 
     @ApiModelProperty(hidden = true)
     @TableField(exist = false)
-    private List<UserRole> userRoleList = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
+
+    @ApiModelProperty(hidden = true)
+    @TableField(exist = false)
+    private List<MenuFunction> menuFunctions = new ArrayList<>();
+
+    @ApiModelProperty(hidden = true)
+    @TableField(exist = false)
+    private List<RoleMenu> roleMenus = new ArrayList<>();
 
 }

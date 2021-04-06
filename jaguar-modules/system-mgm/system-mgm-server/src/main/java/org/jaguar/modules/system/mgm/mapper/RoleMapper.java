@@ -1,7 +1,7 @@
 package org.jaguar.modules.system.mgm.mapper;
 
 import org.jaguar.modules.system.mgm.model.Role;
-import org.jaguar.core.base.BaseMapper;
+import org.jaguar.commons.basecrud.BaseMapper;
 
 /**
  * <p>

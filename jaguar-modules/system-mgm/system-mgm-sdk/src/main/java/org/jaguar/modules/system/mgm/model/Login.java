@@ -6,13 +6,15 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.apache.shiro.authc.AuthenticationToken;
+import org.jaguar.commons.basecrud.BaseModel;
 import org.jaguar.commons.enums.ClientType;
-import org.jaguar.core.base.BaseModel;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 /**
  * <p>
@@ -26,7 +28,7 @@ import java.time.LocalDateTime;
 @ApiModel
 @TableName("jaguar_modules_system_login")
 @EqualsAndHashCode(callSuper = true)
-public class Login extends BaseModel implements AuthenticationToken {
+public class Login extends BaseModel implements Authentication {
 
     private static final long serialVersionUID = 1L;
 
@@ -115,19 +117,38 @@ public class Login extends BaseModel implements AuthenticationToken {
     /**
      * 已登录的用户ID
      */
-    @ApiModelProperty(value = "已登录的用户ID", hidden = true)
+    @ApiModelProperty(hidden = true)
     @TableField("user_id")
     private Long userId;
     /**
      * 系统名称
      */
-    @ApiModelProperty(value = "系统名称")
+    @ApiModelProperty(hidden = true)
     @TableField("system_name")
     private String systemName;
     /**
      * 租户
      */
-    @ApiModelProperty(value = "租户")
+    @ApiModelProperty(hidden = true)
     @TableField("tenant_")
     private String tenant;
+
+
+    @ApiModelProperty(hidden = true)
+    @TableField(exist = false)
+    private Set<GrantedAuthority> authorities;
+
+    @ApiModelProperty(hidden = true)
+    @TableField(exist = false)
+    private boolean authenticated;
+
+    @Override
+    public Object getDetails() {
+        return this;
+    }
+
+    @Override
+    public String getName() {
+        return this.principal;
+    }
 }

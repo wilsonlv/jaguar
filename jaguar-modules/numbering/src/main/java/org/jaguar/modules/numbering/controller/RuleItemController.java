@@ -2,14 +2,13 @@ package org.jaguar.modules.numbering.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.jaguar.commons.basecrud.BaseController;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import org.jaguar.core.base.AbstractController;
-import org.jaguar.core.web.JsonResult;
-import org.jaguar.core.web.Page;
+import org.jaguar.commons.web.JsonResult;
 import org.jaguar.modules.numbering.mapper.RuleItemMapper;
 import org.jaguar.modules.numbering.model.RuleItem;
 import org.jaguar.modules.numbering.service.RuleItemService;
@@ -33,13 +32,12 @@ import javax.validation.constraints.NotNull;
 @RestController
 @RequestMapping("/numbering/rule_item")
 @Api(tags = "编号规则条目")
-public class RuleItemController extends AbstractController<RuleItem, RuleItemMapper, RuleItemService> {
+public class RuleItemController extends BaseController<RuleItem, RuleItemMapper, RuleItemService> {
 
     @ApiOperation(value = "查询编号规则条目")
-    @RequiresPermissions("编号规则表:读取")
     @GetMapping(value = "/page")
-    public JsonResult<Page<RuleItem>> page(
-            @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<RuleItem> page,
+    public JsonResult<IPage<RuleItem>> page(
+            @ApiIgnore IPage<RuleItem> page,
             @ApiParam(value = "编号规则ID", required = true) @RequestParam @NotNull Long ruleId) {
 
         LambdaQueryWrapper<RuleItem> wrapper = JaguarLambdaQueryWrapper.<RuleItem>newInstance()
@@ -49,21 +47,18 @@ public class RuleItemController extends AbstractController<RuleItem, RuleItemMap
     }
 
     @ApiOperation(value = "编号规则条目详情")
-    @RequiresPermissions("编号规则表:读取")
     @GetMapping(value = "/{id}")
     public JsonResult<RuleItem> detail(@PathVariable Long id) {
         return super.getById(id);
     }
 
     @ApiOperation(value = "更新编号规则条目")
-    @RequiresPermissions("编号规则表:新增编辑")
     @PostMapping(value = "/update")
     public JsonResult<RuleItem> update(@RequestBody @Valid RuleItem ruleItem) {
         return super.saveOrUpdate(ruleItem);
     }
 
     @ApiOperation(value = "删除编号规则条目")
-    @RequiresPermissions("编号规则表:删除")
     @DeleteMapping(value = "/{id}")
     public JsonResult<?> del(@PathVariable Long id) {
         return super.delete(id);

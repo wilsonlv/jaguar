@@ -11,7 +11,7 @@ server:
 
 spring:
   profiles:
-    include: security, token-auth, redis
+    include: security, session-auth, redis
     active: dev
 
 

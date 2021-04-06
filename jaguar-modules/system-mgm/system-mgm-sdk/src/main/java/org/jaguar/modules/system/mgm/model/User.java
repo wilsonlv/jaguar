@@ -7,13 +7,14 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.jaguar.core.base.BaseModel;
+import org.jaguar.commons.basecrud.BaseModel;
 import org.jaguar.modules.system.mgm.enums.DataScope;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>
@@ -27,7 +28,7 @@ import java.util.List;
 @ApiModel
 @TableName("jaguar_modules_system_user")
 @EqualsAndHashCode(callSuper = true)
-public class User extends BaseModel {
+public class User extends BaseModel implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
@@ -71,19 +72,64 @@ public class User extends BaseModel {
     @TableField("user_data_scope")
     private DataScope userDataScope;
     /**
+     * 用户是否启用
+     */
+    @ApiModelProperty(value = "用户是否启用")
+    @NotNull(message = "用户是否启用为非空")
+    @TableField("user_enable")
+    private Boolean userEnable;
+    /**
      * 用户是否锁定
      */
     @ApiModelProperty(value = "用户是否锁定")
     @TableField("user_locked")
     private Boolean userLocked;
-    /**
-     * 用户初始密码
-     */
-    @ApiModelProperty(hidden = true)
+
+    @ApiModelProperty(value = "用户角色ID集合")
     @TableField(exist = false)
-    private String initialPassword;
+    private List<Long> roleIds = new ArrayList<>();
 
     @ApiModelProperty(hidden = true)
     @TableField(exist = false)
-    private List<UserRole> userRoleList = new ArrayList<>();
+    private List<Role> roles = new ArrayList<>();
+
+
+    @ApiModelProperty(hidden = true)
+    @TableField(exist = false)
+    private Set<GrantedAuthority> authorities = new HashSet<>();
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.userPassword;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.userAccount;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !this.userLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.userEnable;
+    }
 }

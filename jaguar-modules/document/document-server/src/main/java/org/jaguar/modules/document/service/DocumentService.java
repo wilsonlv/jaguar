@@ -2,10 +2,10 @@ package org.jaguar.modules.document.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.jaguar.commons.basecrud.BaseService;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import org.jaguar.commons.utils.DateUtil;
-import org.jaguar.core.base.BaseService;
-import org.jaguar.core.exception.CheckedException;
+import org.jaguar.commons.web.exception.CheckedException;
 import org.jaguar.modules.document.config.DocumentProperties;
 import org.jaguar.modules.document.interfaces.DocumentPersistence;
 import org.jaguar.modules.document.interfaces.DocumentPersistenceService;

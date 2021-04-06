@@ -2,9 +2,10 @@ package org.jaguar.commons.springsecurity.tokenauth;
 
 import org.jaguar.commons.data.encription.SecurityUtil;
 import org.jaguar.commons.springsecurity.tokenauth.config.SecurityTokenProperties;
+import org.jaguar.commons.springsecurity.tokenauth.exception.TokenExpireException;
+import org.jaguar.commons.springsecurity.tokenauth.exception.TokenInvalidException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.Random;
 
@@ -28,7 +29,13 @@ public class TokenFactory {
     }
 
     public String getPrincipal(String token) {
-        String data = SecurityUtil.decryptRsaPrivate(token, securityTokenProperties.getRsaPrivateKey());
+        String data;
+        try {
+            data = SecurityUtil.decryptRsaPrivate(token, securityTokenProperties.getRsaPrivateKey());
+        } catch (Exception e) {
+            throw new TokenInvalidException();
+        }
+
         String[] params = data.split("&");
 
         Long expire = Long.parseLong(params[1].split("=")[1]);

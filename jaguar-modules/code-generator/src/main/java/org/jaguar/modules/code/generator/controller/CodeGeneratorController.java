@@ -1,14 +1,14 @@
 package org.jaguar.modules.code.generator.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
-import org.jaguar.core.base.AbstractController;
-import org.jaguar.core.web.JsonResult;
-import org.jaguar.core.web.Page;
+import org.jaguar.commons.basecrud.BaseController;
+import org.jaguar.commons.web.JsonResult;
 import org.jaguar.modules.code.generator.config.CodeGeneratorProperties;
 import org.jaguar.modules.code.generator.mapper.CodeGeneratorMapper;
 import org.jaguar.modules.code.generator.model.CodeGenerator;
@@ -26,19 +26,19 @@ import javax.validation.Valid;
 @RestController
 @Api(tags = "代码生成管理")
 @RequestMapping("/code_generator")
-public class CodeGeneratorController extends AbstractController<CodeGenerator, CodeGeneratorMapper, CodeGeneratorService> {
+public class CodeGeneratorController extends BaseController<CodeGenerator, CodeGeneratorMapper, CodeGeneratorService> {
 
     @Autowired
     private CodeGeneratorProperties codeGeneratorProperties;
 
     @ApiOperation(value = "查询数据库表")
     @GetMapping(value = "/show_tables")
-    public JsonResult<Page<CodeGenerator>> showTables(
-            @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<CodeGenerator> page,
+    public JsonResult<IPage<CodeGenerator>> showTables(
+            @ApiIgnore IPage<CodeGenerator> page,
             @ApiParam(value = "模糊表名") @RequestParam(required = false) String fuzzyTableName) {
 
-        if (page.getOrders().size() == 0) {
-            page.addOrder(new OrderItem("table_name", false));
+        if (page.orders().size() == 0) {
+            page.orders().add(new OrderItem("table_name", false));
         }
 
         page = service.showTables(page, fuzzyTableName);

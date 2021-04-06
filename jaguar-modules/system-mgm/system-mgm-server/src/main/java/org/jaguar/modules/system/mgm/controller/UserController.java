@@ -1,19 +1,22 @@
 package org.jaguar.modules.system.mgm.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.jaguar.commons.basecrud.Assert;
+import org.jaguar.commons.basecrud.BaseController;
+import org.jaguar.commons.data.encription.SecurityUtil;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import org.jaguar.core.base.AbstractController;
-import org.jaguar.core.web.JsonResult;
-import org.jaguar.core.web.Page;
+import org.jaguar.commons.web.JsonResult;
+import org.jaguar.commons.web.exception.CheckedException;
 import org.jaguar.modules.system.mgm.enums.DataScope;
 import org.jaguar.modules.system.mgm.mapper.UserMapper;
 import org.jaguar.modules.system.mgm.model.User;
 import org.jaguar.modules.system.mgm.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -32,20 +35,21 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/system/mgm/user")
 @Api(tags = "系统用户表管理")
-public class UserController extends AbstractController<User, UserMapper, UserService> {
+public class UserController extends BaseController<User, UserMapper, UserService> {
 
     @ApiOperation(value = "查询系统用户表")
-    @RequiresPermissions("系统用户表:读取")
+    @PreAuthorize("hasAuthority('用户管理')")
     @GetMapping(value = "/page")
-    public JsonResult<Page<User>> page(
-            @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<User> page,
+    public JsonResult<IPage<User>> page(
+            @ApiIgnore IPage<User> page,
             @ApiParam(value = "模糊用户信息") @RequestParam(required = false) String fuzzyUserInfo,
-            @ApiParam(value = "角色数据权限（PERSONAL：个人的，SUBLEVEL：个人及子级别，CURRENT_LEVEL：个人及本级，UNLIMITED：无限制）")
-            @RequestParam(required = false) DataScope userDataScope,
-            @ApiParam(value = "锁定状态") @RequestParam(required = false) Boolean userLocked) {
+            @ApiParam(value = "角色数据权限") @RequestParam(required = false) DataScope userDataScope,
+            @ApiParam(value = "锁定状态") @RequestParam(required = false) Boolean userLocked,
+            @ApiParam(value = "启用状态") @RequestParam(required = false) Boolean userEnable) {
 
         LambdaQueryWrapper<User> wrapper = JaguarLambdaQueryWrapper.<User>newInstance()
                 .eq(User::getUserLocked, userLocked)
+                .eq(User::getUserEnable, userEnable)
                 .eq(User::getUserDataScope, userDataScope);
         if (StringUtils.isNotBlank(fuzzyUserInfo)) {
             wrapper.and(w -> w.like(User::getUserAccount, fuzzyUserInfo).or()
@@ -53,12 +57,12 @@ public class UserController extends AbstractController<User, UserMapper, UserSer
                     .like(User::getUserEmail, fuzzyUserInfo));
         }
 
-        page = service.queryWithRoleAndDept(page, wrapper);
+        page = service.queryWithRole(page, wrapper);
         return success(page);
     }
 
     @ApiOperation(value = "系统用户表详情")
-    @RequiresPermissions("系统用户表:读取")
+    @PreAuthorize("hasAuthority('用户管理')")
     @GetMapping(value = "/{id}")
     public JsonResult<User> detail(@PathVariable Long id) {
         User user = service.getDetail(id);
@@ -66,7 +70,7 @@ public class UserController extends AbstractController<User, UserMapper, UserSer
     }
 
     @ApiOperation(value = "修改系统用户表")
-    @RequiresPermissions("系统用户表:新增编辑")
+    @PreAuthorize("hasAuthority('用户管理')")
     @PostMapping
     public JsonResult<User> update(@RequestBody @Valid User user) {
         synchronized (this) {
@@ -77,22 +81,6 @@ public class UserController extends AbstractController<User, UserMapper, UserSer
             }
         }
         return success(user);
-    }
-
-    @ApiOperation(value = "重置密码")
-    @RequiresPermissions("系统用户表:新增编辑")
-    @PostMapping(value = "/reset_password/{id}")
-    public JsonResult<String> resetPassword(@PathVariable Long id) {
-        String resetPassword = service.resetPassword(id);
-        return success(resetPassword);
-    }
-
-    @ApiOperation(value = "锁定解锁用户")
-    @RequiresPermissions("系统用户表:新增编辑")
-    @PostMapping(value = "/toggle_lock/{id}")
-    public JsonResult<Boolean> toggleLock(@PathVariable Long id) {
-        Boolean userLocked = service.toggleLock(id);
-        return success(userLocked);
     }
 
 }

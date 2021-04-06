@@ -1,7 +1,7 @@
 package org.jaguar.modules.numbering.service;
 
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import org.jaguar.core.base.BaseService;
+import org.jaguar.commons.basecrud.BaseService;
 import org.jaguar.modules.numbering.mapper.RuleItemMapper;
 import org.jaguar.modules.numbering.model.RuleItem;
 import org.springframework.stereotype.Service;

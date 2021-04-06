@@ -15,6 +15,7 @@
     <modules>
         <module>commons-activemq</module>
         <module>commons-aviator</module>
+        <module>commons-base-crud</module>
         <module>commons-data-encription</module>
         <module>commons-enums</module>
         <module>commons-export-csv</module>
@@ -24,6 +25,7 @@
         <module>commons-spring-security</module>
         <module>commons-swagger</module>
         <module>commons-utils</module>
+        <module>commons-web</module>
         <module>commons-websocket</module>
     </modules>
 

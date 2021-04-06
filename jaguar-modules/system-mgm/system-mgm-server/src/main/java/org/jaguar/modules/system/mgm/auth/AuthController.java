@@ -3,15 +3,14 @@ package org.jaguar.modules.system.mgm.auth;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.subject.Subject;
+import org.jaguar.commons.basecrud.BaseController;
 import org.jaguar.commons.utils.ExecutorServiceUtil;
-import org.jaguar.core.base.AbstractController;
-import org.jaguar.core.base.controller.VerifyCodeController;
-import org.jaguar.core.exception.CheckedException;
-import org.jaguar.core.web.JsonResult;
+import org.jaguar.commons.utils.IdentifyingCode;
+import org.jaguar.commons.utils.IpUtil;
+import org.jaguar.commons.web.JsonResult;
+import org.jaguar.commons.web.exception.CheckedException;
 import org.jaguar.modules.system.mgm.config.SystemMgmProperties;
 import org.jaguar.modules.system.mgm.mapper.UserMapper;
 import org.jaguar.modules.system.mgm.model.Login;
@@ -20,15 +19,21 @@ import org.jaguar.modules.system.mgm.model.User;
 import org.jaguar.modules.system.mgm.service.LoginService;
 import org.jaguar.modules.system.mgm.service.RoleMenuService;
 import org.jaguar.modules.system.mgm.service.UserService;
-import org.jaguar.support.handlerlog.intercepter.HandlerLogInterceptor;
-import org.jaguar.support.handlerlog.model.HandlerLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -36,11 +41,15 @@ import java.util.Set;
  * @author lvws
  * @since 2019/11/15
  */
+@Slf4j
 @Validated
 @RestController
 @RequestMapping("/auth")
 @Api(tags = "个人登录和权限管理")
-public class AuthController extends AbstractController<User, UserMapper, UserService> {
+public class AuthController extends BaseController<User, UserMapper, UserService> {
+
+
+    public static final String PIC_VERIFICATION_CODE = "PIC_VERIFICATION_CODE";
 
     @Autowired
     private ServerProperties serverProperties;
@@ -48,39 +57,82 @@ public class AuthController extends AbstractController<User, UserMapper, UserSer
     private SystemMgmProperties systemMgmProperties;
 
     @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
     private LoginService loginService;
     @Autowired
     private RoleMenuService roleMenuService;
 
+
+    @ApiOperation(value = "获取图片验证码")
+    @GetMapping("/verify_code")
+    public void randomImage(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        //图片宽度
+        int width = 200;
+        //图片高度
+        int height = 80;
+        //字符串个数
+        int randomStrNum = 4;
+
+        response.setHeader("Pragma", "No-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+        response.setContentType("image/jpeg");
+
+        //生成验证码
+        String verifyCode = IdentifyingCode.generate(randomStrNum);
+        //保存验证码
+        HttpSession session = request.getSession();
+        session.setAttribute(PIC_VERIFICATION_CODE, verifyCode.toLowerCase());
+        //回传
+        IdentifyingCode.outputImage(width, height, response.getOutputStream(), verifyCode);
+    }
+
+    /**
+     * 验证图片验证码
+     */
+    public static void verifyCode(HttpServletRequest request, String verifyCode) {
+        HttpSession session = request.getSession();
+        Object verificationCode = session.getAttribute(PIC_VERIFICATION_CODE);
+        if (verificationCode == null) {
+            throw new CheckedException("请获取图片验证码！");
+        }
+
+        session.removeAttribute(PIC_VERIFICATION_CODE);
+
+        if (log.isDebugEnabled()) {
+            log.debug("sessionId：{}，验证码：{}", session.getId(), verificationCode);
+        }
+
+        if (!verifyCode.equalsIgnoreCase((String) verificationCode)) {
+            throw new CheckedException("验证码错误！");
+        }
+    }
+
+
     @ApiOperation(value = "登录")
     @PostMapping(value = "/login")
-    public JsonResult<User> login(@ApiParam("登录信息") @RequestBody @Valid Login login) throws Throwable {
+    public JsonResult<User> login(HttpServletRequest request,
+                                  @ApiParam("登录信息") @RequestBody @Valid Login login) throws Throwable {
 
         if (systemMgmProperties.getVerifyCodeEnable()) {
             if (StringUtils.isBlank(login.getVerifyCode())) {
                 throw new CheckedException("验证码为非空");
             }
-            VerifyCodeController.verifyCode(login.getVerifyCode());
+            verifyCode(request, login.getVerifyCode());
         }
 
-        HandlerLog handlerLog = HandlerLogInterceptor.HANDLER_LOG.get();
-
         login.setPasswordFree(false);
-        login.setLoginIp(handlerLog.getClientHost());
-        login.setLoginTime(handlerLog.getAccessTime());
-        login.setSessionId(handlerLog.getSessionId());
+        login.setLoginIp(IpUtil.getHost(request));
+        login.setLoginTime(LocalDateTime.now());
+        login.setSessionId(request.getSession().getId());
         login.setResultCode(HttpStatus.OK.value());
         login.setSystemName(serverProperties.getServlet().getApplicationDisplayName());
 
         try {
-            Subject subject = SecurityUtils.getSubject();
-            subject.login(login);
-        } catch (AuthenticationException e) {
-            login.setResultCode(HttpStatus.CONFLICT.value());
-            throw e.getCause();
-        } catch (Exception e) {
-            login.setResultCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            throw e;
+            Authentication authentication = authenticationManager.authenticate(login);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         } finally {
             ExecutorServiceUtil.execute(() -> loginService.insert(login));
         }
@@ -91,8 +143,7 @@ public class AuthController extends AbstractController<User, UserMapper, UserSer
     @ApiOperation(value = "退出登陆")
     @PostMapping(value = "/logout")
     public JsonResult<?> logout() {
-
-        SecurityUtils.getSubject().logout();
+        SecurityContextHolder.clearContext();
         return success();
     }
 
@@ -100,7 +151,7 @@ public class AuthController extends AbstractController<User, UserMapper, UserSer
     @GetMapping(value = "/info")
     public JsonResult<User> getPersonalInfo() {
 
-        User user = service.getDetail(getCurrentUser());
+        User user = service.getDetail(null);
         return success(user);
     }
 

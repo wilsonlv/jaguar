@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.jaguar.core.base.BaseService;
+import org.jaguar.commons.basecrud.BaseService;
 import org.jaguar.core.exception.CheckedException;
 import org.jaguar.core.exception.DataCrudException;
 import org.jaguar.support.fieldeditlog.FieldEditLogable;

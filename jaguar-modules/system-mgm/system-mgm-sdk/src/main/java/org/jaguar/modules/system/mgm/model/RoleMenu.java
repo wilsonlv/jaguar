@@ -6,8 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.jaguar.core.base.BaseModel;
-import org.jaguar.modules.system.mgm.enums.RoleMenuPermission;
+import org.jaguar.commons.basecrud.BaseModel;
 
 import javax.validation.constraints.NotNull;
 
@@ -35,21 +34,12 @@ public class RoleMenu extends BaseModel {
     @TableField("role_id")
     private Long roleId;
     /**
-     * 菜单ID
+     * 菜单或功能名称
      */
-    @ApiModelProperty(value = "菜单ID", required = true)
-    @NotNull(message = "菜单ID为非空")
-    @TableField("menu_id")
-    private Long menuId;
-    /**
-     * 角色菜单权限（READ，VIEW，UPDATE，DEL）
-     */
-    @ApiModelProperty(value = "角色菜单权限")
-    @TableField("role_menu_permission")
-    private RoleMenuPermission roleMenuPermission;
+    @ApiModelProperty(value = "菜单或功能名称", required = true)
+    @NotNull(message = "菜单或功能名称为非空")
+    @TableField("menu_function_name")
+    private String menuFuncionName;
 
-    @ApiModelProperty(hidden = true)
-    @TableField(exist = false)
-    private Menu menu;
 
 }

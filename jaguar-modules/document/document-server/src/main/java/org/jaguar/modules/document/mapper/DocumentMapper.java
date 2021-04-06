@@ -1,7 +1,7 @@
 package org.jaguar.modules.document.mapper;
 
 
-import org.jaguar.core.base.BaseMapper;
+import org.jaguar.commons.basecrud.BaseMapper;
 import org.jaguar.modules.document.model.Document;
 
 /**

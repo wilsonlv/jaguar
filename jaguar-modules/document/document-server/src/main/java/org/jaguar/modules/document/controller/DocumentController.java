@@ -3,11 +3,10 @@ package org.jaguar.modules.document.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.jaguar.core.Charsets;
-import org.jaguar.core.base.AbstractController;
-import org.jaguar.core.exception.Assert;
-import org.jaguar.core.exception.CheckedException;
-import org.jaguar.core.web.JsonResult;
+import org.jaguar.commons.basecrud.Assert;
+import org.jaguar.commons.basecrud.BaseController;
+import org.jaguar.commons.web.JsonResult;
+import org.jaguar.commons.web.exception.CheckedException;
 import org.jaguar.modules.document.mapper.DocumentMapper;
 import org.jaguar.modules.document.model.Document;
 import org.jaguar.modules.document.service.DocumentService;
@@ -20,6 +19,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.io.*;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -32,7 +32,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/document")
 @Api(tags = "文档上传表管理")
-public class DocumentController extends AbstractController<Document, DocumentMapper, DocumentService> {
+public class DocumentController extends BaseController<Document, DocumentMapper, DocumentService> {
 
     @ApiOperation(value = "上传文档")
     @PostMapping("/upload")
@@ -75,11 +75,11 @@ public class DocumentController extends AbstractController<Document, DocumentMap
             throw new CheckedException("文件不存在！");
         }
 
-        response.setCharacterEncoding(Charsets.UTF_8_NAME);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         if (download) {
-            String encodeFileName = URLEncoder.encode(document.getOriginalName(), Charsets.UTF_8_NAME);
+            String encodeFileName = URLEncoder.encode(document.getOriginalName(), StandardCharsets.UTF_8.name());
 
-            response.setContentType("multipart/form-data;charset=" + Charsets.UTF_8_NAME);
+            response.setContentType("multipart/form-data;charset=" + StandardCharsets.UTF_8.name());
             response.setHeader("Content-Disposition", "attachment;fileName=" + encodeFileName);
         }
 

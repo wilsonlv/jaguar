@@ -14,12 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>token-auth</artifactId>
-            <version>${jaguar.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jaguar</groupId>
-            <artifactId>commons-redis</artifactId>
+            <artifactId>session-auth</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
     </dependencies>

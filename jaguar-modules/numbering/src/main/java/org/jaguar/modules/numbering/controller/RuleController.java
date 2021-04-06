@@ -1,14 +1,13 @@
 package org.jaguar.modules.numbering.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.jaguar.commons.basecrud.BaseController;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import org.jaguar.core.base.AbstractController;
-import org.jaguar.core.web.JsonResult;
-import org.jaguar.core.web.Page;
+import org.jaguar.commons.web.JsonResult;
 import org.jaguar.modules.numbering.mapper.RuleMapper;
 import org.jaguar.modules.numbering.model.Rule;
 import org.jaguar.modules.numbering.service.RuleService;
@@ -31,13 +30,12 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/numbering/rule")
 @Api(tags = "编号规则表管理")
-public class RuleController extends AbstractController<Rule, RuleMapper, RuleService> {
+public class RuleController extends BaseController<Rule, RuleMapper, RuleService> {
 
     @ApiOperation(value = "查询编号规则表")
-    @RequiresPermissions("编号规则表:读取")
     @GetMapping(value = "/page")
-    public JsonResult<Page<Rule>> page(
-            @ApiIgnore com.baomidou.mybatisplus.extension.plugins.pagination.Page<Rule> page,
+    public JsonResult<IPage<Rule>> page(
+            @ApiIgnore IPage<Rule> page,
             @ApiParam(value = "模糊编号规则名称") @RequestParam(required = false) String fuzzyName) {
 
         LambdaQueryWrapper<Rule> wrapper = JaguarLambdaQueryWrapper.<Rule>newInstance()
@@ -46,14 +44,12 @@ public class RuleController extends AbstractController<Rule, RuleMapper, RuleSer
     }
 
     @ApiOperation(value = "编号规则表详情")
-    @RequiresPermissions("编号规则表:读取")
     @GetMapping(value = "/{id}")
     public JsonResult<Rule> detail(@PathVariable Long id) {
         return super.getById(id);
     }
 
     @ApiOperation(value = "更新编号规则")
-    @RequiresPermissions("编号规则表:新增编辑")
     @PostMapping
     public JsonResult<Rule> update(@RequestBody @Valid Rule entity) {
         synchronized (this) {
@@ -63,7 +59,6 @@ public class RuleController extends AbstractController<Rule, RuleMapper, RuleSer
     }
 
     @ApiOperation(value = "删除编号规则表")
-    @RequiresPermissions("编号规则表:删除")
     @DeleteMapping(value = "/{id}")
     public JsonResult<?> del(@PathVariable Long id) {
         return super.delete(id);

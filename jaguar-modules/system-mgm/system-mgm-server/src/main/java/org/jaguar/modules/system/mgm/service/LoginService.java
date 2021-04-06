@@ -2,7 +2,7 @@ package org.jaguar.modules.system.mgm.service;
 
 import org.jaguar.commons.enums.ClientType;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import org.jaguar.core.base.BaseService;
+import org.jaguar.commons.basecrud.BaseService;
 import org.jaguar.modules.system.mgm.mapper.LoginMapper;
 import org.jaguar.modules.system.mgm.model.Login;
 import org.springframework.stereotype.Service;

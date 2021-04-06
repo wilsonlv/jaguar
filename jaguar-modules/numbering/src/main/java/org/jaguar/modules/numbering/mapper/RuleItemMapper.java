@@ -1,6 +1,6 @@
 package org.jaguar.modules.numbering.mapper;
 
-import org.jaguar.core.base.BaseMapper;
+import org.jaguar.commons.basecrud.BaseMapper;
 import org.jaguar.modules.numbering.model.RuleItem;
 
 /**

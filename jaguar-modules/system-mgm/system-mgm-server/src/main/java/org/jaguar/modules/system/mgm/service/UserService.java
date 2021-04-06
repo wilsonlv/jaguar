@@ -1,19 +1,21 @@
 package org.jaguar.modules.system.mgm.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.commons.lang3.StringUtils;
+import org.jaguar.commons.basecrud.Assert;
+import org.jaguar.commons.basecrud.BaseService;
 import org.jaguar.commons.data.encription.SecurityUtil;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import org.jaguar.commons.utils.IdentifyingCode;
-import org.jaguar.core.base.BaseService;
-import org.jaguar.core.exception.Assert;
-import org.jaguar.core.exception.CheckedException;
+import org.jaguar.commons.web.exception.CheckedException;
 import org.jaguar.modules.system.mgm.mapper.UserMapper;
+import org.jaguar.modules.system.mgm.model.Role;
 import org.jaguar.modules.system.mgm.model.User;
-import org.jaguar.modules.system.mgm.model.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,11 +31,13 @@ import java.util.List;
  * @since 2019-11-08
  */
 @Service
-public class UserService extends BaseService<User, UserMapper> {
+public class UserService extends BaseService<User, UserMapper> implements UserDetailsService {
 
     @Lazy
     @Autowired
     private UserRoleService userRoleService;
+
+    /*----------  通用接口  ----------*/
 
     public User getByAccount(@NotBlank String account) {
         return this.unique(JaguarLambdaQueryWrapper.<User>newInstance()
@@ -50,22 +54,17 @@ public class UserService extends BaseService<User, UserMapper> {
                 .eq(User::getUserEmail, email));
     }
 
-    public User getByPrincipal(@NotBlank String principal) {
-        return this.unique(JaguarLambdaQueryWrapper.<User>newInstance()
-                .eq(User::getUserAccount, principal)
-                .or().eq(User::getUserPhone, principal)
-                .or().eq(User::getUserEmail, principal));
-    }
-
     public User getDetail(Long currentUser) {
         User user = this.getById(currentUser);
         Assert.validateId(user, "用户", currentUser);
 
-        List<UserRole> userRoleList = userRoleService.listWithRoleByUserId(currentUser);
-        user.setUserRoleList(userRoleList);
+        List<Role> roles = userRoleService.listRoleByUserId(currentUser);
+        user.setRoles(roles);
 
         return user;
     }
+
+    /*----------  个人用户接口  ----------*/
 
     @Transactional
     public void modifyPassword(Long currentUser, String oldPassword, String newPassword) {
@@ -79,21 +78,34 @@ public class UserService extends BaseService<User, UserMapper> {
             throw new CheckedException("密码格式为包含数字，字母大小写的6-20位字符串！");
         }
 
+        user = new User();
+        user.setId(currentUser);
         user.setUserPassword(newPassword);
         this.updateById(user);
     }
 
+    /**
+     * security 登录时调用
+     *
+     * @param username 用户账号
+     * @return 用户
+     * @throws UsernameNotFoundException 用户名和密码错误
+     */
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return this.getByAccount(username);
+    }
 
     /*----------  管理类接口  ----------*/
 
     @Transactional
-    public Page<User> queryWithRoleAndDept(Page<User> page, LambdaQueryWrapper<User> wrapper) {
-        Page<User> userPage = this.query(page, wrapper);
-        for (User user : userPage.getRecords()) {
-            List<UserRole> userRoleList = userRoleService.listWithRoleByUserId(user.getId());
-            user.setUserRoleList(userRoleList);
+    public IPage<User> queryWithRole(IPage<User> page, LambdaQueryWrapper<User> wrapper) {
+        page = this.query(page, wrapper);
+        for (User user : page.getRecords()) {
+            List<Role> userRoleList = userRoleService.listRoleByUserId(user.getId());
+            user.setRoles(userRoleList);
         }
-        return userPage;
+        return page;
     }
 
     /**
@@ -101,6 +113,11 @@ public class UserService extends BaseService<User, UserMapper> {
      */
     @Transactional
     public User create(User user) {
+        Assert.notNull(user.getUserPassword(), "用户密码");
+        if (!SecurityUtil.checkPassword(user.getUserPassword())) {
+            throw new CheckedException("密码格式为包含数字，字母大小写的6-20位字符串！");
+        }
+
         User byAccount = this.getByAccount(user.getUserAccount());
         Assert.duplicate(byAccount, user, "登陆账号");
 
@@ -114,11 +131,10 @@ public class UserService extends BaseService<User, UserMapper> {
             Assert.duplicate(byEmail, user, "邮箱");
         }
 
-        String password = IdentifyingCode.generate(12);
-        user.setUserPassword(password);
+        user.setUserLocked(false);
         user = this.insert(user);
 
-        user.setInitialPassword(password);
+        userRoleService.relateRoles(user.getId(), user.getRoleIds());
         return user;
     }
 
@@ -130,10 +146,6 @@ public class UserService extends BaseService<User, UserMapper> {
         User persist = this.getById(user.getId());
         Assert.validateId(persist, "用户", user.getId());
 
-        if (!persist.getUserAccount().equals(user.getUserAccount())) {
-            throw new CheckedException("用户账号不可修改");
-        }
-
         if (StringUtils.isNotBlank(user.getUserPhone())) {
             User byPhone = this.getByPhone(user.getUserPhone());
             Assert.duplicate(byPhone, user, "手机号");
@@ -144,35 +156,13 @@ public class UserService extends BaseService<User, UserMapper> {
             Assert.duplicate(byEmail, user, "邮箱");
         }
 
+        user.setUserAccount(null);
         user.setUserPassword(null);
-        return this.updateById(user);
-    }
-
-    /**
-     * 重置用户密码
-     * <p>
-     * return 新密码
-     */
-    @Transactional
-    public String resetPassword(Long id) {
-        User user = this.getById(id);
-        Assert.validateId(user, "用户", id);
-
-        String password = IdentifyingCode.generate(12);
-        user.setUserPassword(password);
-
-        this.updateById(user);
-        return password;
-    }
-
-    @Transactional
-    public Boolean toggleLock(Long id) {
-        User user = this.getById(id);
-        Assert.validateId(user, "用户", id);
-
-        user.setUserLocked(!user.getUserLocked());
+        user.setUserLocked(null);
         user = this.updateById(user);
-        return user.getUserLocked();
+
+        userRoleService.relateRoles(user.getId(), user.getRoleIds());
+        return user;
     }
 
 }
