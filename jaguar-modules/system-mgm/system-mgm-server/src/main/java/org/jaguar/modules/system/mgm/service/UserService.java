@@ -93,7 +93,15 @@ public class UserService extends BaseService<User, UserMapper> implements UserDe
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return this.getByAccount(username);
+        User user = this.getByAccount(username);
+        if (user == null) {
+            throw new UsernameNotFoundException(null);
+        }
+
+        rol
+
+
+        return user;
     }
 
     /*----------  管理类接口  ----------*/
