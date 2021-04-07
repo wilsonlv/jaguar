@@ -1,19 +1,13 @@
 package org.jaguar.modules.system.mgm.controller;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.jaguar.commons.basecrud.BaseController;
-import org.jaguar.core.web.JsonResult;
 import org.jaguar.modules.system.mgm.mapper.RoleMenuMapper;
-import org.jaguar.modules.system.mgm.model.Menu;
 import org.jaguar.modules.system.mgm.model.RoleMenu;
 import org.jaguar.modules.system.mgm.service.RoleMenuService;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -27,9 +21,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/system/mgm/role_menu")
 @Api(tags = "系统角色菜单表管理")
-public class RoleMenuController extends AbstractController<RoleMenu, RoleMenuMapper, RoleMenuService> {
+public class RoleMenuController extends BaseController<RoleMenu, RoleMenuMapper, RoleMenuService> {
 
-    @ApiOperation(value = "查询系统角色菜单表")
+    /*@ApiOperation(value = "查询系统角色菜单表")
     @RequiresPermissions("系统角色菜单表:读取")
     @GetMapping(value = "/tree_menu_with_role_permission/{roleId}")
     public JsonResult<List<Menu>> treeMenuWithRolePermission(@PathVariable Long roleId) {
@@ -46,6 +40,6 @@ public class RoleMenuController extends AbstractController<RoleMenu, RoleMenuMap
             roleMenu = service.change(roleMenu);
         }
         return success(roleMenu);
-    }
+    }*/
 
 }

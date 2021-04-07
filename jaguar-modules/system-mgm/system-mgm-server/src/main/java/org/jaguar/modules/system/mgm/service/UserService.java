@@ -98,7 +98,7 @@ public class UserService extends BaseService<User, UserMapper> implements UserDe
             throw new UsernameNotFoundException(null);
         }
 
-        rol
+
 
 
         return user;
@@ -127,7 +127,7 @@ public class UserService extends BaseService<User, UserMapper> implements UserDe
         }
 
         User byAccount = this.getByAccount(user.getUserAccount());
-        Assert.duplicate(byAccount, user, "登陆账号");
+        Assert.duplicate(byAccount, user, "登录账号");
 
         if (StringUtils.isNotBlank(user.getUserPhone())) {
             User byPhone = this.getByPhone(user.getUserPhone());

@@ -1,4 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    org.jaguar.commons.springsecurity.sessionauth.config.WebSecurityConfigurer,\
-    org.jaguar.commons.springsecurity.sessionauth.config.SecuritySessionProperties
-
+    org.jaguar.commons.springsecurity.sessionauth.config.WebSecurityConfigurer

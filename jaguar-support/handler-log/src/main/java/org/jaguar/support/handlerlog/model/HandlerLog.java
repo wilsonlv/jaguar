@@ -1,5 +1,6 @@
 package org.jaguar.support.handlerlog.model;
 
+
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;

@@ -1,0 +1,16 @@
+server:
+  port: 8088
+  servlet:
+    session:
+      timeout: 3600
+      cookie:
+        name: JAGUAR-SESSION-ID
+    application-display-name: jaguar-commons-web
+  tomcat:
+    uri-encoding: UTF-8
+
+spring:
+  http:
+    encoding:
+      charset: UTF-8
+      force: true

@@ -6,11 +6,9 @@ import cz.mallat.uasparser.UASparser;
 import cz.mallat.uasparser.UserAgentInfo;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.jaguar.commons.shiro.config.ShiroProperties;
-import org.jaguar.commons.utils.ExceptionUtil;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jaguar.commons.utils.ExecutorServiceUtil;
 import org.jaguar.commons.utils.IpUtil;
-import org.jaguar.core.web.LoginUtil;
 import org.jaguar.support.handlerlog.model.HandlerLog;
 import org.jaguar.support.handlerlog.service.HandlerLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +24,8 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+;
+
 /**
  * @author lvws
  * @since 2018/11/12.
@@ -35,9 +35,6 @@ import java.time.LocalDateTime;
 public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
 
     private static final String ERROR = "/error";
-
-    @Autowired
-    private ShiroProperties shiroProperties;
 
     /**
      * 当前线程访问信息
@@ -89,7 +86,7 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
             handlerLog.setParameters(JSONObject.toJSONString(request.getParameterMap()));
 
             try {
-                handlerLog.setCreateBy(LoginUtil.getCurrentUser());
+//                handlerLog.setCreateBy(LoginUtil.getCurrentUser());
                 log.info("用户id: {}", handlerLog.getCreateBy());
             } catch (Exception ignored) {
                 log.warn("用户[{}@{}]匿名请求", handlerLog.getClientHost(), handlerLog.getUserAgent());
@@ -111,25 +108,19 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
 
             HANDLER_LOG.remove();
 
-            if (handlerLog.getRequestUri().contains(shiroProperties.getLoginUrl())) {
-                log.warn("用户[{}@{}]没有登录", handlerLog.getClientHost(), handlerLog.getUserAgent());
-            } else if (handlerLog.getRequestUri().contains(shiroProperties.getUnauthorizedUrl())) {
-                log.warn("用户[{}@{}@{}]没有权限", handlerLog.getCreateBy(), handlerLog.getClientHost(), handlerLog.getUserAgent());
-            } else {
-                LocalDateTime endTime = LocalDateTime.now();
-                ExecutorServiceUtil.execute(() -> {
-                    long duration = Duration.between(handlerLog.getAccessTime(), endTime).toMillis();
-                    handlerLog.setDuration(duration);
-                    handlerLog.setErrorMsg(ExceptionUtil.getStackTraceAsString(handlerException));
-                    handlerLog.setDeleted(false);
-                    handlerLog.setCreateTime(endTime);
-                    try {
-                        handlerLogService.saveLog(handlerLog);
-                    } catch (Exception e) {
-                        log.error(ExceptionUtil.getStackTraceAsString(e));
-                    }
-                });
-            }
+            LocalDateTime endTime = LocalDateTime.now();
+            ExecutorServiceUtil.execute(() -> {
+                long duration = Duration.between(handlerLog.getAccessTime(), endTime).toMillis();
+                handlerLog.setDuration(duration);
+                handlerLog.setErrorMsg(ExceptionUtils.getMessage(handlerException));
+                handlerLog.setCreateTime(endTime);
+                handlerLog.setDeleted(false);
+                try {
+                    handlerLogService.saveLog(handlerLog);
+                } catch (Exception e) {
+                    log.error(e.getMessage(), e);
+                }
+            });
         }
         super.afterCompletion(request, response, handler, handlerException);
     }

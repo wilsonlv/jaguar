@@ -14,7 +14,7 @@ import org.jaguar.commons.web.exception.CheckedException;
 import org.jaguar.modules.system.mgm.config.SystemMgmProperties;
 import org.jaguar.modules.system.mgm.mapper.UserMapper;
 import org.jaguar.modules.system.mgm.model.Login;
-import org.jaguar.modules.system.mgm.model.Menu;
+
 import org.jaguar.modules.system.mgm.model.User;
 import org.jaguar.modules.system.mgm.service.LoginService;
 import org.jaguar.modules.system.mgm.service.RoleMenuService;
@@ -140,7 +140,7 @@ public class AuthController extends BaseController<User, UserMapper, UserService
         return getPersonalInfo();
     }
 
-    @ApiOperation(value = "退出登陆")
+    @ApiOperation(value = "退出登录")
     @PostMapping(value = "/logout")
     public JsonResult<?> logout() {
         SecurityContextHolder.clearContext();
@@ -155,7 +155,7 @@ public class AuthController extends BaseController<User, UserMapper, UserService
         return success(user);
     }
 
-    @ApiOperation(value = "获取当前用户授权菜单")
+    /*@ApiOperation(value = "获取当前用户授权菜单")
     @GetMapping(value = "/menu/tree/view_permission")
     public JsonResult<List<Menu>> menuTreeViewPermission() {
 
@@ -181,5 +181,5 @@ public class AuthController extends BaseController<User, UserMapper, UserService
             service.modifyPassword(getCurrentUser(), oldPassword, newPassword);
         }
         return success();
-    }
+    }*/
 }

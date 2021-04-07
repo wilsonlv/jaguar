@@ -2,7 +2,7 @@ package org.jaguar.support.handlerlog.service;
 
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
-import org.jaguar.core.exception.CheckedException;
+import org.jaguar.commons.web.exception.DataCrudException;
 import org.jaguar.support.handlerlog.mapper.HandlerLogMapper;
 import org.jaguar.support.handlerlog.model.HandlerLog;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class HandlerLogService {
         boolean success = SqlHelper.retBool(handlerLogMapper.insert(handlerLog));
         if (!success) {
             log.error("实体信息：" + handlerLog.toString());
-            throw new CheckedException("数据插入失败！");
+            throw new DataCrudException("数据插入失败！");
         }
     }
 
