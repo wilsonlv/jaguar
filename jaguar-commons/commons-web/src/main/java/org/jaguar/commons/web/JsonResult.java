@@ -38,4 +38,12 @@ public class JsonResult<T> implements Serializable {
         return this;
     }
 
+    public int getResultCode() {
+        return resultCode.getValue();
+    }
+
+    public String getResultCodeMsg() {
+        return resultCode.getReasonPhrase();
+    }
+
 }

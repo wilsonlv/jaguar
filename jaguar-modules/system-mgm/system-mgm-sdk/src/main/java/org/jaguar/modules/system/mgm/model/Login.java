@@ -18,7 +18,7 @@ import java.util.Set;
 
 /**
  * <p>
- * 系统登陆日志表
+ * 系统登录日志表
  * </p>
  *
  * @author lvws

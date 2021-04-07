@@ -5,12 +5,15 @@ import org.jaguar.commons.web.JsonResult;
 import org.jaguar.commons.web.ResultCode;
 import org.jaguar.commons.web.exception.BaseException;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.validation.ConstraintViolationException;
@@ -26,9 +29,10 @@ public class GlobalExceptionHandler {
     /**
      * 请求参数验证错误
      */
+    @ResponseBody
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
     public JsonResult<String> methodArgumentNotValidException(MethodArgumentNotValidException exception) {
-        log.error(exception.getMessage());
+        log.error(exception.getMessage(), exception);
         StringBuilder errorMessage = new StringBuilder();
         for (ObjectError objectError : exception.getBindingResult().getAllErrors()) {
             errorMessage.append("【").append(objectError.getDefaultMessage()).append("】");
@@ -40,18 +44,21 @@ public class GlobalExceptionHandler {
     /**
      * 请求参数错误
      */
-    @ExceptionHandler(value = {MethodArgumentTypeMismatchException.class, ConstraintViolationException.class, MissingServletRequestParameterException.class})
+    @ResponseBody
+    @ExceptionHandler(value = {MethodArgumentTypeMismatchException.class, ConstraintViolationException.class,
+            MissingServletRequestParameterException.class, HttpMediaTypeNotSupportedException.class, HttpMessageNotReadableException.class})
     public JsonResult<String> badRequestExceptionHandler(Exception exception) {
-        log.error(exception.getMessage());
+        log.error(exception.getMessage(), exception);
         return new JsonResult<>(ResultCode.BAD_REQUEST, null, exception.getMessage());
     }
 
     /**
      * 请求方式错误
      */
+    @ResponseBody
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
     public JsonResult<String> httpRequestMethodNotSupportedExceptionHandler(Exception exception) {
-        log.error(exception.getMessage());
+        log.error(exception.getMessage(), exception);
         return new JsonResult<>(ResultCode.METHOD_NOT_ALLOWED, null, exception.getMessage());
     }
 
@@ -78,15 +85,17 @@ public class GlobalExceptionHandler {
     /**
      * 已定义的基础异常
      */
+    @ResponseBody
     @ExceptionHandler(value = BaseException.class)
     public JsonResult<Object> baseExceptionHandler(BaseException exception) {
-        log.error(exception.getMessage());
+        log.error(exception.getMessage(), exception);
         return new JsonResult<>(exception.getResultCode(), exception.getData(), exception.getMessage());
     }
 
     /**
      * 数据库数据访问异常
      */
+    @ResponseBody
     @ExceptionHandler(value = DataAccessException.class)
     public JsonResult<String> dataAccessException(DataAccessException exception) {
         log.error(exception.getMessage(), exception);
@@ -96,6 +105,7 @@ public class GlobalExceptionHandler {
     /**
      * 未知的异常捕获处理
      */
+    @ResponseBody
     @ExceptionHandler(value = Exception.class)
     public JsonResult<String> allUnknownExceptionHandler(Exception exception) {
         log.error(exception.getMessage(), exception);

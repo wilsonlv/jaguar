@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 系统登陆日志表 服务实现类
+ * 系统登录日志表 服务实现类
  * </p>
  *
  * @author lvws
