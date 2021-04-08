@@ -34,7 +34,7 @@ import static org.jaguar.support.redis.cache.EntityCacheableStrategy.NON_TRANSAC
 @Slf4j
 public abstract class AbstractRedisCacheService<T extends BaseModel, M extends BaseMapper<T>> extends BaseService<T, M> {
 
-    @Autowired
+    @Autowired(required = false)
     private FieldEditLogService fieldEditLogService;
     @Autowired
     protected RedisTemplate<String, Serializable> redisTemplate;
@@ -119,11 +119,11 @@ public abstract class AbstractRedisCacheService<T extends BaseModel, M extends B
         String cacheKey = this.getCacheKey(entity.getId());
         redisTemplate.delete(cacheKey);
 
-        long currentUser = this.fieldEditLogService.getCurrentUser();
         T org = this.mapper.selectById(entity.getId());
         Assert.validateId(org, "实体", entity.getId());
 
-        if (entity instanceof FieldEditLogable) {
+        if (entity instanceof FieldEditLogable && this.fieldEditLogService != null) {
+            long currentUser = this.fieldEditLogService.getCurrentUser();
             FieldEditLogable fieldEditLogable = (FieldEditLogable) entity;
             fieldEditLogable.setUpdateBy(currentUser);
             fieldEditLogable.setUpdateTime(LocalDateTime.now());
