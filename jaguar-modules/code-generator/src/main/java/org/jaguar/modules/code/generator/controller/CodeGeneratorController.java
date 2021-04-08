@@ -1,8 +1,8 @@
 package org.jaguar.modules.code.generator.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -33,8 +33,8 @@ public class CodeGeneratorController extends BaseController<CodeGenerator, CodeG
 
     @ApiOperation(value = "查询数据库表")
     @GetMapping(value = "/show_tables")
-    public JsonResult<IPage<CodeGenerator>> showTables(
-            @ApiIgnore IPage<CodeGenerator> page,
+    public JsonResult<Page<CodeGenerator>> showTables(
+            @ApiIgnore Page<CodeGenerator> page,
             @ApiParam(value = "模糊表名") @RequestParam(required = false) String fuzzyTableName) {
 
         if (page.orders().size() == 0) {

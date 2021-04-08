@@ -22,12 +22,16 @@ import java.io.PrintWriter;
 public class AuthExceptionHandler implements AuthenticationEntryPoint {
 
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e)
-            throws IOException, ServletException {
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException {
         if (e instanceof InsufficientAuthenticationException) {
             //需要登录
             log.info("用户需要登录，访问[{}]失败", request.getRequestURI());
 
+            try (PrintWriter writer = response.getWriter()) {
+                JsonResult<?> jsonResult = new JsonResult<>(ResultCode.UNAUTHORIZED, null, e.getMessage());
+                writer.write(JSONObject.toJSONString(jsonResult));
+            }
+            return;
         } else if (e instanceof BadCredentialsException) {
             // 密码错误
             log.info("登录失败 - 用户密码错误");
@@ -50,15 +54,15 @@ public class AuthExceptionHandler implements AuthenticationEntryPoint {
 
         } else if (e instanceof InternalAuthenticationServiceException) {
             // 内部错误
-            log.info("内部错误 - [%s]", e.getMessage());
+            log.info("内部错误 - [{}]", e.getMessage());
 
         } else {
             // 其他错误
-            log.info("其他错误 - [%s]", e.getMessage());
+            log.info("其他错误 - [{}]", e.getMessage());
         }
 
         try (PrintWriter writer = response.getWriter()) {
-            JsonResult jsonResult = new JsonResult<>(ResultCode.CONFLICT, null, e.getMessage());
+            JsonResult<?> jsonResult = new JsonResult<>(ResultCode.CONFLICT, null, e.getMessage());
             writer.write(JSONObject.toJSONString(jsonResult));
         }
     }

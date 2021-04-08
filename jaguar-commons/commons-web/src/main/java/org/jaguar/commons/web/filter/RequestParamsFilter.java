@@ -3,6 +3,7 @@ package org.jaguar.commons.web.filter;
 import lombok.extern.slf4j.Slf4j;
 import org.jaguar.commons.utils.DateUtil;
 import org.jaguar.commons.utils.IpUtil;
+import org.springframework.core.annotation.Order;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -19,6 +20,7 @@ import java.util.Enumeration;
  * @since 2017/3/28.
  */
 @Slf4j
+@Order(value = 1)
 @WebFilter(urlPatterns = "/*")
 public class RequestParamsFilter implements Filter {
 

@@ -1,8 +1,6 @@
 package org.jaguar.support.fieldeditlog.intercepter;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.ShiroException;
-import org.jaguar.core.web.LoginUtil;
 import org.jaguar.support.fieldeditlog.service.FieldEditLogService;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -25,11 +23,11 @@ public class FieldEditLogInterceptor extends HandlerInterceptorAdapter {
             throws Exception {
 
         if (handler instanceof HandlerMethod) {
-            try {
+            /*try {
                 FieldEditLogService.CURRENT_USER.set(LoginUtil.getCurrentUser());
             } catch (ShiroException ignored) {
                 log.debug("匿名用户");
-            }
+            }*/
         }
 
         return super.preHandle(request, response, handler);

@@ -1,25 +1,21 @@
 server:
   port: 8088
-  servlet:
-    session:
-      timeout: 3600
-      cookie:
-        name: JAGUAR-SESSION-ID
-    application-display-name: jaguar-system-mgm
-  tomcat:
-    uri-encoding: UTF-8
 
 spring:
+  application:
+    name: jaguar-system-mgm
   profiles:
-    include: security, session-auth, redis, system-mgm, mybatisplus, web, swagger
+    include: mybatisplus, web, swagger, security, session-auth, redis
     active: dev
-  http:
-    encoding:
-      charset: UTF-8
-      force: true
 
 logging:
   level:
     org.jaguar: debug
     com.baomidou.mybatisplus.extension.spring: debug
     springfox: error
+
+jaguar:
+  modules:
+    system:
+      mgm:
+        verify-code-enable: false

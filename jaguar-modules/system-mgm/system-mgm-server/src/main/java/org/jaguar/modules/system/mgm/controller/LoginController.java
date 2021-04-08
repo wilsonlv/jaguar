@@ -1,7 +1,8 @@
 package org.jaguar.modules.system.mgm.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -35,8 +36,8 @@ public class LoginController extends BaseController<Login, LoginMapper, LoginSer
     @ApiOperation(value = "查询系统登录日志表")
     @PreAuthorize("hasAuthority('登录日志管理')")
     @GetMapping(value = "/page")
-    public JsonResult<IPage<Login>> page(
-            @ApiIgnore IPage<Login> page,
+    public JsonResult<Page<Login>> page(
+            @ApiIgnore Page<Login> page,
             @ApiParam(value = "查询信息") Login login) {
 
         LambdaQueryWrapper<Login> wrapper = new JaguarLambdaQueryWrapper<>();

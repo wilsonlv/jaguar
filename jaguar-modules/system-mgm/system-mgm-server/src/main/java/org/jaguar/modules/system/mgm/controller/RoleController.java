@@ -1,7 +1,8 @@
 package org.jaguar.modules.system.mgm.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -37,8 +38,8 @@ public class RoleController extends BaseController<Role, RoleMapper, RoleService
     @ApiOperation(value = "查询系统角色表")
     @PreAuthorize("hasAuthority('角色管理')")
     @GetMapping(value = "/page")
-    public JsonResult<IPage<Role>> page(
-            @ApiIgnore IPage<Role> page,
+    public JsonResult<Page<Role>> page(
+            @ApiIgnore Page<Role> page,
             @ApiParam(value = "模糊角色名称") @RequestParam(required = false) String fuzzyRoleName,
             @ApiParam(value = "角色是否启用") @RequestParam(required = false) Boolean roleEnable) {
 

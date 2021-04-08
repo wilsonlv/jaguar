@@ -8,7 +8,9 @@ import org.springframework.util.ResourceUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author lvws
@@ -19,6 +21,8 @@ public class MenuFunction {
 
     public static final List<MenuFunction> MENU_FUNCTIONS;
 
+    private static final Map<String, MenuFunction> NAME_MAP_MENUFUNCTION = new HashMap<>();
+
     static {
         try {
             File file = ResourceUtils.getFile("classpath:menuFunction.json");
@@ -27,6 +31,8 @@ public class MenuFunction {
         } catch (IOException e) {
             throw new Error(e);
         }
+
+        mapChildren(MENU_FUNCTIONS);
     }
 
     private String type;
@@ -38,26 +44,19 @@ public class MenuFunction {
 
 
     public static boolean hasName(String name) {
-        for (MenuFunction menuFunction : MENU_FUNCTIONS) {
-            if (menuFunction.getName().equals(name)) {
-                return true;
-            } else {
-                return hasName(name, menuFunction.getChildren());
-            }
-        }
-        return false;
+        return NAME_MAP_MENUFUNCTION.containsKey(name);
     }
 
-    private static boolean hasName(String name, List<MenuFunction> menuFunctions) {
-        for (MenuFunction menuFunction : menuFunctions) {
-            if (menuFunction.getName().equals(name)) {
-                return true;
-            } else {
-                return hasName(name, menuFunction.getChildren());
-            }
-        }
+    public static MenuFunction getMenuFunction(String name) {
+        return NAME_MAP_MENUFUNCTION.get(name);
+    }
 
-        return false;
+    private static void mapChildren(List<MenuFunction> menuFunctions) {
+        for (MenuFunction menuFunction : menuFunctions) {
+            NAME_MAP_MENUFUNCTION.put(menuFunction.getName(), menuFunction);
+
+            mapChildren(menuFunction.getChildren());
+        }
     }
 
 }

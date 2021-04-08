@@ -98,10 +98,9 @@ public class User extends BaseModel implements UserDetails {
     @TableField(exist = false)
     private Set<GrantedAuthority> authorities = new HashSet<>();
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
-    }
+    @ApiModelProperty(hidden = true)
+    @TableField(exist = false)
+    private Set<String> menuFunctions = new HashSet<>();
 
     @Override
     public String getPassword() {
@@ -120,7 +119,7 @@ public class User extends BaseModel implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !this.userLocked;
+        return this.userLocked == null || !this.userLocked;
     }
 
     @Override
@@ -130,6 +129,6 @@ public class User extends BaseModel implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.userEnable;
+        return this.userEnable != null ? this.userEnable : true;
     }
 }

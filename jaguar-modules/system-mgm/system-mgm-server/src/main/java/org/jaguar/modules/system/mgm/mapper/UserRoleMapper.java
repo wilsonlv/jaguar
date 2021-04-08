@@ -8,6 +8,7 @@ import org.jaguar.modules.system.mgm.model.UserRole;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -34,4 +35,12 @@ public interface UserRoleMapper extends BaseMapper<UserRole> {
      * @return 用户角色
      */
     List<User> listUserByRoleId(@Param("roleId") @NotNull Long roleId);
+
+    /**
+     * 查询用户菜单
+     *
+     * @param userId 用户ID
+     * @return 权限集合
+     */
+    Set<String> listMenuFunctionNamesByUserId(@Param("userId") @NotNull Long userId);
 }

@@ -1,7 +1,8 @@
 package org.jaguar.modules.system.mgm.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -40,8 +41,8 @@ public class UserController extends BaseController<User, UserMapper, UserService
     @ApiOperation(value = "查询系统用户表")
     @PreAuthorize("hasAuthority('用户管理')")
     @GetMapping(value = "/page")
-    public JsonResult<IPage<User>> page(
-            @ApiIgnore IPage<User> page,
+    public JsonResult<Page<User>> page(
+            @ApiIgnore Page<User> page,
             @ApiParam(value = "模糊用户信息") @RequestParam(required = false) String fuzzyUserInfo,
             @ApiParam(value = "角色数据权限") @RequestParam(required = false) DataScope userDataScope,
             @ApiParam(value = "锁定状态") @RequestParam(required = false) Boolean userLocked,
@@ -65,7 +66,7 @@ public class UserController extends BaseController<User, UserMapper, UserService
     @PreAuthorize("hasAuthority('用户管理')")
     @GetMapping(value = "/{id}")
     public JsonResult<User> detail(@PathVariable Long id) {
-        User user = service.getDetail(id);
+        User user = service.getDetail(id, false);
         return success(user);
     }
 

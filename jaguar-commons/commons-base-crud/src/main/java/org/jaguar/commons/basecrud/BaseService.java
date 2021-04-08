@@ -1,10 +1,10 @@
 package org.jaguar.commons.basecrud;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.jaguar.commons.web.exception.DataCrudException;
@@ -109,14 +109,14 @@ public abstract class BaseService<T extends BaseModel, M extends BaseMapper<T>> 
         }
     }
 
-    public IPage<T> query(IPage<T> page, Wrapper<T> queryWrapper) {
+    public Page<T> query(Page<T> page, Wrapper<T> queryWrapper) {
         if (page.orders().size() == 0) {
             page.orders().add(new OrderItem(DEFAULT_ORDER_COLUMN, false));
         }
         return mapper.selectPage(page, queryWrapper);
     }
 
-    public IPage<Map<String, Object>> queryMaps(IPage<Map<String, Object>> page, Wrapper<T> queryWrapper) {
+    public Page<Map<String, Object>> queryMaps(Page<Map<String, Object>> page, Wrapper<T> queryWrapper) {
         if (page.orders().size() == 0) {
             page.orders().add(new OrderItem(DEFAULT_ORDER_COLUMN, false));
         }

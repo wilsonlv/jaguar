@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -33,20 +33,12 @@ public class UserRoleService extends BaseService<UserRole, UserRoleMapper> {
         return this.mapper.listUserByRoleId(roleId);
     }
 
-    public List<Role> listRoleByUserId(Long userId) {
+    public List<Role> listRoleByUserId(@NotNull Long userId) {
         return this.mapper.listRoleByUserId(userId);
     }
 
-    public List<Long> listRoleIdsByUserId(Long userId) {
-        List<UserRole> userRoleList = this.list(JaguarLambdaQueryWrapper.<UserRole>newInstance()
-                .eq(UserRole::getUserId, userId)
-                .select(UserRole::getRoleId));
-
-        List<Long> roleIds = new ArrayList<>();
-        for (UserRole userRole : userRoleList) {
-            roleIds.add(userRole.getRoleId());
-        }
-        return roleIds;
+    public Set<String> listMenuFunctionNamesByUserId(@NotNull Long userId) {
+        return this.mapper.listMenuFunctionNamesByUserId(userId);
     }
 
     /**

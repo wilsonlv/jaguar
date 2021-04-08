@@ -1,7 +1,7 @@
 package org.jaguar.modules.numbering.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -34,8 +34,8 @@ public class RuleController extends BaseController<Rule, RuleMapper, RuleService
 
     @ApiOperation(value = "查询编号规则表")
     @GetMapping(value = "/page")
-    public JsonResult<IPage<Rule>> page(
-            @ApiIgnore IPage<Rule> page,
+    public JsonResult<Page<Rule>> page(
+            @ApiIgnore Page<Rule> page,
             @ApiParam(value = "模糊编号规则名称") @RequestParam(required = false) String fuzzyName) {
 
         LambdaQueryWrapper<Rule> wrapper = JaguarLambdaQueryWrapper.<Rule>newInstance()

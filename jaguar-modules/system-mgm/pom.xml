@@ -32,7 +32,6 @@
             <artifactId>session-auth</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.jaguar</groupId>
             <artifactId>commons-swagger</artifactId>

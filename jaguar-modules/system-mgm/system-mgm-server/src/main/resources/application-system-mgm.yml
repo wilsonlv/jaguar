@@ -1,5 +1,0 @@
-jaguar:
-  modules:
-    system:
-      mgm:
-        verify-code-enable: true

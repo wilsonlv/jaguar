@@ -1,18 +1,21 @@
 package org.jaguar.modules.system.mgm.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.jaguar.commons.basecrud.Assert;
 import org.jaguar.commons.basecrud.BaseService;
 import org.jaguar.commons.data.encription.SecurityUtil;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import org.jaguar.commons.web.exception.CheckedException;
+import org.jaguar.modules.system.mgm.dto.MenuFunction;
 import org.jaguar.modules.system.mgm.mapper.UserMapper;
 import org.jaguar.modules.system.mgm.model.Role;
 import org.jaguar.modules.system.mgm.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -54,15 +58,43 @@ public class UserService extends BaseService<User, UserMapper> implements UserDe
                 .eq(User::getUserEmail, email));
     }
 
-    public User getDetail(Long currentUser) {
+    /**
+     * 获取用户详情
+     *
+     * @param currentUser                     用户ID
+     * @param withMenuFunctionsAndAuthorities 是否携带菜单功能和权限返回
+     * @return 用户详情
+     */
+    @Transactional
+    public User getDetail(Long currentUser, boolean withMenuFunctionsAndAuthorities) {
         User user = this.getById(currentUser);
         Assert.validateId(user, "用户", currentUser);
 
-        List<Role> roles = userRoleService.listRoleByUserId(currentUser);
+        return this.getDetail(user, withMenuFunctionsAndAuthorities);
+    }
+
+    @Transactional
+    public User getDetail(User user, boolean withMenuFunctionsAndAuthorities) {
+        //获取角色
+        List<Role> roles = userRoleService.listRoleByUserId(user.getId());
         user.setRoles(roles);
 
+        if (withMenuFunctionsAndAuthorities) {
+            //获取菜单功能
+            Set<String> menuFunctionNames = userRoleService.listMenuFunctionNamesByUserId(user.getId());
+            user.setMenuFunctions(menuFunctionNames);
+
+            //获取权限
+            for (String menuFunctionName : menuFunctionNames) {
+                MenuFunction menuFunction = MenuFunction.getMenuFunction(menuFunctionName);
+                if (menuFunction != null && StringUtils.isNotBlank(menuFunction.getPermission())) {
+                    user.getAuthorities().add(new SimpleGrantedAuthority(menuFunction.getPermission()));
+                }
+            }
+        }
         return user;
     }
+
 
     /*----------  个人用户接口  ----------*/
 
@@ -98,16 +130,13 @@ public class UserService extends BaseService<User, UserMapper> implements UserDe
             throw new UsernameNotFoundException(null);
         }
 
-
-
-
-        return user;
+        return getDetail(user.getId(), true);
     }
 
     /*----------  管理类接口  ----------*/
 
     @Transactional
-    public IPage<User> queryWithRole(IPage<User> page, LambdaQueryWrapper<User> wrapper) {
+    public Page<User> queryWithRole(Page<User> page, LambdaQueryWrapper<User> wrapper) {
         page = this.query(page, wrapper);
         for (User user : page.getRecords()) {
             List<Role> userRoleList = userRoleService.listRoleByUserId(user.getId());

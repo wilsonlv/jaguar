@@ -1,12 +1,14 @@
 package org.jaguar.support.redis.cache;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
+import org.jaguar.commons.basecrud.Assert;
+import org.jaguar.commons.basecrud.BaseMapper;
 import org.jaguar.commons.basecrud.BaseModel;
 import org.jaguar.commons.basecrud.BaseService;
-import org.jaguar.core.exception.Assert;
-import org.jaguar.core.exception.CheckedException;
+import org.jaguar.commons.web.exception.CheckedException;
+import org.jaguar.commons.web.exception.DataCrudException;
 import org.jaguar.support.fieldeditlog.FieldEditLogable;
 import org.jaguar.support.fieldeditlog.service.FieldEditLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,7 +139,7 @@ public abstract class AbstractRedisCacheService<T extends BaseModel, M extends B
         boolean success = SqlHelper.retBool(this.mapper.updateById(entity));
         if (!success) {
             log.error("实体信息：" + entity.toString());
-            throw new CheckedException("数据更新失败！");
+            throw new DataCrudException("数据更新失败！");
         } else {
             entity = this.mapper.selectById(entity.getId());
         }

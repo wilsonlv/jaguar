@@ -1,6 +1,7 @@
 package org.jaguar.modules.code.generator.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.config.*;
 import org.apache.commons.lang3.StringUtils;
@@ -37,7 +38,7 @@ public class CodeGeneratorService extends BaseService<CodeGenerator, CodeGenerat
         this.schema = url.substring(url.lastIndexOf('/') + 1);
     }
 
-    public IPage<CodeGenerator> showTables(IPage<CodeGenerator> page, String fuzzyTableName) {
+    public Page<CodeGenerator> showTables(Page<CodeGenerator> page, String fuzzyTableName) {
         return mapper.showTables(page, schema, fuzzyTableName);
     }
 

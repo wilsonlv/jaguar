@@ -1,6 +1,7 @@
 package org.jaguar.modules.code.generator.mapper;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 import org.jaguar.commons.basecrud.BaseMapper;
 import org.jaguar.modules.code.generator.model.CodeGenerator;
@@ -19,6 +20,6 @@ public interface CodeGeneratorMapper extends BaseMapper<CodeGenerator> {
      * @param fuzzyTableName 模糊表名
      * @return 实体类
      */
-    IPage<CodeGenerator> showTables(IPage<CodeGenerator> page, @Param("schema") String schema, @Param("fuzzyTableName") String fuzzyTableName);
+    Page<CodeGenerator> showTables(Page<CodeGenerator> page, @Param("schema") String schema, @Param("fuzzyTableName") String fuzzyTableName);
 
 }

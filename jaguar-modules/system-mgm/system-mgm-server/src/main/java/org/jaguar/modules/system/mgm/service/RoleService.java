@@ -1,7 +1,8 @@
 package org.jaguar.modules.system.mgm.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jaguar.commons.basecrud.Assert;
 import org.jaguar.commons.basecrud.BaseService;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
@@ -37,7 +38,7 @@ public class RoleService extends BaseService<Role, RoleMapper> {
     private RoleMenuService roleMenuService;
 
 
-    public IPage<Role> queryWithUser(IPage<Role> page, LambdaQueryWrapper<Role> wrapper) {
+    public Page<Role> queryWithUser(Page<Role> page, LambdaQueryWrapper<Role> wrapper) {
         page = this.query(page, wrapper);
         for (Role role : page.getRecords()) {
             List<User> users = userRoleService.listUserByRoleId(role.getId());

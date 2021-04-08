@@ -14,7 +14,6 @@ import org.jaguar.commons.web.exception.CheckedException;
 import org.jaguar.modules.system.mgm.config.SystemMgmProperties;
 import org.jaguar.modules.system.mgm.mapper.UserMapper;
 import org.jaguar.modules.system.mgm.model.Login;
-
 import org.jaguar.modules.system.mgm.model.User;
 import org.jaguar.modules.system.mgm.service.LoginService;
 import org.jaguar.modules.system.mgm.service.RoleMenuService;
@@ -23,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
@@ -34,8 +34,6 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author lvws
@@ -55,14 +53,10 @@ public class AuthController extends BaseController<User, UserMapper, UserService
     private ServerProperties serverProperties;
     @Autowired
     private SystemMgmProperties systemMgmProperties;
-
     @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
     private LoginService loginService;
-    @Autowired
-    private RoleMenuService roleMenuService;
 
 
     @ApiOperation(value = "获取图片验证码")
@@ -110,7 +104,6 @@ public class AuthController extends BaseController<User, UserMapper, UserService
         }
     }
 
-
     @ApiOperation(value = "登录")
     @PostMapping(value = "/login")
     public JsonResult<User> login(HttpServletRequest request,
@@ -130,9 +123,13 @@ public class AuthController extends BaseController<User, UserMapper, UserService
         login.setResultCode(HttpStatus.OK.value());
         login.setSystemName(serverProperties.getServlet().getApplicationDisplayName());
 
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(login.getPrincipal(), login.getCredentials());
         try {
-            Authentication authentication = authenticationManager.authenticate(login);
+            Authentication authentication = authenticationManager.authenticate(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            User user = (User) authentication.getPrincipal();
+            login.setUserId(user.getId());
         } finally {
             ExecutorServiceUtil.execute(() -> loginService.insert(login));
         }
@@ -151,7 +148,8 @@ public class AuthController extends BaseController<User, UserMapper, UserService
     @GetMapping(value = "/info")
     public JsonResult<User> getPersonalInfo() {
 
-        User user = service.getDetail(null);
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = service.getDetail(principal.getId(), true);
         return success(user);
     }
 

@@ -1,8 +1,9 @@
 package org.jaguar.commons.basecrud;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.jaguar.commons.web.JsonResult;
 import org.jaguar.commons.web.ResultCode;
@@ -22,11 +23,11 @@ public abstract class BaseController<E extends BaseModel, M extends BaseMapper<E
     @Autowired
     protected S service;
 
-    public JsonResult<? extends IPage<E>> query(IPage<E> page) {
+    public JsonResult<? extends Page<E>> query(Page<E> page) {
         return this.query(page, Wrappers.emptyWrapper());
     }
 
-    public JsonResult<IPage<E>> query(IPage<E> page, Wrapper<E> queryWrapper) {
+    public JsonResult<Page<E>> query(Page<E> page, Wrapper<E> queryWrapper) {
         page = service.query(page, queryWrapper);
         return success(page);
     }
@@ -70,7 +71,7 @@ public abstract class BaseController<E extends BaseModel, M extends BaseMapper<E
         return new JsonResult<>(ResultCode.OK, data, JsonResult.SUCCESS_MSG);
     }
 
-    protected <T> JsonResult<IPage<T>> success(IPage<T> data) {
+    protected <T> JsonResult<Page<T>> success(Page<T> data) {
         return new JsonResult<>(ResultCode.OK, data, JsonResult.SUCCESS_MSG);
     }
 
