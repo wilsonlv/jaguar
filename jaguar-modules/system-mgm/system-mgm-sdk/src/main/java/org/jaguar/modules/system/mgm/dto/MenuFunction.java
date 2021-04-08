@@ -1,23 +1,24 @@
 package org.jaguar.modules.system.mgm.dto;
 
+
 import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
+import lombok.SneakyThrows;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 /**
  * @author lvws
  * @since 2021/4/5
  */
 @Data
-public class MenuFunction {
+public class MenuFunction implements Cloneable, Serializable {
 
     public static final List<MenuFunction> MENU_FUNCTIONS;
 
@@ -43,6 +44,14 @@ public class MenuFunction {
     private List<MenuFunction> children;
 
 
+    private static void mapChildren(List<MenuFunction> menuFunctions) {
+        for (MenuFunction menuFunction : menuFunctions) {
+            NAME_MAP_MENUFUNCTION.put(menuFunction.getName(), menuFunction);
+
+            mapChildren(menuFunction.getChildren());
+        }
+    }
+
     public static boolean hasName(String name) {
         return NAME_MAP_MENUFUNCTION.containsKey(name);
     }
@@ -51,12 +60,22 @@ public class MenuFunction {
         return NAME_MAP_MENUFUNCTION.get(name);
     }
 
-    private static void mapChildren(List<MenuFunction> menuFunctions) {
-        for (MenuFunction menuFunction : menuFunctions) {
-            NAME_MAP_MENUFUNCTION.put(menuFunction.getName(), menuFunction);
+    public static List<MenuFunction> filterMenuFunctions(Set<String> names) {
+        return filterMenuFunctions(MENU_FUNCTIONS, names);
+    }
 
-            mapChildren(menuFunction.getChildren());
+    @SneakyThrows
+    private static List<MenuFunction> filterMenuFunctions(List<MenuFunction> menuFunctions, Set<String> names) {
+        List<MenuFunction> filterMenuFunctions = new ArrayList<>();
+        for (MenuFunction menuFunction : menuFunctions) {
+            if (names.contains(menuFunction.getName())) {
+                MenuFunction copy = (MenuFunction) BeanUtils.cloneBean(menuFunction);
+                filterMenuFunctions.add(copy);
+
+                copy.setChildren(filterMenuFunctions(copy.getChildren(), names));
+            }
         }
+        return filterMenuFunctions;
     }
 
 }

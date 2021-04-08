@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jaguar.commons.basecrud.BaseModel;
+import org.jaguar.modules.system.mgm.dto.MenuFunction;
 import org.jaguar.modules.system.mgm.enums.DataScope;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -100,7 +101,7 @@ public class User extends BaseModel implements UserDetails {
 
     @ApiModelProperty(hidden = true)
     @TableField(exist = false)
-    private Set<String> menuFunctions = new HashSet<>();
+    private List<MenuFunction> menuFunctions = new ArrayList<>();
 
     @Override
     public String getPassword() {

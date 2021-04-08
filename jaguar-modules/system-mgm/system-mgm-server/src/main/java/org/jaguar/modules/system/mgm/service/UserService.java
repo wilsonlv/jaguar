@@ -82,7 +82,7 @@ public class UserService extends BaseService<User, UserMapper> implements UserDe
         if (withMenuFunctionsAndAuthorities) {
             //获取菜单功能
             Set<String> menuFunctionNames = userRoleService.listMenuFunctionNamesByUserId(user.getId());
-            user.setMenuFunctions(menuFunctionNames);
+            user.setMenuFunctions(MenuFunction.filterMenuFunctions(menuFunctionNames));
 
             //获取权限
             for (String menuFunctionName : menuFunctionNames) {
