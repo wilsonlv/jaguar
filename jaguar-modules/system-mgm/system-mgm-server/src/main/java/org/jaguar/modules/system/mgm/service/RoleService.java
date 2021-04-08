@@ -72,7 +72,7 @@ public class RoleService extends BaseService<Role, RoleMapper> {
     }
 
     @Transactional
-    public void checkAnddelete(Long id) {
+    public void checkAndDelete(Long id) {
         if (userRoleService.exists(JaguarLambdaQueryWrapper.<UserRole>newInstance()
                 .eq(UserRole::getRoleId, id))) {
             throw new CheckedException("该角色下已绑定用户，不可删除！");

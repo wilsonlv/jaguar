@@ -75,7 +75,7 @@ public class RoleController extends BaseController<Role, RoleMapper, RoleService
     @DeleteMapping(value = "/{id}")
     public JsonResult<?> del(@PathVariable Long id) {
 
-        service.checkAnddelete(id);
+        service.checkAndDelete(id);
         return success();
     }
 

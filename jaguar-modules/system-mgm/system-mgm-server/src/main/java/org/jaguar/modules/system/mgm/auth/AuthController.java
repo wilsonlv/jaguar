@@ -148,25 +148,8 @@ public class AuthController extends BaseController<User, UserMapper, UserService
     @GetMapping(value = "/info")
     public JsonResult<User> getPersonalInfo() {
 
-        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = service.getDetail(principal.getId(), true);
+        User user = service.getDetail(SecurityUtil.getCurrentUserId(), true);
         return success(user);
-    }
-
-    /*@ApiOperation(value = "获取当前用户授权菜单")
-    @GetMapping(value = "/menu/tree/view_permission")
-    public JsonResult<List<Menu>> menuTreeViewPermission() {
-
-        List<Menu> menuTree = roleMenuService.menuTreeViewPermissionByUserId(getCurrentUser());
-        return success(menuTree);
-    }
-
-    @ApiOperation(value = "获取当前用户接口权限")
-    @GetMapping(value = "/permission/list")
-    public JsonResult<Set<String>> permissionList() {
-
-        Set<String> permissions = roleMenuService.listPermissionByUserId(getCurrentUser());
-        return success(permissions);
     }
 
     @ApiOperation(value = "修改密码")
@@ -176,8 +159,8 @@ public class AuthController extends BaseController<User, UserMapper, UserService
             @ApiParam(value = "新密码", required = true) @RequestParam String newPassword) {
 
         synchronized (this) {
-            service.modifyPassword(getCurrentUser(), oldPassword, newPassword);
+            service.modifyPassword(SecurityUtil.getCurrentUserId(), oldPassword, newPassword);
         }
         return success();
-    }*/
+    }
 }
