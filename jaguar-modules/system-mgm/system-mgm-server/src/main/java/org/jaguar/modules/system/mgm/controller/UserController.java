@@ -66,7 +66,7 @@ public class UserController extends BaseController<User, UserMapper, UserService
     @PreAuthorize("hasAuthority('用户管理')")
     @GetMapping(value = "/{id}")
     public JsonResult<User> detail(@PathVariable Long id) {
-        User user = service.getDetail(id, false);
+        User user = service.getDetail(id);
         return success(user);
     }
 

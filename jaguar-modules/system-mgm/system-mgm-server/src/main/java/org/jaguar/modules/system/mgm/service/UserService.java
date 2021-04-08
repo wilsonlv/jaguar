@@ -35,7 +35,7 @@ import java.util.Set;
  * @since 2019-11-08
  */
 @Service
-public class UserService extends BaseService<User, UserMapper> implements UserDetailsService {
+public class UserService extends BaseService<User, UserMapper> {
 
     @Lazy
     @Autowired
@@ -66,71 +66,15 @@ public class UserService extends BaseService<User, UserMapper> implements UserDe
      * @return 用户详情
      */
     @Transactional
-    public User getDetail(Long currentUser, boolean withMenuFunctionsAndAuthorities) {
+    public User getDetail(Long currentUser) {
         User user = this.getById(currentUser);
         Assert.validateId(user, "用户", currentUser);
 
-        return this.getDetail(user, withMenuFunctionsAndAuthorities);
-    }
-
-    @Transactional
-    public User getDetail(User user, boolean withMenuFunctionsAndAuthorities) {
         //获取角色
         List<Role> roles = userRoleService.listRoleByUserId(user.getId());
         user.setRoles(roles);
 
-        if (withMenuFunctionsAndAuthorities) {
-            //获取菜单功能
-            Set<String> menuFunctionNames = userRoleService.listMenuFunctionNamesByUserId(user.getId());
-            user.setMenuFunctions(MenuFunction.filterMenuFunctions(menuFunctionNames));
-
-            //获取权限
-            for (String menuFunctionName : menuFunctionNames) {
-                MenuFunction menuFunction = MenuFunction.getMenuFunction(menuFunctionName);
-                if (menuFunction != null && StringUtils.isNotBlank(menuFunction.getPermission())) {
-                    user.getAuthorities().add(new SimpleGrantedAuthority(menuFunction.getPermission()));
-                }
-            }
-        }
         return user;
-    }
-
-
-    /*----------  个人用户接口  ----------*/
-
-    @Transactional
-    public void modifyPassword(Long currentUser, String oldPassword, String newPassword) {
-        User user = this.getById(currentUser);
-
-        if (!user.getUserPassword().equals(oldPassword)) {
-            throw new CheckedException("密码错误");
-        }
-
-        if (!SecurityUtil.checkPassword(newPassword)) {
-            throw new CheckedException("密码格式为包含数字，字母大小写的6-20位字符串！");
-        }
-
-        user = new User();
-        user.setId(currentUser);
-        user.setUserPassword(newPassword);
-        this.updateById(user);
-    }
-
-    /**
-     * security 登录时调用
-     *
-     * @param username 用户账号
-     * @return 用户
-     * @throws UsernameNotFoundException 用户名和密码错误
-     */
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = this.getByAccount(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(null);
-        }
-
-        return getDetail(user.getId(), true);
     }
 
     /*----------  管理类接口  ----------*/

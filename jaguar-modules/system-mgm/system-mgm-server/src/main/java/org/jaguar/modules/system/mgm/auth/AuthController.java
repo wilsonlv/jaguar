@@ -44,7 +44,7 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/auth")
 @Api(tags = "个人登录和权限管理")
-public class AuthController extends BaseController<User, UserMapper, UserService> {
+public class AuthController extends BaseController<User, UserMapper, AuthService> {
 
 
     public static final String PIC_VERIFICATION_CODE = "PIC_VERIFICATION_CODE";
@@ -148,7 +148,7 @@ public class AuthController extends BaseController<User, UserMapper, UserService
     @GetMapping(value = "/info")
     public JsonResult<User> getPersonalInfo() {
 
-        User user = service.getDetail(SecurityUtil.getCurrentUserId(), true);
+        User user = service.getDetail(SecurityUtil.getCurrentUser());
         return success(user);
     }
 

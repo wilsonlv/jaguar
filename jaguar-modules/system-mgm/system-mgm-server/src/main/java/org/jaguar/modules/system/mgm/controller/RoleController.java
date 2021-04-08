@@ -74,8 +74,9 @@ public class RoleController extends BaseController<Role, RoleMapper, RoleService
     @PreAuthorize("hasAuthority('角色管理')")
     @DeleteMapping(value = "/{id}")
     public JsonResult<?> del(@PathVariable Long id) {
-
-        service.checkAndDelete(id);
+        synchronized (this) {
+            service.checkAndDelete(id);
+        }
         return success();
     }
 

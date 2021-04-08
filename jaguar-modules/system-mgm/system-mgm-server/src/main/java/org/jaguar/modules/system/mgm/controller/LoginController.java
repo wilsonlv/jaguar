@@ -36,9 +36,8 @@ public class LoginController extends BaseController<Login, LoginMapper, LoginSer
     @ApiOperation(value = "查询系统登录日志表")
     @PreAuthorize("hasAuthority('登录日志管理')")
     @GetMapping(value = "/page")
-    public JsonResult<Page<Login>> page(
-            @ApiIgnore Page<Login> page,
-            @ApiParam(value = "查询信息") Login login) {
+    public JsonResult<Page<Login>> page(@ApiIgnore Page<Login> page,
+                                        @ApiParam(value = "查询信息") Login login) {
 
         LambdaQueryWrapper<Login> wrapper = new JaguarLambdaQueryWrapper<>();
         wrapper.setEntity(login);
