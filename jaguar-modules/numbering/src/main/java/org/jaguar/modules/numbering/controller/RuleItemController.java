@@ -13,6 +13,7 @@ import org.jaguar.commons.web.JsonResult;
 import org.jaguar.modules.numbering.mapper.RuleItemMapper;
 import org.jaguar.modules.numbering.model.RuleItem;
 import org.jaguar.modules.numbering.service.RuleItemService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -36,6 +37,7 @@ import javax.validation.constraints.NotNull;
 public class RuleItemController extends BaseController<RuleItem, RuleItemMapper, RuleItemService> {
 
     @ApiOperation(value = "查询编号规则条目")
+    @PreAuthorize("hasAuthority('编号规则管理')")
     @GetMapping(value = "/page")
     public JsonResult<Page<RuleItem>> page(
             @ApiIgnore Page<RuleItem> page,
@@ -48,18 +50,21 @@ public class RuleItemController extends BaseController<RuleItem, RuleItemMapper,
     }
 
     @ApiOperation(value = "编号规则条目详情")
+    @PreAuthorize("hasAuthority('编号规则管理')")
     @GetMapping(value = "/{id}")
     public JsonResult<RuleItem> detail(@PathVariable Long id) {
         return super.getById(id);
     }
 
     @ApiOperation(value = "更新编号规则条目")
+    @PreAuthorize("hasAuthority('编号规则管理')")
     @PostMapping(value = "/update")
     public JsonResult<RuleItem> update(@RequestBody @Valid RuleItem ruleItem) {
         return super.saveOrUpdate(ruleItem);
     }
 
     @ApiOperation(value = "删除编号规则条目")
+    @PreAuthorize("hasAuthority('编号规则管理')")
     @DeleteMapping(value = "/{id}")
     public JsonResult<?> del(@PathVariable Long id) {
         return super.delete(id);

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jaguar.commons.web.JsonResult;
 import org.jaguar.commons.web.ResultCode;
 import org.jaguar.commons.web.exception.BaseException;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.ObjectError;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.validation.ConstraintViolationException;
@@ -23,7 +25,8 @@ import javax.validation.ConstraintViolationException;
  * @since 2021/4/5
  */
 @Slf4j
-@ControllerAdvice
+@Configuration
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     /**
@@ -32,7 +35,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
     public JsonResult<String> methodArgumentNotValidException(MethodArgumentNotValidException exception) {
-        log.error(exception.getMessage(), exception);
+        log.error(exception.getMessage());
         StringBuilder errorMessage = new StringBuilder();
         for (ObjectError objectError : exception.getBindingResult().getAllErrors()) {
             errorMessage.append("【").append(objectError.getDefaultMessage()).append("】");
@@ -48,7 +51,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {MethodArgumentTypeMismatchException.class, ConstraintViolationException.class,
             MissingServletRequestParameterException.class, HttpMediaTypeNotSupportedException.class, HttpMessageNotReadableException.class})
     public JsonResult<String> badRequestExceptionHandler(Exception exception) {
-        log.error(exception.getMessage(), exception);
+        log.error(exception.getMessage());
         return new JsonResult<>(ResultCode.BAD_REQUEST, null, exception.getMessage());
     }
 
@@ -58,7 +61,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
     public JsonResult<String> httpRequestMethodNotSupportedExceptionHandler(Exception exception) {
-        log.error(exception.getMessage(), exception);
+        log.error(exception.getMessage());
         return new JsonResult<>(ResultCode.METHOD_NOT_ALLOWED, null, exception.getMessage());
     }
 

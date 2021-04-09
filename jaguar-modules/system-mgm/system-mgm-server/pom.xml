@@ -19,13 +19,27 @@
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>handler-log</artifactId>
+            <artifactId>system-mgm-sdk</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>system-mgm-sdk</artifactId>
+            <artifactId>session-auth</artifactId>
             <version>${jaguar.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
     </dependencies>
 

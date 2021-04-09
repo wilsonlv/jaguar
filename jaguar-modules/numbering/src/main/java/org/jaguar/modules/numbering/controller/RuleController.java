@@ -11,6 +11,7 @@ import org.jaguar.commons.web.JsonResult;
 import org.jaguar.modules.numbering.mapper.RuleMapper;
 import org.jaguar.modules.numbering.model.Rule;
 import org.jaguar.modules.numbering.service.RuleService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -33,6 +34,7 @@ import javax.validation.Valid;
 public class RuleController extends BaseController<Rule, RuleMapper, RuleService> {
 
     @ApiOperation(value = "查询编号规则表")
+    @PreAuthorize("hasAuthority('编号规则管理')")
     @GetMapping(value = "/page")
     public JsonResult<Page<Rule>> page(
             @ApiIgnore Page<Rule> page,
@@ -44,12 +46,14 @@ public class RuleController extends BaseController<Rule, RuleMapper, RuleService
     }
 
     @ApiOperation(value = "编号规则表详情")
+    @PreAuthorize("hasAuthority('编号规则管理')")
     @GetMapping(value = "/{id}")
     public JsonResult<Rule> detail(@PathVariable Long id) {
         return super.getById(id);
     }
 
     @ApiOperation(value = "更新编号规则")
+    @PreAuthorize("hasAuthority('编号规则管理')")
     @PostMapping
     public JsonResult<Rule> update(@RequestBody @Valid Rule entity) {
         synchronized (this) {
@@ -59,6 +63,7 @@ public class RuleController extends BaseController<Rule, RuleMapper, RuleService
     }
 
     @ApiOperation(value = "删除编号规则表")
+    @PreAuthorize("hasAuthority('编号规则管理')")
     @DeleteMapping(value = "/{id}")
     public JsonResult<?> del(@PathVariable Long id) {
         return super.delete(id);

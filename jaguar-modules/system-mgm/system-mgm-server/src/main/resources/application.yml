@@ -5,8 +5,12 @@ spring:
   application:
     name: jaguar-system-mgm
   profiles:
-    include: mybatisplus, web, swagger, security, session-auth, redis
+    include: mybatisplus, web, swagger, security, redis
     active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
 
 logging:
   level:

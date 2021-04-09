@@ -1,0 +1,15 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: jaguar-numbering
+  profiles:
+    include: mybatisplus, web, swagger, security, session-auth, redis
+    active: dev
+
+logging:
+  level:
+    org.jaguar: debug
+    com.baomidou.mybatisplus.extension.spring: debug
+    springfox: error
