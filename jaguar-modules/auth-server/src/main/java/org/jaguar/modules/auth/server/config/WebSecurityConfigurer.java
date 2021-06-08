@@ -44,8 +44,8 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .successHandler(loginSuccessHandler).failureHandler(loginFailureHandler)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/oauth/token", "/oauth/check_token", "/login", "/login/401").permitAll()
-                .antMatchers("/swagger-resources/**", "webjars/**", "/*/api-docs").permitAll()
+                .antMatchers("/oauth/token", "/oauth/check_token", "/login/*").permitAll()
+                .antMatchers("/swagger-resources", "/swagger-resources/**", "/v2/**").permitAll()
                 .anyRequest().authenticated()
                 .and().cors()
                 .and().csrf().disable()
@@ -53,9 +53,11 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         web.ignoring().antMatchers("*.html")
                 .antMatchers("*.css")
-                .antMatchers("*.js");
+                .antMatchers("*.js")
+                .antMatchers("*.png")
+                .antMatchers("/swagger-ui/**");
     }
 }

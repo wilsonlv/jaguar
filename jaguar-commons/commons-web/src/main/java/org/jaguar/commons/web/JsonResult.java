@@ -26,6 +26,9 @@ public class JsonResult<T> implements Serializable {
         return new JsonResult<>(ResultCode.OK, data, SUCCESS_MSG);
     }
 
+    public static JsonResult<Void> fail(String message) {
+        return new JsonResult<>(ResultCode.CONFLICT, null, message);
+    }
 
     @ApiModelProperty(value = "结果码")
     private ResultCode resultCode;

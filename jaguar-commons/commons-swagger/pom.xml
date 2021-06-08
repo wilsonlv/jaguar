@@ -12,19 +12,14 @@
     <artifactId>commons-swagger</artifactId>
 
     <properties>
-        <springfox.version>2.7.0</springfox.version>
+        <springfox.version>3.0.0</springfox.version>
     </properties>
 
     <dependencies>
         <!-- swagger -->
         <dependency>
             <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${springfox.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
+            <artifactId>springfox-boot-starter</artifactId>
             <version>${springfox.version}</version>
         </dependency>
     </dependencies>

@@ -26,11 +26,3 @@ spring:
       charset: UTF-8
       force: true
       enabled: true
-
-security:
-  oauth2:
-    client:
-      client-id: client1
-      client-secret: client1
-    authorization:
-      check-token-access: http://localhost:7777/oauth/check_token
