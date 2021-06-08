@@ -3,7 +3,7 @@
 <mapper namespace="org.jaguar.modules.upms.server.mapper.UserMapper">
 
 	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="org.jaguar.modules.upms.model.User">
+	<resultMap id="BaseResultMap" type="org.jaguar.modules.upms.server.model.User">
 		<id column="id_" property="id" />
 		<result column="user_account" property="userAccount" />
 		<result column="user_phone" property="userPhone" />

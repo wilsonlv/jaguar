@@ -3,7 +3,7 @@
 <mapper namespace="org.jaguar.modules.upms.server.mapper.RoleMenuMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="org.jaguar.modules.upms.model.RoleMenu">
+    <resultMap id="BaseResultMap" type="org.jaguar.modules.upms.server.model.RoleMenu">
         <id column="id_" property="id"/>
         <result column="role_id" property="roleId"/>
         <result column="menu_function_name" property="menuFunctionName"/>

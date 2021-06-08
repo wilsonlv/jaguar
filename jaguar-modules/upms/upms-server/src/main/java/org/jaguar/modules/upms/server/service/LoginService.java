@@ -4,7 +4,7 @@ import org.jaguar.commons.enums.ClientType;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import org.jaguar.commons.basecrud.BaseService;
 import org.jaguar.modules.upms.server.mapper.LoginMapper;
-import org.jaguar.modules.upms.model.Login;
+import org.jaguar.modules.upms.server.model.Login;
 import org.springframework.stereotype.Service;
 
 /**

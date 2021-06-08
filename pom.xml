@@ -120,14 +120,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- 第三方工具包 -->
-        <!--
-        <dependency>
-            <groupId>org.javassist</groupId>
-            <artifactId>javassist</artifactId>
-            <version>3.21.0-GA</version>
-        </dependency>-->
-
     </dependencies>
 
     <build>

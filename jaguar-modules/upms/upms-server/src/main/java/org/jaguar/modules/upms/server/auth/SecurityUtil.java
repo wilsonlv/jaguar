@@ -1,6 +1,6 @@
 package org.jaguar.modules.upms.server.auth;
 
-import org.jaguar.modules.upms.model.User;
+import org.jaguar.modules.upms.server.model.User;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;

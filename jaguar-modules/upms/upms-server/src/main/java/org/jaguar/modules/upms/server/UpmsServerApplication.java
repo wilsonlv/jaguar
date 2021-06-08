@@ -4,7 +4,6 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
-import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 /**
  * @author lvws
@@ -12,7 +11,6 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
  */
 @MapperScan(basePackages = "org.jaguar.modules.system.mgm.mapper")
 @ServletComponentScan("org.jaguar")
-@EnableRedisHttpSession
 @SpringBootApplication
 public class UpmsServerApplication {
 

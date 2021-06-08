@@ -1,7 +1,7 @@
 package org.jaguar.modules.upms.server.mapper;
 
 import org.jaguar.commons.basecrud.BaseMapper;
-import org.jaguar.modules.upms.model.RoleMenu;
+import org.jaguar.modules.upms.server.model.RoleMenu;
 
 /**
  * <p>

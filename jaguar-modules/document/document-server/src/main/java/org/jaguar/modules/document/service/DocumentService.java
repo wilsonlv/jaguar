@@ -96,7 +96,7 @@ public class DocumentService extends BaseService<Document, DocumentMapper> imple
             document.setExtension(originalFilename.split("\\.")[1]);
             document.setAbsolutePath(filePath);
             document.setTotalSpace(file.getSize());
-            document = this.insert(document);
+            this.insert(document);
 
             documentList.add(document);
         }

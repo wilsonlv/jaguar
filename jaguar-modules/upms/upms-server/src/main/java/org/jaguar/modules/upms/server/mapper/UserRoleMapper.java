@@ -2,9 +2,9 @@ package org.jaguar.modules.upms.server.mapper;
 
 import org.apache.ibatis.annotations.Param;
 import org.jaguar.commons.basecrud.BaseMapper;
-import org.jaguar.modules.upms.model.Role;
-import org.jaguar.modules.upms.model.User;
-import org.jaguar.modules.upms.model.UserRole;
+import org.jaguar.modules.upms.server.model.Role;
+import org.jaguar.modules.upms.server.model.User;
+import org.jaguar.modules.upms.server.model.UserRole;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;

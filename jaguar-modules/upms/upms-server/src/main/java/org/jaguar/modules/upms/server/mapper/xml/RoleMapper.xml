@@ -3,7 +3,7 @@
 <mapper namespace="org.jaguar.modules.upms.server.mapper.RoleMapper">
 
 	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="org.jaguar.modules.upms.model.Role">
+	<resultMap id="BaseResultMap" type="org.jaguar.modules.upms.server.model.Role">
 		<id column="id_" property="id" />
 		<result column="role_name" property="roleName" />
 		<result column="role_locked" property="roleLocked" />

@@ -1,6 +1,6 @@
 package org.jaguar.modules.upms.server.mapper;
 
-import org.jaguar.modules.upms.model.Role;
+import org.jaguar.modules.upms.server.model.Role;
 import org.jaguar.commons.basecrud.BaseMapper;
 
 /**

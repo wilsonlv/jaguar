@@ -1,4 +1,6 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-      org.jaguar.commons.security.config.SpringSecurityProperties,\
-      org.jaguar.commons.security.component.AuthExceptionHandler,\
-      org.jaguar.commons.security.config.WebSecurityConfigurer
+    org.jaguar.commons.security.component.AuthenticationExceptionHandler,\
+    org.jaguar.commons.security.config.SpringSecurityProperties,\
+    org.jaguar.commons.security.config.ResourceServerConfigurer,\
+    org.jaguar.commons.security.config.TokenServiceConfig,\
+    org.springframework.boot.autoconfigure.security.oauth2.authserver.AuthorizationServerProperties

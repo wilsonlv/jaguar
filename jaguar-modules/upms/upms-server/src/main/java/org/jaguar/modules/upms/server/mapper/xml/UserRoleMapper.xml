@@ -3,13 +3,13 @@
 <mapper namespace="org.jaguar.modules.upms.server.mapper.UserRoleMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="org.jaguar.modules.upms.model.UserRole">
+    <resultMap id="BaseResultMap" type="org.jaguar.modules.upms.server.model.UserRole">
         <id column="id_" property="id"/>
         <result column="user_id" property="userId"/>
         <result column="role_id" property="roleId"/>
     </resultMap>
 
-    <select id="listRoleByUserId" resultType="org.jaguar.modules.upms.model.Role">
+    <select id="listRoleByUserId" resultType="org.jaguar.modules.upms.server.model.Role">
         SELECT r.*
         FROM jaguar_modules_system_user_role ur
                  LEFT JOIN jaguar_modules_system_role r ON r.id_ = ur.role_id
@@ -19,7 +19,7 @@
           AND ur.user_id = #{userId}
     </select>
 
-    <select id="listUserByRoleId" resultType="org.jaguar.modules.upms.model.User">
+    <select id="listUserByRoleId" resultType="org.jaguar.modules.upms.server.model.User">
         SELECT u.user_account,
                u.user_phone,
                u.user_email,

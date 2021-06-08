@@ -5,7 +5,7 @@ import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import org.jaguar.commons.web.exception.CheckedException;
 import org.jaguar.modules.upms.dto.MenuFunction;
 import org.jaguar.modules.upms.server.mapper.RoleMenuMapper;
-import org.jaguar.modules.upms.model.RoleMenu;
+import org.jaguar.modules.upms.server.model.RoleMenu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

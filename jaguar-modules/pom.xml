@@ -18,6 +18,7 @@
         <module>document</module>
         <module>numbering</module>
         <module>upms</module>
+        <module>demo-resource-server</module>
     </modules>
 
 </project>

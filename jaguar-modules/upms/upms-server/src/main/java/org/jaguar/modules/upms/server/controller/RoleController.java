@@ -11,7 +11,7 @@ import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import org.jaguar.commons.web.JsonResult;
 import org.jaguar.modules.upms.dto.MenuFunction;
 import org.jaguar.modules.upms.server.mapper.RoleMapper;
-import org.jaguar.modules.upms.model.Role;
+import org.jaguar.modules.upms.server.model.Role;
 import org.jaguar.modules.upms.server.service.RoleService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;

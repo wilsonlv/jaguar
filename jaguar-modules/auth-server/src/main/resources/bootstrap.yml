@@ -1,0 +1,31 @@
+server:
+  port: 7777
+  tomcat:
+    uri-encoding: UTF-8
+
+spring:
+  application:
+    name: @artifactId@
+  profiles:
+    active: dev
+  redis:
+    database: 6
+    host: 127.0.0.1
+    port: 6379
+    password:
+    timeout: 2000
+    lettuce:
+      pool:
+        min-idle: 0
+        max-idle: 8
+        max-active: 8
+        max-wait: 1000
+        time-between-eviction-runs: 100000
+  session:
+    store-type: redis
+    timeout: 1800
+  http:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true

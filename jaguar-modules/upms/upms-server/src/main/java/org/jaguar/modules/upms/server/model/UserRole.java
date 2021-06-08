@@ -1,4 +1,4 @@
-package org.jaguar.modules.upms.model;
+package org.jaguar.modules.upms.server.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;

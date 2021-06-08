@@ -9,57 +9,57 @@ public enum ResultCode {
     /**
      * 请求成功
      */
-    OK(200, "OK"),
+    OK(200, "请求成功"),
 
     /**
      * 请求参数错误
      */
-    BAD_REQUEST(400, "Bad Request"),
+    BAD_REQUEST(400, "请求参数错误"),
 
     /**
      * 没有登录
      */
-    UNAUTHORIZED(401, "Unauthorized"),
+    UNAUTHORIZED(401, "没有登录"),
 
     /**
      * 没有权限
      */
-    FORBIDDEN(403, "Forbidden"),
+    FORBIDDEN(403, "没有权限"),
 
     /**
      * 请求方式错误
      */
-    METHOD_NOT_ALLOWED(405, "Method Not Allowed"),
+    METHOD_NOT_ALLOWED(405, "请求方式错误"),
 
     /**
      * 检出异常
      */
-    CONFLICT(409, "Conflict"),
+    CONFLICT(409, "检出异常"),
 
     /**
      * 请求频繁
      */
-    TOO_MANY_REQUESTS(429, "Too Many Requests"),
+    TOO_MANY_REQUESTS(429, "请求频繁"),
 
     /**
-     * 内部错误
+     * 系统内部错误
      */
-    INTERNAL_SERVER_ERROR(500, "Internal Server Error"),
+    INTERNAL_SERVER_ERROR(500, "系统内部错误"),
 
     /**
      * 网关错误
      */
-    BAD_GATEWAY(502, "Bad Gateway"),
+    BAD_GATEWAY(502, "网关错误"),
 
     /**
      * 特殊业务异常
      */
-    SPECIAL_EXCEPTION(1000, "Special Exception"),
+    SPECIAL_EXCEPTION(1000, "特殊业务异常"),
 
     /**
      * 增删改查错误
      */
-    DATA_CRUD_EXCEPTION(1001, "Data Crud Exception");
+    DATA_CRUD_EXCEPTION(1001, "增删改查错误");
 
     private final int value;
     private final String reasonPhrase;

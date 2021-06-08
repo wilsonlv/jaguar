@@ -66,26 +66,6 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 数据权限异常
-     */
-    /*@ExceptionHandler(value = {AuthenticationException.class})
-    public JsonResult<String> authenticationExceptionHandler(Exception exception) {
-        log.error(exception.getMessage());
-        return new JsonResult<>(ResultCode.FORBIDDEN, null, exception.getMessage());
-    }*/
-
-    /**
-     * Controller接口注解RequiresPermissions异常
-     */
-    /*@ExceptionHandler(value = {UnauthorizedException.class})
-    public JsonResult<String> unauthorizedExceptionHandler(Exception exception) {
-        String message = exception.getMessage();
-        log.error(message);
-        String permission = message.substring(message.indexOf('[') + 1, message.length() - 1);
-        return new JsonResult<>(ResultCode.FORBIDDEN, null, "对不起，您没有【" + permission + "】操作权限！");
-    }*/
-
-    /**
      * 已定义的基础异常
      */
     @ResponseBody

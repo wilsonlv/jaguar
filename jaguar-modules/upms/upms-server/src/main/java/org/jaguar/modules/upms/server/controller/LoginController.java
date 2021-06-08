@@ -10,7 +10,7 @@ import org.jaguar.commons.basecrud.BaseController;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import org.jaguar.commons.web.JsonResult;
 import org.jaguar.modules.upms.server.mapper.LoginMapper;
-import org.jaguar.modules.upms.model.Login;
+import org.jaguar.modules.upms.server.model.Login;
 import org.jaguar.modules.upms.server.service.LoginService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;

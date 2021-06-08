@@ -169,7 +169,7 @@ public class RuleSerialService extends BaseService<RuleSerial, RuleSerialMapper>
                         ruleSerial.setRuleItemId(item.getId());
                         ruleSerial.setParttern(patternStr);
                         ruleSerial.setSerialNumber(item.getName());
-                        ruleSerial = this.insert(ruleSerial);
+                        this.insert(ruleSerial);
 
                         newCreate = true;
                     }

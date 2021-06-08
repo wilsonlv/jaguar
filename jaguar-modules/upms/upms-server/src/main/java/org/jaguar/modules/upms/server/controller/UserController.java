@@ -11,7 +11,7 @@ import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import org.jaguar.commons.web.JsonResult;
 import org.jaguar.modules.upms.enums.DataScope;
 import org.jaguar.modules.upms.server.mapper.UserMapper;
-import org.jaguar.modules.upms.model.User;
+import org.jaguar.modules.upms.server.model.User;
 import org.jaguar.modules.upms.server.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;

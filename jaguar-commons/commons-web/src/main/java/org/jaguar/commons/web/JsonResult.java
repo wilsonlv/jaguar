@@ -1,8 +1,10 @@
 package org.jaguar.commons.web;
 
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 
@@ -61,9 +63,12 @@ public class JsonResult<T> implements Serializable {
         return resultCode.getValue();
     }
 
-    public String getResultCodeMsg() {
-        return resultCode.getReasonPhrase();
+    public String getMessage() {
+        return StringUtils.isBlank(this.message) ? resultCode.getReasonPhrase() : this.message;
     }
 
+    public String toJsonStr() {
+        return JSONObject.toJSONString(this);
+    }
 
 }
