@@ -1,6 +1,6 @@
 package org.jaguar.modules.auth.server.config;
 
-import org.jaguar.modules.auth.server.component.AuthenticationExceptionHandler;
+import org.jaguar.commons.security.component.AuthenticationExceptionHandler;
 import org.jaguar.modules.auth.server.component.JaguarClientDetailsServiceImpl;
 import org.jaguar.modules.auth.server.component.JaguarUserDetailsServiceImpl;
 import org.jaguar.modules.auth.server.component.OauthTokenExceptionTranslator;

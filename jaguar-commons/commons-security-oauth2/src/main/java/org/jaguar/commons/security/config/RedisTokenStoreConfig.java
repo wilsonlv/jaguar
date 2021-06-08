@@ -1,4 +1,4 @@
-package org.jaguar.modules.auth.server.config;
+package org.jaguar.commons.security.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

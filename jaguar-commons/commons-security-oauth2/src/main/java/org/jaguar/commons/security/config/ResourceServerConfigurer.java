@@ -1,14 +1,13 @@
 package org.jaguar.commons.security.config;
 
 import org.jaguar.commons.security.component.AuthenticationExceptionHandler;
+import org.jaguar.commons.security.properties.SpringSecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
@@ -18,6 +17,7 @@ import org.springframework.security.oauth2.provider.token.ResourceServerTokenSer
  * @author lvws
  * @since 2021/4/8
  */
+@ConditionalOnMissingBean(AuthorizationServerConfigurerAdapter.class)
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
@@ -49,12 +49,6 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
                 //异常处理
                 .and().cors()
                 .and().csrf().disable();
-    }
-
-    @ConditionalOnMissingBean
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
 }
