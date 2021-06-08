@@ -1,9 +1,5 @@
 server:
   servlet:
-    session:
-      timeout: 3600
-      cookie:
-        name: JAGUAR-SESSION-ID
     application-display-name: ${spring.application.name}
   tomcat:
     uri-encoding: UTF-8

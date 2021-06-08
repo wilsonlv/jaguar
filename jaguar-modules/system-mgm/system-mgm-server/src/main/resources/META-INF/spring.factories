@@ -1,2 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  org.jaguar.modules.system.mgm.config.SystemMgmProperties

@@ -21,13 +21,13 @@ public class QrCodeUtil {
 
     private static final Map<EncodeHintType, Object> HINTS = new HashMap<>();
 
-    private static final String CHARACTERSET = "UTF-8";
+    private static final String CHARACTER_SET = "UTF-8";
 
     private static final String FORMAT = "png";
 
     static {
         HINTS.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
-        HINTS.put(EncodeHintType.CHARACTER_SET, CHARACTERSET);
+        HINTS.put(EncodeHintType.CHARACTER_SET, CHARACTER_SET);
     }
 
     public static void writeToStream(OutputStream out, String content, int width, int height) throws WriterException, IOException {

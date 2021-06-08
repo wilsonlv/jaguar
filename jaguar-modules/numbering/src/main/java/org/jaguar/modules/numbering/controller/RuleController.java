@@ -55,11 +55,11 @@ public class RuleController extends BaseController<Rule, RuleMapper, RuleService
     @ApiOperation(value = "更新编号规则")
     @PreAuthorize("hasAuthority('编号规则管理')")
     @PostMapping
-    public JsonResult<Rule> update(@RequestBody @Valid Rule entity) {
+    public JsonResult<Void> update(@RequestBody @Valid Rule entity) {
         synchronized (this) {
-            entity = service.createOrUpdate(entity);
+            service.createOrUpdate(entity);
         }
-        return success(entity);
+        return success();
     }
 
     @ApiOperation(value = "删除编号规则表")

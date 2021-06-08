@@ -28,9 +28,9 @@ public class RuleService extends BaseService<Rule, RuleMapper> {
      * 新增或编辑编号规则
      */
     @Transactional
-    public Rule createOrUpdate(Rule rule) {
+    public void createOrUpdate(Rule rule) {
         Rule byName = this.getByName(rule.getName());
         Assert.duplicate(byName, rule, "编号规则名称");
-        return this.saveOrUpdate(rule);
+        this.saveOrUpdate(rule);
     }
 }

@@ -11,7 +11,6 @@
     <modules>
         <module>jaguar-commons</module>
         <module>jaguar-modules</module>
-        <module>jaguar-test</module>
         <module>jaguar-support</module>
     </modules>
 
@@ -33,6 +32,8 @@
         <swagger.version>1.5.10</swagger.version>
         <fastjson.version>1.2.23</fastjson.version>
         <jackson.version>2.9.0</jackson.version>
+        <hutool.version>5.5.8</hutool.version>
+        <captcha.version>1.2.7</captcha.version>
     </properties>
 
     <dependencyManagement>

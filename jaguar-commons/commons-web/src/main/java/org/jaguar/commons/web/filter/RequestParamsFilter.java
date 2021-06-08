@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jaguar.commons.utils.DateUtil;
 import org.jaguar.commons.utils.IpUtil;
 import org.springframework.core.annotation.Order;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;

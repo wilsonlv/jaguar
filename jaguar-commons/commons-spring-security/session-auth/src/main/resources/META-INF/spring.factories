@@ -1,2 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    org.jaguar.commons.springsecurity.sessionauth.config.WebSecurityConfigurer

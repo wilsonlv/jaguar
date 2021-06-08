@@ -1,5 +1,7 @@
 package org.jaguar.commons.web;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -9,13 +11,30 @@ import java.io.Serializable;
  * @since 2019/4/16.
  */
 @Data
+@ApiModel(value = "响应信息主体")
 public class JsonResult<T> implements Serializable {
 
     public static final String SUCCESS_MSG = "成功";
 
+    public static JsonResult<Void> success() {
+        return new JsonResult<>(ResultCode.OK, null, SUCCESS_MSG);
+    }
+
+    public static <T> JsonResult<T> success(T data) {
+        return new JsonResult<>(ResultCode.OK, data, SUCCESS_MSG);
+    }
+
+
+    @ApiModelProperty(value = "结果码")
     private ResultCode resultCode;
+
+    @ApiModelProperty(value = "结果数据")
     private T data;
+
+    @ApiModelProperty(value = "结果信息")
     private String message;
+
+    @ApiModelProperty(value = "响应时间戳")
     private final Long timestamp = System.currentTimeMillis();
 
     public JsonResult(ResultCode resultCode) {
@@ -45,5 +64,6 @@ public class JsonResult<T> implements Serializable {
     public String getResultCodeMsg() {
         return resultCode.getReasonPhrase();
     }
+
 
 }

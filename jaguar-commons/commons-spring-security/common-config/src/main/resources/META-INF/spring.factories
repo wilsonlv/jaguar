@@ -1,4 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    org.jaguar.commons.springsecurity.commonconfig.SpringSecurityProperties,\
-    org.jaguar.commons.springsecurity.commonconfig.SpringSecurityConfig
-

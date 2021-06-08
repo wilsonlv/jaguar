@@ -32,7 +32,7 @@ public enum ResultCode {
     METHOD_NOT_ALLOWED(405, "Method Not Allowed"),
 
     /**
-     * 业务冲突
+     * 检出异常
      */
     CONFLICT(409, "Conflict"),
 
@@ -50,6 +50,11 @@ public enum ResultCode {
      * 网关错误
      */
     BAD_GATEWAY(502, "Bad Gateway"),
+
+    /**
+     * 特殊业务异常
+     */
+    SPECIAL_EXCEPTION(1000, "Special Exception"),
 
     /**
      * 增删改查错误

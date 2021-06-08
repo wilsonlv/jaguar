@@ -1,5 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    org.jaguar.commons.springsecurity.tokenauth.config.WebSecurityConfigurer,\
-    org.jaguar.commons.springsecurity.tokenauth.config.SecurityTokenProperties,\
-    org.jaguar.commons.springsecurity.tokenauth.TokenFactory
-

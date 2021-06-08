@@ -22,7 +22,7 @@
         <module>commons-mybatis-plus</module>
         <module>commons-qrcode</module>
         <module>commons-redis</module>
-        <module>commons-spring-security</module>
+        <module>commons-security-oauth2</module>
         <module>commons-swagger</module>
         <module>commons-utils</module>
         <module>commons-web</module>

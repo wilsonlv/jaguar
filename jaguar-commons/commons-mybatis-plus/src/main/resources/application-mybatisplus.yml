@@ -1,18 +1,17 @@
 mybatis-plus:
-  mapper-refresh: true
   type-aliases-package: org.jaguar.**.model*, com.**.model*
   mapper-locations: classpath*:**/mapper/xml/*.xml
   configuration:
     call-setters-on-nulls: true
     log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
-    local-cache-scope: statement
+    local-cache-scope: session
   global-config:
     db-config:
       id-type: id_worker
       update-strategy: NOT_NULL
       logic-delete-value: 1
       logic-not-delete-value: 0
-      logic-delete-field: deleted
+      logic-delete-field: deleted_
 
 spring:
   datasource:
@@ -22,6 +21,7 @@ spring:
     username: root
     password: root
     druid:
+      db-type: mysql
       initial-size: 1
       max-active: 5
       min-idle: 1

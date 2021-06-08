@@ -1,16 +1,17 @@
 package org.jaguar.commons.web.mvc;
 
+import cn.hutool.core.date.DatePattern;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
-import org.apache.commons.lang3.StringUtils;
-import org.jaguar.commons.utils.DateUtil;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.convert.converter.Converter;
+import org.springframework.format.FormatterRegistry;
+import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
+import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.time.LocalDate;
@@ -25,65 +26,42 @@ import java.time.format.DateTimeFormatter;
 @Configuration
 public class SpringMvcConfig implements WebMvcConfigurer {
 
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(DatePattern.NORM_TIME_PATTERN);
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DatePattern.NORM_DATE_PATTERN);
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_PATTERN);
+
+    /**
+     * Jackson 序列化
+     */
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
-        return jacksonObjectMapperBuilder ->
-                jacksonObjectMapperBuilder
+        return builder ->
+                builder
                         .serializerByType(Long.class, Long2StringSerializer.INSTANCE)
                         .serializerByType(Long.TYPE, Long2StringSerializer.INSTANCE)
-                        .serializerByType(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(DateUtil.DateTimePattern.YYYY_MM_DD.toString())))
-                        .serializerByType(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DateUtil.DateTimePattern.YYYY_MM_DD_HH_MM_SS.toString())))
-                        .serializerByType(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(DateUtil.DateTimePattern.HH_MM_SS.toString())))
-                        .deserializerByType(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern(DateUtil.DateTimePattern.YYYY_MM_DD.toString())))
-                        .deserializerByType(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DateUtil.DateTimePattern.YYYY_MM_DD_HH_MM_SS.toString())))
-                        .deserializerByType(LocalTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DateUtil.DateTimePattern.HH_MM_SS.toString())));
+                        .serializerByType(LocalTime.class, new LocalTimeSerializer(TIME_FORMATTER))
+                        .serializerByType(LocalDate.class, new LocalDateSerializer(DATE_FORMATTER))
+                        .serializerByType(LocalDateTime.class, new LocalDateTimeSerializer(DATE_TIME_FORMATTER))
+                        .deserializerByType(LocalTime.class, new LocalDateTimeDeserializer(TIME_FORMATTER))
+                        .deserializerByType(LocalDate.class, new LocalDateDeserializer(DATE_FORMATTER))
+                        .deserializerByType(LocalDateTime.class, new LocalDateTimeDeserializer(DATE_TIME_FORMATTER));
     }
 
-    @Bean
-    public Converter<String, LocalTime> localTimeConverter() {
-        return new Converter<String, LocalTime>() {
-            @Override
-            public LocalTime convert(String source) {
-                if (StringUtils.isBlank(source)) {
-                    return null;
-                }
-                return LocalTime.parse(source, DateTimeFormatter.ofPattern(DateUtil.DateTimePattern.HH_MM_SS.toString()));
-            }
-        };
-    }
-
-    @Bean
-    public Converter<String, LocalDate> localDateConverter() {
-        return new Converter<String, LocalDate>() {
-
-            @Override
-            public LocalDate convert(String source) {
-                if (StringUtils.isBlank(source)) {
-                    return null;
-                }
-                return LocalDate.parse(source, DateTimeFormatter.ofPattern(DateUtil.DateTimePattern.YYYY_MM_DD.toString()));
-            }
-        };
-    }
-
-    @Bean
-    public Converter<String, LocalDateTime> localDateTimeConverter() {
-        return new Converter<String, LocalDateTime>() {
-            @Override
-            public LocalDateTime convert(String source) {
-                if (StringUtils.isBlank(source)) {
-                    return null;
-                }
-
-                DateUtil.DateTimePattern pattern;
-                if (source.length() == 16) {
-                    pattern = DateUtil.DateTimePattern.YYYY_MM_DD_HH_MM;
-                } else {
-                    pattern = DateUtil.DateTimePattern.YYYY_MM_DD_HH_MM_SS;
-                }
-                return LocalDateTime.parse(source, DateTimeFormatter.ofPattern(pattern.toString()));
-            }
-        };
+    /**
+     * 增加GET请求参数中时间类型转换
+     * <ul>
+     * <li>HH:mm:ss -> LocalTime</li>
+     * <li>yyyy-MM-dd -> LocalDate</li>
+     * <li>yyyy-MM-dd HH:mm:ss -> LocalDateTime</li>
+     * </ul>
+     */
+    @Override
+    public void addFormatters(@NonNull FormatterRegistry registry) {
+        DateTimeFormatterRegistrar registrar = new DateTimeFormatterRegistrar();
+        registrar.setTimeFormatter(TIME_FORMATTER);
+        registrar.setDateFormatter(DATE_FORMATTER);
+        registrar.setDateTimeFormatter(DATE_TIME_FORMATTER);
+        registrar.registerFormatters(registry);
     }
 
 }

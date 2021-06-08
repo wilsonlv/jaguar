@@ -29,7 +29,7 @@
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>session-auth</artifactId>
+            <artifactId>commons-security-oauth2</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
     </dependencies>

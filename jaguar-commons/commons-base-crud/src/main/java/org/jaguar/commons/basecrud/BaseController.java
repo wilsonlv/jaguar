@@ -1,7 +1,6 @@
 package org.jaguar.commons.basecrud;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
@@ -32,29 +31,24 @@ public abstract class BaseController<E extends BaseModel, M extends BaseMapper<E
         return success(page);
     }
 
-    public JsonResult<List<E>> list() {
-        List<E> list = service.list();
-        return success(list);
-    }
-
     public JsonResult<E> getById(Long id) {
         E model = service.getById(id);
         return success(model);
     }
 
-    public JsonResult<E> insert(E entity) {
-        E model = service.insert(entity);
-        return success(model);
+    public JsonResult<Void> insert(E entity) {
+        service.insert(entity);
+        return success();
     }
 
-    public JsonResult<E> updateById(E entity) {
-        E model = service.updateById(entity);
-        return success(model);
+    public JsonResult<Void> updateById(E entity) {
+        service.updateById(entity);
+        return success();
     }
 
-    public JsonResult<E> saveOrUpdate(E entity) {
-        E model = service.saveOrUpdate(entity);
-        return success(model);
+    public JsonResult<Void> saveOrUpdate(E entity) {
+        service.saveOrUpdate(entity);
+        return success();
     }
 
     public JsonResult<?> delete(Long id) {
@@ -62,13 +56,12 @@ public abstract class BaseController<E extends BaseModel, M extends BaseMapper<E
         return success();
     }
 
-
-    protected JsonResult<?> success() {
-        return new JsonResult<>(ResultCode.OK, null, JsonResult.SUCCESS_MSG);
+    protected JsonResult<Void> success() {
+        return JsonResult.success();
     }
 
     protected <T> JsonResult<T> success(T data) {
-        return new JsonResult<>(ResultCode.OK, data, JsonResult.SUCCESS_MSG);
+        return JsonResult.success(data);
     }
 
     protected <T> JsonResult<Page<T>> success(Page<T> data) {

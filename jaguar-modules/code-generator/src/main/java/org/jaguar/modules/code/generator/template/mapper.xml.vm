@@ -22,5 +22,5 @@
         ${table.fieldNames}
     </sql>
 #end
-	
+
 </mapper>

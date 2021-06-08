@@ -13,10 +13,11 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>auth-server</module>
         <module>code-generator</module>
         <module>document</module>
         <module>numbering</module>
-        <module>system-mgm</module>
+        <module>upms</module>
     </modules>
 
 </project>

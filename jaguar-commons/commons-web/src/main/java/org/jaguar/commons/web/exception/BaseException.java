@@ -41,7 +41,8 @@ public abstract class BaseException extends RuntimeException {
 
     @Override
     public String getMessage() {
-        return StringUtils.isBlank(super.getMessage()) ? getResultCode().getReasonPhrase() : super.getMessage();
+        String message = super.getMessage();
+        return StringUtils.isNotBlank(message) ? message : getResultCode().getReasonPhrase();
     }
 
     public Object getData() {

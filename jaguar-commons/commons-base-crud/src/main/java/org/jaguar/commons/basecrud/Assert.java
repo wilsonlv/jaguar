@@ -19,15 +19,15 @@ public final class Assert {
         return String.format(key, args);
     }
 
-    public static void validateId(Object object, String name, String id) {
+    public static void validateId(Object object, Long id) {
         if (object == null) {
-            throw new CheckedException(getMessage(VALIDATE_ID, name, id));
+            throw new CheckedException(getMessage(VALIDATE_ID, "", id));
         }
     }
 
     public static void validateId(Object object, String name, Long id) {
         if (object == null) {
-            throw new CheckedException(getMessage(VALIDATE_ID, name, id));
+            throw new CheckedException(getMessage(VALIDATE_ID, StringUtils.isBlank(name) ? "" : name, id));
         }
     }
 
@@ -37,8 +37,8 @@ public final class Assert {
         }
     }
 
-    public static void duplicate(BaseModel unqiue, BaseModel update, String name) {
-        if (unqiue != null && !unqiue.getId().equals(update.getId())) {
+    public static void duplicate(BaseModel unique, BaseModel update, String name) {
+        if (unique != null && !unique.getId().equals(update.getId())) {
             throw new CheckedException(getMessage(DUPLICATE, name));
         }
     }

@@ -21,6 +21,17 @@
             <artifactId>commons-utils</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jaguar</groupId>
+            <artifactId>commons-swagger</artifactId>
+            <version>${jaguar.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

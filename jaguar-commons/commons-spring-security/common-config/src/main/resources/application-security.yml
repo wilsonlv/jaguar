@@ -1,4 +1,0 @@
-jaguar:
-  spring:
-    security:
-      permit-all-ant-matchers: /auth/login,/auth/verify_code,/test,/test/**,/swagger**,/swagger-resources/**,/webjars/**,/*/api-docs

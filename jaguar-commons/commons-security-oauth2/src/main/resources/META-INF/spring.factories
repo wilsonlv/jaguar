@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+      org.jaguar.commons.security.config.SpringSecurityProperties,\
+      org.jaguar.commons.security.component.AuthExceptionHandler,\
+      org.jaguar.commons.security.config.WebSecurityConfigurer

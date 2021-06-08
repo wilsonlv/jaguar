@@ -59,7 +59,7 @@ public class RuleItemController extends BaseController<RuleItem, RuleItemMapper,
     @ApiOperation(value = "更新编号规则条目")
     @PreAuthorize("hasAuthority('编号规则管理')")
     @PostMapping(value = "/update")
-    public JsonResult<RuleItem> update(@RequestBody @Valid RuleItem ruleItem) {
+    public JsonResult<Void> update(@RequestBody @Valid RuleItem ruleItem) {
         return super.saveOrUpdate(ruleItem);
     }
 

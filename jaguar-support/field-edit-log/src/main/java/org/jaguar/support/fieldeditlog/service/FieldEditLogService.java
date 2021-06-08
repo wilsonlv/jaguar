@@ -10,7 +10,7 @@ import org.jaguar.commons.basecrud.BaseMapper;
 import org.jaguar.commons.basecrud.BaseService;
 import org.jaguar.commons.web.exception.CheckedException;
 import org.jaguar.commons.web.exception.DataCrudException;
-import org.jaguar.support.fieldeditlog.FieldEditLogable;
+import org.jaguar.support.fieldeditlog.FieldEditLoggable;
 import org.jaguar.support.fieldeditlog.mapper.FieldEditLogMapper;
 import org.jaguar.support.fieldeditlog.model.FieldEditLog;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class FieldEditLogService<T extends FieldEditLogable, M extends BaseMapper<T>> extends BaseService<T, M> {
+public class FieldEditLogService<T extends FieldEditLoggable, M extends BaseMapper<T>> extends BaseService<T, M> {
 
     private static final String ID = "id";
     private static final String CREATE_BY = "createBy";
@@ -138,7 +138,7 @@ public class FieldEditLogService<T extends FieldEditLogable, M extends BaseMappe
 
     @Override
     @Transactional
-    public T insert(T entity) {
+    public void insert(T entity) {
         long currentUser = getCurrentUser();
 
         LocalDateTime now = LocalDateTime.now();
@@ -152,13 +152,11 @@ public class FieldEditLogService<T extends FieldEditLogable, M extends BaseMappe
             log.error("数据插入失败，实体信息：" + entity.toString());
             throw new DataCrudException("数据插入失败！");
         }
-
-        return this.getById(entity.getId());
     }
 
     @Override
     @Transactional
-    public T updateById(T entity) {
+    public void updateById(T entity) {
         entity.setUpdateBy(this.getCurrentUser());
         entity.setUpdateTime(LocalDateTime.now());
 
@@ -175,17 +173,15 @@ public class FieldEditLogService<T extends FieldEditLogable, M extends BaseMappe
             log.error("数据更新失败，实体信息：" + entity.toString());
             throw new DataCrudException("数据更新失败！");
         }
-
-        return this.getById(entity.getId());
     }
 
     @Override
     @Transactional
-    public T saveOrUpdate(T entity) {
+    public void saveOrUpdate(T entity) {
         if (entity.getId() == null) {
-            return this.insert(entity);
+            this.insert(entity);
         } else {
-            return this.updateById(entity);
+            this.updateById(entity);
         }
     }
 

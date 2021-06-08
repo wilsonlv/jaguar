@@ -1,16 +1,17 @@
 package org.jaguar.commons.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
 import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * @author lvws
  * @since 2020/6/3
  */
+@Slf4j
 public class ChineseCharacterUtil {
 
     /***
@@ -19,6 +20,14 @@ public class ChineseCharacterUtil {
      * ^[\u4E00-\u9FA5]+$ 匹配简体
      */
     private static final String REG_EXP = "^[\u4E00-\u9FFF]+$";
+
+    private static final Pattern PATTERN = Pattern.compile(REG_EXP);
+
+    private static final HanyuPinyinOutputFormat OUTPUT_FORMAT = new HanyuPinyinOutputFormat();
+
+    static {
+        OUTPUT_FORMAT.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
+    }
 
     /**
      * 匹配
@@ -29,9 +38,7 @@ public class ChineseCharacterUtil {
      * @return true：匹配成功  false：匹配失败
      */
     private static boolean match(String str) {
-        Pattern pattern = Pattern.compile(REG_EXP);
-        Matcher matcher = pattern.matcher(str);
-        return matcher.find();
+        return PATTERN.matcher(str).find();
     }
 
     /**
@@ -95,19 +102,14 @@ public class ChineseCharacterUtil {
      * @return 拼音
      */
     private static String convertSingleHanzi2Pinyin(char hanzi) {
-        HanyuPinyinOutputFormat outputFormat = new HanyuPinyinOutputFormat();
-        outputFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
-        String[] res;
-        StringBuilder sb = new StringBuilder();
         try {
-            res = PinyinHelper.toHanyuPinyinStringArray(hanzi, outputFormat);
+            String[] res = PinyinHelper.toHanyuPinyinStringArray(hanzi, OUTPUT_FORMAT);
             //对于多音字，只用第一个拼音
-            sb.append(res[0]);
+            return res[0];
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
             return "";
         }
-        return sb.toString();
     }
 
 }
