@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    org.jaguar.commons.swagger.config.SwaggerConfig,\
+    org.jaguar.commons.swagger.properties.SwaggerProperties

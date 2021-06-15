@@ -1,11 +1,13 @@
 package org.jaguar.modules.upms.server.service;
 
-import org.jaguar.commons.enums.ClientType;
-import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import org.jaguar.commons.basecrud.BaseService;
+import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
+import org.jaguar.modules.upms.enums.ClientType;
 import org.jaguar.modules.upms.server.mapper.LoginMapper;
 import org.jaguar.modules.upms.server.model.Login;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -48,4 +50,9 @@ public class LoginService extends BaseService<Login, LoginMapper> {
                 .last("limit 1"));
     }
 
+    @Async
+    @Transactional
+    public void asyncSave(Login login) {
+        this.insert(login);
+    }
 }

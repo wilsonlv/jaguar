@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>commons-security-oauth2</artifactId>
+            <artifactId>jaguar-commons-oauth2</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
     </dependencies>

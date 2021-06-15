@@ -1,5 +1,6 @@
 package org.jaguar.modules.numbering.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.jaguar.commons.basecrud.BaseMapper;
 import org.jaguar.modules.numbering.model.RuleSerial;
 
@@ -23,5 +24,5 @@ public interface RuleSerialMapper extends BaseMapper<RuleSerial> {
      * @param sql sql语句
      * @return 执行结果
      */
-    List<LinkedHashMap<String, Object>> execute(@NotBlank String sql);
+    List<LinkedHashMap<String, Object>> execute(@Param("sql") String sql);
 }

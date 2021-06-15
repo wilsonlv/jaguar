@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jaguar.commons.basecrud.Assert;
 import org.jaguar.commons.basecrud.BaseService;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import org.jaguar.commons.web.exception.CheckedException;
+import org.jaguar.commons.web.exception.impl.CheckedException;
 import org.jaguar.modules.upms.server.mapper.RoleMapper;
 import org.jaguar.modules.upms.server.model.Role;
 import org.jaguar.modules.upms.server.model.RoleMenu;
@@ -49,7 +49,6 @@ public class RoleService extends BaseService<Role, RoleMapper> {
 
     public Role getDetail(Long roleId) {
         Role role = this.getById(roleId);
-        Assert.validateId(role, "角色", roleId);
 
         List<RoleMenu> roleMenus = roleMenuService.list(JaguarLambdaQueryWrapper.<RoleMenu>newInstance()
                 .eq(RoleMenu::getRoleId, roleId));

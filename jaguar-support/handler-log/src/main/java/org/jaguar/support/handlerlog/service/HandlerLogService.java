@@ -2,10 +2,11 @@ package org.jaguar.support.handlerlog.service;
 
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
-import org.jaguar.commons.web.exception.DataCrudException;
+import org.jaguar.commons.web.exception.impl.DataCrudException;
 import org.jaguar.support.handlerlog.mapper.HandlerLogMapper;
 import org.jaguar.support.handlerlog.model.HandlerLog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ public class HandlerLogService {
     @Autowired
     private HandlerLogMapper handlerLogMapper;
 
+    @Async
     @Transactional
     public void saveLog(HandlerLog handlerLog) {
         boolean success = SqlHelper.retBool(handlerLogMapper.insert(handlerLog));

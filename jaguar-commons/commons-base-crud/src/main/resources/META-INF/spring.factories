@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    org.jaguar.commons.basecrud.GlobalExceptionHandler,\
-    org.jaguar.commons.basecrud.mybatis.BaseModelMetaObjectHandler

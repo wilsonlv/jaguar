@@ -14,22 +14,22 @@
     <dependencies>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>commons-base-crud</artifactId>
+            <artifactId>jaguar-commons-base-crud</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>commons-aviator</artifactId>
+            <artifactId>jaguar-commons-aviator</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>commons-swagger</artifactId>
+            <artifactId>jaguar-commons-swagger</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>commons-security-oauth2</artifactId>
+            <artifactId>jaguar-commons-oauth2</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
     </dependencies>

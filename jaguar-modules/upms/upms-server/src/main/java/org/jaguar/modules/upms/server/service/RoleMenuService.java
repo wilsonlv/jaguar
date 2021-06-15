@@ -2,7 +2,7 @@ package org.jaguar.modules.upms.server.service;
 
 import org.jaguar.commons.basecrud.BaseService;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import org.jaguar.commons.web.exception.CheckedException;
+import org.jaguar.commons.web.exception.impl.CheckedException;
 import org.jaguar.modules.upms.dto.MenuFunction;
 import org.jaguar.modules.upms.server.mapper.RoleMenuMapper;
 import org.jaguar.modules.upms.server.model.RoleMenu;

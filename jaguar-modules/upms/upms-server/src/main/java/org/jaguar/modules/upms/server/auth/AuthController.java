@@ -6,11 +6,9 @@ import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jaguar.commons.basecrud.BaseController;
-import org.jaguar.commons.utils.ExecutorServiceUtil;
-import org.jaguar.commons.utils.IdentifyingCode;
-import org.jaguar.commons.utils.IpUtil;
+import org.jaguar.commons.web.util.IpUtil;
 import org.jaguar.commons.web.JsonResult;
-import org.jaguar.commons.web.exception.CheckedException;
+import org.jaguar.commons.web.exception.impl.CheckedException;
 import org.jaguar.modules.upms.server.config.SystemMgmProperties;
 import org.jaguar.modules.upms.server.mapper.UserMapper;
 import org.jaguar.modules.upms.server.model.Login;
@@ -27,10 +25,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.time.LocalDateTime;
 
 /**
@@ -55,31 +51,6 @@ public class AuthController extends BaseController<User, UserMapper, AuthService
     private AuthenticationManager authenticationManager;
     @Autowired
     private LoginService loginService;
-
-
-    @ApiOperation(value = "获取图片验证码")
-    @GetMapping("/verify_code")
-    public void randomImage(HttpServletResponse response, HttpServletRequest request) throws IOException {
-        //图片宽度
-        int width = 200;
-        //图片高度
-        int height = 80;
-        //字符串个数
-        int randomStrNum = 4;
-
-        response.setHeader("Pragma", "No-cache");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setDateHeader("Expires", 0);
-        response.setContentType("image/jpeg");
-
-        //生成验证码
-        String verifyCode = IdentifyingCode.generate(randomStrNum);
-        //保存验证码
-        HttpSession session = request.getSession();
-        session.setAttribute(PIC_VERIFICATION_CODE, verifyCode.toLowerCase());
-        //回传
-        IdentifyingCode.outputImage(width, height, response.getOutputStream(), verifyCode);
-    }
 
     /**
      * 验证图片验证码
@@ -129,7 +100,7 @@ public class AuthController extends BaseController<User, UserMapper, AuthService
             User user = (User) authentication.getPrincipal();
             login.setUserId(user.getId());
         } finally {
-            ExecutorServiceUtil.execute(() -> loginService.insert(login));
+            loginService.asyncSave(login);
         }
 
         return getPersonalInfo();

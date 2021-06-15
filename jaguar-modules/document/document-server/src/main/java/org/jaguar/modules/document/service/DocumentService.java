@@ -1,11 +1,11 @@
 package org.jaguar.modules.document.service;
 
+import cn.hutool.core.date.DatePattern;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jaguar.commons.basecrud.BaseService;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import org.jaguar.commons.utils.DateUtil;
-import org.jaguar.commons.web.exception.CheckedException;
+import org.jaguar.commons.web.exception.impl.CheckedException;
 import org.jaguar.modules.document.config.DocumentProperties;
 import org.jaguar.modules.document.interfaces.DocumentPersistence;
 import org.jaguar.modules.document.interfaces.DocumentPersistenceService;
@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -48,7 +49,7 @@ public class DocumentService extends BaseService<Document, DocumentMapper> imple
         String parentFileDir = documentProperties.getFilePath() + File.separator + LocalDate.now() + File.separator;
         File parent = new File(parentFileDir);
         if (parent.exists() || parent.mkdirs()) {
-            return parentFileDir + DateUtil.format(new Date(), DateUtil.DateTimePattern.HHMMSS) + fileName;
+            return parentFileDir + DateTimeFormatter.ofPattern(DatePattern.PURE_TIME_PATTERN).format(LocalDate.now()) + fileName;
         } else {
             throw new CheckedException("目录创建失败！");
         }
@@ -61,7 +62,7 @@ public class DocumentService extends BaseService<Document, DocumentMapper> imple
         String parentFileDir = documentProperties.getTempDir() + File.separator + LocalDate.now() + File.separator;
         File parent = new File(parentFileDir);
         if (parent.exists() || parent.mkdirs()) {
-            return parentFileDir + DateUtil.format(new Date(), DateUtil.DateTimePattern.HHMMSS) + fileName;
+            return parentFileDir + DateTimeFormatter.ofPattern(DatePattern.PURE_TIME_PATTERN).format(LocalDate.now()) + fileName;
         } else {
             throw new CheckedException("目录创建失败！");
         }

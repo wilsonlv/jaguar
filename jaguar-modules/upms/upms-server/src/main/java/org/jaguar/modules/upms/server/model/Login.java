@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jaguar.commons.basecrud.BaseModel;
-import org.jaguar.commons.enums.ClientType;
+import org.jaguar.modules.upms.enums.ClientType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 

@@ -13,20 +13,19 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>commons-activemq</module>
-        <module>commons-aviator</module>
-        <module>commons-base-crud</module>
-        <module>commons-data-encription</module>
-        <module>commons-enums</module>
-        <module>commons-export-csv</module>
-        <module>commons-mybatis-plus</module>
-        <module>commons-qrcode</module>
-        <module>commons-redis</module>
-        <module>commons-security-oauth2</module>
-        <module>commons-swagger</module>
-        <module>commons-utils</module>
-        <module>commons-web</module>
-        <module>commons-websocket</module>
+        <module>jaguar-commons-activemq</module>
+        <module>jaguar-commons-aviator</module>
+        <module>jaguar-commons-base-crud</module>
+        <module>jaguar-commons-encryption</module>
+        <module>jaguar-commons-export-csv</module>
+        <module>jaguar-commons-mybatis-plus</module>
+        <module>jaguar-commons-oauth2</module>
+        <module>jaguar-commons-pinyin</module>
+        <module>jaguar-commons-qrcode</module>
+        <module>jaguar-commons-redis</module>
+        <module>jaguar-commons-swagger</module>
+        <module>jaguar-commons-web</module>
+        <module>jaguar-commons-websocket</module>
     </modules>
 
 </project>

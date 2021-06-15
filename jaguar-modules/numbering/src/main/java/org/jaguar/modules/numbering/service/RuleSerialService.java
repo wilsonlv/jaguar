@@ -3,20 +3,20 @@ package org.jaguar.modules.numbering.service;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.jaguar.commons.aviator.ExpressionUtil;
-import org.jaguar.commons.basecrud.Assert;
 import org.jaguar.commons.basecrud.BaseService;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import org.jaguar.commons.utils.DateUtil;
-import org.jaguar.commons.utils.NumberUtil;
-import org.jaguar.commons.web.exception.CheckedException;
+import org.jaguar.commons.web.exception.impl.CheckedException;
 import org.jaguar.modules.numbering.mapper.RuleSerialMapper;
 import org.jaguar.modules.numbering.model.Rule;
 import org.jaguar.modules.numbering.model.RuleItem;
 import org.jaguar.modules.numbering.model.RuleSerial;
+import org.jaguar.modules.numbering.util.NumberUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,8 +45,6 @@ public class RuleSerialService extends BaseService<RuleSerial, RuleSerialMapper>
     @Transactional
     public String generateInstanceByRuleId(Long id, long level, Map<String, Object> sqlParams) {
         Rule rule = ruleService.getById(id);
-        Assert.validateId(rule, "编号规则", id);
-
         return generateInstance(rule, level, sqlParams);
     }
 
@@ -83,7 +81,7 @@ public class RuleSerialService extends BaseService<RuleSerial, RuleSerialMapper>
     /**
      * 生成规则实例
      *
-     * @param rule
+     * @param rule  编号规则
      * @param level 流水等级
      */
     @Transactional
@@ -101,7 +99,6 @@ public class RuleSerialService extends BaseService<RuleSerial, RuleSerialMapper>
                 }
                 case EXPRESSION: {
                     String result = String.valueOf(ExpressionUtil.execute(item.getName(), params));
-
                     if (item.getEffect()) {
                         pattern.append(result);
                     }
@@ -112,12 +109,13 @@ public class RuleSerialService extends BaseService<RuleSerial, RuleSerialMapper>
                     continue;
                 }
                 case DATETIME: {
+                    String format = DateTimeFormatter.ofPattern(item.getName()).format(LocalDateTime.now());
                     if (item.getEffect()) {
-                        pattern.append(DateUtil.getDateTime(DateUtil.DateTimePattern.valueOf(item.getName())));
+                        pattern.append(format);
                     }
 
                     if (item.getShow()) {
-                        instance.append(DateUtil.getDateTime(DateUtil.DateTimePattern.valueOf(item.getName())));
+                        instance.append(format);
                     }
                     continue;
                 }

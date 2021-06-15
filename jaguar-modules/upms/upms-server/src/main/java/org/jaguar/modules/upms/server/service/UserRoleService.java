@@ -51,7 +51,6 @@ public class UserRoleService extends BaseService<UserRole, UserRoleMapper> {
     public void relateRoles(Long userId, List<Long> roleIds) {
         for (Long roleId : roleIds) {
             Role role = roleService.getById(roleId);
-            Assert.validateId(role, "角色", roleId);
 
             if (this.exists(JaguarLambdaQueryWrapper.<UserRole>newInstance()
                     .eq(UserRole::getUserId, userId)

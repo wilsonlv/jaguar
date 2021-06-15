@@ -19,17 +19,17 @@
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>commons-security-oauth2</artifactId>
+            <artifactId>jaguar-commons-oauth2</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>commons-web</artifactId>
+            <artifactId>jaguar-commons-web</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>commons-redis</artifactId>
+            <artifactId>jaguar-commons-redis</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
     </dependencies>

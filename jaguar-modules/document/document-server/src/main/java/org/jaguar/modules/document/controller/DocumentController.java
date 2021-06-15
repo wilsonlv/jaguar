@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiParam;
 import org.jaguar.commons.basecrud.Assert;
 import org.jaguar.commons.basecrud.BaseController;
 import org.jaguar.commons.web.JsonResult;
-import org.jaguar.commons.web.exception.CheckedException;
+import org.jaguar.commons.web.exception.impl.CheckedException;
 import org.jaguar.modules.document.mapper.DocumentMapper;
 import org.jaguar.modules.document.model.Document;
 import org.jaguar.modules.document.service.DocumentService;
@@ -64,8 +64,6 @@ public class DocumentController extends BaseController<Document, DocumentMapper,
             throws IOException {
 
         Document document = service.getById(id);
-        Assert.validateId(document, "文档", id);
-
         this.download(response, document, download);
     }
 

@@ -5,9 +5,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.jaguar.commons.basecrud.Assert;
 import org.jaguar.commons.basecrud.BaseService;
-import org.jaguar.commons.data.encription.SecurityUtil;
+import org.jaguar.commons.data.encryption.EncryptionUtil;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import org.jaguar.commons.web.exception.CheckedException;
+import org.jaguar.commons.web.exception.impl.CheckedException;
 import org.jaguar.modules.upms.server.mapper.UserMapper;
 import org.jaguar.modules.upms.server.model.Role;
 import org.jaguar.modules.upms.server.model.User;
@@ -60,7 +60,6 @@ public class UserService extends BaseService<User, UserMapper> {
     @Transactional
     public User getDetail(Long currentUser) {
         User user = this.getById(currentUser);
-        Assert.validateId(user, "用户", currentUser);
 
         //获取角色
         List<Role> roles = userRoleService.listRoleByUserId(user.getId());
@@ -87,7 +86,7 @@ public class UserService extends BaseService<User, UserMapper> {
     @Transactional
     public User create(User user) {
         Assert.notNull(user.getUserPassword(), "用户密码");
-        if (!SecurityUtil.checkPassword(user.getUserPassword())) {
+        if (EncryptionUtil.passwordUnmatched(user.getUserPassword())) {
             throw new CheckedException("密码格式为包含数字，字母大小写的6-20位字符串！");
         }
 
@@ -117,7 +116,6 @@ public class UserService extends BaseService<User, UserMapper> {
     @Transactional
     public User modify(User user) {
         User persist = this.getById(user.getId());
-        Assert.validateId(persist, "用户", user.getId());
 
         if (StringUtils.isNotBlank(user.getUserPhone())) {
             User byPhone = this.getByPhone(user.getUserPhone());

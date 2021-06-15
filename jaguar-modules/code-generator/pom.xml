@@ -14,12 +14,12 @@
     <dependencies>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>commons-base-crud</artifactId>
+            <artifactId>jaguar-commons-base-crud</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>commons-swagger</artifactId>
+            <artifactId>jaguar-commons-swagger</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
 

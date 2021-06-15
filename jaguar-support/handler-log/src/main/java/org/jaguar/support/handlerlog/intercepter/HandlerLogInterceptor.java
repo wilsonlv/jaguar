@@ -7,8 +7,7 @@ import cz.mallat.uasparser.UserAgentInfo;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.jaguar.commons.utils.ExecutorServiceUtil;
-import org.jaguar.commons.utils.IpUtil;
+import org.jaguar.commons.web.util.IpUtil;
 import org.jaguar.support.handlerlog.model.HandlerLog;
 import org.jaguar.support.handlerlog.service.HandlerLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,9 +62,7 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
             return null;
         }
 
-        return userAgentInfo.getOsName() + " " +
-                userAgentInfo.getType() + " " +
-                userAgentInfo.getUaName();
+        return userAgentInfo.getOsName() + " " + userAgentInfo.getType() + " " + userAgentInfo.getUaName();
     }
 
     @Override
@@ -103,24 +100,19 @@ public class HandlerLogInterceptor extends HandlerInterceptorAdapter {
                                 @NonNull Object handler, final Exception handlerException) throws Exception {
 
         if (handler instanceof HandlerMethod && !(ERROR.equals(request.getRequestURI()))) {
-            final HandlerLog handlerLog = HANDLER_LOG.get();
-            handlerLog.setStatus(response.getStatus());
-
+            HandlerLog handlerLog = HANDLER_LOG.get();
             HANDLER_LOG.remove();
 
-            LocalDateTime endTime = LocalDateTime.now();
-            ExecutorServiceUtil.execute(() -> {
-                long duration = Duration.between(handlerLog.getAccessTime(), endTime).toMillis();
-                handlerLog.setDuration(duration);
-                handlerLog.setErrorMsg(ExceptionUtils.getMessage(handlerException));
-                handlerLog.setCreateTime(endTime);
-                handlerLog.setDeleted(false);
-                try {
-                    handlerLogService.saveLog(handlerLog);
-                } catch (Exception e) {
-                    log.error(e.getMessage(), e);
-                }
-            });
+            long duration = Duration.between(handlerLog.getAccessTime(), LocalDateTime.now()).toMillis();
+            handlerLog.setDuration(duration);
+            handlerLog.setStatus(response.getStatus());
+            handlerLog.setErrorMsg(ExceptionUtils.getMessage(handlerException));
+
+            try {
+                handlerLogService.saveLog(handlerLog);
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+            }
         }
         super.afterCompletion(request, response, handler, handlerException);
     }

@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    org.jaguar.commons.web.context.SpringContext,\
+    org.jaguar.commons.web.exception.GlobalExceptionHandler,\
+    org.jaguar.commons.web.mvc.SpringMvcConfig

@@ -3,8 +3,8 @@ package org.jaguar.modules.upms.server.auth;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jaguar.commons.basecrud.BaseService;
-import org.jaguar.commons.data.encription.SecurityUtil;
-import org.jaguar.commons.web.exception.CheckedException;
+import org.jaguar.commons.data.encryption.EncryptionUtil;
+import org.jaguar.commons.web.exception.impl.CheckedException;
 import org.jaguar.modules.upms.dto.MenuFunction;
 import org.jaguar.modules.upms.server.mapper.UserMapper;
 import org.jaguar.modules.upms.server.model.Role;
@@ -63,7 +63,7 @@ public class AuthService extends BaseService<User, UserMapper> implements UserDe
             throw new CheckedException("密码错误");
         }
 
-        if (!SecurityUtil.checkPassword(newPassword)) {
+        if (EncryptionUtil.passwordUnmatched(newPassword)) {
             throw new CheckedException("密码格式为包含数字，字母大小写的6-20位字符串！");
         }
 

@@ -3,7 +3,7 @@ package org.jaguar.modules.auth.server.api;
 import lombok.RequiredArgsConstructor;
 import org.jaguar.commons.web.JsonResult;
 import org.jaguar.commons.web.ResultCode;
-import org.jaguar.commons.web.exception.CheckedException;
+import org.jaguar.commons.web.exception.impl.CheckedException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
