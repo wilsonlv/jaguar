@@ -6,8 +6,15 @@ server:
 spring:
   application:
     name: @artifactId@
-  profiles:
-    active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  http:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
   redis:
     database: 6
     host: 127.0.0.1
@@ -21,8 +28,9 @@ spring:
         max-active: 8
         max-wait: 1000
         time-between-eviction-runs: 100000
-  http:
-    encoding:
-      charset: UTF-8
-      force: true
-      enabled: true
+
+jaguar:
+  modules:
+    system:
+      mgm:
+        verify-code-enable: false

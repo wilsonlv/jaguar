@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>numbering</artifactId>
+    <artifactId>jaguar-code-generator</artifactId>
 
     <dependencies>
         <dependency>
@@ -19,18 +19,20 @@
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>jaguar-commons-aviator</artifactId>
-            <version>${jaguar.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jaguar</groupId>
             <artifactId>jaguar-commons-swagger</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
+
+        <!-- mybatis plus generator -->
         <dependency>
-            <groupId>org.jaguar</groupId>
-            <artifactId>jaguar-commons-oauth2</artifactId>
-            <version>${jaguar.version}</version>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <version>${mybatis-plus.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>1.7</version>
         </dependency>
     </dependencies>
 

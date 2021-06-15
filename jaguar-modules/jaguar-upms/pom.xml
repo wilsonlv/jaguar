@@ -9,12 +9,18 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>demo-resource-server</artifactId>
+    <artifactId>jaguar-upms</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>jaguar-upms-sdk</module>
+        <module>jaguar-upms-server</module>
+    </modules>
 
     <dependencies>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>jaguar-commons-oauth2</artifactId>
+            <artifactId>jaguar-commons-swagger</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
     </dependencies>

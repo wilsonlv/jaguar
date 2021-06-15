@@ -13,12 +13,11 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>auth-server</module>
-        <module>code-generator</module>
+        <module>jaguar-auth-server</module>
+        <module>jaguar-code-generator</module>
         <module>document</module>
-        <module>numbering</module>
-        <module>upms</module>
-        <module>demo-resource-server</module>
+        <module>jaguar-numbering</module>
+        <module>jaguar-upms</module>
     </modules>
 
 </project>
