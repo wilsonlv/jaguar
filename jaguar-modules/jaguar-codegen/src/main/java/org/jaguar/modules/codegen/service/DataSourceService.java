@@ -1,5 +1,10 @@
 package org.jaguar.modules.codegen.service;
 
+import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
+import com.baomidou.dynamic.datasource.creator.DataSourceCreator;
+import com.baomidou.dynamic.datasource.creator.DruidDataSourceCreator;
+import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
+import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 import org.jaguar.commons.basecrud.Assert;
@@ -22,12 +27,18 @@ public class DataSourceService extends BaseService<DataSource, DataSourceMapper>
 
     private static final String JDBC_URL = "jdbc:mysql://%s:%s/%s?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&serverTimezone=PRC&useSSL=false";
 
+    private final DynamicRoutingDataSource dynamicRoutingDataSource;
+
+    private final DynamicDataSourceProperties dataSourceProperties;
+
+    private final DruidDataSourceCreator dataSourceCreator;
+
     public DataSource getByName(String name) {
         return this.unique(Wrappers.<DataSource>lambdaQuery()
                 .eq(DataSource::getName, name));
     }
 
-    public static String getJdbcUrl(String host, String port, String schema){
+    public static String getJdbcUrl(String host, String port, String schema) {
         return String.format(JDBC_URL, host, port, schema);
     }
 
@@ -40,5 +51,24 @@ public class DataSourceService extends BaseService<DataSource, DataSourceMapper>
         DataSource byName = this.getByName(dataSource.getName());
         Assert.duplicate(byName, dataSource, "数据源名称");
         this.saveOrUpdate(dataSource);
+
+        DataSourceProperty mainDataSourceProperty = dataSourceProperties.getDatasource().get(dataSourceProperties.getPrimary());
+
+        DataSourceProperty dataSourceProperty = new DataSourceProperty();
+        dataSourceProperty.setUrl(getJdbcUrl(dataSource.getHost(), dataSource.getPort(), dataSource.getSchema()));
+        dataSourceProperty.setUsername(dataSource.getUsername());
+        dataSourceProperty.setPassword(dataSource.getPassword());
+        dataSourceProperty.setDriverClassName(mainDataSourceProperty.getDriverClassName());
+        javax.sql.DataSource newDataSource = dataSourceCreator.createDataSource(dataSourceProperty);
+
+        dynamicRoutingDataSource.addDataSource(dataSource.getName(), newDataSource);
+    }
+
+    @Transactional
+    public void del(Long id) {
+        DataSource dataSource = this.getById(id);
+        dynamicRoutingDataSource.removeDataSource(dataSource.getName());
+
+        this.delete(id);
     }
 }

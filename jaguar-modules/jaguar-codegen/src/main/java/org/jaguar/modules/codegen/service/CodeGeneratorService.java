@@ -97,7 +97,6 @@ public class CodeGeneratorService extends BaseService<CodeGenerator, CodeGenerat
 
         try (FileInputStream inputStream = new FileInputStream(zip);
              ServletOutputStream outputStream = response.getOutputStream()) {
-//            IoUtil.copy(inputStream, outputStream);
             IOUtils.copy(inputStream, outputStream);
         }
     }

@@ -51,7 +51,7 @@ public class DataSourceController extends BaseController<DataSource, DataSourceM
     @ApiOperation(value = "删除数据源")
     @DeleteMapping("/{id}")
     public JsonResult<Void> del(@PathVariable Long id) {
-        service.delete(id);
+        service.del(id);
         return success();
     }
 
