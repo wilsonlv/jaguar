@@ -1,7 +1,6 @@
 package org.jaguar.modules.codegen.service;
 
 
-import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.ZipUtil;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
@@ -13,9 +12,9 @@ import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.config.*;
 import org.apache.commons.io.IOUtils;
 import org.jaguar.commons.basecrud.BaseService;
-import org.jaguar.modules.codegen.controller.dto.CodeGenerator;
+import org.jaguar.modules.codegen.controller.dto.Codegen;
 import org.jaguar.modules.codegen.controller.vo.TableVO;
-import org.jaguar.modules.codegen.mapper.CodeGeneratorMapper;
+import org.jaguar.modules.codegen.mapper.DataSourceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +29,7 @@ import java.io.IOException;
  * @since 2019/4/30.
  */
 @Service
-public class CodeGeneratorService extends BaseService<CodeGenerator, CodeGeneratorMapper> {
+public class CodeGeneratorService  {
 
     @Autowired
     private GlobalConfig globalConfig;
@@ -51,23 +50,23 @@ public class CodeGeneratorService extends BaseService<CodeGenerator, CodeGenerat
         DruidDataSource realDataSource = (DruidDataSource) dataSource.getRealDataSource();
         String url = realDataSource.getUrl().split("\\?")[0];
         String schema = url.substring(url.lastIndexOf('/') + 1);
-        return mapper.showTables(page, schema, fuzzyTableName);
+        return dataSourceService.showTables(page, schema, fuzzyTableName);
     }
 
     @DS("#codeGenerator.dataSourceName")
-    public void generate(CodeGenerator codeGenerator, HttpServletResponse response) throws IOException {
-        String tempDir = "temp" + File.separator + System.currentTimeMillis() + File.separator + codeGenerator.getTableName();
+    public void generate(Codegen codegen, HttpServletResponse response) throws IOException {
+        String tempDir = "temp" + File.separator + System.currentTimeMillis() + File.separator + codegen.getTableName();
 
-        globalConfig.setAuthor(codeGenerator.getAuthor());
+        globalConfig.setAuthor(codegen.getAuthor());
         globalConfig.setOutputDir(tempDir);
 
-        strategyConfig.setInclude(codeGenerator.getTableName());
-        strategyConfig.setTablePrefix(codeGenerator.getTablePrefix());
+        strategyConfig.setInclude(codegen.getTableName());
+        strategyConfig.setTablePrefix(codegen.getTablePrefix());
 
-        packageConfig.setParent(codeGenerator.getParentPackage());
-        packageConfig.setModuleName(codeGenerator.getModuleName());
+        packageConfig.setParent(codegen.getParentPackage());
+        packageConfig.setModuleName(codegen.getModuleName());
 
-        ItemDataSource dataSource = (ItemDataSource) dynamicRoutingDataSource.getDataSource(codeGenerator.getDataSourceName());
+        ItemDataSource dataSource = (ItemDataSource) dynamicRoutingDataSource.getDataSource(codegen.getDataSourceName());
         DruidDataSource realDataSource = (DruidDataSource) dataSource.getRealDataSource();
 
         DataSourceConfig dataSourceConfig = new DataSourceConfig();

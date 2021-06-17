@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Configuration;
 @Data
 @Configuration
 @ConfigurationProperties("spring.datasource")
-public class CodeGeneratorConfig {
+public class CodegenConfig {
 
     @Bean("generatorGlobalConfig")
     public GlobalConfig globalConfig() {

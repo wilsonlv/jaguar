@@ -5,11 +5,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.jaguar.commons.basecrud.BaseController;
+import lombok.RequiredArgsConstructor;
 import org.jaguar.commons.web.JsonResult;
-import org.jaguar.modules.codegen.controller.dto.CodeGenerator;
+import org.jaguar.modules.codegen.controller.dto.Codegen;
 import org.jaguar.modules.codegen.controller.vo.TableVO;
-import org.jaguar.modules.codegen.mapper.CodeGeneratorMapper;
 import org.jaguar.modules.codegen.service.CodeGeneratorService;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -26,7 +25,10 @@ import java.io.IOException;
 @RestController
 @Api(tags = "代码生成管理")
 @RequestMapping("/codegen")
-public class CodeGeneratorController extends BaseController<CodeGenerator, CodeGeneratorMapper, CodeGeneratorService> {
+@RequiredArgsConstructor
+public class CodegenController {
+
+    private final CodeGeneratorService codeGeneratorService;
 
     @ApiOperation(value = "查询数据库表")
     @GetMapping(value = "/show_tables")
@@ -38,15 +40,15 @@ public class CodeGeneratorController extends BaseController<CodeGenerator, CodeG
             page.orders().add(new OrderItem("table_name", false));
         }
 
-        page = service.showTables(page, dataSourceName, fuzzyTableName);
-        return success(page);
+        page = codeGeneratorService.showTables(page, dataSourceName, fuzzyTableName);
+        return JsonResult.success(page);
     }
 
     @ApiOperation(value = "生成代码")
     @PostMapping(value = "/generate")
-    public void generate(@RequestBody @Valid CodeGenerator codeGenerator,
+    public void generate(@RequestBody @Valid Codegen codegen,
                          HttpServletResponse response) throws IOException {
-        service.generate(codeGenerator, response);
+        codeGeneratorService.generate(codegen, response);
     }
 
 }

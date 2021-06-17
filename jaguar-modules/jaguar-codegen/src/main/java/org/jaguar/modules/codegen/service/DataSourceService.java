@@ -1,16 +1,16 @@
 package org.jaguar.modules.codegen.service;
 
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
-import com.baomidou.dynamic.datasource.creator.DataSourceCreator;
 import com.baomidou.dynamic.datasource.creator.DefaultDataSourceCreator;
-import com.baomidou.dynamic.datasource.creator.DruidDataSourceCreator;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.jaguar.commons.basecrud.Assert;
 import org.jaguar.commons.basecrud.BaseService;
 import org.jaguar.commons.web.exception.impl.CheckedException;
+import org.jaguar.modules.codegen.controller.vo.TableVO;
 import org.jaguar.modules.codegen.mapper.DataSourceMapper;
 import org.jaguar.modules.codegen.model.DataSource;
 import org.springframework.stereotype.Service;
@@ -71,5 +71,9 @@ public class DataSourceService extends BaseService<DataSource, DataSourceMapper>
         dynamicRoutingDataSource.removeDataSource(dataSource.getName());
 
         this.delete(id);
+    }
+
+    public Page<TableVO> showTables(Page<TableVO> page, String schema, String fuzzyTableName) {
+        return this.mapper.showTables(page, schema, fuzzyTableName);
     }
 }

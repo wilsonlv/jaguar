@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import org.jaguar.commons.basecrud.BaseModel;
 
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
 /**
  * @author lvws
@@ -14,8 +15,7 @@ import javax.validation.constraints.NotBlank;
  */
 @Data
 @ApiModel
-@EqualsAndHashCode(callSuper = true)
-public class CodeGenerator extends BaseModel {
+public class Codegen implements Serializable {
 
     @NotBlank(message = "数据源为非空")
     @ApiModelProperty(value = "数据源", required = true)
