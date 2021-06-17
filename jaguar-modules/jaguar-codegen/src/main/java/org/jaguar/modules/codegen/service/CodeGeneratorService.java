@@ -1,4 +1,4 @@
-package org.jaguar.modules.code.generator.service;
+package org.jaguar.modules.codegen.service;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -6,9 +6,9 @@ import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.config.*;
 import org.apache.commons.lang3.StringUtils;
 import org.jaguar.commons.basecrud.BaseService;
-import org.jaguar.modules.code.generator.config.CodeGeneratorConfig;
-import org.jaguar.modules.code.generator.mapper.CodeGeneratorMapper;
-import org.jaguar.modules.code.generator.model.CodeGenerator;
+import org.jaguar.modules.codegen.config.CodeGeneratorConfig;
+import org.jaguar.modules.codegen.mapper.CodeGeneratorMapper;
+import org.jaguar.modules.codegen.controller.dto.CodeGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

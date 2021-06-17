@@ -14,7 +14,7 @@
 
     <modules>
         <module>jaguar-auth-server</module>
-        <module>jaguar-code-generator</module>
+        <module>jaguar-codegen</module>
         <module>document</module>
         <module>jaguar-numbering</module>
         <module>jaguar-upms</module>

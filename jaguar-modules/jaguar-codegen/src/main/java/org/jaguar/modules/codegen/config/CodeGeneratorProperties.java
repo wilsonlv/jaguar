@@ -1,4 +1,4 @@
-package org.jaguar.modules.code.generator.config;
+package org.jaguar.modules.codegen.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

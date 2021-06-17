@@ -1,4 +1,4 @@
-package org.jaguar.modules.code.generator.config;
+package org.jaguar.modules.codegen.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.generator.config.*;
@@ -82,12 +82,12 @@ public class CodeGeneratorConfig {
     @Bean
     public TemplateConfig templateConfig() {
         TemplateConfig config = new TemplateConfig();
-        config.setEntity("org/jaguar/modules/code/generator/template/entity.java.vm");
-        config.setMapper("org/jaguar/modules/code/generator/template/mapper.java.vm");
-        config.setXml("org/jaguar/modules/code/generator/template/mapper.xml.vm");
+        config.setEntity("org/jaguar/modules/codegen/template/entity.java.vm");
+        config.setMapper("org/jaguar/modules/codegen/template/mapper.java.vm");
+        config.setXml("org/jaguar/modules/codegen/template/mapper.xml.vm");
         config.setService(null);
-        config.setServiceImpl("org/jaguar/modules/code/generator/template/service.java.vm");
-        config.setController("org/jaguar/modules/code/generator/template/controller.java.vm");
+        config.setServiceImpl("org/jaguar/modules/codegen/template/service.java.vm");
+        config.setController("org/jaguar/modules/codegen/template/controller.java.vm");
         return config;
     }
 

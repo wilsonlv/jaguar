@@ -1,4 +1,4 @@
-package org.jaguar.modules.code.generator.controller;
+package org.jaguar.modules.codegen.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
@@ -9,10 +9,10 @@ import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.jaguar.commons.basecrud.BaseController;
 import org.jaguar.commons.web.JsonResult;
-import org.jaguar.modules.code.generator.config.CodeGeneratorProperties;
-import org.jaguar.modules.code.generator.mapper.CodeGeneratorMapper;
-import org.jaguar.modules.code.generator.model.CodeGenerator;
-import org.jaguar.modules.code.generator.service.CodeGeneratorService;
+import org.jaguar.modules.codegen.config.CodeGeneratorProperties;
+import org.jaguar.modules.codegen.mapper.CodeGeneratorMapper;
+import org.jaguar.modules.codegen.controller.dto.CodeGenerator;
+import org.jaguar.modules.codegen.service.CodeGeneratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;

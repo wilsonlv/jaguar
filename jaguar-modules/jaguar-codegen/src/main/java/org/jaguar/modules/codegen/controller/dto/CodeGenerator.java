@@ -1,4 +1,4 @@
-package org.jaguar.modules.code.generator.model;
+package org.jaguar.modules.codegen.controller.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import org.jaguar.commons.basecrud.BaseModel;
 
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
 
 /**
  * @author lvws
@@ -26,7 +25,7 @@ public class CodeGenerator extends BaseModel {
     private String author;
 
     @ApiModelProperty(value = "模块名", required = true)
-    @NotBlank
+    @NotBlank(message = "模块名为非空")
     private String moduleName;
     @ApiModelProperty(value = "表名前缀")
     private String tablePrefix;
@@ -37,7 +36,5 @@ public class CodeGenerator extends BaseModel {
 
     @ApiModelProperty(value = "备注")
     private String tableComment;
-    @ApiModelProperty(value = "创建时间")
-    private LocalDateTime createTime;
 
 }

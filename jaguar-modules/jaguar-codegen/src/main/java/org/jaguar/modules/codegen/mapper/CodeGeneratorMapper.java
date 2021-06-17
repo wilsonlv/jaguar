@@ -1,15 +1,17 @@
-package org.jaguar.modules.code.generator.mapper;
+package org.jaguar.modules.codegen.mapper;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.jaguar.commons.basecrud.BaseMapper;
-import org.jaguar.modules.code.generator.model.CodeGenerator;
+import org.jaguar.modules.codegen.controller.dto.CodeGenerator;
 
 /**
  * @author lvws
  * @since 2019/4/30.
  */
+@Mapper
 public interface CodeGeneratorMapper extends BaseMapper<CodeGenerator> {
 
     /**
