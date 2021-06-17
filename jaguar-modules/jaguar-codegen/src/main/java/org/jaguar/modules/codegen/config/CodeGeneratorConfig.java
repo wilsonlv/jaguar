@@ -21,11 +21,6 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("spring.datasource")
 public class CodeGeneratorConfig {
 
-    private String driverClassName;
-    private String username;
-    private String password;
-    private String url;
-
     @Bean("generatorGlobalConfig")
     public GlobalConfig globalConfig() {
         GlobalConfig config = new GlobalConfig();
@@ -33,17 +28,6 @@ public class CodeGeneratorConfig {
         config.setBaseResultMap(true);
         config.setOpen(false);
         config.setServiceImplName("%sService");
-        return config;
-    }
-
-    @Bean
-    public DataSourceConfig dataSourceConfig() {
-        DataSourceConfig config = new DataSourceConfig();
-        config.setDbType(DbType.MYSQL);
-        config.setDriverName(driverClassName);
-        config.setUsername(username);
-        config.setPassword(password);
-        config.setUrl(url);
         return config;
     }
 

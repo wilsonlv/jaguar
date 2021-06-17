@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.jaguar.commons.basecrud.BaseMapper;
 import org.jaguar.modules.codegen.controller.dto.CodeGenerator;
+import org.jaguar.modules.codegen.controller.vo.TableVO;
 
 /**
  * @author lvws
@@ -20,8 +21,8 @@ public interface CodeGeneratorMapper extends BaseMapper<CodeGenerator> {
      * @param page           分页
      * @param schema         数据库
      * @param fuzzyTableName 模糊表名
-     * @return 实体类
+     * @return 表信息
      */
-    Page<CodeGenerator> showTables(Page<CodeGenerator> page, @Param("schema") String schema, @Param("fuzzyTableName") String fuzzyTableName);
+    Page<TableVO> showTables(Page<TableVO> page, @Param("schema") String schema, @Param("fuzzyTableName") String fuzzyTableName);
 
 }

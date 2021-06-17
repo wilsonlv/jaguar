@@ -17,24 +17,27 @@ import javax.validation.constraints.NotBlank;
 @EqualsAndHashCode(callSuper = true)
 public class CodeGenerator extends BaseModel {
 
-    @ApiModelProperty(value = "表名", required = true)
-    @NotBlank(message = "表名为非空")
-    private String tableName;
-    @ApiModelProperty(value = "作者", required = true)
-    @NotBlank(message = "作者为非空")
-    private String author;
+    @NotBlank(message = "数据源为非空")
+    @ApiModelProperty(value = "数据源", required = true)
+    private String dataSourceName;
 
-    @ApiModelProperty(value = "模块名", required = true)
-    @NotBlank(message = "模块名为非空")
-    private String moduleName;
+    @NotBlank(message = "表名为非空")
+    @ApiModelProperty(value = "表名", required = true)
+    private String tableName;
+
     @ApiModelProperty(value = "表名前缀")
     private String tablePrefix;
-    @ApiModelProperty(value = "包名")
-    private String parentPackage;
-    @ApiModelProperty(value = "输出路径")
-    private String outputDir;
 
-    @ApiModelProperty(value = "备注")
-    private String tableComment;
+    @NotBlank(message = "包名为非空")
+    @ApiModelProperty(value = "包名", required = true)
+    private String parentPackage;
+
+    @NotBlank(message = "模块名为非空")
+    @ApiModelProperty(value = "模块名", required = true)
+    private String moduleName;
+
+    @NotBlank(message = "作者为非空")
+    @ApiModelProperty(value = "作者", required = true)
+    private String author;
 
 }
