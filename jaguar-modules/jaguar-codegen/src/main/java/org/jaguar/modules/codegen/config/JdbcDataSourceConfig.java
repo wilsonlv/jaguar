@@ -2,7 +2,7 @@ package org.jaguar.modules.codegen.config;
 
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
-import org.jaguar.modules.codegen.component.JaguarJdbcDataSourceProvider;
+import org.jaguar.modules.codegen.component.JdbcDataSourceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,9 +18,9 @@ public class JdbcDataSourceConfig {
     private DynamicDataSourceProperties dataSourceProperties;
 
     @Bean
-    public JaguarJdbcDataSourceProvider dataSourceProvider() {
+    public JdbcDataSourceProvider dataSourceProvider() {
         DataSourceProperty dataSourceProperty = dataSourceProperties.getDatasource().get(dataSourceProperties.getPrimary());
-        return new JaguarJdbcDataSourceProvider(dataSourceProperty.getUrl(), dataSourceProperty.getUsername(),
+        return new JdbcDataSourceProvider(dataSourceProperty.getUrl(), dataSourceProperty.getUsername(),
                 dataSourceProperty.getPassword(), dataSourceProperty.getDriverClassName());
     }
 

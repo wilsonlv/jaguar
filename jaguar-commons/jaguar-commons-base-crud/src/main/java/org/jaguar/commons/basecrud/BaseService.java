@@ -22,6 +22,8 @@ public abstract class BaseService<T extends BaseModel, M extends BaseMapper<T>> 
 
     public static final String DEFAULT_ORDER_COLUMN = "id_";
 
+    public static final String LIMIT_1 = "limit 1";
+
     @Autowired
     protected M mapper;
 

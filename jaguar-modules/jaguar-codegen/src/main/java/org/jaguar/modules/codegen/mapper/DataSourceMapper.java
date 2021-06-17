@@ -8,10 +8,6 @@ import org.jaguar.modules.codegen.controller.vo.TableVO;
 import org.jaguar.modules.codegen.model.DataSource;
 
 /**
- * <p>
- * Mapper接口
- * </p>
- *
  * @author lvws
  * @since 2021-06-16
  */

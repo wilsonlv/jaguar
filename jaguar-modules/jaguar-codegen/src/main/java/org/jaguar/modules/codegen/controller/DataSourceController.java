@@ -19,12 +19,12 @@ import javax.validation.Valid;
 
 /**
  * @author lvws
- * @since 2019-11-08
+ * @since 2021-06-16
  */
 @Validated
 @RestController
 @RequestMapping("/datasource")
-@Api(tags = "系统用户表管理")
+@Api(tags = "数据源管理")
 public class DataSourceController extends BaseController<DataSource, DataSourceMapper, DataSourceService> {
 
     @ApiOperation(value = "分页查询数据源")

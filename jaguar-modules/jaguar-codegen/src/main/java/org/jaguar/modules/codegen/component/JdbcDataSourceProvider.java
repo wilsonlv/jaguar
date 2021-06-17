@@ -14,15 +14,15 @@ import java.util.Map;
  * @author lvws
  * @since 2021/6/17
  */
-public class JaguarJdbcDataSourceProvider extends AbstractJdbcDataSourceProvider {
+public class JdbcDataSourceProvider extends AbstractJdbcDataSourceProvider {
 
     private String driverClassName;
 
-    public JaguarJdbcDataSourceProvider(String url, String username, String password) {
+    public JdbcDataSourceProvider(String url, String username, String password) {
         super(url, username, password);
     }
 
-    public JaguarJdbcDataSourceProvider(String url, String username, String password, String driverClassName) {
+    public JdbcDataSourceProvider(String url, String username, String password, String driverClassName) {
         super(url, username, password);
         this.driverClassName = driverClassName;
     }

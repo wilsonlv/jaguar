@@ -1,13 +1,16 @@
 package org.jaguar.modules.codegen.config;
 
-import com.baomidou.mybatisplus.annotation.DbType;
-import com.baomidou.mybatisplus.generator.config.*;
+import com.baomidou.mybatisplus.generator.config.GlobalConfig;
+import com.baomidou.mybatisplus.generator.config.PackageConfig;
+import com.baomidou.mybatisplus.generator.config.StrategyConfig;
+import com.baomidou.mybatisplus.generator.config.TemplateConfig;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import lombok.Data;
 import org.jaguar.commons.basecrud.BaseController;
 import org.jaguar.commons.basecrud.BaseMapper;
 import org.jaguar.commons.basecrud.BaseModel;
 import org.jaguar.commons.basecrud.BaseService;
+import org.jaguar.modules.codegen.enums.CodeTemplateType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,26 +35,6 @@ public class CodegenConfig {
     }
 
     @Bean
-    public StrategyConfig strategyConfig() {
-        StrategyConfig strategy = new StrategyConfig();
-        // 字段名生成策略
-        strategy.setNaming(NamingStrategy.underline_to_camel);
-        // 自定义实体，公共字段
-        strategy.setSuperEntityColumns("id_", "deleted_", "remark_", "create_by", "create_time", "update_by", "update_time");
-        // 自定义实体父类
-        strategy.setSuperEntityClass(BaseModel.class.getName());
-        // 自定义 mapper 父类
-        strategy.setSuperMapperClass(BaseMapper.class.getName());
-        // 自定义 service 实现类父类
-        strategy.setSuperServiceImplClass(BaseService.class.getName());
-        // 自定义 controller 父类
-        strategy.setSuperControllerClass(BaseController.class.getName());
-        // controller mapping 驼峰转连字符
-        strategy.setControllerMappingHyphenStyle(true);
-        return strategy;
-    }
-
-    @Bean
     public PackageConfig packageConfig() {
         PackageConfig config = new PackageConfig();
         config.setEntity("model");
@@ -66,12 +49,18 @@ public class CodegenConfig {
     @Bean
     public TemplateConfig templateConfig() {
         TemplateConfig config = new TemplateConfig();
-        config.setEntity("org/jaguar/modules/codegen/template/entity.java.vm");
-        config.setMapper("org/jaguar/modules/codegen/template/mapper.java.vm");
-        config.setXml("org/jaguar/modules/codegen/template/mapper.xml.vm");
+        config.setEntity(CodeTemplateType.ENTITY.name());
+        config.setMapper(CodeTemplateType.MAPPER.name());
+        config.setXml(CodeTemplateType.MAPPER_XML.name());
         config.setService(null);
-        config.setServiceImpl("org/jaguar/modules/codegen/template/service.java.vm");
-        config.setController("org/jaguar/modules/codegen/template/controller.java.vm");
+        config.setServiceImpl(CodeTemplateType.SERVICE.name());
+        config.setController(CodeTemplateType.CONTROLLER.name());
+//        config.setEntity("org/jaguar/modules/codegen/template/entity.java.vm");
+//        config.setMapper("org/jaguar/modules/codegen/template/mapper.java.vm");
+//        config.setXml("org/jaguar/modules/codegen/template/mapper.xml.vm");
+//        config.setService(null);
+//        config.setServiceImpl("org/jaguar/modules/codegen/template/service.java.vm");
+//        config.setController("org/jaguar/modules/codegen/template/controller.java.vm");
         return config;
     }
 

@@ -9,6 +9,8 @@ import org.jaguar.commons.basecrud.BaseModel;
 import javax.validation.constraints.NotBlank;
 
 /**
+ * 数据源
+ *
  * @author lvws
  * @since 2021/6/16
  */
@@ -25,30 +27,35 @@ public class DataSource extends BaseModel {
     @NotBlank
     @TableField("name_")
     private String name;
+
     /**
      * host
      */
     @NotBlank
     @TableField("host_")
     private String host;
+
     /**
      * port
      */
     @NotBlank
     @TableField("port_")
     private String port;
+
     /**
      * schema
      */
     @NotBlank
     @TableField("schema_")
     private String schema;
+
     /**
      * 用户名
      */
     @NotBlank
     @TableField("username_")
     private String username;
+
     /**
      * 密码
      */
