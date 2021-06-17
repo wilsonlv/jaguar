@@ -10,14 +10,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.jaguar.commons.basecrud.BaseController;
 import org.jaguar.commons.web.JsonResult;
 import org.jaguar.modules.codegen.config.CodeGeneratorProperties;
-import org.jaguar.modules.codegen.mapper.CodeGeneratorMapper;
 import org.jaguar.modules.codegen.controller.dto.CodeGenerator;
+import org.jaguar.modules.codegen.mapper.CodeGeneratorMapper;
 import org.jaguar.modules.codegen.service.CodeGeneratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 /**
  * @author lvws
@@ -25,7 +26,7 @@ import javax.validation.Valid;
  */
 @RestController
 @Api(tags = "代码生成管理")
-@RequestMapping("/code_generator")
+@RequestMapping("/codegen")
 public class CodeGeneratorController extends BaseController<CodeGenerator, CodeGeneratorMapper, CodeGeneratorService> {
 
     @Autowired
@@ -35,13 +36,14 @@ public class CodeGeneratorController extends BaseController<CodeGenerator, CodeG
     @GetMapping(value = "/show_tables")
     public JsonResult<Page<CodeGenerator>> showTables(
             @ApiIgnore Page<CodeGenerator> page,
+            @ApiParam(value = "数据源名称", required = true) @RequestParam @NotBlank String dataSourceName,
             @ApiParam(value = "模糊表名") @RequestParam(required = false) String fuzzyTableName) {
 
         if (page.orders().size() == 0) {
             page.orders().add(new OrderItem("table_name", false));
         }
 
-        page = service.showTables(page, fuzzyTableName);
+        page = service.showTables(page, dataSourceName, fuzzyTableName);
         return success(page);
     }
 

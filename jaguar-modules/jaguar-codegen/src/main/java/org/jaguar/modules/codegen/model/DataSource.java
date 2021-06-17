@@ -26,11 +26,23 @@ public class DataSource extends BaseModel {
     @TableField("name_")
     private String name;
     /**
-     * jdbcUrl
+     * host
      */
     @NotBlank
-    @TableField("jdbc_url")
-    private String jdbcUrl;
+    @TableField("host_")
+    private String host;
+    /**
+     * port
+     */
+    @NotBlank
+    @TableField("port_")
+    private String port;
+    /**
+     * schema
+     */
+    @NotBlank
+    @TableField("schema_")
+    private String schema;
     /**
      * 用户名
      */

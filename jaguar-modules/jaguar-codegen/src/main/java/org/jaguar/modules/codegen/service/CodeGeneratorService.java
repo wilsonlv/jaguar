@@ -1,14 +1,17 @@
 package org.jaguar.modules.codegen.service;
 
 
+import com.alibaba.druid.pool.DruidDataSource;
+import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
+import com.baomidou.dynamic.datasource.annotation.DS;
+import com.baomidou.dynamic.datasource.ds.ItemDataSource;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.config.*;
 import org.apache.commons.lang3.StringUtils;
 import org.jaguar.commons.basecrud.BaseService;
-import org.jaguar.modules.codegen.config.CodeGeneratorConfig;
-import org.jaguar.modules.codegen.mapper.CodeGeneratorMapper;
 import org.jaguar.modules.codegen.controller.dto.CodeGenerator;
+import org.jaguar.modules.codegen.mapper.CodeGeneratorMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,16 +32,18 @@ public class CodeGeneratorService extends BaseService<CodeGenerator, CodeGenerat
     private PackageConfig packageConfig;
     @Autowired
     private TemplateConfig templateConfig;
-
-    private String schema;
-
     @Autowired
-    public void setSchema(CodeGeneratorConfig codeGeneratorConfig) {
-        String url = codeGeneratorConfig.getUrl().split("\\?")[0];
-        this.schema = url.substring(url.lastIndexOf('/') + 1);
-    }
+    private DataSourceService dataSourceService;
+    @Autowired
+    private DynamicRoutingDataSource dynamicRoutingDataSource;
 
-    public Page<CodeGenerator> showTables(Page<CodeGenerator> page, String fuzzyTableName) {
+    @DS("#dataSourceName")
+    public Page<CodeGenerator> showTables(Page<CodeGenerator> page, String dataSourceName, String fuzzyTableName) {
+        ItemDataSource dataSource = (ItemDataSource) dynamicRoutingDataSource.getDataSource(dataSourceName);
+        DruidDataSource realDataSource = (DruidDataSource) dataSource.getRealDataSource();
+        String rawJdbcUrl = realDataSource.getRawJdbcUrl();
+        String url = rawJdbcUrl.split("\\?")[0];
+        String schema = url.substring(url.lastIndexOf('/') + 1);
         return mapper.showTables(page, schema, fuzzyTableName);
     }
 

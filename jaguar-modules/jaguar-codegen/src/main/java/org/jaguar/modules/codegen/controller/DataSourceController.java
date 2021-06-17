@@ -23,7 +23,7 @@ import javax.validation.Valid;
  */
 @Validated
 @RestController
-@RequestMapping("/codegen/datasource")
+@RequestMapping("/datasource")
 @Api(tags = "系统用户表管理")
 public class DataSourceController extends BaseController<DataSource, DataSourceMapper, DataSourceService> {
 
@@ -42,7 +42,16 @@ public class DataSourceController extends BaseController<DataSource, DataSourceM
     @ApiOperation(value = "新增修改数据源")
     @PostMapping
     public JsonResult<Void> save(@RequestBody @Valid DataSource dataSource) {
-        service.saveOrUpdate(dataSource);
+        synchronized (this) {
+            service.save(dataSource);
+        }
+        return success();
+    }
+
+    @ApiOperation(value = "删除数据源")
+    @DeleteMapping("/{id}")
+    public JsonResult<Void> del(@PathVariable Long id) {
+        service.delete(id);
         return success();
     }
 
