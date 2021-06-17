@@ -2,6 +2,7 @@ package org.jaguar.modules.codegen.service;
 
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.baomidou.dynamic.datasource.creator.DataSourceCreator;
+import com.baomidou.dynamic.datasource.creator.DefaultDataSourceCreator;
 import com.baomidou.dynamic.datasource.creator.DruidDataSourceCreator;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
@@ -31,7 +32,7 @@ public class DataSourceService extends BaseService<DataSource, DataSourceMapper>
 
     private final DynamicDataSourceProperties dataSourceProperties;
 
-    private final DruidDataSourceCreator dataSourceCreator;
+    private final DefaultDataSourceCreator dataSourceCreator;
 
     public DataSource getByName(String name) {
         return this.unique(Wrappers.<DataSource>lambdaQuery()
