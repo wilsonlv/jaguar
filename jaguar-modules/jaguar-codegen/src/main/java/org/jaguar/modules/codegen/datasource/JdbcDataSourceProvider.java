@@ -1,4 +1,4 @@
-package org.jaguar.modules.codegen.component;
+package org.jaguar.modules.codegen.datasource;
 
 import com.baomidou.dynamic.datasource.provider.AbstractJdbcDataSourceProvider;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;

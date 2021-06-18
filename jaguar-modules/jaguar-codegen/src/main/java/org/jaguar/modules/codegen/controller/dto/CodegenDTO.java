@@ -15,7 +15,7 @@ import java.io.Serializable;
  */
 @Data
 @ApiModel
-public class Codegen implements Serializable {
+public class CodegenDTO implements Serializable {
 
     @NotBlank(message = "数据源为非空")
     @ApiModelProperty(value = "数据源", required = true)

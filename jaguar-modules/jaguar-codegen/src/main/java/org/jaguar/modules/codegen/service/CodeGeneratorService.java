@@ -18,13 +18,16 @@ import org.jaguar.commons.basecrud.BaseController;
 import org.jaguar.commons.basecrud.BaseMapper;
 import org.jaguar.commons.basecrud.BaseModel;
 import org.jaguar.commons.basecrud.BaseService;
-import org.jaguar.modules.codegen.component.VelocityTemplateEngine;
-import org.jaguar.modules.codegen.controller.dto.Codegen;
+import org.jaguar.modules.codegen.controller.dto.CodegenDTO;
+import org.jaguar.modules.codegen.controller.dto.PreviewDTO;
 import org.jaguar.modules.codegen.controller.vo.TableVO;
+import org.jaguar.modules.codegen.enums.CodeTemplateType;
+import org.jaguar.modules.codegen.velocity.CodeTemplateTemplateEngine;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -45,9 +48,13 @@ public class CodeGeneratorService {
 
     private final DataSourceService dataSourceService;
 
-    private final VelocityTemplateEngine templateEngine;
+    private final CodeTemplateTemplateEngine templateEngine;
 
     private final DynamicRoutingDataSource dynamicRoutingDataSource;
+
+    public final static ThreadLocal<String> TEMPLATE_PREVIEW_FILE = new ThreadLocal<>();
+    public final static ThreadLocal<ByteArrayOutputStream> TEMPLATE_PREVIEW_OUTPUT_STREAM = new ThreadLocal<>();
+
 
     @DS("#dataSourceName")
     public Page<TableVO> showTables(Page<TableVO> page, String dataSourceName, String fuzzyTableName) {
@@ -59,7 +66,7 @@ public class CodeGeneratorService {
     }
 
 
-    public StrategyConfig createStrategyConfig(Codegen codegen) {
+    public StrategyConfig createStrategyConfig(CodegenDTO codegen) {
         StrategyConfig strategy = new StrategyConfig();
         // 字段名生成策略
         strategy.setNaming(NamingStrategy.underline_to_camel);
@@ -85,7 +92,7 @@ public class CodeGeneratorService {
     }
 
     @DS("#codegen.dataSourceName")
-    public void generate(Codegen codegen, HttpServletResponse response) throws IOException {
+    public void generate(CodegenDTO codegen, HttpServletResponse response) throws IOException {
         String tempDir = "temp" + File.separator + System.currentTimeMillis() + File.separator + codegen.getTableName();
 
         globalConfig.setAuthor(codegen.getAuthor());
@@ -120,7 +127,8 @@ public class CodeGeneratorService {
         //生成代码
         generator.execute();
 
-        File zip = ZipUtil.zip(new File(tempDir));
+        File file = new File(tempDir);
+        File zip = ZipUtil.zip(file);
 
         response.setHeader("Content-Disposition", "attachment;filename=" + zip.getName());
 
@@ -128,5 +136,85 @@ public class CodeGeneratorService {
              ServletOutputStream outputStream = response.getOutputStream()) {
             IOUtils.copy(inputStream, outputStream);
         }
+
+        file.delete();
+        zip.delete();
+    }
+
+    public String preview(PreviewDTO preview) {
+        globalConfig.setAuthor(preview.getAuthor());
+        globalConfig.setOutputDir("temp");
+
+        packageConfig.setParent(preview.getParentPackage());
+        packageConfig.setModuleName(preview.getModuleName());
+
+        ItemDataSource dataSource = (ItemDataSource) dynamicRoutingDataSource.getDataSource(DataSourceService.MASTER);
+        DruidDataSource realDataSource = (DruidDataSource) dataSource.getRealDataSource();
+
+        DataSourceConfig dataSourceConfig = new DataSourceConfig();
+        dataSourceConfig.setDbType(DbType.MYSQL);
+        dataSourceConfig.setDriverName(realDataSource.getDriverClassName());
+        dataSourceConfig.setUsername(realDataSource.getUsername());
+        dataSourceConfig.setPassword(realDataSource.getPassword());
+        dataSourceConfig.setUrl(realDataSource.getUrl());
+
+        AutoGenerator generator = new AutoGenerator();
+        // 全局配置
+        generator.setGlobalConfig(globalConfig);
+        // 数据源配置
+        generator.setDataSource(dataSourceConfig);
+        // 策略配置
+        generator.setStrategy(createStrategyConfig(preview));
+        // 包配置
+        generator.setPackageInfo(packageConfig);
+        // 模版配置
+        generator.setTemplate(createTemplate(preview.getCodeTemplateType()));
+        // 模板引擎
+        generator.setTemplateEngine(templateEngine);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        TEMPLATE_PREVIEW_FILE.set(preview.getCodeTemplateFile());
+        TEMPLATE_PREVIEW_OUTPUT_STREAM.set(outputStream);
+
+        //生成代码
+        generator.execute();
+
+        TEMPLATE_PREVIEW_FILE.remove();
+        TEMPLATE_PREVIEW_OUTPUT_STREAM.remove();
+        return outputStream.toString();
+    }
+
+    private TemplateConfig createTemplate(CodeTemplateType codeTemplateType) {
+        TemplateConfig templateConfig = new TemplateConfig();
+        templateConfig.setEntity(null);
+        templateConfig.setMapper(null);
+        templateConfig.setXml(null);
+        templateConfig.setService(null);
+        templateConfig.setServiceImpl(null);
+        templateConfig.setController(null);
+        switch (codeTemplateType) {
+            case ENTITY: {
+                templateConfig.setEntity(CodeTemplateType.ENTITY.name());
+                break;
+            }
+            case MAPPER: {
+                templateConfig.setMapper(CodeTemplateType.MAPPER.name());
+                break;
+            }
+            case MAPPER_XML: {
+                templateConfig.setXml(CodeTemplateType.MAPPER_XML.name());
+                break;
+            }
+            case SERVICE: {
+                templateConfig.setServiceImpl(CodeTemplateType.SERVICE.name());
+                break;
+            }
+            case CONTROLLER: {
+                templateConfig.setController(CodeTemplateType.CONTROLLER.name());
+                break;
+            }
+            default:
+        }
+        return templateConfig;
     }
 }

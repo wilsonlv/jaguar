@@ -1,8 +1,7 @@
-package org.jaguar.modules.codegen.config;
+package org.jaguar.modules.codegen.datasource;
 
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
-import org.jaguar.modules.codegen.component.JdbcDataSourceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

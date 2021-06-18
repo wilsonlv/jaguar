@@ -1,15 +1,9 @@
-package org.jaguar.modules.codegen.config;
+package org.jaguar.modules.codegen.velocity;
 
 import com.baomidou.mybatisplus.generator.config.GlobalConfig;
 import com.baomidou.mybatisplus.generator.config.PackageConfig;
-import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.TemplateConfig;
-import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import lombok.Data;
-import org.jaguar.commons.basecrud.BaseController;
-import org.jaguar.commons.basecrud.BaseMapper;
-import org.jaguar.commons.basecrud.BaseModel;
-import org.jaguar.commons.basecrud.BaseService;
 import org.jaguar.modules.codegen.enums.CodeTemplateType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -55,12 +49,6 @@ public class CodegenConfig {
         config.setService(null);
         config.setServiceImpl(CodeTemplateType.SERVICE.name());
         config.setController(CodeTemplateType.CONTROLLER.name());
-//        config.setEntity("org/jaguar/modules/codegen/template/entity.java.vm");
-//        config.setMapper("org/jaguar/modules/codegen/template/mapper.java.vm");
-//        config.setXml("org/jaguar/modules/codegen/template/mapper.xml.vm");
-//        config.setService(null);
-//        config.setServiceImpl("org/jaguar/modules/codegen/template/service.java.vm");
-//        config.setController("org/jaguar/modules/codegen/template/controller.java.vm");
         return config;
     }
 

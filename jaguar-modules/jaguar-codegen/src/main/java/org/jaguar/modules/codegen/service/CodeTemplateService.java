@@ -3,7 +3,6 @@ package org.jaguar.modules.codegen.service;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 import org.jaguar.commons.basecrud.BaseService;
-import org.jaguar.modules.codegen.component.VelocityTemplateEngine;
 import org.jaguar.modules.codegen.enums.CodeTemplateType;
 import org.jaguar.modules.codegen.mapper.CodeTemplateMapper;
 import org.jaguar.modules.codegen.model.CodeTemplate;

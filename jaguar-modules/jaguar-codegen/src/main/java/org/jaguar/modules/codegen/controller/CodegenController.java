@@ -7,7 +7,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.jaguar.commons.web.JsonResult;
-import org.jaguar.modules.codegen.controller.dto.Codegen;
+import org.jaguar.modules.codegen.controller.dto.CodegenDTO;
+import org.jaguar.modules.codegen.controller.dto.PreviewDTO;
 import org.jaguar.modules.codegen.controller.vo.TableVO;
 import org.jaguar.modules.codegen.service.CodeGeneratorService;
 import org.springframework.web.bind.annotation.*;
@@ -46,9 +47,15 @@ public class CodegenController {
 
     @ApiOperation(value = "生成代码")
     @PostMapping(value = "/generate")
-    public void generate(@RequestBody @Valid Codegen codegen,
+    public void generate(@RequestBody @Valid CodegenDTO codegen,
                          HttpServletResponse response) throws IOException {
         codeGeneratorService.generate(codegen, response);
+    }
+
+    @ApiOperation(value = "预览")
+    @PostMapping(value = "/preview")
+    public JsonResult<String> preview(@RequestBody @Valid PreviewDTO preview) throws IOException {
+        return JsonResult.success(codeGeneratorService.preview(preview));
     }
 
 }
