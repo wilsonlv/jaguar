@@ -31,8 +31,6 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
 
     private static final String DOT_VM = ".vm";
 
-    public static final Map<CodeTemplateType, CodeTemplate> CODE_TEMPLATE_DATA_BASE = new HashMap<>();
-
     @Autowired
     private CodeTemplateService codeTemplateService;
 
@@ -50,11 +48,6 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
             p.setProperty("file.resource.loader.unicode", StringPool.TRUE);
             velocityEngine = new VelocityEngine(p);
         }
-
-        List<CodeTemplate> codeTemplates =  codeTemplateService.findLatest();
-        for (CodeTemplate codeTemplate : codeTemplates) {
-            CODE_TEMPLATE_DATA_BASE.put(codeTemplate.getCodeTemplateType(), codeTemplate);
-        }
         return this;
     }
 
@@ -71,9 +64,6 @@ public class VelocityTemplateEngine extends AbstractTemplateEngine {
 
     @Override
     public String templateFilePath(String filePath) {
-        if (null == filePath || filePath.contains(DOT_VM)) {
-            return filePath;
-        }
-        return filePath + DOT_VM;
+        return filePath ;
     }
 }

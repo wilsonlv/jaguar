@@ -3,7 +3,15 @@
 <mapper namespace="org.jaguar.modules.codegen.mapper.CodeTemplateMapper">
 
     <select id="findLatest" resultType="org.jaguar.modules.codegen.model.CodeTemplate">
-
+        select ct.*
+        from jaguar_modules_codegen_code_template ct
+                 inner join
+             (
+                 select code_template_type, max(code_template_version) as code_template_version
+                 from jaguar_modules_codegen_code_template
+                 group by code_template_type
+             ) a on a.code_template_type = ct.code_template_type and
+                    a.code_template_version = ct.code_template_version
     </select>
 
 </mapper>

@@ -7,10 +7,13 @@ import org.jaguar.modules.codegen.component.VelocityTemplateEngine;
 import org.jaguar.modules.codegen.enums.CodeTemplateType;
 import org.jaguar.modules.codegen.mapper.CodeTemplateMapper;
 import org.jaguar.modules.codegen.model.CodeTemplate;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author lvws
@@ -18,7 +21,10 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
-public class CodeTemplateService extends BaseService<CodeTemplate, CodeTemplateMapper> {
+public class CodeTemplateService extends BaseService<CodeTemplate, CodeTemplateMapper> implements InitializingBean {
+
+    public static final Map<CodeTemplateType, CodeTemplate> CODE_TEMPLATE_DATA_BASE = new HashMap<>();
+
 
     public List<CodeTemplate> findLatest() {
         return this.mapper.findLatest();
@@ -38,6 +44,14 @@ public class CodeTemplateService extends BaseService<CodeTemplate, CodeTemplateM
         codeTemplate.setCodeTemplateVersion(version);
         this.insert(codeTemplate);
 
-        VelocityTemplateEngine.CODE_TEMPLATE_DATA_BASE.put(codeTemplateType, codeTemplate);
+        CODE_TEMPLATE_DATA_BASE.put(codeTemplateType, codeTemplate);
+    }
+
+    @Override
+    public void afterPropertiesSet() {
+        List<CodeTemplate> codeTemplates = this.findLatest();
+        for (CodeTemplate codeTemplate : codeTemplates) {
+            CODE_TEMPLATE_DATA_BASE.put(codeTemplate.getCodeTemplateType(), codeTemplate);
+        }
     }
 }

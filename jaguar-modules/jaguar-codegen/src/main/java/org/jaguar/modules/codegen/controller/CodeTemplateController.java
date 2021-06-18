@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.jaguar.commons.basecrud.BaseController;
 import org.jaguar.commons.web.JsonResult;
-import org.jaguar.modules.codegen.component.VelocityTemplateEngine;
 import org.jaguar.modules.codegen.enums.CodeTemplateType;
 import org.jaguar.modules.codegen.mapper.CodeTemplateMapper;
 import org.jaguar.modules.codegen.model.CodeTemplate;
@@ -29,7 +28,7 @@ public class CodeTemplateController extends BaseController<CodeTemplate, CodeTem
     @ApiOperation(value = "查询代码模板管")
     @GetMapping(value = "/list")
     public JsonResult<Collection<CodeTemplate>> list() {
-        return success(VelocityTemplateEngine.CODE_TEMPLATE_DATA_BASE.values());
+        return success(CodeTemplateService.CODE_TEMPLATE_DATA_BASE.values());
     }
 
     @ApiOperation(value = "编辑代码模板")

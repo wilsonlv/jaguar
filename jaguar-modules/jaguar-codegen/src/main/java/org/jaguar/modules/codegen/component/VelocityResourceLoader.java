@@ -7,6 +7,7 @@ import org.apache.velocity.runtime.resource.loader.ResourceLoader;
 import org.jaguar.commons.web.exception.impl.CheckedException;
 import org.jaguar.modules.codegen.enums.CodeTemplateType;
 import org.jaguar.modules.codegen.model.CodeTemplate;
+import org.jaguar.modules.codegen.service.CodeTemplateService;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -18,7 +19,6 @@ import java.nio.charset.StandardCharsets;
  */
 public class VelocityResourceLoader extends ResourceLoader {
 
-
     @Override
     public void init(ExtendedProperties configuration) {
 
@@ -26,7 +26,7 @@ public class VelocityResourceLoader extends ResourceLoader {
 
     @Override
     public InputStream getResourceStream(String source) throws ResourceNotFoundException {
-        CodeTemplate codeTemplate = VelocityTemplateEngine.CODE_TEMPLATE_DATA_BASE.get(CodeTemplateType.valueOf(source));
+        CodeTemplate codeTemplate = CodeTemplateService.CODE_TEMPLATE_DATA_BASE.get(CodeTemplateType.valueOf(source));
         if (codeTemplate == null) {
             throw new CheckedException("没有找到" + source + "模板");
         }
