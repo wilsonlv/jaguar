@@ -1,7 +1,9 @@
 package org.jaguar.modules.codegen.service;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.baomidou.dynamic.datasource.creator.DefaultDataSourceCreator;
+import com.baomidou.dynamic.datasource.ds.ItemDataSource;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -24,9 +26,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class DataSourceService extends BaseService<DataSource, DataSourceMapper> {
 
-    public static final String MASTER = "master";
-
     private static final String JDBC_URL = "jdbc:mysql://%s:%s/%s?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&serverTimezone=PRC&useSSL=false";
+
+    public static String getJdbcUrl(String host, String port, String schema) {
+        return String.format(JDBC_URL, host, port, schema);
+    }
 
     private final DynamicRoutingDataSource dynamicRoutingDataSource;
 
@@ -34,19 +38,31 @@ public class DataSourceService extends BaseService<DataSource, DataSourceMapper>
 
     private final DefaultDataSourceCreator dataSourceCreator;
 
+    public String getSchema(String dataSourceName){
+        DruidDataSource druidDataSource = this.getDataSource(dataSourceName);
+        String url = druidDataSource.getUrl().split("\\?")[0];
+        return url.substring(url.lastIndexOf('/') + 1);
+    }
+
+    public DruidDataSource getPrimary() {
+        return this.getDataSource(dataSourceProperties.getPrimary());
+    }
+
+    public DruidDataSource getDataSource(String dataSourceName) {
+        ItemDataSource dataSource = (ItemDataSource) dynamicRoutingDataSource.getDataSource(dataSourceName);
+        return (DruidDataSource) dataSource.getRealDataSource();
+    }
+
     public DataSource getByName(String name) {
         return this.unique(Wrappers.<DataSource>lambdaQuery()
                 .eq(DataSource::getName, name));
     }
 
-    public static String getJdbcUrl(String host, String port, String schema) {
-        return String.format(JDBC_URL, host, port, schema);
-    }
 
     @Transactional
     public void save(DataSource dataSource) {
-        if (MASTER.equals(dataSource.getName())) {
-            throw new CheckedException("数据源名称不能为" + MASTER);
+        if (dataSourceProperties.getPrimary().equals(dataSource.getName())) {
+            throw new CheckedException("数据源名称不能为" + dataSourceProperties.getPrimary());
         }
 
         DataSource byName = this.getByName(dataSource.getName());
@@ -69,11 +85,11 @@ public class DataSourceService extends BaseService<DataSource, DataSourceMapper>
     public void del(Long id) {
         DataSource dataSource = this.getById(id);
         dynamicRoutingDataSource.removeDataSource(dataSource.getName());
-
         this.delete(id);
     }
 
-    public Page<TableVO> showTables(Page<TableVO> page, String schema, String fuzzyTableName) {
+    public Page<TableVO> showTables(Page<TableVO> page, String dataSourceName, String fuzzyTableName) {
+        String schema = this.getSchema(dataSourceName);
         return this.mapper.showTables(page, schema, fuzzyTableName);
     }
 }

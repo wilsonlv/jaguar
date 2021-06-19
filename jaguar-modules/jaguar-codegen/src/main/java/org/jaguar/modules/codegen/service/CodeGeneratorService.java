@@ -3,9 +3,7 @@ package org.jaguar.modules.codegen.service;
 
 import cn.hutool.core.util.ZipUtil;
 import com.alibaba.druid.pool.DruidDataSource;
-import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.baomidou.dynamic.datasource.ds.ItemDataSource;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
@@ -40,33 +38,49 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class CodeGeneratorService {
 
-    private final GlobalConfig globalConfig;
-
-    private final PackageConfig packageConfig;
-
     private final TemplateConfig templateConfig;
 
     private final DataSourceService dataSourceService;
 
     private final CodeTemplateTemplateEngine templateEngine;
 
-    private final DynamicRoutingDataSource dynamicRoutingDataSource;
+    private final static String TEMP_DIR = "temp";
 
     public final static ThreadLocal<String> TEMPLATE_PREVIEW_FILE = new ThreadLocal<>();
+
     public final static ThreadLocal<ByteArrayOutputStream> TEMPLATE_PREVIEW_OUTPUT_STREAM = new ThreadLocal<>();
 
 
     @DS("#dataSourceName")
     public Page<TableVO> showTables(Page<TableVO> page, String dataSourceName, String fuzzyTableName) {
-        ItemDataSource dataSource = (ItemDataSource) dynamicRoutingDataSource.getDataSource(dataSourceName);
-        DruidDataSource realDataSource = (DruidDataSource) dataSource.getRealDataSource();
-        String url = realDataSource.getUrl().split("\\?")[0];
-        String schema = url.substring(url.lastIndexOf('/') + 1);
-        return dataSourceService.showTables(page, schema, fuzzyTableName);
+        return dataSourceService.showTables(page, dataSourceName, fuzzyTableName);
     }
 
+    private GlobalConfig createGlobalConfig(String author, String outputDir) {
+        GlobalConfig globalConfig = new GlobalConfig();
+        globalConfig.setFileOverride(true);
+        globalConfig.setBaseResultMap(true);
+        globalConfig.setOpen(false);
+        globalConfig.setServiceImplName("%sService");
+        globalConfig.setAuthor(author);
+        globalConfig.setOutputDir(outputDir);
+        return globalConfig;
+    }
 
-    public StrategyConfig createStrategyConfig(CodegenDTO codegen) {
+    private PackageConfig createPackageConfig(CodegenDTO codegen) {
+        PackageConfig packageConfig = new PackageConfig();
+        packageConfig.setEntity("model");
+        packageConfig.setMapper("mapper");
+        packageConfig.setXml("mapper.xml");
+        packageConfig.setService(null);
+        packageConfig.setServiceImpl("service");
+        packageConfig.setController("controller");
+        packageConfig.setParent(codegen.getParentPackage());
+        packageConfig.setModuleName(codegen.getModuleName());
+        return packageConfig;
+    }
+
+    private StrategyConfig createStrategyConfig(CodegenDTO codegen) {
         StrategyConfig strategy = new StrategyConfig();
         // 字段名生成策略
         strategy.setNaming(NamingStrategy.underline_to_camel);
@@ -89,99 +103,6 @@ public class CodeGeneratorService {
         //生成表范围
         strategy.setInclude(codegen.getTableName());
         return strategy;
-    }
-
-    @DS("#codegen.dataSourceName")
-    public void generate(CodegenDTO codegen, HttpServletResponse response) throws IOException {
-        String tempDir = "temp" + File.separator + System.currentTimeMillis() + File.separator + codegen.getTableName();
-
-        globalConfig.setAuthor(codegen.getAuthor());
-        globalConfig.setOutputDir(tempDir);
-
-        packageConfig.setParent(codegen.getParentPackage());
-        packageConfig.setModuleName(codegen.getModuleName());
-
-        ItemDataSource dataSource = (ItemDataSource) dynamicRoutingDataSource.getDataSource(codegen.getDataSourceName());
-        DruidDataSource realDataSource = (DruidDataSource) dataSource.getRealDataSource();
-
-        DataSourceConfig dataSourceConfig = new DataSourceConfig();
-        dataSourceConfig.setDbType(DbType.MYSQL);
-        dataSourceConfig.setDriverName(realDataSource.getDriverClassName());
-        dataSourceConfig.setUsername(realDataSource.getUsername());
-        dataSourceConfig.setPassword(realDataSource.getPassword());
-        dataSourceConfig.setUrl(realDataSource.getUrl());
-
-        AutoGenerator generator = new AutoGenerator();
-        // 全局配置
-        generator.setGlobalConfig(globalConfig);
-        // 数据源配置
-        generator.setDataSource(dataSourceConfig);
-        // 策略配置
-        generator.setStrategy(createStrategyConfig(codegen));
-        // 包配置
-        generator.setPackageInfo(packageConfig);
-        // 模版配置
-        generator.setTemplate(templateConfig);
-        // 模板引擎
-        generator.setTemplateEngine(templateEngine);
-        //生成代码
-        generator.execute();
-
-        File file = new File(tempDir);
-        File zip = ZipUtil.zip(file);
-
-        response.setHeader("Content-Disposition", "attachment;filename=" + zip.getName());
-
-        try (FileInputStream inputStream = new FileInputStream(zip);
-             ServletOutputStream outputStream = response.getOutputStream()) {
-            IOUtils.copy(inputStream, outputStream);
-        }
-
-        file.delete();
-        zip.delete();
-    }
-
-    public String preview(PreviewDTO preview) {
-        globalConfig.setAuthor(preview.getAuthor());
-        globalConfig.setOutputDir("temp");
-
-        packageConfig.setParent(preview.getParentPackage());
-        packageConfig.setModuleName(preview.getModuleName());
-
-        ItemDataSource dataSource = (ItemDataSource) dynamicRoutingDataSource.getDataSource(DataSourceService.MASTER);
-        DruidDataSource realDataSource = (DruidDataSource) dataSource.getRealDataSource();
-
-        DataSourceConfig dataSourceConfig = new DataSourceConfig();
-        dataSourceConfig.setDbType(DbType.MYSQL);
-        dataSourceConfig.setDriverName(realDataSource.getDriverClassName());
-        dataSourceConfig.setUsername(realDataSource.getUsername());
-        dataSourceConfig.setPassword(realDataSource.getPassword());
-        dataSourceConfig.setUrl(realDataSource.getUrl());
-
-        AutoGenerator generator = new AutoGenerator();
-        // 全局配置
-        generator.setGlobalConfig(globalConfig);
-        // 数据源配置
-        generator.setDataSource(dataSourceConfig);
-        // 策略配置
-        generator.setStrategy(createStrategyConfig(preview));
-        // 包配置
-        generator.setPackageInfo(packageConfig);
-        // 模版配置
-        generator.setTemplate(createTemplate(preview.getCodeTemplateType()));
-        // 模板引擎
-        generator.setTemplateEngine(templateEngine);
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        TEMPLATE_PREVIEW_FILE.set(preview.getCodeTemplateFile());
-        TEMPLATE_PREVIEW_OUTPUT_STREAM.set(outputStream);
-
-        //生成代码
-        generator.execute();
-
-        TEMPLATE_PREVIEW_FILE.remove();
-        TEMPLATE_PREVIEW_OUTPUT_STREAM.remove();
-        return outputStream.toString();
     }
 
     private TemplateConfig createTemplate(CodeTemplateType codeTemplateType) {
@@ -217,4 +138,81 @@ public class CodeGeneratorService {
         }
         return templateConfig;
     }
+
+    private DataSourceConfig createDataSourceConfig(DruidDataSource druidDataSource) {
+        DataSourceConfig dataSourceConfig = new DataSourceConfig();
+        dataSourceConfig.setDbType(DbType.MYSQL);
+        dataSourceConfig.setDriverName(druidDataSource.getDriverClassName());
+        dataSourceConfig.setUsername(druidDataSource.getUsername());
+        dataSourceConfig.setPassword(druidDataSource.getPassword());
+        dataSourceConfig.setUrl(druidDataSource.getUrl());
+        return dataSourceConfig;
+    }
+
+    @DS("#codegen.dataSourceName")
+    public void generate(CodegenDTO codegen, HttpServletResponse response) throws IOException {
+        String tempDir = TEMP_DIR + File.separator + System.currentTimeMillis() + File.separator + codegen.getTableName();
+
+        DruidDataSource druidDataSource = dataSourceService.getDataSource(codegen.getDataSourceName());
+
+        AutoGenerator generator = new AutoGenerator();
+        // 全局配置
+        generator.setGlobalConfig(createGlobalConfig(codegen.getAuthor(), tempDir));
+        // 数据源配置
+        generator.setDataSource(createDataSourceConfig(druidDataSource));
+        // 策略配置
+        generator.setStrategy(createStrategyConfig(codegen));
+        // 包配置
+        generator.setPackageInfo(createPackageConfig(codegen));
+        // 模版配置
+        generator.setTemplate(templateConfig);
+        // 模板引擎
+        generator.setTemplateEngine(templateEngine);
+        //生成代码
+        generator.execute();
+
+        File file = new File(tempDir);
+        File zip = ZipUtil.zip(file);
+
+        response.setHeader("Content-Disposition", "attachment;filename=" + zip.getName());
+
+        try (FileInputStream inputStream = new FileInputStream(zip);
+             ServletOutputStream outputStream = response.getOutputStream()) {
+            IOUtils.copy(inputStream, outputStream);
+        }
+
+        file.delete();
+        zip.delete();
+    }
+
+    public String preview(PreviewDTO preview) {
+        DruidDataSource primary = dataSourceService.getPrimary();
+
+        AutoGenerator generator = new AutoGenerator();
+        // 全局配置
+        generator.setGlobalConfig(createGlobalConfig(preview.getAuthor(), TEMP_DIR));
+        // 数据源配置
+        generator.setDataSource(createDataSourceConfig(primary));
+        // 策略配置
+        generator.setStrategy(createStrategyConfig(preview));
+        // 包配置
+        generator.setPackageInfo(createPackageConfig(preview));
+        // 模版配置
+        generator.setTemplate(createTemplate(preview.getCodeTemplateType()));
+        // 模板引擎
+        generator.setTemplateEngine(templateEngine);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        TEMPLATE_PREVIEW_FILE.set(preview.getCodeTemplateFile());
+        TEMPLATE_PREVIEW_OUTPUT_STREAM.set(outputStream);
+
+        //生成代码
+        generator.execute();
+
+        TEMPLATE_PREVIEW_FILE.remove();
+        TEMPLATE_PREVIEW_OUTPUT_STREAM.remove();
+        return outputStream.toString();
+    }
+
+
 }

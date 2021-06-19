@@ -28,11 +28,20 @@ public class CodeTemplateResourceLoader extends ResourceLoader {
     public InputStream getResourceStream(String source) throws ResourceNotFoundException {
         String codeTemplateFile = CodeGeneratorService.TEMPLATE_PREVIEW_FILE.get();
         if (codeTemplateFile == null) {
-            CodeTemplate codeTemplate = CodeTemplateService.CODE_TEMPLATE_DATA_BASE.get(CodeTemplateType.valueOf(source));
-            if (codeTemplate == null) {
-                throw new CheckedException("没有找到" + source + "模板");
+            for (CodeTemplateType value : CodeTemplateType.values()) {
+                if (value.name().equals(source)) {
+                    CodeTemplate codeTemplate = CodeTemplateService.CODE_TEMPLATE_DATA_BASE.get(value);
+                    if (codeTemplate == null) {
+                        throw new CheckedException("没有找到" + source + "模板");
+                    }
+                    codeTemplateFile = codeTemplate.getCodeTemplateFile();
+                    break;
+                }
             }
-            codeTemplateFile = codeTemplate.getCodeTemplateFile();
+
+            if (codeTemplateFile == null) {
+                return null;
+            }
         }
 
         return new ByteArrayInputStream(codeTemplateFile.getBytes(StandardCharsets.UTF_8));
