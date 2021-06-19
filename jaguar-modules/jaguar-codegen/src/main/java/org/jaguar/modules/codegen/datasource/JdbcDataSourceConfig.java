@@ -19,8 +19,8 @@ public class JdbcDataSourceConfig {
     @Bean
     public JdbcDataSourceProvider dataSourceProvider() {
         DataSourceProperty dataSourceProperty = dataSourceProperties.getDatasource().get(dataSourceProperties.getPrimary());
-        return new JdbcDataSourceProvider(dataSourceProperty.getUrl(), dataSourceProperty.getUsername(),
-                dataSourceProperty.getPassword(), dataSourceProperty.getDriverClassName());
+        return new JdbcDataSourceProvider(dataSourceProperty.getDriverClassName(),
+                dataSourceProperty.getUrl(), dataSourceProperty.getUsername(), dataSourceProperty.getPassword());
     }
 
 }

@@ -16,14 +16,10 @@ import java.util.Map;
  */
 public class JdbcDataSourceProvider extends AbstractJdbcDataSourceProvider {
 
-    private String driverClassName;
+    private final String driverClassName;
 
-    public JdbcDataSourceProvider(String url, String username, String password) {
-        super(url, username, password);
-    }
-
-    public JdbcDataSourceProvider(String url, String username, String password, String driverClassName) {
-        super(url, username, password);
+    public JdbcDataSourceProvider(String driverClassName, String url, String username, String password) {
+        super(driverClassName, url, username, password);
         this.driverClassName = driverClassName;
     }
 
