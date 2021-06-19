@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 /**
  * @author lvws
@@ -28,7 +30,8 @@ public class CodeTemplateController extends BaseController<CodeTemplate, CodeTem
     @ApiOperation(value = "查询代码模板管")
     @GetMapping(value = "/list")
     public JsonResult<Collection<CodeTemplate>> list() {
-        return success(CodeTemplateService.CODE_TEMPLATE_DATA_BASE.values());
+        return success(CodeTemplateService.CODE_TEMPLATE_DATA_BASE.values()
+                .stream().sorted(Comparator.comparing(CodeTemplate::getCodeTemplateType)).collect(Collectors.toList()));
     }
 
     @ApiOperation(value = "编辑代码模板")

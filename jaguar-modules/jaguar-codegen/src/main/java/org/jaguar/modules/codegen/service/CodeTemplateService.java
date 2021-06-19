@@ -32,7 +32,7 @@ public class CodeTemplateService extends BaseService<CodeTemplate, CodeTemplateM
     @Transactional
     public void modify(CodeTemplateType codeTemplateType, String codeTemplateFile) {
         CodeTemplate latest = this.unique(Wrappers.<CodeTemplate>lambdaQuery()
-                .eq(CodeTemplate::getCodeTemplateType, codeTemplateFile)
+                .eq(CodeTemplate::getCodeTemplateType, codeTemplateType)
                 .orderByDesc(CodeTemplate::getCodeTemplateVersion)
                 .last(LIMIT_1));
         int version = latest != null ? latest.getCodeTemplateVersion() + 1 : 1;

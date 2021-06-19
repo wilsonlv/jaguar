@@ -48,6 +48,12 @@ mybatis-plus:
       logic-not-delete-value: 0
       logic-delete-field: deleted_
 
+jaguar:
+  modules:
+    code:
+      column-type-mapping: {"int":"Integer", "smallint":"Integer", "mediumint":"Integer", "bigint":"Long", "tinyint":"Boolean", "varchar":"String", "text":"String", "longtext":"String", "date":"LocalDate", "datetime":"LocalDateTime", "timestamp":"LocalDateTime"}
+
 logging:
   level:
+    org.jagaur.modules.codegen: debug
     com.baomidou.mybatisplus.generator: debug

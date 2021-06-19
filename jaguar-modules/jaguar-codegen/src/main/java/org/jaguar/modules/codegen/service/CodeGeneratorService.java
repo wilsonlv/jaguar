@@ -1,34 +1,36 @@
 package org.jaguar.modules.codegen.service;
 
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.ZipUtil;
-import com.alibaba.druid.pool.DruidDataSource;
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.generator.AutoGenerator;
-import com.baomidou.mybatisplus.generator.config.*;
-import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jaguar.commons.basecrud.BaseController;
-import org.jaguar.commons.basecrud.BaseMapper;
-import org.jaguar.commons.basecrud.BaseModel;
-import org.jaguar.commons.basecrud.BaseService;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.VelocityEngine;
+import org.jaguar.commons.web.exception.impl.CheckedException;
 import org.jaguar.modules.codegen.controller.dto.CodegenDTO;
 import org.jaguar.modules.codegen.controller.dto.PreviewDTO;
+import org.jaguar.modules.codegen.controller.vo.ColumnVO;
 import org.jaguar.modules.codegen.controller.vo.TableVO;
 import org.jaguar.modules.codegen.enums.CodeTemplateType;
-import org.jaguar.modules.codegen.velocity.CodeTemplateTemplateEngine;
+import org.jaguar.modules.codegen.mapper.CodeGeneratorMapper;
+import org.jaguar.modules.codegen.properties.CodegenProperties;
+import org.jaguar.modules.codegen.velocity.CodeTemplateResourceLoader;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
 
 /**
  * @author lvws
@@ -38,138 +40,107 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class CodeGeneratorService {
 
-    private final TemplateConfig templateConfig;
-
-    private final DataSourceService dataSourceService;
-
-    private final CodeTemplateTemplateEngine templateEngine;
+    public final static ThreadLocal<String> TEMPLATE_PREVIEW_FILE = new ThreadLocal<>();
 
     private final static String TEMP_DIR = "temp";
 
-    public final static ThreadLocal<String> TEMPLATE_PREVIEW_FILE = new ThreadLocal<>();
+    private final static Set<String> IGNORE_COLUMNS = new HashSet<>();
 
-    public final static ThreadLocal<ByteArrayOutputStream> TEMPLATE_PREVIEW_OUTPUT_STREAM = new ThreadLocal<>();
+    static {
+        IGNORE_COLUMNS.add("id_");
+        IGNORE_COLUMNS.add("create_by");
+        IGNORE_COLUMNS.add("create_time");
+        IGNORE_COLUMNS.add("update_by");
+        IGNORE_COLUMNS.add("update_time");
+        IGNORE_COLUMNS.add("remark_");
+        IGNORE_COLUMNS.add("deleted_");
+    }
 
+    private final CodeGeneratorMapper mapper;
+
+    private final DataSourceService dataSourceService;
+
+    private final CodegenProperties codegenProperties;
+
+
+    public TableVO getTableInfo(String schema, String tableName) {
+        return this.mapper.getTableInfo(schema, tableName);
+    }
+
+    private List<ColumnVO> listColumnInfo(String schema, String tableName) {
+        return this.mapper.listColumnInfo(schema, tableName);
+    }
 
     @DS("#dataSourceName")
     public Page<TableVO> showTables(Page<TableVO> page, String dataSourceName, String fuzzyTableName) {
-        return dataSourceService.showTables(page, dataSourceName, fuzzyTableName);
+        String schema = dataSourceService.getSchema(dataSourceName);
+        return this.mapper.showTables(page, schema, fuzzyTableName);
     }
 
-    private GlobalConfig createGlobalConfig(String author, String outputDir) {
-        GlobalConfig globalConfig = new GlobalConfig();
-        globalConfig.setFileOverride(true);
-        globalConfig.setBaseResultMap(true);
-        globalConfig.setOpen(false);
-        globalConfig.setServiceImplName("%sService");
-        globalConfig.setAuthor(author);
-        globalConfig.setOutputDir(outputDir);
-        return globalConfig;
+    private VelocityEngine getVelocityEngine() {
+        Properties properties = new Properties();
+        properties.setProperty("file.resource.loader.class", CodeTemplateResourceLoader.class.getName());
+        properties.setProperty(Velocity.INPUT_ENCODING, StandardCharsets.UTF_8.name());
+        properties.setProperty(Velocity.OUTPUT_ENCODING, StandardCharsets.UTF_8.name());
+        VelocityEngine engine = new VelocityEngine(properties);
+        engine.init();
+        return engine;
     }
 
-    private PackageConfig createPackageConfig(CodegenDTO codegen) {
-        PackageConfig packageConfig = new PackageConfig();
-        packageConfig.setEntity("model");
-        packageConfig.setMapper("mapper");
-        packageConfig.setXml("mapper.xml");
-        packageConfig.setService(null);
-        packageConfig.setServiceImpl("service");
-        packageConfig.setController("controller");
-        packageConfig.setParent(codegen.getParentPackage());
-        packageConfig.setModuleName(codegen.getModuleName());
-        return packageConfig;
-    }
+    private VelocityContext getVelocityContext(CodegenDTO codegen) {
+        String schema = dataSourceService.getSchema(codegen.getDataSourceName());
 
-    private StrategyConfig createStrategyConfig(CodegenDTO codegen) {
-        StrategyConfig strategy = new StrategyConfig();
-        // 字段名生成策略
-        strategy.setNaming(NamingStrategy.underline_to_camel);
-        // 自定义实体，公共字段
-        strategy.setSuperEntityColumns("id_", "deleted_", "remark_", "create_by", "create_time", "update_by", "update_time");
-        // 自定义实体父类
-        strategy.setSuperEntityClass(BaseModel.class.getName());
-        // 自定义 mapper 父类
-        strategy.setSuperMapperClass(BaseMapper.class.getName());
-        // 自定义 service 实现类父类
-        strategy.setSuperServiceImplClass(BaseService.class.getName());
-        // 自定义 controller 父类
-        strategy.setSuperControllerClass(BaseController.class.getName());
-        // controller mapping 驼峰转连字符
-        strategy.setControllerMappingHyphenStyle(true);
-        // 表前缀
+        TableVO tableInfo = this.getTableInfo(schema, codegen.getTableName());
+
+        List<ColumnVO> columnInfos = this.listColumnInfo(schema, codegen.getTableName());
+        int dateTimeScore = this.strengthColumnInfo(columnInfos);
+
+        String parentPackage = StringUtils.isNotBlank(codegen.getModuleName()) ?
+                codegen.getParentPackage() + '.' + codegen.getModuleName() : codegen.getParentPackage();
+
+        String entityCamelCase;
         if (StringUtils.isNotBlank(codegen.getTablePrefix())) {
-            strategy.setTablePrefix(codegen.getTablePrefix());
+            String[] split = tableInfo.getTableName().split(codegen.getTablePrefix());
+            entityCamelCase = split.length == 1 ? split[0] : split[1];
+        } else {
+            entityCamelCase = tableInfo.getTableName();
         }
-        //生成表范围
-        strategy.setInclude(codegen.getTableName());
-        return strategy;
-    }
+        entityCamelCase = StrUtil.toCamelCase(entityCamelCase);
 
-    private TemplateConfig createTemplate(CodeTemplateType codeTemplateType) {
-        TemplateConfig templateConfig = new TemplateConfig();
-        templateConfig.setEntity(null);
-        templateConfig.setMapper(null);
-        templateConfig.setXml(null);
-        templateConfig.setService(null);
-        templateConfig.setServiceImpl(null);
-        templateConfig.setController(null);
-        switch (codeTemplateType) {
-            case ENTITY: {
-                templateConfig.setEntity(CodeTemplateType.ENTITY.name());
-                break;
-            }
-            case MAPPER: {
-                templateConfig.setMapper(CodeTemplateType.MAPPER.name());
-                break;
-            }
-            case MAPPER_XML: {
-                templateConfig.setXml(CodeTemplateType.MAPPER_XML.name());
-                break;
-            }
-            case SERVICE: {
-                templateConfig.setServiceImpl(CodeTemplateType.SERVICE.name());
-                break;
-            }
-            case CONTROLLER: {
-                templateConfig.setController(CodeTemplateType.CONTROLLER.name());
-                break;
-            }
-            default:
-        }
-        return templateConfig;
-    }
-
-    private DataSourceConfig createDataSourceConfig(DruidDataSource druidDataSource) {
-        DataSourceConfig dataSourceConfig = new DataSourceConfig();
-        dataSourceConfig.setDbType(DbType.MYSQL);
-        dataSourceConfig.setDriverName(druidDataSource.getDriverClassName());
-        dataSourceConfig.setUsername(druidDataSource.getUsername());
-        dataSourceConfig.setPassword(druidDataSource.getPassword());
-        dataSourceConfig.setUrl(druidDataSource.getUrl());
-        return dataSourceConfig;
+        VelocityContext variables = new VelocityContext();
+        variables.put("package", parentPackage);
+        variables.put("entityName", StrUtil.upperFirst(entityCamelCase));
+        variables.put("entityPath", entityCamelCase);
+        variables.put("moduleName", codegen.getModuleName());
+        variables.put("table", tableInfo);
+        variables.put("columns", columnInfos);
+        variables.put("author", codegen.getAuthor());
+        variables.put("date", LocalDate.now());
+        variables.put("dateTimeScore", dateTimeScore);
+        return variables;
     }
 
     @DS("#codegen.dataSourceName")
     public void generate(CodegenDTO codegen, HttpServletResponse response) throws IOException {
+        VelocityContext variables = getVelocityContext(codegen);
+
+        VelocityEngine engine = getVelocityEngine();
+
         String tempDir = TEMP_DIR + File.separator + System.currentTimeMillis() + File.separator + codegen.getTableName();
 
-        DruidDataSource druidDataSource = dataSourceService.getDataSource(codegen.getDataSourceName());
+        String parentPackage = StringUtils.join(((String) variables.get("package")).split("\\."), File.separator);
 
-        AutoGenerator generator = new AutoGenerator();
-        // 全局配置
-        generator.setGlobalConfig(createGlobalConfig(codegen.getAuthor(), tempDir));
-        // 数据源配置
-        generator.setDataSource(createDataSourceConfig(druidDataSource));
-        // 策略配置
-        generator.setStrategy(createStrategyConfig(codegen));
-        // 包配置
-        generator.setPackageInfo(createPackageConfig(codegen));
-        // 模版配置
-        generator.setTemplate(templateConfig);
-        // 模板引擎
-        generator.setTemplateEngine(templateEngine);
-        //生成代码
-        generator.execute();
+        for (CodeTemplateType value : CodeTemplateType.values()) {
+            String filePath = tempDir + File.separator + parentPackage + File.separator + value.getPath() + File.separator + variables.get("entityName") + value.getFileNameSuffix();
+            File file = new File(filePath);
+            if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
+                throw new CheckedException("创建临时文件夹失败");
+            }
+            try (OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(file))) {
+                Template template = engine.getTemplate(value.name());
+                template.merge(variables, outputStreamWriter);
+            }
+        }
 
         File file = new File(tempDir);
         File zip = ZipUtil.zip(file);
@@ -181,38 +152,60 @@ public class CodeGeneratorService {
             IOUtils.copy(inputStream, outputStream);
         }
 
-        file.delete();
-        zip.delete();
+        FileUtils.deleteDirectory(file);
+        FileUtils.deleteQuietly(zip);
     }
 
-    public String preview(PreviewDTO preview) {
-        DruidDataSource primary = dataSourceService.getPrimary();
+    public String preview(PreviewDTO preview) throws IOException {
+        VelocityContext variables = getVelocityContext(preview);
 
-        AutoGenerator generator = new AutoGenerator();
-        // 全局配置
-        generator.setGlobalConfig(createGlobalConfig(preview.getAuthor(), TEMP_DIR));
-        // 数据源配置
-        generator.setDataSource(createDataSourceConfig(primary));
-        // 策略配置
-        generator.setStrategy(createStrategyConfig(preview));
-        // 包配置
-        generator.setPackageInfo(createPackageConfig(preview));
-        // 模版配置
-        generator.setTemplate(createTemplate(preview.getCodeTemplateType()));
-        // 模板引擎
-        generator.setTemplateEngine(templateEngine);
+        VelocityEngine engine = getVelocityEngine();
+
+        TEMPLATE_PREVIEW_FILE.set(preview.getCodeTemplateFile());
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        TEMPLATE_PREVIEW_FILE.set(preview.getCodeTemplateFile());
-        TEMPLATE_PREVIEW_OUTPUT_STREAM.set(outputStream);
-
-        //生成代码
-        generator.execute();
+        try (OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream)) {
+            Template template = engine.getTemplate(preview.getCodeTemplateType().name());
+            template.merge(variables, outputStreamWriter);
+        }
 
         TEMPLATE_PREVIEW_FILE.remove();
-        TEMPLATE_PREVIEW_OUTPUT_STREAM.remove();
+
         return outputStream.toString();
     }
 
+    private int strengthColumnInfo(List<ColumnVO> columnInfos) {
+        boolean date = false;
+        boolean datetime = false;
+
+        Iterator<ColumnVO> iterator = columnInfos.iterator();
+        while (iterator.hasNext()) {
+            ColumnVO columnInfo = iterator.next();
+            if (IGNORE_COLUMNS.contains(columnInfo.getColumnName())) {
+                iterator.remove();
+                continue;
+            }
+
+            String camelCase = StrUtil.toCamelCase(columnInfo.getColumnName());
+            columnInfo.setFieldName(camelCase);
+            String fieldType = codegenProperties.getColumnTypeMapping().get(columnInfo.getDataType().toLowerCase());
+            columnInfo.setFiledType(fieldType);
+
+            if (columnInfo.getFiledType().equals(LocalDate.class.getSimpleName())) {
+                date = true;
+            } else if (columnInfo.getFiledType().equals(LocalDateTime.class.getSimpleName())) {
+                datetime = true;
+            }
+        }
+
+        int score = 0;
+        if (date) {
+            score += 1;
+        }
+        if (datetime) {
+            score += 2;
+        }
+        return score;
+    }
 
 }

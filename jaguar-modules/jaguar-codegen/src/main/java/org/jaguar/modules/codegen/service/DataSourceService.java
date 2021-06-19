@@ -38,12 +38,6 @@ public class DataSourceService extends BaseService<DataSource, DataSourceMapper>
 
     private final DefaultDataSourceCreator dataSourceCreator;
 
-    public String getSchema(String dataSourceName){
-        DruidDataSource druidDataSource = this.getDataSource(dataSourceName);
-        String url = druidDataSource.getUrl().split("\\?")[0];
-        return url.substring(url.lastIndexOf('/') + 1);
-    }
-
     public DruidDataSource getPrimary() {
         return this.getDataSource(dataSourceProperties.getPrimary());
     }
@@ -51,6 +45,12 @@ public class DataSourceService extends BaseService<DataSource, DataSourceMapper>
     public DruidDataSource getDataSource(String dataSourceName) {
         ItemDataSource dataSource = (ItemDataSource) dynamicRoutingDataSource.getDataSource(dataSourceName);
         return (DruidDataSource) dataSource.getRealDataSource();
+    }
+
+    public String getSchema(String dataSourceName) {
+        DruidDataSource druidDataSource = this.getDataSource(dataSourceName);
+        String url = druidDataSource.getUrl().split("\\?")[0];
+        return url.substring(url.lastIndexOf('/') + 1);
     }
 
     public DataSource getByName(String name) {
@@ -88,8 +88,4 @@ public class DataSourceService extends BaseService<DataSource, DataSourceMapper>
         this.delete(id);
     }
 
-    public Page<TableVO> showTables(Page<TableVO> page, String dataSourceName, String fuzzyTableName) {
-        String schema = this.getSchema(dataSourceName);
-        return this.mapper.showTables(page, schema, fuzzyTableName);
-    }
 }

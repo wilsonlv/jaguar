@@ -2,7 +2,6 @@ package org.jaguar.modules.codegen.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jaguar.commons.basecrud.BaseModel;

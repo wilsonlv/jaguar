@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jaguar.modules.codegen.mapper.CodeGeneratorMapper">
+
+    <select id="showTables" resultType="org.jaguar.modules.codegen.controller.vo.TableVO">
+        SELECT table_name, table_comment, engine, create_time
+        FROM information_schema.tables
+        <where>
+            table_schema = #{schema}
+            <if test="fuzzyTableName != null and fuzzyTableName != ''">
+                AND table_name LIKE CONCAT('%',#{fuzzyTableName},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="getTableInfo" resultType="org.jaguar.modules.codegen.controller.vo.TableVO">
+        SELECT table_name, table_comment, engine, create_time
+        FROM information_schema.tables
+        where table_schema = #{schema}
+          AND table_name = #{tableName}
+    </select>
+
+    <select id="listColumnInfo" resultType="org.jaguar.modules.codegen.controller.vo.ColumnVO">
+        select column_name, data_type, column_type, column_comment
+        FROM information_schema.columns
+        where table_schema = #{schema}
+          AND table_name = #{tableName}
+    </select>
+
+</mapper>
