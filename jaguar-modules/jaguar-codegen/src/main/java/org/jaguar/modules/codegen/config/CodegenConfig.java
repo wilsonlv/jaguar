@@ -1,4 +1,4 @@
-package org.jaguar.modules.codegen.velocity;
+package org.jaguar.modules.codegen.config;
 
 import com.baomidou.mybatisplus.generator.config.TemplateConfig;
 import org.jaguar.modules.codegen.enums.CodeTemplateType;
