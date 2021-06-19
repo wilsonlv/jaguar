@@ -3,6 +3,7 @@ package org.jaguar.modules.codegen.service;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.ZipUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
@@ -108,17 +109,20 @@ public class CodeGeneratorService {
         }
         entityCamelCase = StrUtil.toCamelCase(entityCamelCase);
 
-        VelocityContext variables = new VelocityContext();
-        variables.put(EnvVariable.AUTHOR, codegen.getAuthor());
-        variables.put(EnvVariable.DATE, LocalDate.now());
-        variables.put(EnvVariable.TABLE, tableInfo);
-        variables.put(EnvVariable.COLUMNS, columnInfos);
-        variables.put(EnvVariable.PACKAGE, parentPackage);
-        variables.put(EnvVariable.MODULE_NAME, codegen.getModuleName());
-        variables.put(EnvVariable.ENTITY_NAME, StrUtil.upperFirst(entityCamelCase));
-        variables.put(EnvVariable.ENTITY_PATH, entityCamelCase);
-        variables.put(EnvVariable.DATE_TIME_SCORE, dateTimeScore);
-        return variables;
+        Map<String, Object> envVariables = new HashMap<>();
+        envVariables.put(EnvVariable.AUTHOR, codegen.getAuthor());
+        envVariables.put(EnvVariable.DATE, LocalDate.now());
+        envVariables.put(EnvVariable.TABLE, tableInfo);
+        envVariables.put(EnvVariable.COLUMNS, columnInfos);
+        envVariables.put(EnvVariable.PACKAGE, parentPackage);
+        envVariables.put(EnvVariable.MODULE, codegen.getModuleName());
+        envVariables.put(EnvVariable.ENTITY, StrUtil.upperFirst(entityCamelCase));
+        envVariables.put(EnvVariable.ENTITY_NAME, entityCamelCase);
+        envVariables.put(EnvVariable.DATE_TIME_SCORE, dateTimeScore);
+
+        System.out.println(JSONObject.toJSONString(envVariables));
+
+        return new VelocityContext(envVariables);
     }
 
     @DS("#codegen.dataSourceName")

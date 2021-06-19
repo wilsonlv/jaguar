@@ -13,9 +13,9 @@ public interface EnvVariable {
     String COLUMNS = "columns";
 
     String PACKAGE = "package";
-    String MODULE_NAME = "moduleName";
+    String MODULE = "module";
+    String ENTITY = "entity";
     String ENTITY_NAME = "entityName";
-    String ENTITY_PATH = "entityPath";
 
     String DATE_TIME_SCORE = "dateTimeScore";
 
