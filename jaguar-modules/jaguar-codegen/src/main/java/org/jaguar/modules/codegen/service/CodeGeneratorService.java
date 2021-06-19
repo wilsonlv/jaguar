@@ -14,6 +14,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.jaguar.commons.web.exception.impl.CheckedException;
+import org.jaguar.modules.codegen.constant.EnvVariable;
 import org.jaguar.modules.codegen.controller.dto.CodegenDTO;
 import org.jaguar.modules.codegen.controller.dto.PreviewDTO;
 import org.jaguar.modules.codegen.controller.vo.ColumnVO;
@@ -108,15 +109,15 @@ public class CodeGeneratorService {
         entityCamelCase = StrUtil.toCamelCase(entityCamelCase);
 
         VelocityContext variables = new VelocityContext();
-        variables.put("package", parentPackage);
-        variables.put("entityName", StrUtil.upperFirst(entityCamelCase));
-        variables.put("entityPath", entityCamelCase);
-        variables.put("moduleName", codegen.getModuleName());
-        variables.put("table", tableInfo);
-        variables.put("columns", columnInfos);
-        variables.put("author", codegen.getAuthor());
-        variables.put("date", LocalDate.now());
-        variables.put("dateTimeScore", dateTimeScore);
+        variables.put(EnvVariable.AUTHOR, codegen.getAuthor());
+        variables.put(EnvVariable.DATE, LocalDate.now());
+        variables.put(EnvVariable.TABLE, tableInfo);
+        variables.put(EnvVariable.COLUMNS, columnInfos);
+        variables.put(EnvVariable.PACKAGE, parentPackage);
+        variables.put(EnvVariable.MODULE_NAME, codegen.getModuleName());
+        variables.put(EnvVariable.ENTITY_NAME, StrUtil.upperFirst(entityCamelCase));
+        variables.put(EnvVariable.ENTITY_PATH, entityCamelCase);
+        variables.put(EnvVariable.DATE_TIME_SCORE, dateTimeScore);
         return variables;
     }
 
@@ -128,7 +129,7 @@ public class CodeGeneratorService {
 
         String tempDir = TEMP_DIR + File.separator + System.currentTimeMillis() + File.separator + codegen.getTableName();
 
-        String parentPackage = StringUtils.join(((String) variables.get("package")).split("\\."), File.separator);
+        String parentPackage = StringUtils.join(((String) variables.get(EnvVariable.PACKAGE)).split("\\."), File.separator);
 
         for (CodeTemplateType value : CodeTemplateType.values()) {
             String filePath = tempDir + File.separator + parentPackage + File.separator + value.getPath() + File.separator + variables.get("entityName") + value.getFileNameSuffix();
