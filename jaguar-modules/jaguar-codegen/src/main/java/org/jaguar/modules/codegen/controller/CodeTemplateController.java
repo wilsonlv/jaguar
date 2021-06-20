@@ -2,17 +2,15 @@ package org.jaguar.modules.codegen.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.jaguar.commons.basecrud.BaseController;
 import org.jaguar.commons.web.JsonResult;
-import org.jaguar.modules.codegen.enums.CodeTemplateType;
 import org.jaguar.modules.codegen.mapper.CodeTemplateMapper;
 import org.jaguar.modules.codegen.model.CodeTemplate;
 import org.jaguar.modules.codegen.service.CodeTemplateService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.stream.Collectors;
@@ -31,15 +29,14 @@ public class CodeTemplateController extends BaseController<CodeTemplate, CodeTem
     @GetMapping(value = "/list")
     public JsonResult<Collection<CodeTemplate>> list() {
         return success(CodeTemplateService.CODE_TEMPLATE_DATA_BASE.values()
-                .stream().sorted(Comparator.comparing(CodeTemplate::getCodeTemplateType)).collect(Collectors.toList()));
+                .stream().sorted(Comparator.comparing(CodeTemplate::getCodeTemplateName)).collect(Collectors.toList()));
     }
 
     @ApiOperation(value = "编辑代码模板")
-    @PostMapping("/{codeTemplateType}")
-    public JsonResult<Void> modify(@PathVariable CodeTemplateType codeTemplateType,
-                                   @ApiParam(value = "编辑代码文件", required = true) @RequestBody @NotBlank String codeTemplateFile) {
+    @PostMapping
+    public JsonResult<Void> modify(@RequestBody @Valid CodeTemplate codeTemplate) {
         synchronized (this) {
-            service.modify(codeTemplateType, codeTemplateFile);
+            service.modify(codeTemplate);
         }
         return success();
     }

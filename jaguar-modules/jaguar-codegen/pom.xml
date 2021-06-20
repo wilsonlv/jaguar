@@ -29,6 +29,11 @@
             <artifactId>jaguar-commons-swagger</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jaguar</groupId>
+            <artifactId>jaguar-commons-aviator</artifactId>
+            <version>${jaguar.version}</version>
+        </dependency>
 
         <!-- velocity -->
         <dependency>

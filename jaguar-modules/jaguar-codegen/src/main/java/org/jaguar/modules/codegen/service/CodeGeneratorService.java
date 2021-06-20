@@ -3,7 +3,6 @@ package org.jaguar.modules.codegen.service;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.ZipUtil;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
@@ -14,14 +13,15 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
+import org.jaguar.commons.aviator.ExpressionUtil;
 import org.jaguar.commons.web.exception.impl.CheckedException;
 import org.jaguar.modules.codegen.constant.EnvVariable;
 import org.jaguar.modules.codegen.controller.dto.CodegenDTO;
 import org.jaguar.modules.codegen.controller.dto.PreviewDTO;
 import org.jaguar.modules.codegen.controller.vo.ColumnVO;
 import org.jaguar.modules.codegen.controller.vo.TableVO;
-import org.jaguar.modules.codegen.enums.CodeTemplateType;
 import org.jaguar.modules.codegen.mapper.CodeGeneratorMapper;
+import org.jaguar.modules.codegen.model.CodeTemplate;
 import org.jaguar.modules.codegen.properties.CodegenProperties;
 import org.jaguar.modules.codegen.velocity.CodeTemplateResourceLoader;
 import org.springframework.stereotype.Service;
@@ -41,8 +41,6 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class CodeGeneratorService {
-
-    public final static ThreadLocal<String> TEMPLATE_PREVIEW_FILE = new ThreadLocal<>();
 
     private final static String TEMP_DIR = "temp";
 
@@ -89,7 +87,34 @@ public class CodeGeneratorService {
         return engine;
     }
 
-    private VelocityContext getVelocityContext(CodegenDTO codegen) {
+    private Map<String, Object> getFileEnvVariables(String parentPackage, String moduleName) {
+        parentPackage = StringUtils.isNotBlank(parentPackage) ? parentPackage + '.' + moduleName : parentPackage;
+
+        Map<String, Object> fileEnvVariables = new HashMap<>();
+        fileEnvVariables.put(EnvVariable.JAVA_PATH, EnvVariable.JAVA_PATH_VALUE);
+        fileEnvVariables.put(EnvVariable.PACKAGE, parentPackage);
+        fileEnvVariables.put(EnvVariable.PACKAGE_PATH, StringUtils.join(parentPackage.split("\\."), '/'));
+        fileEnvVariables.put(EnvVariable.MODULE, moduleName);
+        return fileEnvVariables;
+    }
+
+    private Map<String, Object> getEntityVariables(String tableName, String tablePrefix) {
+        String entityCamelCase;
+        if (StringUtils.isNotBlank(tablePrefix)) {
+            String[] split = tableName.split(tablePrefix);
+            entityCamelCase = split.length == 1 ? split[0] : split[1];
+        } else {
+            entityCamelCase = tableName;
+        }
+        entityCamelCase = StrUtil.toCamelCase(entityCamelCase);
+
+        Map<String, Object> entityVariables = new HashMap<>();
+        entityVariables.put(EnvVariable.ENTITY, StrUtil.upperFirst(entityCamelCase));
+        entityVariables.put(EnvVariable.ENTITY_NAME, entityCamelCase);
+        return entityVariables;
+    }
+
+    private Map<String, Object> getEnvVariables(CodegenDTO codegen) {
         String schema = dataSourceService.getSchema(codegen.getDataSourceName());
 
         TableVO tableInfo = this.getTableInfo(schema, codegen.getTableName());
@@ -97,52 +122,40 @@ public class CodeGeneratorService {
         List<ColumnVO> columnInfos = this.listColumnInfo(schema, codegen.getTableName());
         int dateTimeScore = this.strengthColumnInfo(columnInfos);
 
-        String parentPackage = StringUtils.isNotBlank(codegen.getModuleName()) ?
-                codegen.getParentPackage() + '.' + codegen.getModuleName() : codegen.getParentPackage();
-
-        String entityCamelCase;
-        if (StringUtils.isNotBlank(codegen.getTablePrefix())) {
-            String[] split = tableInfo.getTableName().split(codegen.getTablePrefix());
-            entityCamelCase = split.length == 1 ? split[0] : split[1];
-        } else {
-            entityCamelCase = tableInfo.getTableName();
-        }
-        entityCamelCase = StrUtil.toCamelCase(entityCamelCase);
-
         Map<String, Object> envVariables = new HashMap<>();
         envVariables.put(EnvVariable.AUTHOR, codegen.getAuthor());
         envVariables.put(EnvVariable.DATE, LocalDate.now());
         envVariables.put(EnvVariable.TABLE, tableInfo);
         envVariables.put(EnvVariable.COLUMNS, columnInfos);
-        envVariables.put(EnvVariable.PACKAGE, parentPackage);
-        envVariables.put(EnvVariable.MODULE, codegen.getModuleName());
-        envVariables.put(EnvVariable.ENTITY, StrUtil.upperFirst(entityCamelCase));
-        envVariables.put(EnvVariable.ENTITY_NAME, entityCamelCase);
         envVariables.put(EnvVariable.DATE_TIME_SCORE, dateTimeScore);
 
-        System.out.println(JSONObject.toJSONString(envVariables));
+        envVariables.putAll(getEntityVariables(codegen.getTableName(), codegen.getTablePrefix()));
+        envVariables.putAll(getFileEnvVariables(codegen.getParentPackage(), codegen.getModuleName()));
 
-        return new VelocityContext(envVariables);
+        return envVariables;
     }
 
     @DS("#codegen.dataSourceName")
     public void generate(CodegenDTO codegen, HttpServletResponse response) throws IOException {
-        VelocityContext variables = getVelocityContext(codegen);
+        Map<String, Object> envVariables = getEnvVariables(codegen);
+        VelocityContext variables = new VelocityContext();
 
         VelocityEngine engine = getVelocityEngine();
 
         String tempDir = TEMP_DIR + File.separator + System.currentTimeMillis() + File.separator + codegen.getTableName();
 
-        String parentPackage = StringUtils.join(((String) variables.get(EnvVariable.PACKAGE)).split("\\."), File.separator);
+        for (CodeTemplate codeTemplate : CodeTemplateService.CODE_TEMPLATE_DATA_BASE.values()) {
+            String filePath = (String) ExpressionUtil.executeText(codeTemplate.getFilePath(), envVariables);
+            filePath = filePath.replaceAll("//", File.separator);
 
-        for (CodeTemplateType value : CodeTemplateType.values()) {
-            String filePath = tempDir + File.separator + parentPackage + File.separator + value.getPath() + File.separator + variables.get("entityName") + value.getFileNameSuffix();
-            File file = new File(filePath);
+            String fileName = (String) ExpressionUtil.executeText(codeTemplate.getFileName(), envVariables);
+
+            File file = new File(tempDir + File.separator + filePath + File.separator + fileName);
             if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
                 throw new CheckedException("创建临时文件夹失败");
             }
             try (OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(file))) {
-                Template template = engine.getTemplate(value.name());
+                Template template = engine.getTemplate(codeTemplate.getCodeTemplateFile());
                 template.merge(variables, outputStreamWriter);
             }
         }
@@ -157,26 +170,32 @@ public class CodeGeneratorService {
             IOUtils.copy(inputStream, outputStream);
         }
 
-        FileUtils.deleteDirectory(file);
+        FileUtils.deleteDirectory(file.getParentFile());
         FileUtils.deleteQuietly(zip);
     }
 
     public String preview(PreviewDTO preview) throws IOException {
-        VelocityContext variables = getVelocityContext(preview);
+        VelocityContext variables = new VelocityContext(getEnvVariables(preview));
 
         VelocityEngine engine = getVelocityEngine();
 
-        TEMPLATE_PREVIEW_FILE.set(preview.getCodeTemplateFile());
-
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream)) {
-            Template template = engine.getTemplate(preview.getCodeTemplateType().name());
+            Template template = engine.getTemplate(preview.getCodeTemplateFile());
             template.merge(variables, outputStreamWriter);
         }
 
-        TEMPLATE_PREVIEW_FILE.remove();
-
         return outputStream.toString();
+    }
+
+    public String previewFileName(String tableName, String tablePrefix, String fileName) {
+        Map<String, Object> entityEnvVariables = this.getEntityVariables(tableName, tablePrefix);
+        return (String) ExpressionUtil.executeText(fileName, entityEnvVariables);
+    }
+
+    public String previewFilePath(String parentPackage, String moduleName, String filePath) {
+        Map<String, Object> fileEnvVariables = this.getFileEnvVariables(parentPackage, moduleName);
+        return (String) ExpressionUtil.executeText(filePath, fileEnvVariables);
     }
 
     private int strengthColumnInfo(List<ColumnVO> columnInfos) {

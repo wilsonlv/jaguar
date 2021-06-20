@@ -58,4 +58,20 @@ public class CodegenController {
         return JsonResult.success(codeGeneratorService.preview(preview));
     }
 
+    @ApiOperation(value = "预览真实文件名")
+    @GetMapping(value = "/preview/fileName")
+    public JsonResult<String> previewFileName(@RequestParam @NotBlank String tableName,
+                                              @RequestParam(required = false) String tablePrefix,
+                                              @RequestParam @NotBlank String fileName) {
+        return JsonResult.success(codeGeneratorService.previewFileName(tableName, tablePrefix, fileName));
+    }
+
+    @ApiOperation(value = "预览真实文件路径")
+    @GetMapping(value = "/preview/filePath")
+    public JsonResult<String> previewFilePath(@RequestParam @NotBlank String parentPackage,
+                                              @RequestParam @NotBlank String moduleName,
+                                              @RequestParam @NotBlank String filePath) {
+        return JsonResult.success(codeGeneratorService.previewFilePath(parentPackage, moduleName, filePath));
+    }
+
 }

@@ -5,9 +5,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jaguar.commons.basecrud.BaseModel;
-import org.jaguar.modules.codegen.enums.CodeTemplateType;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 /**
  * 代码模板
@@ -23,11 +23,11 @@ public class CodeTemplate extends BaseModel {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 模板类型
+     * 模板名称
      */
     @NotBlank
-    @TableField("code_template_type")
-    private CodeTemplateType codeTemplateType;
+    @TableField("code_template_name")
+    private String codeTemplateName;
 
     /**
      * 模板文件
@@ -39,8 +39,27 @@ public class CodeTemplate extends BaseModel {
     /**
      * 模板版本
      */
-    @NotBlank
     @TableField("code_template_version")
     private Integer codeTemplateVersion;
+
+    /**
+     * 创建时间
+     */
+    @TableField(value = "create_time")
+    private LocalDateTime createTime;
+
+    /**
+     * 文件名
+     */
+    @NotBlank
+    @TableField("file_name")
+    private String fileName;
+
+    /**
+     * 文件路径
+     */
+    @NotBlank
+    @TableField("file_path")
+    private String filePath;
 
 }
