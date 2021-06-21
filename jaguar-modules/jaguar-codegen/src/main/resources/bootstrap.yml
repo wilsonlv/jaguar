@@ -55,5 +55,5 @@ jaguar:
 
 logging:
   level:
-    org.jagaur.modules.codegen: debug
-    com.baomidou.mybatisplus.generator: debug
+    org.jaguar.modules.codegen: debug
+    com.baomidou.mybatisplus: debug
