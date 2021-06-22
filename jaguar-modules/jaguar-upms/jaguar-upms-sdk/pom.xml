@@ -11,4 +11,11 @@
 
     <artifactId>jaguar-upms-sdk</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.jaguar</groupId>
+            <artifactId>jaguar-commons-swagger</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>

@@ -15,12 +15,10 @@
         <dependency>
             <groupId>org.jaguar</groupId>
             <artifactId>jaguar-commons-base-crud</artifactId>
-            <version>${jaguar.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
             <artifactId>jaguar-commons-redis</artifactId>
-            <version>${jaguar.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>

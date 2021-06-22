@@ -15,12 +15,10 @@
         <dependency>
             <groupId>org.jaguar</groupId>
             <artifactId>jaguar-commons-mybatis-plus</artifactId>
-            <version>${jaguar.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
             <artifactId>jaguar-commons-web</artifactId>
-            <version>${jaguar.version}</version>
         </dependency>
     </dependencies>
 

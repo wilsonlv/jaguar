@@ -59,6 +59,14 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!--jaguar 公共版本定义-->
+            <dependency>
+                <groupId>org.jaguar</groupId>
+                <artifactId>jaguar-commons-bom</artifactId>
+                <version>${jaguar.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

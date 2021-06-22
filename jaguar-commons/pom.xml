@@ -16,6 +16,7 @@
         <module>jaguar-commons-activemq</module>
         <module>jaguar-commons-aviator</module>
         <module>jaguar-commons-base-crud</module>
+        <module>jaguar-commons-bom</module>
         <module>jaguar-commons-encryption</module>
         <module>jaguar-commons-export-csv</module>
         <module>jaguar-commons-mybatis-plus</module>

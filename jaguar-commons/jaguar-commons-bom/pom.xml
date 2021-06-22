@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>group.springframework</groupId>
+        <artifactId>spring-cloud-dependencies-parent</artifactId>
+        <version>2020.0.1</version>
+        <relativePath/>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.jaguar</groupId>
+    <artifactId>jaguar-commons-bom</artifactId>
+    <version>${jaguar.version}</version>
+    <description>jaguar 公共版本控制</description>
+
+    <properties>
+        <jaguar.version>master</jaguar.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jaguar</groupId>
+                <artifactId>jaguar-commons-activemq</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jaguar</groupId>
+                <artifactId>jaguar-commons-aviator</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jaguar</groupId>
+                <artifactId>jaguar-commons-base-crud</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jaguar</groupId>
+                <artifactId>jaguar-commons-encryption</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jaguar</groupId>
+                <artifactId>jaguar-commons-export-csv</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jaguar</groupId>
+                <artifactId>jaguar-commons-mybatis-plus</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jaguar</groupId>
+                <artifactId>jaguar-commons-oauth2</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jaguar</groupId>
+                <artifactId>jaguar-commons-pinyin</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jaguar</groupId>
+                <artifactId>jaguar-commons-qrcode</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jaguar</groupId>
+                <artifactId>jaguar-commons-redis</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jaguar</groupId>
+                <artifactId>jaguar-commons-swagger</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jaguar</groupId>
+                <artifactId>jaguar-commons-web</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jaguar</groupId>
+                <artifactId>jaguar-commons-websocket</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>

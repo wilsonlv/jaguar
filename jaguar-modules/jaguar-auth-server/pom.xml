@@ -20,17 +20,14 @@
         <dependency>
             <groupId>org.jaguar</groupId>
             <artifactId>jaguar-commons-oauth2</artifactId>
-            <version>${jaguar.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
             <artifactId>jaguar-commons-web</artifactId>
-            <version>${jaguar.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
             <artifactId>jaguar-commons-redis</artifactId>
-            <version>${jaguar.version}</version>
         </dependency>
     </dependencies>
 

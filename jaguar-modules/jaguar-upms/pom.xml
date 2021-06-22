@@ -17,12 +17,4 @@
         <module>jaguar-upms-server</module>
     </modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.jaguar</groupId>
-            <artifactId>jaguar-commons-swagger</artifactId>
-            <version>${jaguar.version}</version>
-        </dependency>
-    </dependencies>
-
 </project>
