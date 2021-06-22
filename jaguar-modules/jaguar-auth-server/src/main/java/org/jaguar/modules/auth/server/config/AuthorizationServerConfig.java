@@ -1,6 +1,7 @@
 package org.jaguar.modules.auth.server.config;
 
 import org.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
+import org.jaguar.modules.auth.server.component.AuthServerTokenService;
 import org.jaguar.modules.auth.server.component.JaguarClientDetailsServiceImpl;
 import org.jaguar.modules.auth.server.component.JaguarUserDetailsServiceImpl;
 import org.jaguar.modules.auth.server.component.OauthTokenExceptionTranslator;
@@ -12,7 +13,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.token.TokenStore;
 
 /**
  * @author lvws
@@ -23,18 +23,15 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
-    private TokenStore tokenStore;
+    private AuthServerTokenService tokenServices;
     @Autowired
     private JaguarUserDetailsServiceImpl userDetailService;
     @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
     private JaguarClientDetailsServiceImpl clientDetailsService;
-
     @Autowired
     private AuthenticationExceptionHandler authenticationExceptionHandler;
-
     @Autowired
     private OauthTokenExceptionTranslator oauthTokenExceptionTranslator;
 
@@ -47,7 +44,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints.authenticationManager(authenticationManager)
                 .userDetailsService(userDetailService)
-                .tokenStore(tokenStore)
+                .tokenServices(tokenServices)
                 .exceptionTranslator(oauthTokenExceptionTranslator);
     }
 

@@ -11,7 +11,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 
 /**
  * @author lvws
@@ -29,11 +29,11 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
     private AuthenticationExceptionHandler authenticationExceptionHandler;
 
     @Autowired
-    private ResourceServerTokenServices tokenServices;
+    private TokenStore tokenStore;
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
-        resources.tokenServices(tokenServices)
+        resources.tokenStore(tokenStore)
                 .authenticationEntryPoint(authenticationExceptionHandler);
     }
 
