@@ -1,5 +1,5 @@
 server:
-  port: 6666
+  port: 8888
   tomcat:
     uri-encoding: UTF-8
 
@@ -14,6 +14,19 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      filter:
+        stat:
+          enabled: true
+          log-slow-sql: true
+          merge-sql: true
+      web-stat-filter:
+        enabled: true
+      stat-view-servlet:
+        enabled: true
+        login-username: admin
+        login-password: 123456
+        allow: 127.0.0.1
     dynamic:
       druid:
         initial-size: 1

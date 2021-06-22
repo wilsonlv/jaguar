@@ -27,5 +27,13 @@ spring:
       min-idle: 1
       filter:
         stat:
+          enabled: true
           log-slow-sql: true
           merge-sql: true
+      web-stat-filter:
+        enabled: true
+      stat-view-servlet:
+        enabled: true
+        login-username: admin
+        login-password: Aa123456!@#
+        allow: 127.0.0.1
