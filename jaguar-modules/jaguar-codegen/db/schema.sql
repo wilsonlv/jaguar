@@ -1,3 +1,6 @@
+CREATE SCHEMA `jaguar_codegen` DEFAULT CHARACTER SET utf8mb4;
+use `jaguar_codegen`;
+
 drop table if exists `jaguar_modules_codegen_datasource`;
 CREATE TABLE `jaguar_modules_codegen_datasource`
 (
