@@ -3,19 +3,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>jaguar-commons</artifactId>
+        <artifactId>jaguar-modules</artifactId>
         <groupId>org.jaguar</groupId>
         <version>master</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jaguar-commons-websocket</artifactId>
+    <artifactId>jaguar-websocket</artifactId>
+    <packaging>pom</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket</artifactId>
-        </dependency>
-    </dependencies>
+    <modules>
+        <module>jaguar-websocket-sdk</module>
+        <module>jaguar-wesocket-server</module>
+    </modules>
 
 </project>

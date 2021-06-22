@@ -1,5 +1,5 @@
 server:
-  port: 8888
+  port: 9999
   tomcat:
     uri-encoding: UTF-8
 
@@ -28,9 +28,3 @@ spring:
         max-active: 8
         max-wait: 1000
         time-between-eviction-runs: 100000
-
-jaguar:
-  modules:
-    system:
-      mgm:
-        verify-code-enable: false

@@ -18,6 +18,7 @@
         <module>document</module>
         <module>jaguar-numbering</module>
         <module>jaguar-upms</module>
+        <module>jaguar-websocket</module>
     </modules>
 
 </project>
