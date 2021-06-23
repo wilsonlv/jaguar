@@ -6,5 +6,5 @@ spring:
     name: @artifactId@
   security:
     user:
-      name: root
+      name: monitor
       password: 123456

@@ -25,6 +25,11 @@
             <artifactId>spring-boot-admin-starter-server</artifactId>
             <version>${spring-boot-admin.version}</version>
         </dependency>
+        <!--springboot admin 安全相关-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
