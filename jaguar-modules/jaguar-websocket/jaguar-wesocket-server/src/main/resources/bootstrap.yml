@@ -1,7 +1,10 @@
 server:
   port: 9999
-  tomcat:
-    uri-encoding: UTF-8
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
 
 spring:
   application:
@@ -10,11 +13,6 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
-  http:
-    encoding:
-      charset: UTF-8
-      force: true
-      enabled: true
   redis:
     database: 6
     host: 127.0.0.1

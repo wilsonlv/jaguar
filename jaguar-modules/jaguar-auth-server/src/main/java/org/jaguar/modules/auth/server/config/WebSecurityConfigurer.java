@@ -1,8 +1,9 @@
 package org.jaguar.modules.auth.server.config;
 
+import lombok.RequiredArgsConstructor;
+import org.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
 import org.jaguar.modules.auth.server.component.LoginFailureHandler;
 import org.jaguar.modules.auth.server.component.LoginSuccessHandler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,12 +20,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private LoginSuccessHandler loginSuccessHandler;
-    @Autowired
-    private LoginFailureHandler loginFailureHandler;
+    private final LoginSuccessHandler loginSuccessHandler;
+
+    private final LoginFailureHandler loginFailureHandler;
+
+    private final AuthenticationExceptionHandler authenticationExceptionHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -44,7 +47,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .successHandler(loginSuccessHandler).failureHandler(loginFailureHandler)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/oauth/token", "/oauth/check_token", "/login/*").permitAll()
+                .antMatchers("/oauth/token", "/oauth/check_token", "/login/401", "/login/info").permitAll()
                 .antMatchers("/swagger-resources", "/swagger-resources/**", "/v2/**").permitAll()
                 .anyRequest().authenticated()
                 .and().cors()

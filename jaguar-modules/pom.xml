@@ -13,9 +13,10 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>document</module>
         <module>jaguar-auth-server</module>
         <module>jaguar-codegen</module>
-        <module>document</module>
+        <module>jaguar-monitor</module>
         <module>jaguar-numbering</module>
         <module>jaguar-upms</module>
         <module>jaguar-websocket</module>

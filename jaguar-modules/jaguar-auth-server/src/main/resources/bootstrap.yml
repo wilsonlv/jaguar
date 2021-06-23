@@ -1,7 +1,10 @@
 server:
   port: 8866
-  tomcat:
-    uri-encoding: UTF-8
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
 
 spring:
   application:
@@ -24,8 +27,25 @@ spring:
   session:
     store-type: redis
     timeout: 1800
-  http:
-    encoding:
-      charset: UTF-8
-      force: true
-      enabled: true
+  boot:
+    admin:
+      client:
+        url: http://localhost:18888
+        instance:
+          prefer-ip: true
+          metadata:
+            user.name: admin
+            user.password: 123456
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    logfile:
+      external-file: logs/output.log
+
+logging:
+  level:
+    org.jaguar.modules: debug

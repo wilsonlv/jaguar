@@ -1,6 +1,7 @@
 package org.jaguar.modules.auth.server.api;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jaguar.commons.web.JsonResult;
 import org.jaguar.commons.web.ResultCode;
 import org.jaguar.commons.web.exception.impl.CheckedException;
@@ -19,6 +20,7 @@ import javax.validation.constraints.NotBlank;
  * @author lvws
  * @since 2021/6/8
  */
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/login")
@@ -47,6 +49,11 @@ public class LoginApi {
         }
 
         return JsonResult.success((User) authentication.getPrincipal());
+    }
+
+    @GetMapping("/123")
+    public String info() {
+        return "123";
     }
 
 }

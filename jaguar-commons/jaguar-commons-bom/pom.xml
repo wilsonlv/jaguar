@@ -12,7 +12,7 @@
 
     <groupId>org.jaguar</groupId>
     <artifactId>jaguar-commons-bom</artifactId>
-    <version>${jaguar.version}</version>
+    <version>master</version>
     <description>jaguar 公共版本控制</description>
 
     <properties>
@@ -44,6 +44,11 @@
             <dependency>
                 <groupId>org.jaguar</groupId>
                 <artifactId>jaguar-commons-export-csv</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jaguar</groupId>
+                <artifactId>jaguar-commons-monitor-client</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>

@@ -19,6 +19,7 @@
         <module>jaguar-commons-bom</module>
         <module>jaguar-commons-encryption</module>
         <module>jaguar-commons-export-csv</module>
+        <module>jaguar-commons-monitor-client</module>
         <module>jaguar-commons-mybatis-plus</module>
         <module>jaguar-commons-oauth2</module>
         <module>jaguar-commons-pinyin</module>
@@ -26,7 +27,6 @@
         <module>jaguar-commons-redis</module>
         <module>jaguar-commons-swagger</module>
         <module>jaguar-commons-web</module>
-        <module>jaguar-commons-websocket</module>
     </modules>
 
 </project>

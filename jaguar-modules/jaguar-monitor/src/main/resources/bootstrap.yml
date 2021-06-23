@@ -1,0 +1,10 @@
+server:
+  port: 18888
+
+spring:
+  application:
+    name: @artifactId@
+  security:
+    user:
+      name: root
+      password: 123456
