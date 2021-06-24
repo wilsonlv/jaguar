@@ -9,8 +9,10 @@ server:
 spring:
   application:
     name: @artifactId@
-  profiles:
-    active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
   redis:
     database: 6
     host: 127.0.0.1
@@ -35,9 +37,10 @@ spring:
         password: 123456
         instance:
           prefer-ip: true
-          metadata:
-            user.name: monitor-client
-            user.password: 123456
+
+jaguar:
+  security:
+    actuator-admin-ip: 192.168.10.125
 
 management:
   endpoints:
@@ -46,8 +49,5 @@ management:
         include: '*'
   endpoint:
     logfile:
-      external-file: logs/output.log
+      external-file: logs/@artifactId@.log
 
-logging:
-  level:
-    org.jaguar.modules: debug

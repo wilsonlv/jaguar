@@ -13,7 +13,7 @@
     </appender>
     <!-- 按照每天生成日志文件 -->
     <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_HOME}/output.log</file>
+        <file>${LOG_HOME}/${project.artifactId}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!--日志文件输出的文件名-->
             <FileNamePattern>${LOG_HOME}/${project.artifactId}/%d{yyyy-MM-dd, aux}/%d{yyyy-MM-dd-HH}.%i.log</FileNamePattern>

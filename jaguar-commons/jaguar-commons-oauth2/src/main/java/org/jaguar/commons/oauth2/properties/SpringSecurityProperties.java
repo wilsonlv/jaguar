@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("jaguar.security")
 public class SpringSecurityProperties {
 
+    private String actuatorAdminIp;
+
     private String[] ignoreUrls = new String[]{};
 
 }
