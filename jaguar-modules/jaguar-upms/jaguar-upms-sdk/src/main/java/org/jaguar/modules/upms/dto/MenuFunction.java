@@ -1,17 +1,17 @@
 package org.jaguar.modules.upms.dto;
 
-
 import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 import lombok.SneakyThrows;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
+
 /**
  * @author lvws
  * @since 2021/4/5
@@ -68,7 +68,8 @@ public class MenuFunction implements Cloneable, Serializable {
         List<MenuFunction> filterMenuFunctions = new ArrayList<>();
         for (MenuFunction menuFunction : menuFunctions) {
             if (names.contains(menuFunction.getName())) {
-                MenuFunction copy = (MenuFunction) BeanUtils.cloneBean(menuFunction);
+                MenuFunction copy = new MenuFunction();
+                BeanUtils.copyProperties(menuFunction, copy);
                 filterMenuFunctions.add(copy);
 
                 copy.setChildren(filterMenuFunctions(copy.getChildren(), names));
