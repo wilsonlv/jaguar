@@ -15,6 +15,7 @@
     <modules>
         <module>jaguar-field-edit-log</module>
         <module>jaguar-handler-log</module>
+        <module>jaguar-redis-cache-field-edit-log</module>
     </modules>
 
 </project>

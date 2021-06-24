@@ -78,7 +78,17 @@
             </dependency>
             <dependency>
                 <groupId>org.jaguar</groupId>
+                <artifactId>jaguar-commons-redis-cache</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jaguar</groupId>
                 <artifactId>jaguar-commons-swagger</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jaguar</groupId>
+                <artifactId>jaguar-commons-tenant</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
@@ -88,7 +98,17 @@
             </dependency>
             <dependency>
                 <groupId>org.jaguar</groupId>
-                <artifactId>jaguar-commons-websocket</artifactId>
+                <artifactId>jaguar-field-edit-log</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jaguar</groupId>
+                <artifactId>jaguar-handler-log</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jaguar</groupId>
+                <artifactId>jaguar-redis-cache-field-edit-log</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
         </dependencies>
