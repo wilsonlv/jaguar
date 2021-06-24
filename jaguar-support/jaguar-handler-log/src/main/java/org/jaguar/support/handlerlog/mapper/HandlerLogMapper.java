@@ -1,5 +1,6 @@
 package org.jaguar.support.handlerlog.mapper;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.jaguar.support.handlerlog.model.HandlerLog;
 
 /**
@@ -10,6 +11,7 @@ import org.jaguar.support.handlerlog.model.HandlerLog;
  * @author lvws
  * @since 2018-11-26
  */
+@Mapper
 public interface HandlerLogMapper extends com.baomidou.mybatisplus.core.mapper.BaseMapper<HandlerLog> {
 
 }

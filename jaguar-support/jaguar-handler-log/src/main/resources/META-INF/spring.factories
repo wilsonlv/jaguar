@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    org.jaguar.support.handlerlog.config.HandlerLogConfig,\
+    org.jaguar.support.handlerlog.interceptor.HandlerLogInterceptor,\
+    org.jaguar.support.handlerlog.service.HandlerLogService

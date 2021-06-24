@@ -25,7 +25,9 @@
         <module>jaguar-commons-pinyin</module>
         <module>jaguar-commons-qrcode</module>
         <module>jaguar-commons-redis</module>
+        <module>jaguar-commons-redis-cache</module>
         <module>jaguar-commons-swagger</module>
+        <module>jaguar-commons-tenant</module>
         <module>jaguar-commons-web</module>
     </modules>
 
