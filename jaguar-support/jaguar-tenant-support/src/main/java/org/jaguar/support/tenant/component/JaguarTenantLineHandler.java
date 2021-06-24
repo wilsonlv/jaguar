@@ -6,6 +6,8 @@ import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.expression.NullValue;
 import org.jaguar.commons.oauth2.model.SecurityUser;
 import org.jaguar.commons.oauth2.util.SecurityUtil;
+import org.jaguar.support.tenant.properties.TenantProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,6 +17,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class JaguarTenantLineHandler implements TenantLineHandler {
+
+    @Autowired
+    private TenantProperties tenantProperties;
 
     @Override
     public Expression getTenantId() {
@@ -28,11 +33,11 @@ public class JaguarTenantLineHandler implements TenantLineHandler {
 
     @Override
     public String getTenantIdColumn() {
-        return "tenant_id";
+        return tenantProperties.getTenantIdColumn();
     }
 
     @Override
     public boolean ignoreTable(String tableName) {
-        return false;
+        return tenantProperties.getIgnoreTables() != null && tenantProperties.getIgnoreTables().contains(tableName);
     }
 }

@@ -5,15 +5,13 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.jaguar.commons.basecrud.BaseMapper;
-import org.jaguar.commons.basecrud.BaseService;
 import org.jaguar.commons.oauth2.model.SecurityUser;
 import org.jaguar.commons.oauth2.util.SecurityUtil;
-import org.jaguar.commons.web.exception.impl.CheckedException;
 import org.jaguar.support.fieldeditlog.mapper.FieldEditLogMapper;
 import org.jaguar.support.fieldeditlog.model.FieldEditLog;
 import org.jaguar.support.fieldeditlog.model.FieldEditLoggable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;
@@ -32,7 +30,8 @@ import static org.jaguar.support.fieldeditlog.FieldEditLogConstant.*;
  * @since 2019-04-10
  */
 @Slf4j
-public abstract class FieldEditLogService<T extends FieldEditLoggable, M extends BaseMapper<T>> extends BaseService<T, M> {
+@Service
+public class FieldEditLogService<T extends FieldEditLoggable> {
 
     private static final List<String> FILTER_FIELDS = new ArrayList<String>() {{
         add(ID);
@@ -51,7 +50,7 @@ public abstract class FieldEditLogService<T extends FieldEditLoggable, M extends
     private GlobalConfig globalConfig;
 
     @Transactional
-    public void logEdit(T org, T update) throws IllegalAccessException {
+    public void logEdit(T persistence, T update) throws IllegalAccessException {
         Field[] fields = update.getClass().getDeclaredFields();
         for (Field field : fields) {
             if (FILTER_FIELDS.contains(field.getName())) {
@@ -91,7 +90,7 @@ public abstract class FieldEditLogService<T extends FieldEditLoggable, M extends
                 continue;
             }
 
-            Object oldValue = field.get(org);
+            Object oldValue = field.get(persistence);
             if (newValue == null && oldValue == null) {
                 //新旧值都为null，值不变
                 continue;
@@ -105,32 +104,18 @@ public abstract class FieldEditLogService<T extends FieldEditLoggable, M extends
             FieldEditLog fieldEditLog = new FieldEditLog();
             fieldEditLog.setClassName(update.getClass().getName());
             fieldEditLog.setFieldName(field.getName());
-            fieldEditLog.setRecordId(org.getId());
+            fieldEditLog.setRecordId(persistence.getId());
             fieldEditLog.setOldValue(String.valueOf(oldValue));
             fieldEditLog.setNewValue(String.valueOf(newValue));
 
-            fieldEditLog.setLastModifyTime(org.getUpdateTime());
-            fieldEditLog.setLastModifyUserName(org.getUpdateBy());
-            fieldEditLog.setLastModifyUserId(org.getUpdateUserId());
+            fieldEditLog.setLastModifyTime(persistence.getUpdateTime());
+            fieldEditLog.setLastModifyUserName(persistence.getUpdateBy());
+            fieldEditLog.setLastModifyUserId(persistence.getUpdateUserId());
             fieldEditLog.setModifyTime(LocalDateTime.now());
             fieldEditLog.setModifyUserId(currentUser != null ? currentUser.getId() : null);
             fieldEditLog.setModifyUserName(currentUser != null ? currentUser.getUsername() : null);
             fieldEditLogMapper.insert(fieldEditLog);
         }
-    }
-
-    @Override
-    @Transactional
-    public void updateById(T entity) {
-        T org = this.getById(entity.getId());
-        try {
-            this.logEdit(org, entity);
-        } catch (IllegalAccessException e) {
-            log.error(e.getMessage(), e);
-            throw new CheckedException(e.getMessage());
-        }
-
-        super.updateById(entity);
     }
 
 }
