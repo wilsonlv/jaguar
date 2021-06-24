@@ -21,8 +21,8 @@ import java.util.Enumeration;
  * @since 2017/3/28.
  */
 @Slf4j
-@Order(value = 1)
-@WebFilter(urlPatterns = "/*")
+//@Order(value = 1)
+//@WebFilter(urlPatterns = "/*")
 public class RequestParamsFilter implements Filter {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DatePattern.ISO8601_PATTERN);

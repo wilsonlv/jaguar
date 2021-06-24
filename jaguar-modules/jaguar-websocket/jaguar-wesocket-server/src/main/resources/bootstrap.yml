@@ -34,10 +34,15 @@ spring:
         password: 123456
         instance:
           prefer-ip: true
-
-jaguar:
+          metadata:
+            user.name: ${spring.security.oauth2.resourceserver.opaquetoken.client-id}
+            user.password: ${spring.security.oauth2.resourceserver.opaquetoken.client-secret}
   security:
-    actuator-admin-ip: 192.168.10.125
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          client-id: client1
+          client-secret: client1
 
 management:
   endpoints:
