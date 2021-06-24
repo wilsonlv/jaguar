@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jaguar-redis-cache-field-edit-log</artifactId>
+    <artifactId>jaguar-cache-field-edit</artifactId>
 
     <dependencies>
         <dependency>

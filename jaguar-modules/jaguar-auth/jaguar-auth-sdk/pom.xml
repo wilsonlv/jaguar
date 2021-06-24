@@ -3,19 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>jaguar</artifactId>
+        <artifactId>jaguar-auth</artifactId>
         <groupId>org.jaguar</groupId>
         <version>master</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jaguar-support</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>jaguar-auth-sdk</artifactId>
 
-    <modules>
-        <module>jaguar-field-edit-log</module>
-        <module>jaguar-handler-log</module>
-        <module>jaguar-cache-field-edit</module>
-    </modules>
 
 </project>
