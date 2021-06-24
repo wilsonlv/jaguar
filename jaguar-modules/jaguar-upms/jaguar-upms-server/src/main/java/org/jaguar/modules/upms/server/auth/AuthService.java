@@ -3,7 +3,7 @@ package org.jaguar.modules.upms.server.auth;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jaguar.commons.basecrud.BaseService;
-import org.jaguar.commons.data.encryption.EncryptionUtil;
+import org.jaguar.commons.data.encryption.util.EncryptionUtil;
 import org.jaguar.commons.web.exception.impl.CheckedException;
 import org.jaguar.modules.upms.dto.MenuFunction;
 import org.jaguar.modules.upms.server.mapper.UserMapper;

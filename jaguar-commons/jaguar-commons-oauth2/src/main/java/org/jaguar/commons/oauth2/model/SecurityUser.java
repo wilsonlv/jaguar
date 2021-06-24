@@ -16,6 +16,8 @@ public class SecurityUser implements UserDetails {
 
     private Long id;
 
+    private Long tenantId;
+
     private String username;
 
     private String phone;

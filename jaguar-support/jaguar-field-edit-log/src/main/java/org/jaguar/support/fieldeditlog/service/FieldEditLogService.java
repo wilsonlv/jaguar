@@ -1,0 +1,136 @@
+package org.jaguar.support.fieldeditlog.service;
+
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.core.config.GlobalConfig;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.jaguar.commons.basecrud.BaseMapper;
+import org.jaguar.commons.basecrud.BaseService;
+import org.jaguar.commons.oauth2.model.SecurityUser;
+import org.jaguar.commons.oauth2.util.SecurityUtil;
+import org.jaguar.commons.web.exception.impl.CheckedException;
+import org.jaguar.support.fieldeditlog.mapper.FieldEditLogMapper;
+import org.jaguar.support.fieldeditlog.model.FieldEditLog;
+import org.jaguar.support.fieldeditlog.model.FieldEditLoggable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.lang.reflect.Field;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.jaguar.support.fieldeditlog.FieldEditLogConstant.*;
+
+/**
+ * <p>
+ * 字段编辑日志表 服务实现类
+ * </p>
+ *
+ * @author lvws
+ * @since 2019-04-10
+ */
+@Slf4j
+public abstract class FieldEditLogService<T extends FieldEditLoggable, M extends BaseMapper<T>> extends BaseService<T, M> {
+
+    private static final List<String> FILTER_FIELDS = new ArrayList<String>() {{
+        add(ID);
+        add(CREATE_BY);
+        add(CREATE_BY);
+        add(CREATE_TIME);
+        add(UPDATE_BY);
+        add(UPDATE_BY);
+        add(UPDATE_TIME);
+        add(SERIAL_VERSION_UID);
+    }};
+
+    @Autowired
+    private FieldEditLogMapper fieldEditLogMapper;
+    @Autowired
+    private GlobalConfig globalConfig;
+
+    @Transactional
+    public void logEdit(T org, T update) throws IllegalAccessException {
+        Field[] fields = update.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            if (FILTER_FIELDS.contains(field.getName())) {
+                continue;
+            }
+
+            field.setAccessible(true);
+            Object newValue = field.get(update);
+
+            TableField annotation = field.getAnnotation(TableField.class);
+            FieldStrategy strategy;
+            if (annotation != null) {
+                //过滤临时字段
+                if (!annotation.exist()) {
+                    continue;
+                }
+                strategy = annotation.updateStrategy();
+            } else {
+                strategy = globalConfig.getDbConfig().getUpdateStrategy();
+            }
+
+            if (strategy == FieldStrategy.DEFAULT) {
+                strategy = globalConfig.getDbConfig().getUpdateStrategy();
+            }
+
+            if (strategy == FieldStrategy.NOT_EMPTY) {
+                //如果更新策略是非空更新
+                if (newValue instanceof String && StringUtils.isBlank((String) newValue)) {
+                    //如果是空字符串，则不会更新
+                    continue;
+                } else if (newValue == null) {
+                    //如果是nul，也不会更新
+                    continue;
+                }
+            } else if (strategy == FieldStrategy.NOT_NULL && newValue == null) {
+                //如果更新策略是非null更新，新值是null，则不会更新
+                continue;
+            }
+
+            Object oldValue = field.get(org);
+            if (newValue == null && oldValue == null) {
+                //新旧值都为null，值不变
+                continue;
+            } else if (newValue != null && newValue.equals(oldValue)) {
+                //新旧值都不为null，新值等于旧值，值不变
+                continue;
+            }
+
+            SecurityUser currentUser = SecurityUtil.getCurrentUser();
+
+            FieldEditLog fieldEditLog = new FieldEditLog();
+            fieldEditLog.setClassName(update.getClass().getName());
+            fieldEditLog.setFieldName(field.getName());
+            fieldEditLog.setRecordId(org.getId());
+            fieldEditLog.setOldValue(String.valueOf(oldValue));
+            fieldEditLog.setNewValue(String.valueOf(newValue));
+
+            fieldEditLog.setLastModifyTime(org.getUpdateTime());
+            fieldEditLog.setLastModifyUserName(org.getUpdateBy());
+            fieldEditLog.setLastModifyUserId(org.getUpdateUserId());
+            fieldEditLog.setModifyTime(LocalDateTime.now());
+            fieldEditLog.setModifyUserId(currentUser != null ? currentUser.getId() : null);
+            fieldEditLog.setModifyUserName(currentUser != null ? currentUser.getUsername() : null);
+            fieldEditLogMapper.insert(fieldEditLog);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void updateById(T entity) {
+        T org = this.getById(entity.getId());
+        try {
+            this.logEdit(org, entity);
+        } catch (IllegalAccessException e) {
+            log.error(e.getMessage(), e);
+            throw new CheckedException(e.getMessage());
+        }
+
+        super.updateById(entity);
+    }
+
+}

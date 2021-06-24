@@ -13,10 +13,10 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>field-edit-log</module>
-        <module>handler-log</module>
-        <module>redis-cache</module>
-        <module>tenant-support</module>
+        <module>jaguar-field-edit-log</module>
+        <module>jaguar-handler-log</module>
+        <module>jaguar-redis-cache</module>
+        <module>jaguar-tenant-support</module>
     </modules>
 
 

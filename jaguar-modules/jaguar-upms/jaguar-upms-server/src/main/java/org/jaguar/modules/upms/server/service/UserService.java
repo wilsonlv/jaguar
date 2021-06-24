@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.jaguar.commons.basecrud.Assert;
 import org.jaguar.commons.basecrud.BaseService;
-import org.jaguar.commons.data.encryption.EncryptionUtil;
+import org.jaguar.commons.data.encryption.util.EncryptionUtil;
 import org.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import org.jaguar.commons.web.exception.impl.CheckedException;
 import org.jaguar.modules.upms.server.mapper.UserMapper;
