@@ -1,3 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
     org.jaguar.support.fieldeditlog.mybatis.FieldEditLoggableModelMetaObjectHandler,\
+    org.jaguar.support.fieldeditlog.mapper.FieldEditLogMapper,\
     org.jaguar.support.fieldeditlog.service.FieldEditLogService

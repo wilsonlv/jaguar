@@ -14,12 +14,17 @@
     <dependencies>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>jaguar-commons-base-crud</artifactId>
+            <artifactId>jaguar-commons-oauth2</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>jaguar-commons-oauth2</artifactId>
+            <artifactId>jaguar-commons-monitor-client</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.jaguar</groupId>
+            <artifactId>jaguar-commons-base-crud</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.jaguar</groupId>
             <artifactId>jaguar-commons-encryption</artifactId>
