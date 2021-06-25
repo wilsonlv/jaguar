@@ -9,6 +9,7 @@
     <packaging>pom</packaging>
     <version>master</version>
     <modules>
+        <module>jaguar-codegen</module>
         <module>jaguar-commons</module>
         <module>jaguar-modules</module>
         <module>jaguar-support</module>
