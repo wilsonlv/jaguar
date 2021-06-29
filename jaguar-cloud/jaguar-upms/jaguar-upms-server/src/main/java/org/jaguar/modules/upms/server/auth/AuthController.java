@@ -6,10 +6,9 @@ import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jaguar.commons.basecrud.BaseController;
-import org.jaguar.commons.web.util.IpUtil;
 import org.jaguar.commons.web.JsonResult;
 import org.jaguar.commons.web.exception.impl.CheckedException;
-import org.jaguar.modules.auth.sdk.feign.RemoteAuthService;
+import org.jaguar.commons.web.util.IpUtil;
 import org.jaguar.modules.upms.server.config.SystemMgmProperties;
 import org.jaguar.modules.upms.server.mapper.UserMapper;
 import org.jaguar.modules.upms.server.model.Login;
@@ -18,9 +17,7 @@ import org.jaguar.modules.upms.server.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +45,7 @@ public class AuthController extends BaseController<User, UserMapper, AuthService
     private ServerProperties serverProperties;
     @Autowired
     private SystemMgmProperties systemMgmProperties;
-//    @Autowired
+    //    @Autowired
 //    private AuthenticationManager authenticationManager;
     @Autowired
     private LoginService loginService;
@@ -114,18 +111,6 @@ public class AuthController extends BaseController<User, UserMapper, AuthService
         SecurityContextHolder.clearContext();
         return success();
     }
-
-
-    @Autowired
-    private RemoteAuthService remoteAuthService;
-
-    @ApiOperation(value = "用户信息")
-    @GetMapping(value = "/info")
-    public String getPersonalInfo() {
-        String feign = remoteAuthService.feign();
-        return feign;
-    }
-
 
     /*@ApiOperation(value = "用户信息")
     @GetMapping(value = "/info")
