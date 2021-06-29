@@ -17,6 +17,7 @@
         <module>jaguar-commons-aviator</module>
         <module>jaguar-commons-base-crud</module>
         <module>jaguar-commons-bom</module>
+        <module>jaguar-commons-cloud-client</module>
         <module>jaguar-commons-encryption</module>
         <module>jaguar-commons-export-csv</module>
         <module>jaguar-commons-monitor-client</module>
@@ -29,6 +30,7 @@
         <module>jaguar-commons-swagger</module>
         <module>jaguar-commons-tenant</module>
         <module>jaguar-commons-web</module>
+        <module>jaguar-commons-feign</module>
     </modules>
 
 </project>

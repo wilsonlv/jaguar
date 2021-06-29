@@ -1,6 +1,8 @@
 package org.jaguar.commons.oauth2.config;
 
+import lombok.RequiredArgsConstructor;
 import org.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
+import org.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler;
 import org.jaguar.commons.oauth2.properties.SpringSecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -12,6 +14,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 /**
  * @author lvws
@@ -20,16 +23,16 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 @ConditionalOnMissingBean(AuthorizationServerConfigurerAdapter.class)
 @Configuration
 @EnableResourceServer
+@RequiredArgsConstructor
 public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
 
-    @Autowired
-    private SpringSecurityProperties springSecurityProperties;
+    private final SpringSecurityProperties springSecurityProperties;
 
-    @Autowired
-    private AuthenticationExceptionHandler authenticationExceptionHandler;
+    private final AuthenticationExceptionHandler authenticationExceptionHandler;
 
-    @Autowired
-    private TokenStore tokenStore;
+    private final JaguarAccessDeniedHandler jaguarAccessDeniedHandler;
+
+    private final TokenStore tokenStore;
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
@@ -46,6 +49,7 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
                 .authorizeRequests().antMatchers(springSecurityProperties.getIgnoreUrls()).permitAll()
                 //其余都需要认证
                 .anyRequest().authenticated()
+                .and().exceptionHandling().accessDeniedHandler(jaguarAccessDeniedHandler)
                 //异常处理
                 .and().cors()
                 .and().csrf().disable();

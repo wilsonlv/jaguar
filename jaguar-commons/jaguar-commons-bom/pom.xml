@@ -38,12 +38,22 @@
             </dependency>
             <dependency>
                 <groupId>org.jaguar</groupId>
+                <artifactId>jaguar-commons-cloud-client</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jaguar</groupId>
                 <artifactId>jaguar-commons-encryption</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jaguar</groupId>
                 <artifactId>jaguar-commons-export-csv</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jaguar</groupId>
+                <artifactId>jaguar-commons-feign</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
@@ -98,17 +108,17 @@
             </dependency>
             <dependency>
                 <groupId>org.jaguar</groupId>
+                <artifactId>jaguar-cache-field-edit</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jaguar</groupId>
                 <artifactId>jaguar-field-edit-log</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jaguar</groupId>
                 <artifactId>jaguar-handler-log</artifactId>
-                <version>${jaguar.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jaguar</groupId>
-                <artifactId>jaguar-redis-cache-field-edit-log</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
         </dependencies>

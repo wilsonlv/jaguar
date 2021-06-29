@@ -3,41 +3,42 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>jaguar-commons</artifactId>
+        <artifactId>jaguar-upms</artifactId>
         <groupId>org.jaguar</groupId>
         <version>master</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jaguar-commons-oauth2</artifactId>
+    <artifactId>jaguar-upms-server</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>jaguar-commons-web</artifactId>
+            <artifactId>jaguar-commons-oauth2</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>jaguar-commons-redis</artifactId>
+            <artifactId>jaguar-commons-monitor-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>jaguar-commons-cloud-client</artifactId>
+            <artifactId>jaguar-commons-base-crud</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
-            <artifactId>jaguar-commons-feign</artifactId>
+            <artifactId>jaguar-commons-encryption</artifactId>
         </dependency>
 
-        <!-- spring-security依赖 -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
+            <groupId>org.jaguar</groupId>
+            <artifactId>jaguar-upms-sdk</artifactId>
+            <version>${jaguar.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.security.oauth</groupId>
-            <artifactId>spring-security-oauth2</artifactId>
-            <version>2.3.6.RELEASE</version>
+            <groupId>org.jaguar</groupId>
+            <artifactId>jaguar-auth-sdk</artifactId>
+            <version>${jaguar.version}</version>
         </dependency>
     </dependencies>
+
 </project>

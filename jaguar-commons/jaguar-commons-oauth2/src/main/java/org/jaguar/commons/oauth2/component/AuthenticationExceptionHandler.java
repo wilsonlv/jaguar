@@ -35,31 +35,31 @@ public class AuthenticationExceptionHandler implements AuthenticationEntryPoint 
             return;
         } else if (e instanceof BadCredentialsException) {
             // 密码错误
-            log.info("登录失败 - 用户密码错误");
+            log.error("登录失败 - 用户密码错误");
 
         } else if (e instanceof AccountExpiredException) {
             // 账号过期
-            log.info("登录失败 - 用户账号过期");
+            log.error("登录失败 - 用户账号过期");
 
         } else if (e instanceof CredentialsExpiredException) {
             // 密码过期
-            log.info("登录失败 - 用户密码过期");
+            log.error("登录失败 - 用户密码过期");
 
         } else if (e instanceof DisabledException) {
             // 用户被禁用
-            log.info("登录失败 - 用户被禁用");
+            log.error("登录失败 - 用户被禁用");
 
         } else if (e instanceof LockedException) {
             // 用户被锁定
-            log.info("登录失败 - 用户被锁定");
+            log.error("登录失败 - 用户被锁定");
 
         } else if (e instanceof InternalAuthenticationServiceException) {
             // 内部错误
-            log.info("内部错误 - [{}]", e.getMessage());
+            log.error("内部错误 - [{}]", e.getMessage());
 
         } else {
             // 其他错误
-            log.info("其他错误 - [{}]", e.getMessage());
+            log.error("其他错误 - [{}]", e.getMessage());
         }
 
         try (PrintWriter writer = response.getWriter()) {
