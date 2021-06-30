@@ -3,6 +3,8 @@ package org.jaguar.commons.oauth2.config;
 import lombok.RequiredArgsConstructor;
 import org.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
 import org.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler;
+import org.jaguar.commons.oauth2.component.RedisClientDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,9 +16,14 @@ import org.springframework.security.oauth2.provider.client.ClientDetailsUserDeta
  * @author lvws
  * @since 2021/6/23
  */
-
 @Configuration
 public class ClientBasicSecurityConfigurer {
+
+    private static RedisClientDetailsServiceImpl CLIENT_DETAILS_SERVICE;
+
+    private static JaguarAccessDeniedHandler JAGUAR_ACCESS_DENIED_HANDLER;
+
+    private static AuthenticationExceptionHandler AUTHENTICATION_EXCEPTION_HANDLER;
 
 
     protected static void configureClientBasic(HttpSecurity http, ClientDetailsService clientDetailsService,
@@ -35,16 +42,25 @@ public class ClientBasicSecurityConfigurer {
     @RequiredArgsConstructor
     static class ActuatorSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
-        private final ClientDetailsService clientDetailsService;
+        @Autowired
+        public void setClientDetailsService(RedisClientDetailsServiceImpl clientDetailsService) {
+            CLIENT_DETAILS_SERVICE = clientDetailsService;
+        }
 
-        private final JaguarAccessDeniedHandler jaguarAccessDeniedHandler;
+        @Autowired
+        public void setJaguarAccessDeniedHandler(JaguarAccessDeniedHandler accessDeniedHandler) {
+            JAGUAR_ACCESS_DENIED_HANDLER = accessDeniedHandler;
+        }
 
-        private final AuthenticationExceptionHandler authenticationExceptionHandler;
+        @Autowired
+        public void setAuthenticationExceptionHandler(AuthenticationExceptionHandler authenticationExceptionHandler) {
+            AUTHENTICATION_EXCEPTION_HANDLER = authenticationExceptionHandler;
+        }
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.antMatcher("/actuator").antMatcher("/actuator/**");
-            configureClientBasic(http, clientDetailsService, jaguarAccessDeniedHandler, authenticationExceptionHandler);
+            configureClientBasic(http, CLIENT_DETAILS_SERVICE, JAGUAR_ACCESS_DENIED_HANDLER, AUTHENTICATION_EXCEPTION_HANDLER);
         }
     }
 
@@ -53,16 +69,10 @@ public class ClientBasicSecurityConfigurer {
     @RequiredArgsConstructor
     static class FeignSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
-        private final ClientDetailsService clientDetailsService;
-
-        private final JaguarAccessDeniedHandler jaguarAccessDeniedHandler;
-
-        private final AuthenticationExceptionHandler authenticationExceptionHandler;
-
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.antMatcher("/feign/**");
-            configureClientBasic(http, clientDetailsService, jaguarAccessDeniedHandler, authenticationExceptionHandler);
+            configureClientBasic(http, CLIENT_DETAILS_SERVICE, JAGUAR_ACCESS_DENIED_HANDLER, AUTHENTICATION_EXCEPTION_HANDLER);
         }
     }
 

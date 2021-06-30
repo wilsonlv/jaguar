@@ -9,7 +9,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @author lvws
  * @since 2021/6/8
  */
-@EnableFeignClients(basePackages ="org.jaguar.modules.upms.sdk.feign")
+@EnableFeignClients(basePackages ="**.feign")
 @EnableDiscoveryClient
 @SpringBootApplication
 public class AuthServerApplication {

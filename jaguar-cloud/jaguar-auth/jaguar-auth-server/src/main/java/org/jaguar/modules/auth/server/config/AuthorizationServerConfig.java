@@ -2,6 +2,7 @@ package org.jaguar.modules.auth.server.config;
 
 import lombok.RequiredArgsConstructor;
 import org.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
+import org.jaguar.commons.oauth2.component.RedisClientDetailsServiceImpl;
 import org.jaguar.modules.auth.server.component.AuthServerTokenService;
 import org.jaguar.modules.auth.server.component.OauthTokenExceptionTranslator;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +13,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
 
 /**
  * @author lvws
@@ -29,7 +29,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     private final UserDetailsService userDetailService;
 
-    private final ClientDetailsService clientDetailsService;
+    private final RedisClientDetailsServiceImpl clientDetailsService;
 
     private final AuthenticationExceptionHandler authenticationExceptionHandler;
 

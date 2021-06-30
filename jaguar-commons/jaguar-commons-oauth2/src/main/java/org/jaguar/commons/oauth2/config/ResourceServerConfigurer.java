@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
 import org.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler;
 import org.jaguar.commons.oauth2.properties.SpringSecurityProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,7 +13,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.web.access.AccessDeniedHandler;
 
 /**
  * @author lvws

@@ -1,7 +1,6 @@
 package org.jaguar.modules.auth.server.config;
 
 import lombok.RequiredArgsConstructor;
-import org.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
 import org.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler;
 import org.jaguar.modules.auth.server.component.LoginFailureHandler;
 import org.jaguar.modules.auth.server.component.LoginSuccessHandler;
@@ -27,8 +26,6 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     private final LoginSuccessHandler loginSuccessHandler;
 
     private final LoginFailureHandler loginFailureHandler;
-
-    private final AuthenticationExceptionHandler authenticationExceptionHandler;
 
     private final JaguarAccessDeniedHandler jaguarAccessDeniedHandler;
 

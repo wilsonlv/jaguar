@@ -1,13 +1,15 @@
 package org.jaguar.modules.upms.server.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
+import org.jaguar.commons.oauth2.Oauth2Constant;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.data.redis.core.BoundValueOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.provider.ClientDetails;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,14 +18,14 @@ import java.util.Set;
  * @author lvws
  * @since 2021/6/29
  */
-@Primary
 @Service
 @RequiredArgsConstructor
-public class UpmsClientDetailsServiceImpl implements ClientDetailsService {
+public class UpmsClientDetailsServiceImpl implements InitializingBean {
 
     private final PasswordEncoder passwordEncoder;
 
-    @Override
+    private final RedisTemplate<String, Serializable> redisTemplate;
+
     public BaseClientDetails loadClientByClientId(String clientId) {
         Set<String> authorizedGrantTypes = new HashSet<>();
         authorizedGrantTypes.add("refresh_token");
@@ -38,5 +40,16 @@ public class UpmsClientDetailsServiceImpl implements ClientDetailsService {
         clientDetails.setAccessTokenValiditySeconds(3600);
         clientDetails.setScope(Collections.singleton("all"));
         return clientDetails;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        String[] clientIds = new String[]{"upms", "auth"};
+
+        for (String clientId : clientIds) {
+            BoundValueOperations<String, Serializable> operations =
+                    redisTemplate.boundValueOps(Oauth2Constant.CLIENT_CACHE_KEY_PREFIX + clientId);
+            operations.set(loadClientByClientId(clientId));
+        }
     }
 }
