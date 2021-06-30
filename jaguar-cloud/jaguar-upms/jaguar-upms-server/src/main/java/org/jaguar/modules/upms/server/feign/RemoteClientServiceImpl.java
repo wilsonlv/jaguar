@@ -3,7 +3,7 @@ package org.jaguar.modules.upms.server.feign;
 import lombok.RequiredArgsConstructor;
 import org.jaguar.modules.upms.sdk.feign.RemoteClientService;
 import org.jaguar.modules.upms.server.service.UpmsClientDetailsServiceImpl;
-import org.springframework.security.oauth2.provider.ClientDetails;
+import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +24,7 @@ public class RemoteClientServiceImpl implements RemoteClientService {
 
     @Override
     @GetMapping("/loadClientByClientId")
-    public ClientDetails loadClientByClientId(@RequestParam @NotBlank String clientId) {
+    public BaseClientDetails loadClientByClientId(@RequestParam @NotBlank String clientId) {
         return clientDetailsService.loadClientByClientId(clientId);
     }
 }

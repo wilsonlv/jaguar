@@ -2,11 +2,11 @@ package org.jaguar.commons.web.filter;
 
 import cn.hutool.core.date.DatePattern;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.jaguar.commons.web.util.IpUtil;
-import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpHeaders;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,11 +21,11 @@ import java.util.Enumeration;
  * @since 2017/3/28.
  */
 @Slf4j
-//@Order(value = 1)
-//@WebFilter(urlPatterns = "/*")
 public class RequestParamsFilter implements Filter {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DatePattern.ISO8601_PATTERN);
+
+    private static final String ACTUATOR = "/actuator";
 
     @Override
     public void init(FilterConfig filterConfig) {
@@ -37,12 +37,22 @@ public class RequestParamsFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
+        if (request.getRequestURI().startsWith(ACTUATOR)) {
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+
         LocalDateTime accessTime = LocalDateTime.now();
 
         log.info("====================请求来啦====================");
         log.info("请求uri：{}", request.getRequestURI());
         log.info("请求方式：{}", request.getMethod());
         log.info("客户端ip: {}", IpUtil.getHost(request));
+
+        String header = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (StringUtils.isNotBlank(header)) {
+            log.info("Authorization：{}", header);
+        }
 
         Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length > 0) {

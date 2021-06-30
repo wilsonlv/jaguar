@@ -21,4 +21,9 @@ public class ExceptionApi {
         return new JsonResult<>(ResultCode.UNAUTHORIZED);
     }
 
+    @GetMapping("/hello")
+    public JsonResult<String> hello() {
+        return new JsonResult<>(ResultCode.OK, "hello", "success");
+    }
+
 }

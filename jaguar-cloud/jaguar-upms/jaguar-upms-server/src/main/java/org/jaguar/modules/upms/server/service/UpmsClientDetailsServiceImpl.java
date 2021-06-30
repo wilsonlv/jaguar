@@ -24,7 +24,7 @@ public class UpmsClientDetailsServiceImpl implements ClientDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public ClientDetails loadClientByClientId(String clientId) {
+    public BaseClientDetails loadClientByClientId(String clientId) {
         Set<String> authorizedGrantTypes = new HashSet<>();
         authorizedGrantTypes.add("refresh_token");
         authorizedGrantTypes.add("authorization_code");

@@ -4,7 +4,34 @@ server:
 spring:
   application:
     name: @artifactId@
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        metadata:
+          user.name: ${spring.security.user.name}
+          user.password: ${spring.security.user.password}
+  boot:
+    admin:
+      client:
+        url: http://localhost:18888
+        username: ${spring.security.user.name}
+        password: ${spring.security.user.password}
+        instance:
+          prefer-ip: true
+          metadata:
+            user.name: ${spring.security.user.name}
+            user.password: ${spring.security.user.password}
   security:
     user:
       name: monitor
       password: 123456
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    logfile:
+      external-file: logs/@artifactId@.log

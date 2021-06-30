@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @since 2021/6/29
  */
 @FeignClient(value = "jaguar-upms-server", contextId = "remoteUserService")
-public interface RemoteUserService extends UserDetailsService {
+public interface RemoteUserService {
 
     /**
      * 根据用户名巡查用户
@@ -18,7 +18,6 @@ public interface RemoteUserService extends UserDetailsService {
      * @param username 用户名
      * @return 用户
      */
-    @Override
     @GetMapping("/feign/user/loadUserByUsername")
     UserDetails loadUserByUsername(String username);
 
