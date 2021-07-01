@@ -14,7 +14,7 @@
 
     <modules>
         <module>jaguar-websocket-sdk</module>
-        <module>jaguar-wesocket-server</module>
+        <module>jaguar-websocket-server</module>
     </modules>
 
     <dependencies>

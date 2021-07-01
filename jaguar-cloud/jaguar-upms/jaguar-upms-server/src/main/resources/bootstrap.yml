@@ -1,10 +1,5 @@
 server:
   port: 8888
-  servlet:
-    encoding:
-      charset: UTF-8
-      force: true
-      enabled: true
 
 spring:
   application:
@@ -12,81 +7,11 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: localhost:8848
-        metadata:
-          user.name: ${spring.security.oauth2.resourceserver.opaquetoken.client-id}
-          user.password: ${spring.security.oauth2.resourceserver.opaquetoken.client-secret}
-  redis:
-    database: 6
-    host: 127.0.0.1
-    port: 6379
-    password:
-    timeout: 2000
-    lettuce:
-      pool:
-        min-idle: 0
-        max-idle: 8
-        max-active: 8
-        max-wait: 1000
-        time-between-eviction-runs: 100000
-  datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/jaguar?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&serverTimezone=PRC&useSSL=false
-    username: root
-    password: root
-    druid:
-      db-type: mysql
-      filter:
-        stat:
-          enabled: true
-          log-slow-sql: true
-          merge-sql: true
-      web-stat-filter:
-        enabled: true
-      stat-view-servlet:
-        enabled: true
-        login-username: admin
-        login-password: 123456
-        allow: 127.0.0.1
-  boot:
-    admin:
-      client:
-        url: http://localhost:18888
-        username: monitor
-        password: 123456
-        instance:
-          prefer-ip: true
-          metadata:
-            user.name: ${spring.security.oauth2.resourceserver.opaquetoken.client-id}
-            user.password: ${spring.security.oauth2.resourceserver.opaquetoken.client-secret}
-  security:
-    oauth2:
-      resourceserver:
-        opaquetoken:
-          client-id: upms
-          client-secret: 123456
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-  endpoint:
-    logfile:
-      external-file: logs/@artifactId@.log
-
-mybatis-plus:
-  type-aliases-package: org.jaguar.**.model*, com.**.model*
-  mapper-locations: classpath*:**/mapper/xml/*.xml
-  configuration:
-    call-setters-on-nulls: true
-    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
-    local-cache-scope: session
-  global-config:
-    db-config:
-      id-type: id_worker
-      update-strategy: NOT_NULL
-      logic-delete-value: 1
-      logic-not-delete-value: 0
-      logic-delete-field: deleted_
+        server-addr: jaguar-register:8848
+      config:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        file-extension: yml
+        shared-configs:
+          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+  profiles:
+    active: @profiles.active@

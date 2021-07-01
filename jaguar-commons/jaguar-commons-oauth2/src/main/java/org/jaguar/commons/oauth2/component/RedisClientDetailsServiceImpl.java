@@ -30,7 +30,7 @@ public class RedisClientDetailsServiceImpl implements ClientDetailsService {
                 redisTemplate.boundValueOps(Oauth2Constant.CLIENT_CACHE_KEY_PREFIX + clientId);
         Serializable client = operations.get();
         if (client == null) {
-            throw new InvalidClientException("无效的clientId");
+            throw new InvalidClientException("无效的clientId:" + clientId);
         }
 
         return (ClientDetails) client;
