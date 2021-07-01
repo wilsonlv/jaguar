@@ -3,22 +3,23 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>jaguar</artifactId>
+        <artifactId>jaguar-cloud</artifactId>
         <groupId>org.jaguar</groupId>
         <version>master</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jaguar-cloud</artifactId>
+    <artifactId>jaguar-job</artifactId>
     <packaging>pom</packaging>
 
+    <properties>
+        <xxl-job.version>2.3.0</xxl-job.version>
+        <mybatis-spring-boot-starter.version>2.1.4</mybatis-spring-boot-starter.version>
+    </properties>
+
     <modules>
-        <module>jaguar-auth</module>
-        <module>jaguar-job</module>
-        <module>jaguar-monitor</module>
-        <module>jaguar-register</module>
-        <module>jaguar-upms</module>
-        <module>jaguar-websocket</module>
+        <module>jaguar-job-admin</module>
+        <module>jaguar-job-executor</module>
     </modules>
 
 </project>

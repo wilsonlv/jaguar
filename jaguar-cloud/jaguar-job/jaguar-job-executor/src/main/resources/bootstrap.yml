@@ -1,0 +1,29 @@
+server:
+  port: 18090
+
+spring:
+  application:
+    name: @artifactId@
+  cloud:
+    nacos:
+      discovery:
+        server-addr: jaguar-register:8848
+      config:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        file-extension: yml
+        shared-configs:
+          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+  profiles:
+    active: @profiles.active@
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          client-id: job-executor
+          client-secret: 123456
+
+jaguar:
+  job:
+    admin:
+      admin-addresses: http://jaguar-job-admin:18080
+      app-name: @artifactId@

@@ -45,7 +45,7 @@ public class ClientService implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        String[] clientIds = new String[]{"upms", "auth", "websocket"};
+        String[] clientIds = new String[]{"upms", "auth", "websocket", "job-admin", "job-executor"};
 
         for (String clientId : clientIds) {
             BoundValueOperations<String, Serializable> operations =
