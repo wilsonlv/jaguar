@@ -12,8 +12,8 @@ import java.io.Serializable;
  */
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "jaguar.job.admin")
-public class JobProperties implements Serializable {
+@ConfigurationProperties(prefix = "jaguar.job.executor")
+public class JobExecutorProperties implements Serializable {
 
     private String adminAddresses;
 
