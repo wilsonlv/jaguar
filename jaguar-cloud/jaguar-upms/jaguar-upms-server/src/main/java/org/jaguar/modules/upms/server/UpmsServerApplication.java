@@ -1,15 +1,15 @@
 package org.jaguar.modules.upms.server;
 
+import org.jaguar.commons.feign.annotation.EnableJaguarFeignClients;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * @author lvws
  * @since 2021/4/6
  */
-@EnableFeignClients(basePackages ="**.feign")
+@EnableJaguarFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication
 public class UpmsServerApplication {

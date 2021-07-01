@@ -20,7 +20,7 @@ import java.util.Set;
  */
 @Service
 @RequiredArgsConstructor
-public class UpmsClientDetailsServiceImpl implements InitializingBean {
+public class ClientService implements InitializingBean {
 
     private final PasswordEncoder passwordEncoder;
 
@@ -38,12 +38,13 @@ public class UpmsClientDetailsServiceImpl implements InitializingBean {
         clientDetails.setAuthorizedGrantTypes(authorizedGrantTypes);
         clientDetails.setRegisteredRedirectUri(Collections.singleton("http://localhost:7777/index"));
         clientDetails.setAccessTokenValiditySeconds(3600);
+        clientDetails.setRefreshTokenValiditySeconds(3600 * 24 * 7);
         clientDetails.setScope(Collections.singleton("all"));
         return clientDetails;
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         String[] clientIds = new String[]{"upms", "auth"};
 
         for (String clientId : clientIds) {

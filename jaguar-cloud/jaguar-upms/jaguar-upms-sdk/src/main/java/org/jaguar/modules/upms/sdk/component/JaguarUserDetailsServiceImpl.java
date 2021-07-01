@@ -1,7 +1,9 @@
 package org.jaguar.modules.upms.sdk.component;
 
 import lombok.RequiredArgsConstructor;
+import org.jaguar.commons.oauth2.model.SecurityUser;
 import org.jaguar.modules.upms.sdk.feign.RemoteUserService;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,7 +20,7 @@ public class JaguarUserDetailsServiceImpl implements UserDetailsService {
     private final RemoteUserService remoteUserService;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public SecurityUser loadUserByUsername(String username) throws UsernameNotFoundException {
         return remoteUserService.loadUserByUsername(username);
     }
 }

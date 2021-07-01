@@ -1,13 +1,17 @@
 package org.jaguar.modules.upms.server.feign;
 
 import lombok.RequiredArgsConstructor;
+import org.jaguar.commons.oauth2.model.SecurityAuthority;
+import org.jaguar.commons.oauth2.model.SecurityUser;
 import org.jaguar.modules.upms.sdk.feign.RemoteUserService;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 
 /**
  * @author lvws
@@ -22,10 +26,14 @@ public class RemoteUserServiceImpl implements RemoteUserService {
 
     @Override
     @GetMapping("/loadUserByUsername")
-    public UserDetails loadUserByUsername(String username) {
-        return User.withUsername(username)
-                .password(passwordEncoder.encode("123456"))
-                .authorities("ROLE_ADMIN").build();
+    public SecurityUser loadUserByUsername(@RequestParam @NotBlank String username) {
+        SecurityUser user = new SecurityUser();
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode("123456"));
+        user.setAuthorities(new ArrayList<SecurityAuthority>() {{
+            add(new SecurityAuthority("ROLE_ADMIN"));
+        }});
+        return user;
     }
 
 }

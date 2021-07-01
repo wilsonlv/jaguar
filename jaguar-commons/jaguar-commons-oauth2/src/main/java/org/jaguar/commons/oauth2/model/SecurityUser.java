@@ -1,7 +1,6 @@
 package org.jaguar.commons.oauth2.model;
 
 import lombok.Data;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
@@ -20,6 +19,8 @@ public class SecurityUser implements UserDetails {
 
     private String username;
 
+    private String password;
+
     private String phone;
 
     private String email;
@@ -30,22 +31,8 @@ public class SecurityUser implements UserDetails {
 
     private LocalDateTime passwordLastModifyTime;
 
-    private Collection<? extends GrantedAuthority> authorities;
+    private Collection<SecurityAuthority> authorities;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
-
-    @Override
-    public String getPassword() {
-        return null;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.username;
-    }
 
     @Override
     public boolean isAccountNonExpired() {
@@ -66,4 +53,5 @@ public class SecurityUser implements UserDetails {
     public boolean isEnabled() {
         return this.enable;
     }
+
 }
