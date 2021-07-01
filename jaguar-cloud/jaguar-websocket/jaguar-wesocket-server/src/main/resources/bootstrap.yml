@@ -1,5 +1,5 @@
 server:
-  port: 8888
+  port: 9000
   servlet:
     encoding:
       charset: UTF-8
@@ -29,26 +29,6 @@ spring:
         max-active: 8
         max-wait: 1000
         time-between-eviction-runs: 100000
-  datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/jaguar?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&serverTimezone=PRC&useSSL=false
-    username: root
-    password: root
-    druid:
-      db-type: mysql
-      filter:
-        stat:
-          enabled: true
-          log-slow-sql: true
-          merge-sql: true
-      web-stat-filter:
-        enabled: true
-      stat-view-servlet:
-        enabled: true
-        login-username: admin
-        login-password: 123456
-        allow: 127.0.0.1
   boot:
     admin:
       client:
@@ -64,7 +44,7 @@ spring:
     oauth2:
       resourceserver:
         opaquetoken:
-          client-id: upms
+          client-id: websocket
           client-secret: 123456
 
 management:
@@ -75,18 +55,3 @@ management:
   endpoint:
     logfile:
       external-file: logs/@artifactId@.log
-
-mybatis-plus:
-  type-aliases-package: org.jaguar.**.model*, com.**.model*
-  mapper-locations: classpath*:**/mapper/xml/*.xml
-  configuration:
-    call-setters-on-nulls: true
-    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
-    local-cache-scope: session
-  global-config:
-    db-config:
-      id-type: id_worker
-      update-strategy: NOT_NULL
-      logic-delete-value: 1
-      logic-not-delete-value: 0
-      logic-delete-field: deleted_

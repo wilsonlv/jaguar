@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  org.jaguar.modules.upms.server.config.SystemMgmProperties
+  org.jaguar.cloud.upms.server.config.SystemMgmProperties
