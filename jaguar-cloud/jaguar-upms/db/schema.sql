@@ -1,3 +1,6 @@
+CREATE database if NOT EXISTS `jaguar_upms` default character set utf8mb4 collate utf8mb4_unicode_ci;
+use `jaguar_upms`;
+
 DROP TABLE IF EXISTS `jaguar_modules_system_login`;
 CREATE TABLE `jaguar_modules_system_login`
 (

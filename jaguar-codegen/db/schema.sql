@@ -1,8 +1,8 @@
-CREATE SCHEMA `jaguar_codegen` DEFAULT CHARACTER SET utf8mb4;
+CREATE database if NOT EXISTS `jaguar_codegen` default character set utf8mb4 collate utf8mb4_unicode_ci;
 use `jaguar_codegen`;
 
-drop table if exists `jaguar_modules_codegen_datasource`;
-CREATE TABLE `jaguar_modules_codegen_datasource`
+drop table if exists `jaguar_codegen_datasource`;
+CREATE TABLE `jaguar_codegen_datasource`
 (
     `id_`         bigint(20) unsigned NOT NULL COMMENT 'ID',
     `name_`       varchar(50)         NOT NULL COMMENT '数据源名称',
@@ -21,8 +21,8 @@ CREATE TABLE `jaguar_modules_codegen_datasource`
   COLLATE = utf8mb4_bin
   ROW_FORMAT = DYNAMIC COMMENT ='数据源';
 
-drop table if exists `jaguar_modules_codegen_code_template`;
-CREATE TABLE `jaguar_modules_codegen_code_template`
+drop table if exists `jaguar_codegen_code_template`;
+CREATE TABLE `jaguar_codegen_code_template`
 (
     `id_`                   bigint(20) unsigned NOT NULL COMMENT 'ID',
     `code_template_name`    varchar(50)         NOT NULL COMMENT '模板类型',

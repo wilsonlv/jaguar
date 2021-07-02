@@ -5,8 +5,6 @@
 CREATE database if NOT EXISTS `jaguar_job` default character set utf8mb4 collate utf8mb4_unicode_ci;
 use `jaguar_job`;
 
-SET NAMES utf8mb4;
-
 CREATE TABLE `xxl_job_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `job_group` int(11) NOT NULL COMMENT '执行器主键ID',
