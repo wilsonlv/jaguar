@@ -34,8 +34,6 @@ import java.time.LocalDateTime;
 @Component
 public class HandlerLogInterceptor implements HandlerInterceptor {
 
-    private static final String UN_AUTHORIZED_URL = "/login/401";
-
     /**
      * 当前线程访问信息
      */
@@ -68,7 +66,7 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {
-        if (handler instanceof HandlerMethod && !UN_AUTHORIZED_URL.equals(request.getRequestURI())) {
+        if (handler instanceof HandlerMethod) {
             ApiOperation apiOperation = ((HandlerMethod) handler).getMethod().getAnnotation(ApiOperation.class);
 
             HandlerLog handlerLog = new HandlerLog();
@@ -98,7 +96,7 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
     public void afterCompletion(@NonNull final HttpServletRequest request, @NonNull final HttpServletResponse response,
                                 @NonNull Object handler, final Exception handlerException) {
 
-        if (handler instanceof HandlerMethod && !(UN_AUTHORIZED_URL.equals(request.getRequestURI()))) {
+        if (handler instanceof HandlerMethod) {
             HandlerLog handlerLog = HANDLER_LOG.get();
             HANDLER_LOG.remove();
 

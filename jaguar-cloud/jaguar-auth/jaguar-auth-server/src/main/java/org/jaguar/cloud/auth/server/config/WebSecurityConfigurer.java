@@ -3,6 +3,7 @@ package org.jaguar.cloud.auth.server.config;
 import lombok.RequiredArgsConstructor;
 import org.jaguar.cloud.auth.server.component.LoginFailureHandler;
 import org.jaguar.cloud.auth.server.component.LoginSuccessHandler;
+import org.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
 import org.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +30,8 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     private final JaguarAccessDeniedHandler jaguarAccessDeniedHandler;
 
+    private final AuthenticationExceptionHandler authenticationExceptionHandler;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -43,14 +46,15 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .formLogin().loginPage("/401").loginProcessingUrl("/login")
+                .formLogin().loginProcessingUrl("/login")
                 .successHandler(loginSuccessHandler).failureHandler(loginFailureHandler)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/oauth/token", "/oauth/check_token", "/401").permitAll()
+                .antMatchers("/oauth/token", "/oauth/check_token").permitAll()
                 .antMatchers("/swagger-resources", "/swagger-resources/**", "/v2/**").permitAll()
                 .anyRequest().authenticated()
-                .and().exceptionHandling().accessDeniedHandler(jaguarAccessDeniedHandler)
+                .and().exceptionHandling()
+                .accessDeniedHandler(jaguarAccessDeniedHandler).authenticationEntryPoint(authenticationExceptionHandler)
                 .and().cors()
                 .and().csrf().disable()
                 .headers().frameOptions().disable();

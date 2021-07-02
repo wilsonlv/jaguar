@@ -16,6 +16,7 @@
         <module>jaguar-auth</module>
         <module>jaguar-job</module>
         <module>jaguar-monitor</module>
+        <module>jaguar-nginx-admin</module>
         <module>jaguar-register</module>
         <module>jaguar-upms</module>
         <module>jaguar-websocket</module>
