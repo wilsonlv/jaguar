@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -36,10 +37,10 @@ public class ClientService implements InitializingBean {
         clientDetails.setClientId(clientId);
         clientDetails.setClientSecret(passwordEncoder.encode("123456"));
         clientDetails.setAuthorizedGrantTypes(authorizedGrantTypes);
-        clientDetails.setRegisteredRedirectUri(Collections.singleton("http://localhost:7777/index"));
+        clientDetails.setRegisteredRedirectUri(Collections.singleton("http://localhost:8081/authCode"));
         clientDetails.setAccessTokenValiditySeconds(3600);
         clientDetails.setRefreshTokenValiditySeconds(3600 * 24 * 7);
-        clientDetails.setScope(Collections.singleton("all"));
+        clientDetails.setScope(Arrays.asList("个人信息", "全部信息"));
         return clientDetails;
     }
 

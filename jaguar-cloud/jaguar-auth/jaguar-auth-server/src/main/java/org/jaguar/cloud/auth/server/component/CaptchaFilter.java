@@ -47,7 +47,6 @@ public class CaptchaFilter extends OncePerRequestFilter {
         if (responseModel.isSuccess()) {
             filterChain.doFilter(request, response);
         } else {
-            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
             response.setContentType(MediaType.APPLICATION_JSON.toString());
 
             try (PrintWriter writer = response.getWriter()) {

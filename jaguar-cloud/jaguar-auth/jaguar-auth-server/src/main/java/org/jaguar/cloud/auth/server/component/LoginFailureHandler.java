@@ -3,6 +3,7 @@ package org.jaguar.cloud.auth.server.component;
 import lombok.extern.slf4j.Slf4j;
 import org.jaguar.commons.web.JsonResult;
 import org.jaguar.commons.web.ResultCode;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         JsonResult<Void> result = new JsonResult<>(ResultCode.CONFLICT, null, exception.getMessage());
         try (PrintWriter writer = response.getWriter()) {
             writer.write(result.toJsonStr());
