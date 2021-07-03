@@ -38,6 +38,11 @@
             </dependency>
             <dependency>
                 <groupId>org.jaguar</groupId>
+                <artifactId>jaguar-commons-captcha</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jaguar</groupId>
                 <artifactId>jaguar-commons-cloud-client</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>

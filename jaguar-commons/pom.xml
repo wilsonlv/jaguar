@@ -31,6 +31,7 @@
         <module>jaguar-commons-tenant</module>
         <module>jaguar-commons-web</module>
         <module>jaguar-commons-feign</module>
+        <module>jaguar-commons-captcha</module>
     </modules>
 
 </project>

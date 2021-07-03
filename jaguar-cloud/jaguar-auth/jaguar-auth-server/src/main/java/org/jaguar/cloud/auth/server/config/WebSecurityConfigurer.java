@@ -1,6 +1,7 @@
 package org.jaguar.cloud.auth.server.config;
 
 import lombok.RequiredArgsConstructor;
+import org.jaguar.cloud.auth.server.component.CaptchaFilter;
 import org.jaguar.cloud.auth.server.component.LoginFailureHandler;
 import org.jaguar.cloud.auth.server.component.LoginSuccessHandler;
 import org.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
@@ -14,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @author lvws
@@ -23,6 +25,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
+
+    private final CaptchaFilter captchaFilter;
 
     private final LoginSuccessHandler loginSuccessHandler;
 
@@ -46,11 +50,13 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin().loginProcessingUrl("/login")
                 .successHandler(loginSuccessHandler).failureHandler(loginFailureHandler)
                 .and()
                 .authorizeRequests()
                 .antMatchers("/oauth/token", "/oauth/check_token").permitAll()
+                .antMatchers("/captcha/**").permitAll()
                 .antMatchers("/swagger-resources", "/swagger-resources/**", "/v2/**").permitAll()
                 .anyRequest().authenticated()
                 .and().exceptionHandling()
