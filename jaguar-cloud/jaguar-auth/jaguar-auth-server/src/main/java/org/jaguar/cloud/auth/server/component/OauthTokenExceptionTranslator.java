@@ -1,6 +1,10 @@
 package org.jaguar.cloud.auth.server.component;
 
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.jaguar.commons.web.ResultCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
@@ -17,7 +21,8 @@ public class OauthTokenExceptionTranslator implements WebResponseExceptionTransl
 
     @Override
     public ResponseEntity<OAuth2Exception> translate(Exception e) {
-        OAuth2Exception oAuth2Exception = new OAuth2Exception(e.getMessage());
+        JaguarOauth2Exception oAuth2Exception = new JaguarOauth2Exception(e.getMessage());
         return new ResponseEntity<>(oAuth2Exception, HttpStatus.OK);
     }
+
 }

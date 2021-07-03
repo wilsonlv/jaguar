@@ -37,7 +37,7 @@ public class ClientService implements InitializingBean {
         clientDetails.setClientId(clientId);
         clientDetails.setClientSecret(passwordEncoder.encode("123456"));
         clientDetails.setAuthorizedGrantTypes(authorizedGrantTypes);
-        clientDetails.setRegisteredRedirectUri(Collections.singleton("http://localhost:8081/authCode"));
+        clientDetails.setRegisteredRedirectUri(Collections.singleton("http://localhost:8081"));
         clientDetails.setAccessTokenValiditySeconds(3600);
         clientDetails.setRefreshTokenValiditySeconds(3600 * 24 * 7);
         clientDetails.setScope(Arrays.asList("个人信息", "全部信息"));
