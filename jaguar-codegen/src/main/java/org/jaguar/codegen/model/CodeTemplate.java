@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("jaguar_modules_codegen_code_template")
+@TableName("jaguar_codegen_code_template")
 public class CodeTemplate extends BaseModel {
 
     private static final long serialVersionUID = 1L;

@@ -4,11 +4,11 @@
 
     <select id="findLatest" resultType="org.jaguar.codegen.model.CodeTemplate">
         select ct.*
-        from jaguar_modules_codegen_code_template ct
+        from jaguar_codegen_code_template ct
                  inner join
              (
                  select code_template_name, max(code_template_version) as code_template_version
-                 from jaguar_modules_codegen_code_template
+                 from jaguar_codegen_code_template
                  group by code_template_name
              ) a on a.code_template_name = ct.code_template_name and
                     a.code_template_version = ct.code_template_version

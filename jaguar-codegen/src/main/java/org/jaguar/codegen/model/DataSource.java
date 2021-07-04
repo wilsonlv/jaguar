@@ -16,7 +16,7 @@ import javax.validation.constraints.NotBlank;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("jaguar_modules_codegen_datasource")
+@TableName("jaguar_codegen_datasource")
 public class DataSource extends BaseModel {
 
     private static final long serialVersionUID = 1L;
