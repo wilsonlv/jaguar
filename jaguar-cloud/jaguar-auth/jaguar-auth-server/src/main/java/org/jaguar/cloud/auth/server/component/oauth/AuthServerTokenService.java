@@ -1,4 +1,4 @@
-package org.jaguar.cloud.auth.server.component;
+package org.jaguar.cloud.auth.server.component.oauth;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

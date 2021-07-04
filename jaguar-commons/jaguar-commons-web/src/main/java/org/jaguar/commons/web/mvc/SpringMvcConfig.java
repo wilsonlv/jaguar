@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.lang.NonNull;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.time.LocalDate;
@@ -23,6 +24,7 @@ import java.time.format.DateTimeFormatter;
  * @author lvws
  * @since 2019/4/22.
  */
+@CrossOrigin
 @Configuration
 public class SpringMvcConfig implements WebMvcConfigurer {
 

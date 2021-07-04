@@ -1,8 +1,8 @@
 package org.jaguar.cloud.auth.server.config;
 
 import lombok.RequiredArgsConstructor;
-import org.jaguar.cloud.auth.server.component.AuthServerTokenService;
-import org.jaguar.cloud.auth.server.component.OauthTokenExceptionTranslator;
+import org.jaguar.cloud.auth.server.component.oauth.AuthServerTokenService;
+import org.jaguar.cloud.auth.server.component.oauth.exception.OauthTokenExceptionTranslator;
 import org.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
 import org.jaguar.commons.oauth2.component.RedisClientDetailsServiceImpl;
 import org.springframework.context.annotation.Configuration;
@@ -46,7 +46,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .userDetailsService(userDetailService)
                 .tokenServices(tokenServices)
                 .exceptionTranslator(oauthTokenExceptionTranslator)
-                .pathMapping("/oauth/confirm_access", "/auth/confirm_access");
+                .pathMapping("/oauth/error", "/oauthRedirectPage/error")
+                .pathMapping("/oauth/confirm_access", "/oauthRedirectPage/confirm_access");
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.jaguar.cloud.auth.server.component;
 import lombok.extern.slf4j.Slf4j;
 import org.jaguar.commons.web.JsonResult;
 import org.jaguar.commons.web.ResultCode;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
                                         Authentication authentication) throws IOException {
         log.debug("用户[{}]登录成功", authentication.getName());
 
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         JsonResult<Object> jsonResult = new JsonResult<>(ResultCode.OK, authentication.getPrincipal(), "登录成功");
         try (PrintWriter writer = response.getWriter()) {
             writer.write(jsonResult.toJsonStr());

@@ -1,4 +1,4 @@
-package org.jaguar.cloud.auth.server.component;
+package org.jaguar.cloud.auth.server.component.oauth.exception;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;

@@ -1,10 +1,6 @@
-package org.jaguar.cloud.auth.server.component;
+package org.jaguar.cloud.auth.server.component.oauth.exception;
 
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.jaguar.commons.web.ResultCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
