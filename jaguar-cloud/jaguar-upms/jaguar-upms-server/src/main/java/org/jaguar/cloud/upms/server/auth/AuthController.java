@@ -112,12 +112,13 @@ public class AuthController extends BaseController<User, UserMapper, AuthService
         return success();
     }
 
-    /*@ApiOperation(value = "用户信息")
+    @ApiOperation(value = "用户信息")
     @GetMapping(value = "/info")
-    public JsonResult<User> getPersonalInfo() {
-        User user = service.getDetail(SecurityUtil.getCurrentUser());
-        return success(user);
-    }*/
+    public JsonResult<String> getPersonalInfo() {
+//        User user = service.getDetail(SecurityUtil.getCurrentUser());
+//        return success(user);
+        return JsonResult.success("123");
+    }
 
     @ApiOperation(value = "修改密码")
     @PostMapping(value = "/modify_password")

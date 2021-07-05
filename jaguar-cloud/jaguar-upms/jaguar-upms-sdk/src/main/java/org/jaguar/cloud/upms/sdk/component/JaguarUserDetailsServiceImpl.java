@@ -1,8 +1,8 @@
 package org.jaguar.cloud.upms.sdk.component;
 
 import lombok.RequiredArgsConstructor;
-import org.jaguar.commons.oauth2.model.SecurityUser;
 import org.jaguar.cloud.upms.sdk.feign.RemoteUserService;
+import org.jaguar.commons.oauth2.model.SecurityUser;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;

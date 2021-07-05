@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
 import org.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler;
 import org.jaguar.commons.oauth2.properties.SpringSecurityProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,6 +25,9 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 @RequiredArgsConstructor
 public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
 
+    @Value("${spring.application.name}")
+    private String applicationName;
+
     private final SpringSecurityProperties springSecurityProperties;
 
     private final AuthenticationExceptionHandler authenticationExceptionHandler;
@@ -34,7 +38,8 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
-        resources.tokenStore(tokenStore)
+        resources.resourceId(applicationName)
+                .tokenStore(tokenStore)
                 .authenticationEntryPoint(authenticationExceptionHandler);
     }
 
@@ -46,7 +51,8 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
                 //不需要认证就可以访问的
                 .authorizeRequests().antMatchers(springSecurityProperties.getIgnoreUrls()).permitAll()
                 //其余都需要认证
-                .anyRequest().authenticated()
+                .anyRequest()
+                .authenticated()
                 .and().exceptionHandling().accessDeniedHandler(jaguarAccessDeniedHandler)
                 //异常处理
                 .and().cors()

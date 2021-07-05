@@ -1,5 +1,6 @@
 package org.jaguar.cloud.upms.server.service;
 
+import cn.hutool.core.collection.CollectionUtil;
 import lombok.RequiredArgsConstructor;
 import org.jaguar.commons.oauth2.Oauth2Constant;
 import org.springframework.beans.factory.InitializingBean;
@@ -40,7 +41,10 @@ public class ClientService implements InitializingBean {
         clientDetails.setRegisteredRedirectUri(Collections.singleton("http://localhost:8081"));
         clientDetails.setAccessTokenValiditySeconds(3600);
         clientDetails.setRefreshTokenValiditySeconds(3600 * 24 * 7);
-        clientDetails.setScope(Arrays.asList("个人信息", "全部信息"));
+        clientDetails.setScope(Arrays.asList("个人信息", "全部信息", "feign", "actuator"));
+        clientDetails.setResourceIds(CollectionUtil.newHashSet(
+                "jaguar-upms-server", "jaguar-auth-server", "jaguar-webscoket-server",
+                "jaguar-job-admin", "jaguar-job-executor"));
         return clientDetails;
     }
 
