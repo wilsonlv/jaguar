@@ -50,13 +50,16 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
                 .and()
                 //不需要认证就可以访问的
                 .authorizeRequests().antMatchers(springSecurityProperties.getIgnoreUrls()).permitAll()
+                .antMatchers("/swagger-resources", "/swagger-resources/**", "/v2/**").permitAll()
+                .antMatchers("/druid/**").permitAll()
                 //其余都需要认证
                 .anyRequest()
                 .authenticated()
                 .and().exceptionHandling().accessDeniedHandler(jaguarAccessDeniedHandler)
                 //异常处理
                 .and().cors()
-                .and().csrf().disable();
+                .and().csrf().disable()
+                .headers().frameOptions().disable();
     }
 
 }

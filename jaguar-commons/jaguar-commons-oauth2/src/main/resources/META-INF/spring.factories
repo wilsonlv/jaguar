@@ -6,5 +6,5 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
     org.jaguar.commons.oauth2.config.PasswordEncodingConfig,\
     org.jaguar.commons.oauth2.config.RedisTokenStoreConfig,\
     org.jaguar.commons.oauth2.config.ResourceServerConfigurer,\
-    org.jaguar.commons.oauth2.properties.SpringSecurityProperties,\
-    org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties
+    org.jaguar.commons.oauth2.config.WebSecurityConfigurer,\
+    org.jaguar.commons.oauth2.properties.SpringSecurityProperties
