@@ -1,0 +1,36 @@
+server:
+  port: 18060
+  servlet:
+    session:
+      cookie:
+        name: sentinel_dashboard_cookie
+
+spring:
+  application:
+    name: @artifactId@
+  cloud:
+    nacos:
+      discovery:
+        server-addr: jaguar-register:8848
+      config:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        file-extension: yml
+        shared-configs:
+          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+  profiles:
+    active: @profiles.active@
+
+#auth settings
+auth:
+  filter:
+    exclude-urls: /,/auth/login,/auth/logout,/registry/machine,/version
+    exclude-url-suffixes: htm,html,js,css,map,ico,ttf,woff,png
+# If auth.enabled=false, Sentinel console disable login
+  username: sentinel
+  password: sentinel
+
+# Inject the dashboard version. It's required to enable
+# filtering in pom.xml for this resource file.
+sentinel:
+  dashboard:
+    version: 1.8.2
