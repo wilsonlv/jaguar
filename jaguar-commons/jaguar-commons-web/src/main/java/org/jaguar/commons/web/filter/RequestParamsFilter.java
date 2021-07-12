@@ -3,7 +3,7 @@ package org.jaguar.commons.web.filter;
 import cn.hutool.core.date.DatePattern;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.jaguar.commons.web.util.IpUtil;
+import org.jaguar.commons.web.util.WebUtil;
 import org.springframework.http.HttpHeaders;
 
 import javax.servlet.*;
@@ -47,7 +47,7 @@ public class RequestParamsFilter implements Filter {
         log.info("====================请求来啦====================");
         log.info("请求uri：{}", request.getRequestURI());
         log.info("请求方式：{}", request.getMethod());
-        log.info("客户端ip: {}", IpUtil.getHost(request));
+        log.info("客户端ip: {}", WebUtil.getHost(request));
 
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (StringUtils.isNotBlank(header)) {

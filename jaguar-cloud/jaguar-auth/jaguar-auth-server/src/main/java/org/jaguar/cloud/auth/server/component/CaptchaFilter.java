@@ -5,9 +5,13 @@ import com.anji.captcha.model.vo.CaptchaVO;
 import com.anji.captcha.service.CaptchaService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.jaguar.commons.oauth2.component.RedisClientDetailsServiceImpl;
 import org.jaguar.commons.web.JsonResult;
 import org.jaguar.commons.web.ResultCode;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -17,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 /**
  * @author lvws
@@ -29,6 +33,8 @@ public class CaptchaFilter extends OncePerRequestFilter {
 
     private final CaptchaService captchaService;
 
+    private final RedisClientDetailsServiceImpl clientDetailsService;
+
     private final static String OAUTH_TOKEN_PATH = "/oauth/token";
 
     @Override
@@ -36,6 +42,15 @@ public class CaptchaFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         if (!OAUTH_TOKEN_PATH.equals(request.getRequestURI())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        ClientDetails clientDetails = clientDetailsService.loadClientByClientId(authentication.getName());
+        Map<String, Object> additionalInformation = clientDetails.getAdditionalInformation();
+        Boolean isCaptcha = (Boolean) additionalInformation.get("captcha");
+        if (isCaptcha != null && isCaptcha) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -50,7 +65,7 @@ public class CaptchaFilter extends OncePerRequestFilter {
             response.setContentType(MediaType.APPLICATION_JSON.toString());
 
             try (PrintWriter writer = response.getWriter()) {
-                JsonResult<ResponseModel> result = new JsonResult<>(ResultCode.CONFLICT, responseModel, responseModel.getRepMsg());
+                JsonResult<Void> result = new JsonResult<>(ResultCode.CONFLICT, null, responseModel.getRepMsg());
                 writer.write(result.toJsonStr());
             }
         }

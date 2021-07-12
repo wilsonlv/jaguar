@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS `jaguar_modules_handler_log`;
-CREATE TABLE `jaguar_modules_handler_log`
+DROP TABLE IF EXISTS `jaguar_support_handler_log`;
+CREATE TABLE `jaguar_support_handler_log`
 (
     `id_`           bigint(20)                                             NOT NULL COMMENT '编号',
     `session_id`    varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin  NOT NULL COMMENT '会话ID',

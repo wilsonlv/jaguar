@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jaguar.commons.oauth2.model.SecurityUser;
-import org.jaguar.commons.web.util.IpUtil;
+import org.jaguar.commons.web.util.WebUtil;
 import org.jaguar.support.handlerlog.model.HandlerLog;
 import org.jaguar.support.handlerlog.service.HandlerLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +72,7 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
             HandlerLog handlerLog = new HandlerLog();
             handlerLog.setSessionId(request.getSession().getId());
             handlerLog.setAccessTime(LocalDateTime.now());
-            handlerLog.setClientHost(IpUtil.getHost(request));
+            handlerLog.setClientHost(WebUtil.getHost(request));
             handlerLog.setRequestUri(request.getServletPath());
             handlerLog.setApiOperation(apiOperation != null ? apiOperation.value() : null);
             handlerLog.setMethod(request.getMethod());
