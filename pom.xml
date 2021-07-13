@@ -14,6 +14,7 @@
         <module>jaguar-commons</module>
         <module>jaguar-modules</module>
         <module>jaguar-support</module>
+        <module>jaguar-test</module>
     </modules>
 
     <properties>

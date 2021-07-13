@@ -10,6 +10,7 @@ import org.springframework.util.ResourceUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -26,7 +27,7 @@ public class MenuFunction implements Cloneable, Serializable {
     static {
         try {
             File file = ResourceUtils.getFile("classpath:menuFunction.json");
-            String jsonStr = FileUtils.readFileToString(file);
+            String jsonStr = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
             MENU_FUNCTIONS = Collections.unmodifiableList(JSONObject.parseArray(jsonStr, MenuFunction.class));
         } catch (IOException e) {
             throw new Error(e);
