@@ -29,7 +29,8 @@ public abstract class BaseProviderImpl implements ApplicationContextAware, IBase
     @Override
     public Parameter execute(Parameter parameter) {
         log.info("========================================");
-        log.info("开始请求：{}", JSON.toJSONString(parameter));
+        String requestParams = JSON.toJSONString(parameter);
+        log.info("开始请求：{}", requestParams);
 
         long start = System.currentTimeMillis();
         Object service = applicationContext.getBean(parameter.getService());
@@ -75,7 +76,7 @@ public abstract class BaseProviderImpl implements ApplicationContextAware, IBase
 
             if (log.isDebugEnabled()) {
                 if (response != null) {
-                    log.debug("完成响应：{}", JSON.toJSONString(result));
+                    log.debug("完成响应：{}", requestParams);
                 } else {
                     log.debug("空响应");
                 }
