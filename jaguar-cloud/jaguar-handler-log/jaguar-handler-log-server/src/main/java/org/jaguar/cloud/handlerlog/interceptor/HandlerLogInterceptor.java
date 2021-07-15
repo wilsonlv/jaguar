@@ -1,4 +1,4 @@
-package org.jaguar.support.handlerlog.interceptor;
+package org.jaguar.cloud.handlerlog.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
 import cz.mallat.uasparser.OnlineUpdater;
@@ -9,8 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jaguar.commons.oauth2.model.SecurityUser;
 import org.jaguar.commons.web.util.WebUtil;
-import org.jaguar.support.handlerlog.model.HandlerLog;
-import org.jaguar.support.handlerlog.service.HandlerLogService;
+import org.jaguar.cloud.handlerlog.model.HandlerLog;
+import org.jaguar.cloud.handlerlog.service.HandlerLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.lang.NonNull;

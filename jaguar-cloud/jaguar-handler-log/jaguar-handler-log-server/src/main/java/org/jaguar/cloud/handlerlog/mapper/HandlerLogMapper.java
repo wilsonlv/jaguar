@@ -1,7 +1,7 @@
-package org.jaguar.support.handlerlog.mapper;
+package org.jaguar.cloud.handlerlog.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.jaguar.support.handlerlog.model.HandlerLog;
+import org.jaguar.cloud.handlerlog.model.HandlerLog;
 
 /**
  * <p>
