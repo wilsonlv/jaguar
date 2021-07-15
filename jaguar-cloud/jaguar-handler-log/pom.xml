@@ -3,25 +3,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>jaguar</artifactId>
+        <artifactId>jaguar-cloud</artifactId>
         <groupId>org.jaguar</groupId>
         <version>master</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jaguar-cloud</artifactId>
+    <artifactId>jaguar-handler-log</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-        <module>jaguar-auth</module>
-        <module>jaguar-handler-log</module>
-        <module>jaguar-job</module>
-        <module>jaguar-monitor</module>
-        <module>jaguar-nginx-admin</module>
-        <module>jaguar-register</module>
-        <module>jaguar-sentinel</module>
-        <module>jaguar-upms</module>
-        <module>jaguar-websocket</module>
+        <module>jaguar-handler-log-sdk</module>
+        <module>jaguar-handler-log-server</module>
     </modules>
 
 </project>

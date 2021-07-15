@@ -1,4 +1,4 @@
-package org.jaguar.support.handlerlog.model;
+package org.jaguar.cloud.handlerlog.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
