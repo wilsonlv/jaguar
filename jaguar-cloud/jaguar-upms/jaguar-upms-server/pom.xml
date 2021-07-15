@@ -38,6 +38,10 @@
             <artifactId>jaguar-auth-sdk</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jaguar</groupId>
+            <artifactId>jaguar-handler-log</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

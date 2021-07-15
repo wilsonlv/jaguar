@@ -26,6 +26,10 @@
         </dependency>
         <dependency>
             <groupId>org.jaguar</groupId>
+            <artifactId>jaguar-handler-log</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jaguar</groupId>
             <artifactId>jaguar-commons-captcha</artifactId>
         </dependency>
 

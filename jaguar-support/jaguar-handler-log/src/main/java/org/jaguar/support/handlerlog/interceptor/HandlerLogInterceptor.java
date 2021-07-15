@@ -6,14 +6,19 @@ import cz.mallat.uasparser.UASparser;
 import cz.mallat.uasparser.UserAgentInfo;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.jaguar.commons.oauth2.model.SecurityUser;
 import org.jaguar.commons.web.util.WebUtil;
 import org.jaguar.support.handlerlog.model.HandlerLog;
-import org.jaguar.support.handlerlog.service.HandlerLogService;
+import org.jaguar.support.handlerlog.repository.HandlerLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.NamedThreadLocal;
+import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -41,6 +46,9 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
 
     private static final UASparser UAS_PARSER;
 
+    @Autowired
+    private ApplicationContext applicationContext;
+
     static {
         try {
             UAS_PARSER = new UASparser(OnlineUpdater.getVendoredInputStream());
@@ -50,7 +58,7 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
     }
 
     @Autowired
-    protected HandlerLogService handlerLogService;
+    protected HandlerLogRepository handlerLogRepository;
 
     private String getUserAgent(HttpServletRequest request) {
         UserAgentInfo userAgentInfo;
@@ -69,8 +77,14 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
         if (handler instanceof HandlerMethod) {
             ApiOperation apiOperation = ((HandlerMethod) handler).getMethod().getAnnotation(ApiOperation.class);
 
+            String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
+            if (StringUtils.isBlank(authorization)) {
+                authorization = request.getParameter("access_token");
+            }
+
             HandlerLog handlerLog = new HandlerLog();
             handlerLog.setSessionId(request.getSession().getId());
+            handlerLog.setAccessToken(authorization);
             handlerLog.setAccessTime(LocalDateTime.now());
             handlerLog.setClientHost(WebUtil.getHost(request));
             handlerLog.setRequestUri(request.getServletPath());
@@ -105,11 +119,16 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
             handlerLog.setStatus(response.getStatus());
             handlerLog.setErrorMsg(ExceptionUtils.getMessage(handlerException));
 
-            try {
-                handlerLogService.saveLog(handlerLog);
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-            }
+            applicationContext.getBean(HandlerLogInterceptor.class).save(handlerLog);
+        }
+    }
+
+    @Async
+    public void save(HandlerLog handlerLog) {
+        try {
+            handlerLogRepository.save(handlerLog);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
         }
     }
 
