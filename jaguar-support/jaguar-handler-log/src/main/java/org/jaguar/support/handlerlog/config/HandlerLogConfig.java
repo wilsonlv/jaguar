@@ -1,6 +1,6 @@
-package org.jaguar.cloud.handlerlog.config;
+package org.jaguar.support.handlerlog.config;
 
-import org.jaguar.cloud.handlerlog.interceptor.HandlerLogInterceptor;
+import org.jaguar.support.handlerlog.interceptor.HandlerLogInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
