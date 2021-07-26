@@ -11,10 +11,7 @@ import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author lvws
@@ -45,6 +42,10 @@ public class ClientService implements InitializingBean {
         clientDetails.setResourceIds(CollectionUtil.newHashSet(
                 "jaguar-upms-server", "jaguar-auth-server", "jaguar-webscoket-server",
                 "jaguar-job-admin", "jaguar-job-executor"));
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("captcha", false);
+        clientDetails.setAdditionalInformation(params);
         return clientDetails;
     }
 

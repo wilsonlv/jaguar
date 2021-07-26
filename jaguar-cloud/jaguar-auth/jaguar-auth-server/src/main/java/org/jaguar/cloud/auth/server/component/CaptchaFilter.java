@@ -50,7 +50,7 @@ public class CaptchaFilter extends OncePerRequestFilter {
         ClientDetails clientDetails = clientDetailsService.loadClientByClientId(authentication.getName());
         Map<String, Object> additionalInformation = clientDetails.getAdditionalInformation();
         Boolean isCaptcha = (Boolean) additionalInformation.get("captcha");
-        if (isCaptcha != null && isCaptcha) {
+        if (isCaptcha != null && !isCaptcha) {
             filterChain.doFilter(request, response);
             return;
         }
