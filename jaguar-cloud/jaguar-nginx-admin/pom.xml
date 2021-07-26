@@ -12,20 +12,8 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.jaguar</groupId>
-			<artifactId>jaguar-commons-cloud-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.jaguar</groupId>
-			<artifactId>jaguar-commons-monitor-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.jaguar</groupId>
-			<artifactId>jaguar-commons-redis</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.session</groupId>
-			<artifactId>spring-session-data-redis</artifactId>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bootstrap</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.jaguar</groupId>
@@ -74,12 +62,6 @@
 			<artifactId>oshi-core</artifactId>
 			<version>5.3.0</version>
 		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.7</version>
-		</dependency>
-		
 		<dependency>
 			<groupId>com.github.xiaoymin</groupId>
 			<artifactId>knife4j-spring-boot-starter</artifactId>
