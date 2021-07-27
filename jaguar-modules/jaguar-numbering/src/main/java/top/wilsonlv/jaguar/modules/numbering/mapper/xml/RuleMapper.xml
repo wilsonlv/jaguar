@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.wilsonlv.jaguar.modules.numbering.mapper.RuleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="top.wilsonlv.jaguar.modules.numbering.model.Rule">
+        <id column="id_" property="id"/>
+        <result column="name_" property="name"/>
+        <result column="description_" property="description"/>
+    </resultMap>
+
+</mapper>

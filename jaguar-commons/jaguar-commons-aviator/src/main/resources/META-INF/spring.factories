@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    org.jaguar.commons.aviator.component.SpringContextFunctionLoader
+    top.wilsonlv.jaguar.commons.aviator.component.SpringContextFunctionLoader

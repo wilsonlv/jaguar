@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    org.jaguar.commons.redis.config.RedisConfig
+    top.wilsonlv.jaguar.commons.redis.config.RedisConfig

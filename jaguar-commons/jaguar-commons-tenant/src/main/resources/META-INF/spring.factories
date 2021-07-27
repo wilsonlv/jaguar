@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    org.jaguar.commons.tenant.component.JaguarTenantLineHandler
+    top.wilsonlv.jaguar.commons.tenant.component.JaguarTenantLineHandler

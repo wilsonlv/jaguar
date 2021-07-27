@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    org.jaguar.commons.activemq.config.ActivemqConfig
+    top.wilsonlv.jaguar.commons.activemq.config.ActivemqConfig

@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.jaguar</groupId>
+    <groupId>top.wilsonlv</groupId>
     <artifactId>jaguar-commons-bom</artifactId>
     <version>master</version>
     <description>jaguar 公共版本控制</description>
@@ -22,107 +22,107 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.jaguar</groupId>
+                <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-commons-activemq</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jaguar</groupId>
+                <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-commons-aviator</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jaguar</groupId>
+                <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-commons-base-crud</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jaguar</groupId>
+                <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-commons-captcha</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jaguar</groupId>
+                <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-commons-cloud-client</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jaguar</groupId>
+                <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-commons-encryption</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jaguar</groupId>
+                <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-commons-export-csv</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jaguar</groupId>
+                <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-commons-feign</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jaguar</groupId>
+                <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-commons-monitor-client</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jaguar</groupId>
+                <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-commons-mybatis-plus</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jaguar</groupId>
+                <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-commons-oauth2</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jaguar</groupId>
+                <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-commons-pinyin</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jaguar</groupId>
+                <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-commons-qrcode</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jaguar</groupId>
+                <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-commons-redis</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jaguar</groupId>
+                <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-commons-redis-cache</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jaguar</groupId>
+                <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-commons-swagger</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jaguar</groupId>
+                <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-commons-tenant</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jaguar</groupId>
+                <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-commons-web</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jaguar</groupId>
+                <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-cache-field-edit</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jaguar</groupId>
+                <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-field-edit-log</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jaguar</groupId>
+                <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-handler-log</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>

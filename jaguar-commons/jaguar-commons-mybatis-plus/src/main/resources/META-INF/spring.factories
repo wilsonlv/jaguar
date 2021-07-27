@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    org.jaguar.commons.mybatisplus.config.MybatisPlusConfig
+    top.wilsonlv.jaguar.commons.mybatisplus.config.MybatisPlusConfig

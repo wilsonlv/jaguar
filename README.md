@@ -69,7 +69,7 @@ jaguar又四大模块构成，分别是基础通用模块，核心模块，项�
         <dependencies>
             <!-- springboot启动器 -->
             <dependency>
-                <groupId>org.jaguar</groupId>
+                <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-core</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>

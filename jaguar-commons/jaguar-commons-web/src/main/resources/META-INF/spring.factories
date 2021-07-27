@@ -1,5 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    org.jaguar.commons.web.context.SpringContext,\
-    org.jaguar.commons.web.exception.GlobalExceptionHandler,\
-    org.jaguar.commons.web.filter.RequestParamsFilterConfig,\
-    org.jaguar.commons.web.mvc.SpringMvcConfig
+    top.wilsonlv.jaguar.commons.web.context.SpringContext,\
+    top.wilsonlv.jaguar.commons.web.exception.GlobalExceptionHandler,\
+    top.wilsonlv.jaguar.commons.web.filter.RequestParamsFilterConfig,\
+    top.wilsonlv.jaguar.commons.web.mvc.SpringMvcConfig

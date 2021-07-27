@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  org.jaguar.cloud.upms.sdk.component.JaguarUserDetailsServiceImpl
+  top.wilsonlv.jaguar.cloud.upms.sdk.component.JaguarUserDetailsServiceImpl

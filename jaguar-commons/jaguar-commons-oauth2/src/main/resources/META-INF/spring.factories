@@ -1,11 +1,11 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    org.jaguar.commons.oauth2.component.AuthenticationExceptionHandler,\
-    org.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler,\
-    org.jaguar.commons.oauth2.component.RedisClientDetailsServiceImpl,\
-    org.jaguar.commons.oauth2.config.ActuatorSecurityConfigurer,\
-    org.jaguar.commons.oauth2.config.FeignSecurityConfigurer,\
-    org.jaguar.commons.oauth2.config.PasswordEncodingConfig,\
-    org.jaguar.commons.oauth2.config.RedisTokenStoreConfig,\
-    org.jaguar.commons.oauth2.config.ResourceServerConfigurer,\
-    org.jaguar.commons.oauth2.config.WebSecurityConfigurer,\
-    org.jaguar.commons.oauth2.properties.SpringSecurityProperties
+    top.wilsonlv.jaguar.commons.oauth2.component.AuthenticationExceptionHandler,\
+    top.wilsonlv.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler,\
+    top.wilsonlv.jaguar.commons.oauth2.component.RedisClientDetailsServiceImpl,\
+    top.wilsonlv.jaguar.commons.oauth2.config.ActuatorSecurityConfigurer,\
+    top.wilsonlv.jaguar.commons.oauth2.config.FeignSecurityConfigurer,\
+    top.wilsonlv.jaguar.commons.oauth2.config.PasswordEncodingConfig,\
+    top.wilsonlv.jaguar.commons.oauth2.config.RedisTokenStoreConfig,\
+    top.wilsonlv.jaguar.commons.oauth2.config.ResourceServerConfigurer,\
+    top.wilsonlv.jaguar.commons.oauth2.config.WebSecurityConfigurer,\
+    top.wilsonlv.jaguar.commons.oauth2.properties.SpringSecurityProperties

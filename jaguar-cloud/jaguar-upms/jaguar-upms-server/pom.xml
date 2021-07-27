@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>jaguar-upms</artifactId>
-        <groupId>org.jaguar</groupId>
+        <groupId>top.wilsonlv</groupId>
         <version>master</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -13,33 +13,33 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.jaguar</groupId>
+            <groupId>top.wilsonlv</groupId>
             <artifactId>jaguar-commons-oauth2</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.jaguar</groupId>
+            <groupId>top.wilsonlv</groupId>
             <artifactId>jaguar-commons-monitor-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.jaguar</groupId>
+            <groupId>top.wilsonlv</groupId>
             <artifactId>jaguar-commons-base-crud</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.jaguar</groupId>
+            <groupId>top.wilsonlv</groupId>
             <artifactId>jaguar-commons-encryption</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.jaguar</groupId>
+            <groupId>top.wilsonlv</groupId>
             <artifactId>jaguar-upms-sdk</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.jaguar</groupId>
+            <groupId>top.wilsonlv</groupId>
             <artifactId>jaguar-auth-sdk</artifactId>
             <version>${jaguar.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.jaguar</groupId>
+            <groupId>top.wilsonlv</groupId>
             <artifactId>jaguar-handler-log</artifactId>
         </dependency>
 

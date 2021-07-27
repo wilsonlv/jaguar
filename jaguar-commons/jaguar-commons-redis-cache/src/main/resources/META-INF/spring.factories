@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    org.jaguar.commons.rediscache.properties.RedisCacheProperties
+    top.wilsonlv.jaguar.commons.rediscache.properties.RedisCacheProperties
