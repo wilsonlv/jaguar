@@ -19,7 +19,7 @@ import java.util.*;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("jaguar_cloud_upms_client")
-public class Client extends BaseModel implements ClientDetails {
+public class OAuthClient extends BaseModel implements ClientDetails {
 
     @TableField("client_id")
     private String clientId;
@@ -82,7 +82,7 @@ public class Client extends BaseModel implements ClientDetails {
             return false;
         }
         for (String auto : autoApproveScopes.split(",")) {
-            if ("true".equals(auto) || scope.matches(auto)) {
+            if (auto.equals(scope)) {
                 return true;
             }
         }

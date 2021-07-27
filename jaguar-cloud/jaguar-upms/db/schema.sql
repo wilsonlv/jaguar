@@ -1,6 +1,27 @@
 CREATE DATABASE IF NOT EXISTS `jaguar_upms` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
 use `jaguar_upms`;
 
+DROP TABLE IF EXISTS `jaguar_cloud_oauth_client`;
+CREATE TABLE `jaguar_cloud_oauth_client`
+(
+    `id_`                     bigint(20)   NOT NULL COMMENT 'ID',
+    `client_id`               varchar(256) NOT NULL,
+    `client_secret`           varchar(256)  DEFAULT NULL,
+    `resource_ids`            varchar(256)  DEFAULT NULL,
+    `scope_`                  varchar(256)  DEFAULT NULL,
+    `authorized_grant_types`  varchar(256) NOT NULL,
+    `web_server_redirect_uri` varchar(256)  DEFAULT NULL,
+    `authorities_`            varchar(256)  DEFAULT NULL,
+    `access_token_validity`   int(11)      NOT NULL,
+    `refresh_token_validity`  int(11)      NOT NULL,
+    `additional_information`  varchar(4096) DEFAULT NULL,
+    `auto_approve_scopes`     varchar(256)  DEFAULT NULL,
+    PRIMARY KEY (`client_id`)
+) ENGINE = InnoDB
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_bin COMMENT = 'oauth2客户端'
+  ROW_FORMAT = Dynamic;
+
 DROP TABLE IF EXISTS `jaguar_cloud_user`;
 CREATE TABLE `jaguar_cloud_user`
 (

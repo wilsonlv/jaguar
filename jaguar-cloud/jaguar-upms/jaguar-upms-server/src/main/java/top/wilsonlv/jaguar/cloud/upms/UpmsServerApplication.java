@@ -13,7 +13,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 @EnableJaguarFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication
-@EnableElasticsearchRepositories(basePackages = {"org.jaguar.**.repository"})
+@EnableElasticsearchRepositories(basePackages = {"top.wilsonlv.jaguar.**.repository"})
 public class UpmsServerApplication {
 
     public static void main(String[] args) {

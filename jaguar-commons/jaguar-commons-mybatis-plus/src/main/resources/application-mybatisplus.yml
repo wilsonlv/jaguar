@@ -1,5 +1,5 @@
 mybatis-plus:
-  type-aliases-package: org.jaguar.**.model*, com.**.model*
+  type-aliases-package: top.wilsonlv.jaguar.**.model*, com.**.model*
   mapper-locations: classpath*:**/mapper/xml/*.xml
   configuration:
     call-setters-on-nulls: true

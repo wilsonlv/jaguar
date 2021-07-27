@@ -10,6 +10,6 @@ spring:
 
 logging:
   level:
-    org.jaguar: debug
+    top.wilsonlv.jaguar: debug
     com.baomidou.mybatisplus.extension.spring: debug
     springfox: error

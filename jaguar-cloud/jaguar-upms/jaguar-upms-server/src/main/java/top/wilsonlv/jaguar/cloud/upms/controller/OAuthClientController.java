@@ -6,8 +6,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import top.wilsonlv.jaguar.cloud.upms.mapper.ClientMapper;
-import top.wilsonlv.jaguar.cloud.upms.model.Client;
-import top.wilsonlv.jaguar.cloud.upms.service.ClientService;
+import top.wilsonlv.jaguar.cloud.upms.model.OAuthClient;
+import top.wilsonlv.jaguar.cloud.upms.service.OAuthClientService;
 import top.wilsonlv.jaguar.commons.basecrud.BaseController;
 import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import top.wilsonlv.jaguar.commons.web.JsonResult;
@@ -25,36 +25,36 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/admin/client")
 @Api(tags = "oauth2客户端管理")
-public class ClientController extends BaseController<Client, ClientMapper, ClientService> {
+public class OAuthClientController extends BaseController<OAuthClient, ClientMapper, OAuthClientService> {
 
     @ApiOperation(value = "分页查询oauth2客户端")
     @GetMapping(value = "/page")
-    public JsonResult<Page<Client>> page(
-            @ApiIgnore Page<Client> page,
+    public JsonResult<Page<OAuthClient>> page(
+            @ApiIgnore Page<OAuthClient> page,
             @ApiParam(value = "模糊用户信息") @RequestParam(required = false) String fuzzyClientId,
             @ApiParam(value = "启用状态") @RequestParam(required = false) Boolean clientEnable) {
 
-        LambdaQueryWrapper<Client> wrapper = JaguarLambdaQueryWrapper.<Client>newInstance()
-                .like(Client::getClientId, fuzzyClientId)
-                .eq(Client::getClientEnable, clientEnable);
+        LambdaQueryWrapper<OAuthClient> wrapper = JaguarLambdaQueryWrapper.<OAuthClient>newInstance()
+                .like(OAuthClient::getClientId, fuzzyClientId)
+                .eq(OAuthClient::getClientEnable, clientEnable);
         return super.query(page, wrapper);
     }
 
     @ApiOperation(value = "oauth2客户端详情")
     @GetMapping(value = "/{id}")
-    public JsonResult<Client> detail(@PathVariable Long id) {
+    public JsonResult<OAuthClient> detail(@PathVariable Long id) {
         return super.getById(id);
     }
 
     @ApiOperation(value = "新增oauth2客户端")
     @PostMapping
-    public JsonResult<Void> save(@RequestBody @Valid Client client) {
+    public JsonResult<Void> save(@RequestBody @Valid OAuthClient OAuthClient) {
         return success();
     }
 
     @ApiOperation(value = "修改oauth2客户端")
     @PutMapping
-    public JsonResult<Void> update(@RequestBody @Valid Client client) {
+    public JsonResult<Void> update(@RequestBody @Valid OAuthClient OAuthClient) {
         return success();
     }
 
