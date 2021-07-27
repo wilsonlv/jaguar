@@ -15,7 +15,7 @@ import java.util.Map;
 @Data
 @RefreshScope
 @Configuration
-@ConfigurationProperties(prefix = "jaguar.modules.code")
+@ConfigurationProperties(prefix = "jaguar.codegen")
 public class CodegenProperties implements Serializable {
 
     private Map<String, String> columnTypeMapping;

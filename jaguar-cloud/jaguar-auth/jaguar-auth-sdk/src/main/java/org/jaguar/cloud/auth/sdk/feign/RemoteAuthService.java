@@ -21,7 +21,6 @@ public interface RemoteAuthService {
      * @return token
      */
     @PostMapping("/oauth/token")
-    DefaultOAuth2AccessToken oauthToken(@RequestParam("username") String username, @RequestParam("password") String password,
-                                        @RequestParam("grant_type") String grantType);
+    DefaultOAuth2AccessToken oauthToken(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("grant_type") String grantType);
 
 }

@@ -54,10 +54,12 @@ public class RequestParamsFilter implements Filter {
             log.info("Authorization：{}", header);
         }
 
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null && cookies.length > 0) {
-            for (Cookie cookie : cookies) {
-                log.info("请求cookie：{}，ID：{}", cookie.getName(), cookie.getValue());
+        if (log.isDebugEnabled()) {
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null && cookies.length > 0) {
+                for (Cookie cookie : cookies) {
+                    log.debug("请求cookie：{}，ID：{}", cookie.getName(), cookie.getValue());
+                }
             }
         }
 

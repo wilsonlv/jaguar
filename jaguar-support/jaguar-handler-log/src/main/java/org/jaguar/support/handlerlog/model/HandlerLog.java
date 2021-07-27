@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 @Document(indexName = "handler_log")
 public class HandlerLog implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * ID
      */

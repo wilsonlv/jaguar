@@ -43,6 +43,10 @@ spring:
               stat:
                 log-slow-sql: true
                 merge-sql: true
+  security:
+    user:
+      name: codegen
+      password: 123456
 
 mybatis-plus:
   type-aliases-package: org.jaguar.**.model*, com.**.model*
@@ -60,11 +64,10 @@ mybatis-plus:
       logic-delete-field: deleted_
 
 jaguar:
-  modules:
-    code:
-      column-type-mapping: {"int":"Integer", "smallint":"Integer", "mediumint":"Integer", "bigint":"Long", "tinyint":"Boolean", "varchar":"String", "text":"String", "longtext":"String", "date":"LocalDate", "datetime":"LocalDateTime", "timestamp":"LocalDateTime"}
+  codegen:
+    column-type-mapping: {"int":"Integer", "smallint":"Integer", "mediumint":"Integer", "bigint":"Long", "tinyint":"Boolean", "varchar":"String", "text":"String", "longtext":"String", "date":"LocalDate", "datetime":"LocalDateTime", "timestamp":"LocalDateTime"}
 
 logging:
   level:
-    org.jaguar.modules.codegen: debug
+    org.jaguar.codegen: debug
     com.baomidou.mybatisplus: debug

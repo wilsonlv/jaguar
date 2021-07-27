@@ -10,11 +10,9 @@ import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Enumeration;
 
 /**
  * @author lvws
@@ -158,6 +156,34 @@ public class WebUtil extends WebUtils {
             address.append(postion).append('-');
         }
         return address.deleteCharAt(address.length() - 1).toString();
+    }
+
+    /*
+   获取本机网内地址
+    */
+    public static InetAddress getInet4Address() throws SocketException, UnknownHostException {
+        //获取所有网络接口
+        Enumeration<NetworkInterface> allNetworkInterfaces = NetworkInterface.getNetworkInterfaces();
+        //遍历所有网络接口
+        while (allNetworkInterfaces.hasMoreElements()) {
+            NetworkInterface networkInterface = allNetworkInterfaces.nextElement();
+            //如果此网络接口为 回环接口 或者 虚拟接口(子接口) 或者 未启用 或者 描述中包含VM
+            if (networkInterface.isLoopback() || networkInterface.isVirtual() || !networkInterface.isUp() || networkInterface.getDisplayName().contains("VM")) {
+                //继续下次循环
+                continue;
+            }
+
+            for (Enumeration<InetAddress> inetAddressEnumeration = networkInterface.getInetAddresses(); inetAddressEnumeration.hasMoreElements(); ) {
+                InetAddress inetAddress = inetAddressEnumeration.nextElement();
+                //如果此IP不为空
+                if (inetAddress instanceof Inet4Address) {
+                    //如果此IP为IPV4 则返回
+                    return inetAddress;
+                }
+            }
+
+        }
+        throw new UnknownHostException();
     }
 
 }
