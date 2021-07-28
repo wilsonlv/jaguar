@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
-import top.wilsonlv.jaguar.cloud.upms.sdk.dto.MenuFunction;
 import top.wilsonlv.jaguar.cloud.upms.sdk.enums.DataScope;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -94,14 +93,10 @@ public class User extends BaseModel implements UserDetails {
     @TableField(exist = false)
     private List<Role> roles = new ArrayList<>();
 
-
     @ApiModelProperty(hidden = true)
     @TableField(exist = false)
     private Set<GrantedAuthority> authorities = new HashSet<>();
 
-    @ApiModelProperty(hidden = true)
-    @TableField(exist = false)
-    private List<MenuFunction> menuFunctions = new ArrayList<>();
 
     @Override
     public String getPassword() {

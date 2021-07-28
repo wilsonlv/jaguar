@@ -4,7 +4,6 @@ import top.wilsonlv.jaguar.cloud.upms.model.RoleMenu;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;
 import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
-import top.wilsonlv.jaguar.cloud.upms.sdk.dto.MenuFunction;
 import top.wilsonlv.jaguar.cloud.upms.mapper.RoleMenuMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,9 +41,9 @@ public class RoleMenuService extends BaseService<RoleMenu, RoleMenuMapper> {
     @Transactional
     public void relateMenuFunctions(Long roleId, Set<String> menuFunctionNames) {
         for (String menuFunctionName : menuFunctionNames) {
-            if (!MenuFunction.hasName(menuFunctionName)) {
-                throw new CheckedException("无效的菜单或功能名称");
-            }
+//            if (!MenuFunction.hasName(menuFunctionName)) {
+//                throw new CheckedException("无效的菜单或功能名称");
+//            }
 
             RoleMenu roleMenu = new RoleMenu();
             roleMenu.setRoleId(roleId);

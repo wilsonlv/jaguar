@@ -2,8 +2,6 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
     top.wilsonlv.jaguar.commons.oauth2.component.AuthenticationExceptionHandler,\
     top.wilsonlv.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler,\
     top.wilsonlv.jaguar.commons.oauth2.component.RedisClientDetailsServiceImpl,\
-    top.wilsonlv.jaguar.commons.oauth2.config.ActuatorSecurityConfigurer,\
-    top.wilsonlv.jaguar.commons.oauth2.config.FeignSecurityConfigurer,\
     top.wilsonlv.jaguar.commons.oauth2.config.PasswordEncodingConfig,\
     top.wilsonlv.jaguar.commons.oauth2.config.RedisTokenStoreConfig,\
     top.wilsonlv.jaguar.commons.oauth2.config.ResourceServerConfigurer,\

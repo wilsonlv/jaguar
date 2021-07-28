@@ -9,7 +9,6 @@ import io.swagger.annotations.ApiParam;
 import top.wilsonlv.jaguar.commons.basecrud.BaseController;
 import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import top.wilsonlv.jaguar.commons.web.JsonResult;
-import top.wilsonlv.jaguar.cloud.upms.sdk.dto.MenuFunction;
 import top.wilsonlv.jaguar.cloud.upms.mapper.RoleMapper;
 import top.wilsonlv.jaguar.cloud.upms.model.Role;
 import top.wilsonlv.jaguar.cloud.upms.service.RoleService;
@@ -80,10 +79,10 @@ public class RoleController extends BaseController<Role, RoleMapper, RoleService
         return success();
     }
 
-    @ApiOperation(value = "获取所有菜单和功能")
-    @PreAuthorize("hasAuthority('角色管理')")
-    @GetMapping(value = "/menu_functions")
-    public JsonResult<List<MenuFunction>> menuFunctions() {
-        return success(MenuFunction.MENU_FUNCTIONS);
-    }
+//    @ApiOperation(value = "获取所有菜单和功能")
+//    @PreAuthorize("hasAuthority('角色管理')")
+//    @GetMapping(value = "/menu_functions")
+//    public JsonResult<List<MenuFunction>> menuFunctions() {
+//        return success(MenuFunction.MENU_FUNCTIONS);
+//    }
 }

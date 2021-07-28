@@ -1,17 +1,16 @@
 package top.wilsonlv.jaguar.cloud.upms.service;
 
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
-import top.wilsonlv.jaguar.cloud.upms.mapper.ClientMapper;
-import top.wilsonlv.jaguar.cloud.upms.model.OAuthClient;
-import top.wilsonlv.jaguar.commons.basecrud.BaseService;
-import top.wilsonlv.jaguar.commons.oauth2.Oauth2Constant;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import top.wilsonlv.jaguar.cloud.upms.mapper.ClientMapper;
+import top.wilsonlv.jaguar.cloud.upms.model.OauthClient;
+import top.wilsonlv.jaguar.commons.basecrud.BaseService;
+import top.wilsonlv.jaguar.commons.oauth2.Oauth2Constant;
 
 import java.io.Serializable;
 import java.util.List;
@@ -22,7 +21,7 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
-public class OAuthClientService extends BaseService<OAuthClient, ClientMapper> implements InitializingBean {
+public class OAuthClientService extends BaseService<OauthClient, ClientMapper> implements InitializingBean {
 
     private final PasswordEncoder passwordEncoder;
 
@@ -52,24 +51,19 @@ public class OAuthClientService extends BaseService<OAuthClient, ClientMapper> i
 //        params.put("captcha", false);
 //        clientDetails.setAdditionalInformation(params);
 
-    public OAuthClient loadClientByClientId(String clientId) {
-        return this.unique(Wrappers.<OAuthClient>lambdaQuery()
-                .eq(OAuthClient::getClientId, clientId));
+    public OauthClient loadClientByClientId(String clientId) {
+        return this.unique(Wrappers.<OauthClient>lambdaQuery()
+                .eq(OauthClient::getClientId, clientId));
     }
 
     @Override
     public void afterPropertiesSet() {
-        List<OAuthClient> OAuthClients = this.list(Wrappers.emptyWrapper());
-        for (OAuthClient OAuthClient : OAuthClients) {
+        List<OauthClient> oauthClients = this.list(Wrappers.emptyWrapper());
+        for (OauthClient oauthClient : oauthClients) {
             BoundValueOperations<String, Serializable> operations =
-                    redisTemplate.boundValueOps(Oauth2Constant.CLIENT_CACHE_KEY_PREFIX + OAuthClient.getClientId());
-            operations.set(OAuthClient);
+                    redisTemplate.boundValueOps(Oauth2Constant.CLIENT_CACHE_KEY_PREFIX + oauthClient.getClientId());
+            operations.set(oauthClient);
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println(IdWorker.getId());
-        System.out.println(IdWorker.getId());
-        System.out.println(IdWorker.getId());
-    }
 }

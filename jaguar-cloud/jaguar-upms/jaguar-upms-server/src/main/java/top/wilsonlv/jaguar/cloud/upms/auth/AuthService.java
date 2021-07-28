@@ -5,7 +5,6 @@ import org.apache.commons.lang3.StringUtils;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;
 import top.wilsonlv.jaguar.commons.data.encryption.util.EncryptionUtil;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
-import top.wilsonlv.jaguar.cloud.upms.sdk.dto.MenuFunction;
 import top.wilsonlv.jaguar.cloud.upms.mapper.UserMapper;
 import top.wilsonlv.jaguar.cloud.upms.model.Role;
 import top.wilsonlv.jaguar.cloud.upms.model.User;
@@ -41,16 +40,16 @@ public class AuthService extends BaseService<User, UserMapper> implements UserDe
         user.setRoles(roles);
 
         //获取菜单功能
-        Set<String> menuFunctionNames = userRoleService.listMenuFunctionNamesByUserId(user.getId());
-        user.setMenuFunctions(MenuFunction.filterMenuFunctions(menuFunctionNames));
+//        Set<String> menuFunctionNames = userRoleService.listMenuFunctionNamesByUserId(user.getId());
+//        user.setMenuFunctions(MenuFunction.filterMenuFunctions(menuFunctionNames));
 
         //获取权限
-        for (String menuFunctionName : menuFunctionNames) {
-            MenuFunction menuFunction = MenuFunction.getMenuFunction(menuFunctionName);
-            if (menuFunction != null && StringUtils.isNotBlank(menuFunction.getPermission())) {
-                user.getAuthorities().add(new SimpleGrantedAuthority(menuFunction.getPermission()));
-            }
-        }
+//        for (String menuFunctionName : menuFunctionNames) {
+//            MenuFunction menuFunction = MenuFunction.getMenuFunction(menuFunctionName);
+//            if (menuFunction != null && StringUtils.isNotBlank(menuFunction.getPermission())) {
+//                user.getAuthorities().add(new SimpleGrantedAuthority(menuFunction.getPermission()));
+//            }
+//        }
 
         return user;
     }

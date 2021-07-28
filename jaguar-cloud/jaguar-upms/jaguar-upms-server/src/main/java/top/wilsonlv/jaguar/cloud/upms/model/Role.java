@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
-import top.wilsonlv.jaguar.cloud.upms.sdk.dto.MenuFunction;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -54,10 +53,6 @@ public class Role extends BaseModel {
     @ApiModelProperty(hidden = true)
     @TableField(exist = false)
     private List<User> users = new ArrayList<>();
-
-    @ApiModelProperty(hidden = true)
-    @TableField(exist = false)
-    private List<MenuFunction> menuFunctions = new ArrayList<>();
 
     @ApiModelProperty(hidden = true)
     @TableField(exist = false)

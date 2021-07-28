@@ -1,22 +1,21 @@
 package top.wilsonlv.jaguar.cloud.auth.config;
 
 import lombok.RequiredArgsConstructor;
-import top.wilsonlv.jaguar.cloud.auth.component.CaptchaFilter;
-import top.wilsonlv.jaguar.cloud.auth.component.LoginFailureHandler;
-import top.wilsonlv.jaguar.cloud.auth.component.LoginSuccessHandler;
-import top.wilsonlv.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
-import top.wilsonlv.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import top.wilsonlv.jaguar.cloud.auth.component.CaptchaFilter;
+import top.wilsonlv.jaguar.cloud.auth.component.LoginFailureHandler;
+import top.wilsonlv.jaguar.cloud.auth.component.LoginSuccessHandler;
+import top.wilsonlv.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
+import top.wilsonlv.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler;
 
 /**
  * @author lvws
@@ -69,13 +68,4 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable();
     }
 
-    @Override
-    public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("*.html")
-                .antMatchers("*.css")
-                .antMatchers("*.js")
-                .antMatchers("*.png")
-                .antMatchers("*.ico")
-                .antMatchers("/swagger-ui/**");
-    }
 }

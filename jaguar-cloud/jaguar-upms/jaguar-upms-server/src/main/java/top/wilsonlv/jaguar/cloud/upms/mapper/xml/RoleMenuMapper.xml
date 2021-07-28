@@ -2,11 +2,5 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.wilsonlv.jaguar.cloud.upms.mapper.RoleMenuMapper">
 
-    <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="top.wilsonlv.jaguar.cloud.upms.model.RoleMenu">
-        <id column="id_" property="id"/>
-        <result column="role_id" property="roleId"/>
-        <result column="menu_function_name" property="menuFunctionName"/>
-    </resultMap>
 
 </mapper>

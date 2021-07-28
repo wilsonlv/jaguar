@@ -18,8 +18,8 @@ import java.util.*;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("jaguar_cloud_upms_client")
-public class OAuthClient extends BaseModel implements ClientDetails {
+@TableName("jaguar_cloud_upms_oauth_client")
+public class OauthClient extends BaseModel implements ClientDetails {
 
     @TableField("client_id")
     private String clientId;
