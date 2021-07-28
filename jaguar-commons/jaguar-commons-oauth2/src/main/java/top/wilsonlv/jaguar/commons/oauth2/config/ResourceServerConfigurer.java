@@ -1,9 +1,6 @@
 package top.wilsonlv.jaguar.commons.oauth2.config;
 
 import lombok.RequiredArgsConstructor;
-import top.wilsonlv.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
-import top.wilsonlv.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler;
-import top.wilsonlv.jaguar.commons.oauth2.properties.SpringSecurityProperties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +11,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import top.wilsonlv.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
+import top.wilsonlv.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler;
+import top.wilsonlv.jaguar.commons.oauth2.properties.SpringSecurityProperties;
 
 /**
  * @author lvws

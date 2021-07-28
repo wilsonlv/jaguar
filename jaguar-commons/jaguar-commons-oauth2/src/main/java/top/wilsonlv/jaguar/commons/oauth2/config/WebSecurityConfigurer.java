@@ -1,6 +1,5 @@
 package top.wilsonlv.jaguar.commons.oauth2.config;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -15,7 +14,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 @ConditionalOnMissingBean(AuthorizationServerConfigurerAdapter.class)
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Override
