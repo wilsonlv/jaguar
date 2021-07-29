@@ -19,8 +19,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <groupId>top.wilsonlv</groupId>
+            <artifactId>jaguar-commons-feign</artifactId>
         </dependency>
     </dependencies>
 

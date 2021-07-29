@@ -17,4 +17,11 @@
         <module>jaguar-upms-server</module>
     </modules>
 
+    <dependencies>
+        <dependency>
+            <groupId>top.wilsonlv</groupId>
+            <artifactId>jaguar-commons-feign</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>
