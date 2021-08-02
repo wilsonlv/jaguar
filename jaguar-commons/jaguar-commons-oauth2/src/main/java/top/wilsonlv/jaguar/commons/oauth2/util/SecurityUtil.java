@@ -1,8 +1,8 @@
 package top.wilsonlv.jaguar.commons.oauth2.util;
 
-import top.wilsonlv.jaguar.commons.oauth2.model.SecurityUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import top.wilsonlv.jaguar.commons.oauth2.model.SecurityUser;
 
 /**
  * @author lvws
@@ -20,7 +20,11 @@ public final class SecurityUtil {
             return null;
         }
 
-        return (SecurityUser) authentication.getPrincipal();
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof SecurityUser) {
+            return (SecurityUser) principal;
+        }
+        return null;
     }
 
 }
