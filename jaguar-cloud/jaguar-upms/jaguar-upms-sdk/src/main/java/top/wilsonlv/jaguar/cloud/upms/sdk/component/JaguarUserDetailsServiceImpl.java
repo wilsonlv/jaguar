@@ -1,11 +1,12 @@
 package top.wilsonlv.jaguar.cloud.upms.sdk.component;
 
 import lombok.RequiredArgsConstructor;
-import top.wilsonlv.jaguar.cloud.upms.sdk.feign.RemoteUserService;
-import top.wilsonlv.jaguar.commons.oauth2.model.SecurityUser;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import top.wilsonlv.jaguar.cloud.upms.sdk.feign.RemoteUserService;
+import top.wilsonlv.jaguar.commons.enums.UserType;
+import top.wilsonlv.jaguar.commons.oauth2.model.SecurityUser;
 
 /**
  * @author lvws
@@ -19,6 +20,7 @@ public class JaguarUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public SecurityUser loadUserByUsername(String username) throws UsernameNotFoundException {
-        return remoteUserService.loadUserByUsername(username);
+        //TODO genju clientId shezhi usertype
+        return remoteUserService.loadUserByUsername(username, UserType.USER);
     }
 }

@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
-import top.wilsonlv.jaguar.cloud.upms.sdk.enums.DataScope;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -64,13 +63,6 @@ public class User extends BaseModel implements UserDetails {
     @ApiModelProperty(value = "用户昵称")
     @TableField("user_nick_name")
     private String userNickName;
-    /**
-     * 个人数据权限
-     */
-    @ApiModelProperty(value = "个人数据权限", required = true)
-    @NotNull(message = "个人数据权限为非空")
-    @TableField("user_data_scope")
-    private DataScope userDataScope;
     /**
      * 用户是否启用
      */

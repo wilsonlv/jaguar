@@ -32,6 +32,7 @@
         <module>jaguar-commons-web</module>
         <module>jaguar-commons-feign</module>
         <module>jaguar-commons-captcha</module>
+        <module>jaguar-commons-enums</module>
     </modules>
 
 </project>

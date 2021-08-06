@@ -1,6 +1,7 @@
 package top.wilsonlv.jaguar.cloud.upms.feign;
 
 import lombok.RequiredArgsConstructor;
+import top.wilsonlv.jaguar.commons.enums.UserType;
 import top.wilsonlv.jaguar.commons.oauth2.model.SecurityAuthority;
 import top.wilsonlv.jaguar.commons.oauth2.model.SecurityUser;
 import top.wilsonlv.jaguar.cloud.upms.sdk.feign.RemoteUserService;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 
 /**
@@ -26,7 +28,8 @@ public class RemoteUserServiceImpl implements RemoteUserService {
 
     @Override
     @GetMapping("/loadUserByUsername")
-    public SecurityUser loadUserByUsername(@RequestParam @NotBlank String username) {
+    public SecurityUser loadUserByUsername(@RequestParam @NotBlank String username,
+                                           @RequestParam @NotNull UserType userType) {
         SecurityUser user = new SecurityUser();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode("123456"));

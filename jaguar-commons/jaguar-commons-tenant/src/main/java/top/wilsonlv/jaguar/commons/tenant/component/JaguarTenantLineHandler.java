@@ -4,11 +4,10 @@ import com.baomidou.mybatisplus.extension.plugins.handler.TenantLineHandler;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.expression.NullValue;
-import top.wilsonlv.jaguar.commons.oauth2.model.SecurityUser;
-import top.wilsonlv.jaguar.commons.oauth2.util.SecurityUtil;
-import top.wilsonlv.jaguar.commons.tenant.properties.TenantProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.NamedThreadLocal;
 import org.springframework.stereotype.Component;
+import top.wilsonlv.jaguar.commons.tenant.properties.TenantProperties;
 
 /**
  * @author lvws
@@ -23,12 +22,12 @@ public class JaguarTenantLineHandler implements TenantLineHandler {
 
     @Override
     public Expression getTenantId() {
-        SecurityUser currentUser = SecurityUtil.getCurrentUser();
-        if (currentUser == null || currentUser.getTenantId() == null) {
+        Long tenantId = TenantContextManager.getTenantId();
+        if (tenantId == null) {
             return new NullValue();
+        } else {
+            return new LongValue(tenantId);
         }
-
-        return new LongValue(currentUser.getTenantId());
     }
 
     @Override
@@ -40,4 +39,5 @@ public class JaguarTenantLineHandler implements TenantLineHandler {
     public boolean ignoreTable(String tableName) {
         return tenantProperties.getIgnoreTables() != null && tenantProperties.getIgnoreTables().contains(tableName);
     }
+
 }

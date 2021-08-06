@@ -11,9 +11,17 @@
 
     <artifactId>jaguar-handler-log</artifactId>
     <packaging>pom</packaging>
+
     <modules>
         <module>jaguar-handler-log-client</module>
         <module>jaguar-handler-log-server</module>
     </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>top.wilsonlv</groupId>
+            <artifactId>jaguar-commons-feign</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

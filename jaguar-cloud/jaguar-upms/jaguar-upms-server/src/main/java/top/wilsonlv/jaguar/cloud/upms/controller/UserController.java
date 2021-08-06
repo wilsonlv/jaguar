@@ -10,7 +10,6 @@ import top.wilsonlv.jaguar.cloud.upms.model.User;
 import top.wilsonlv.jaguar.commons.basecrud.BaseController;
 import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import top.wilsonlv.jaguar.commons.web.JsonResult;
-import top.wilsonlv.jaguar.cloud.upms.sdk.enums.DataScope;
 import top.wilsonlv.jaguar.cloud.upms.mapper.UserMapper;
 import top.wilsonlv.jaguar.cloud.upms.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -40,14 +39,12 @@ public class UserController extends BaseController<User, UserMapper, UserService
     public JsonResult<Page<User>> page(
             @ApiIgnore Page<User> page,
             @ApiParam(value = "模糊用户信息") @RequestParam(required = false) String fuzzyUserInfo,
-            @ApiParam(value = "角色数据权限") @RequestParam(required = false) DataScope userDataScope,
             @ApiParam(value = "锁定状态") @RequestParam(required = false) Boolean userLocked,
             @ApiParam(value = "启用状态") @RequestParam(required = false) Boolean userEnable) {
 
         LambdaQueryWrapper<User> wrapper = JaguarLambdaQueryWrapper.<User>newInstance()
                 .eq(User::getUserLocked, userLocked)
-                .eq(User::getUserEnable, userEnable)
-                .eq(User::getUserDataScope, userDataScope);
+                .eq(User::getUserEnable, userEnable);
         if (StringUtils.isNotBlank(fuzzyUserInfo)) {
             wrapper.and(w -> w.like(User::getUserAccount, fuzzyUserInfo).or()
                     .like(User::getUserPhone, fuzzyUserInfo).or()

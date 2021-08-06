@@ -20,6 +20,12 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>top.wilsonlv</groupId>
+            <artifactId>jaguar-commons-oauth2</artifactId>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 </project>

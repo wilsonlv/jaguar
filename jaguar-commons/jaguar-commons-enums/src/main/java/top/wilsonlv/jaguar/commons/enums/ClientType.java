@@ -1,4 +1,4 @@
-package top.wilsonlv.jaguar.cloud.upms.sdk.enums;
+package top.wilsonlv.jaguar.commons.enums;
 
 /**
  * @author lvws

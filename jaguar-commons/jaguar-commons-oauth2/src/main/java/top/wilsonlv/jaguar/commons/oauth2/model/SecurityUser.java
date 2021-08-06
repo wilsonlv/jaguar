@@ -2,6 +2,7 @@ package top.wilsonlv.jaguar.commons.oauth2.model;
 
 import lombok.Data;
 import org.springframework.security.core.userdetails.UserDetails;
+import top.wilsonlv.jaguar.commons.enums.UserType;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -20,6 +21,8 @@ public class SecurityUser implements UserDetails {
     private String username;
 
     private String password;
+
+    private UserType userType;
 
     private String phone;
 

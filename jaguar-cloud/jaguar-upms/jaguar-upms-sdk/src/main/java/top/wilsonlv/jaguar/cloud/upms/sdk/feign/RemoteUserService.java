@@ -1,9 +1,10 @@
 package top.wilsonlv.jaguar.cloud.upms.sdk.feign;
 
-import top.wilsonlv.jaguar.commons.oauth2.model.SecurityUser;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import top.wilsonlv.jaguar.commons.enums.UserType;
+import top.wilsonlv.jaguar.commons.oauth2.model.SecurityUser;
 
 /**
  * @author lvws
@@ -19,6 +20,6 @@ public interface RemoteUserService {
      * @return 用户
      */
     @GetMapping("/feign/user/loadUserByUsername")
-    SecurityUser loadUserByUsername(@RequestParam("username") String username);
+    SecurityUser loadUserByUsername(@RequestParam("username") String username, @RequestParam("userType") UserType userType);
 
 }

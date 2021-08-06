@@ -21,6 +21,11 @@
             <artifactId>jaguar-commons-oauth2</artifactId>
         </dependency>
         <dependency>
+            <groupId>top.wilsonlv</groupId>
+            <artifactId>jaguar-commons-feign</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>cz.mallat.uasparser</groupId>
             <artifactId>uasparser</artifactId>
             <version>0.6.2</version>
