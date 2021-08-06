@@ -27,6 +27,8 @@ public class FeignSecurityConfigurer extends WebSecurityConfigurerAdapter {
         http.antMatcher("/feign/**")
                 .userDetailsService(new ClientDetailsUserDetailsService(clientDetailsService))
                 .authorizeRequests().anyRequest().hasAuthority("feign")
+                .and().httpBasic()
                 .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler);
     }
+
 }

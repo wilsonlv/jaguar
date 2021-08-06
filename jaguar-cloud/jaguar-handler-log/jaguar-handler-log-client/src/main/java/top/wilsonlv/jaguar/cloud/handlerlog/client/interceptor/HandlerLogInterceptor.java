@@ -68,9 +68,13 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
         return userAgentInfo.getOsName() + " " + userAgentInfo.getType() + " " + userAgentInfo.getUaName();
     }
 
+    private static final String ACTUATOR ="/actuator";
+    private static final String ERROR ="/error";
+
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {
-        if (handler instanceof HandlerMethod) {
+        String requestUri = request.getRequestURI();
+        if (handler instanceof HandlerMethod && !request.getRequestURI().startsWith(ACTUATOR) && !ERROR.equals(requestUri)) {
             ApiOperation apiOperation = ((HandlerMethod) handler).getMethod().getAnnotation(ApiOperation.class);
 
             String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
@@ -107,8 +111,8 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(@NonNull final HttpServletRequest request, @NonNull final HttpServletResponse response,
                                 @NonNull Object handler, final Exception handlerException) {
-
-        if (handler instanceof HandlerMethod) {
+        String requestUri = request.getRequestURI();
+        if (handler instanceof HandlerMethod && !requestUri.startsWith(ACTUATOR) && !ERROR.equals(requestUri)) {
             HandlerLogSaveDTO handlerLog = HANDLER_LOG.get();
             HANDLER_LOG.remove();
 

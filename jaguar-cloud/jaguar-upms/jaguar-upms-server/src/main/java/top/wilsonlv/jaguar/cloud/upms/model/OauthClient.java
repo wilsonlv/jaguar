@@ -19,7 +19,7 @@ import java.util.*;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("jaguar_cloud_upms_oauth_client")
-public class OauthClient extends BaseModel implements ClientDetails {
+public class OauthClient extends BaseModel {
 
     @TableField("client_id")
     private String clientId;
@@ -57,72 +57,4 @@ public class OauthClient extends BaseModel implements ClientDetails {
     @TableField("client_enable")
     private Boolean clientEnable;
 
-
-    @Override
-    public boolean isSecretRequired() {
-        return this.clientSecret != null;
-    }
-
-    @Override
-    public boolean isScoped() {
-        return this.scope != null && !this.scope.isEmpty();
-    }
-
-    @Override
-    public Set<String> getRegisteredRedirectUri() {
-        if (registeredRedirectUris == null) {
-            return Collections.emptySet();
-        }
-        return new HashSet<>(Arrays.asList(registeredRedirectUris.split(",")));
-    }
-
-    @Override
-    public boolean isAutoApprove(String scope) {
-        if (autoApproveScopes == null) {
-            return false;
-        }
-        for (String auto : autoApproveScopes.split(",")) {
-            if (auto.equals(scope)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public Set<String> getResourceIds() {
-        if (resourceIds == null) {
-            return Collections.emptySet();
-        }
-        return new HashSet<>(Arrays.asList(resourceIds.split(",")));
-    }
-
-    @Override
-    public Set<String> getScope() {
-        if (scope == null) {
-            return Collections.emptySet();
-        }
-        return new HashSet<>(Arrays.asList(scope.split(",")));
-    }
-
-    @Override
-    public Set<String> getAuthorizedGrantTypes() {
-        if (authorizedGrantTypes == null) {
-            return Collections.emptySet();
-        }
-        return new HashSet<>(Arrays.asList(authorizedGrantTypes.split(",")));
-    }
-
-    @Override
-    public Collection<GrantedAuthority> getAuthorities() {
-        if (authorities == null) {
-            return Collections.emptySet();
-        }
-        return AuthorityUtils.createAuthorityList(authorities.split(","));
-    }
-
-    @Override
-    public Map<String, Object> getAdditionalInformation() {
-        return JSONObject.parseObject(additionalInformation);
-    }
 }

@@ -159,8 +159,8 @@ public class WebUtil extends WebUtils {
     }
 
     /*
-   获取本机网内地址
-    */
+     * 获取本机网内地址
+     */
     public static InetAddress getInet4Address() throws SocketException, UnknownHostException {
         //获取所有网络接口
         Enumeration<NetworkInterface> allNetworkInterfaces = NetworkInterface.getNetworkInterfaces();

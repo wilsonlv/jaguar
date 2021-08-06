@@ -6,6 +6,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.web.util.WebUtils;
+import top.wilsonlv.jaguar.commons.web.util.WebUtil;
+
+import java.net.Inet4Address;
+import java.net.InetAddress;
 
 /**
  * @author lvws
@@ -20,9 +25,11 @@ public class MonitorSecurityConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
+            String localIp = WebUtil.getInet4Address().getHostAddress();
+
             http.antMatcher("/actuator").antMatcher("/actuator/**")
                     .authorizeRequests()
-                    .anyRequest().authenticated()
+                    .anyRequest().access("isAuthenticated() or hasIpAddress('" + localIp + "')")
                     .and().httpBasic();
         }
     }

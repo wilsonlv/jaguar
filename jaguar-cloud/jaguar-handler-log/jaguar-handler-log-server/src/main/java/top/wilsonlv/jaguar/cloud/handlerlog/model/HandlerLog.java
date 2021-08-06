@@ -1,9 +1,13 @@
 package top.wilsonlv.jaguar.cloud.handlerlog.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
 import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
 
 import java.time.LocalDateTime;
@@ -14,6 +18,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("handler_log")
+@Document(indexName = "handler_log")
 @EqualsAndHashCode(callSuper = false)
 public class HandlerLog extends BaseModel {
 

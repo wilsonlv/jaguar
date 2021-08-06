@@ -1,6 +1,10 @@
 package top.wilsonlv.jaguar.commons.oauth2.component;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import top.wilsonlv.jaguar.commons.oauth2.Oauth2Constant;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.BoundValueOperations;
@@ -12,6 +16,8 @@ import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.HashSet;
 
 /**
  * @author lvws
@@ -30,9 +36,10 @@ public class RedisClientDetailsServiceImpl implements ClientDetailsService {
                 redisTemplate.boundValueOps(Oauth2Constant.CLIENT_CACHE_KEY_PREFIX + clientId);
         Serializable client = operations.get();
         if (client == null) {
-            throw new InvalidClientException("无效的clientId:" + clientId);
+            throw new ClientRegistrationException("无效的clientId：" + clientId);
         }
 
         return (ClientDetails) client;
     }
+
 }

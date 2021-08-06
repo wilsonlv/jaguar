@@ -1,5 +1,5 @@
 server:
-  port: 8888
+  port: 9888
 
 spring:
   application:
@@ -15,7 +15,3 @@ spring:
           - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
   profiles:
     active: @profiles.active@
-  datasource:
-    druid:
-      url: jdbc:es://http://jaguar-es:9200
-      driver-class-name: org.elasticsearch.xpack.sql.jdbc.EsDriver
