@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    top.wilsonlv.jaguar.cloud.handlerlog.client.config.HandlerLogConfig,\
+    top.wilsonlv.jaguar.cloud.handlerlog.client.interceptor.HandlerLogInterceptor

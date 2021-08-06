@@ -25,7 +25,7 @@ public class JdbcDataSourceProvider extends AbstractJdbcDataSourceProvider {
 
     @Override
     protected Map<String, DataSourceProperty> executeStmt(Statement statement) throws SQLException {
-        ResultSet resultSet = statement.executeQuery("select * from jaguar_codegen_datasource");
+        ResultSet resultSet = statement.executeQuery("select * from jaguar_codegen_datasource where deleted_ = 0");
         Map<String, DataSourceProperty> dynamicDataSources = new HashMap<>();
 
         while (resultSet.next()) {

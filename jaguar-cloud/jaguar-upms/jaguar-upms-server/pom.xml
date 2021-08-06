@@ -40,7 +40,7 @@
         </dependency>
         <dependency>
             <groupId>top.wilsonlv</groupId>
-            <artifactId>jaguar-handler-log</artifactId>
+            <artifactId>jaguar-handler-log-client</artifactId>
         </dependency>
 
         <dependency>

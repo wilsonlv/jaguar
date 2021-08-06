@@ -16,7 +16,7 @@ import javax.jms.ConnectionFactory;
 public class ActivemqConfig {
 
     @Bean
-    public JmsTemplate jmsSessionQueneTemplate(ConnectionFactory connectionFactory) {
+    public JmsTemplate jmsSessionQueueTemplate(ConnectionFactory connectionFactory) {
         JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
         jmsTemplate.setPubSubDomain(false);
         jmsTemplate.setSessionTransacted(true);
@@ -25,7 +25,7 @@ public class ActivemqConfig {
     }
 
     @Bean
-    public JmsTemplate jmsQueneTemplate(ConnectionFactory connectionFactory) {
+    public JmsTemplate jmsQueueTemplate(ConnectionFactory connectionFactory) {
         JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
         jmsTemplate.setPubSubDomain(false);
         return jmsTemplate;

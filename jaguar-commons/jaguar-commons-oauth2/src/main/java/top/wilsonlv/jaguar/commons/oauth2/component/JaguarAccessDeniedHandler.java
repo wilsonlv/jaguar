@@ -1,5 +1,6 @@
 package top.wilsonlv.jaguar.commons.oauth2.component;
 
+import org.springframework.http.MediaType;
 import top.wilsonlv.jaguar.commons.web.JsonResult;
 import top.wilsonlv.jaguar.commons.web.ResultCode;
 import org.springframework.security.access.AccessDeniedException;
@@ -20,6 +21,7 @@ public class JaguarAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         JsonResult<Void> result = new JsonResult<>(ResultCode.FORBIDDEN, null, accessDeniedException.getMessage());
         try (PrintWriter writer = response.getWriter()) {
             writer.write(result.toJsonStr());

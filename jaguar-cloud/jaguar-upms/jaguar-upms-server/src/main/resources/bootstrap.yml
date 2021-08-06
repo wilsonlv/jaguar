@@ -15,3 +15,6 @@ spring:
           - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
   profiles:
     active: @profiles.active@
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: org.elasticsearch.xpack.sql.jdbc.EsDriver

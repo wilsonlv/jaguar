@@ -30,7 +30,7 @@ import java.util.List;
  */
 @Validated
 @RestController
-@RequestMapping("/system/mgm/role")
+@RequestMapping("/admin/role")
 @Api(tags = "系统角色表管理")
 public class RoleController extends BaseController<Role, RoleMapper, RoleService> {
 

@@ -1,30 +1,30 @@
 package top.wilsonlv.jaguar.test;
 
-import org.springframework.boot.SpringApplication;
+import com.hankcs.hanlp.HanLP;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.util.List;
 
 /**
  * @author lvws
  * @since 2021/7/12
  */
-@RestController
-@RequestMapping("/test")
 @SpringBootApplication
 public class TestApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(TestApplication.class, args);
+//        SpringApplication.run(TestApplication.class, args);
+
+
+//        List<Word> words = WordSegmenter.seg("杨尚川是APDPlat应用级产品开发平台的作者");
+//        System.out.println(words);
+//        words = WordSegmenter.segWithStopWords("杨尚川是APDPlat应用级产品开发平台的作者");
+//        System.out.println(words);
+
+        //doc→要作处理的文本，10→挑选权重排名前十
+
+
     }
 
-    @GetMapping("/download")
-    public void download(HttpServletResponse response) throws IOException {
-
-    }
 
 }

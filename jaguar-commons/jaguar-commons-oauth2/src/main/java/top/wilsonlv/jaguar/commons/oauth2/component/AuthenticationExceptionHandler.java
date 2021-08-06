@@ -2,6 +2,7 @@ package top.wilsonlv.jaguar.commons.oauth2.component;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import top.wilsonlv.jaguar.commons.web.JsonResult;
 import top.wilsonlv.jaguar.commons.web.ResultCode;
 import org.springframework.security.authentication.*;
@@ -53,6 +54,7 @@ public class AuthenticationExceptionHandler implements AuthenticationEntryPoint 
             log.error("其他错误 - [{}]", message);
         }
 
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         try (PrintWriter writer = response.getWriter()) {
             JsonResult<?> jsonResult = new JsonResult<>(resultCode, null, message);
             writer.write(JSONObject.toJSONString(jsonResult));

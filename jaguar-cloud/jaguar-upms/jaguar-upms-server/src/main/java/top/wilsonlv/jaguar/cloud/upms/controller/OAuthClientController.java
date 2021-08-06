@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import top.wilsonlv.jaguar.cloud.upms.mapper.ClientMapper;
 import top.wilsonlv.jaguar.cloud.upms.model.OauthClient;
-import top.wilsonlv.jaguar.cloud.upms.service.OAuthClientService;
+import top.wilsonlv.jaguar.cloud.upms.service.OauthClientService;
 import top.wilsonlv.jaguar.commons.basecrud.BaseController;
 import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import top.wilsonlv.jaguar.commons.web.JsonResult;
@@ -25,7 +25,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/admin/client")
 @Api(tags = "oauth2客户端管理")
-public class OAuthClientController extends BaseController<OauthClient, ClientMapper, OAuthClientService> {
+public class OAuthClientController extends BaseController<OauthClient, ClientMapper, OauthClientService> {
 
     @ApiOperation(value = "分页查询oauth2客户端")
     @GetMapping(value = "/page")

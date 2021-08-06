@@ -111,6 +111,7 @@
                 <artifactId>jaguar-commons-web</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-cache-field-edit</artifactId>
@@ -121,9 +122,15 @@
                 <artifactId>jaguar-field-edit-log</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>top.wilsonlv</groupId>
-                <artifactId>jaguar-handler-log</artifactId>
+                <artifactId>jaguar-upms-sdk</artifactId>
+                <version>${jaguar.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.wilsonlv</groupId>
+                <artifactId>jaguar-handler-log-client</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
 

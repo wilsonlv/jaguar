@@ -1,12 +1,16 @@
 package top.wilsonlv.jaguar.commons.data.encryption.util;
 
 import org.apache.commons.lang3.StringUtils;
-import top.wilsonlv.jaguar.commons.data.encryption.coder.DesCoder;
-import top.wilsonlv.jaguar.commons.data.encryption.coder.RsaCoder;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.DigestUtils;
+import top.wilsonlv.jaguar.commons.data.encryption.coder.DesCoder;
+import top.wilsonlv.jaguar.commons.data.encryption.coder.RsaCoder;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 
@@ -138,6 +142,36 @@ public final class EncryptionUtil {
      */
     public static boolean passwordUnmatched(String password) {
         return !PASSWORD_PATTERN.matcher(password).matches();
+    }
+
+    private static final char[] UPPER_CASE_LETTER = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+    private static final char[] LOWER_CASE_LETTER = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+    private static final char[] NUM = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
+    public static String randomPassword() {
+        return randomPassword(2, 2, 4);
+    }
+
+    public static String randomPassword(int upperCaseLetterLength, int lowerCaseLetterLength, int numLength) {
+        Random r = new Random();
+
+        List<Character> characters = new ArrayList<>(8);
+        for (int i = 0; i < upperCaseLetterLength; i++) {
+            characters.add(UPPER_CASE_LETTER[r.nextInt(UPPER_CASE_LETTER.length)]);
+        }
+
+        for (int i = 0; i < lowerCaseLetterLength; i++) {
+            characters.add(LOWER_CASE_LETTER[r.nextInt(LOWER_CASE_LETTER.length)]);
+        }
+
+        for (int i = 0; i < numLength; i++) {
+            characters.add(NUM[r.nextInt(NUM.length)]);
+        }
+
+        Collections.shuffle(characters);
+
+        Character[] characterArray = characters.toArray(new Character[0]);
+        return StringUtils.join(characterArray);
     }
 
 }

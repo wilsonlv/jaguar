@@ -1,0 +1,84 @@
+package top.wilsonlv.jaguar.cloud.upms.service;
+
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.data.redis.core.BoundValueOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import top.wilsonlv.jaguar.cloud.upms.mapper.ClientMapper;
+import top.wilsonlv.jaguar.cloud.upms.model.OauthClient;
+import top.wilsonlv.jaguar.commons.basecrud.BaseService;
+import top.wilsonlv.jaguar.commons.data.encryption.util.EncryptionUtil;
+import top.wilsonlv.jaguar.commons.oauth2.Oauth2Constant;
+
+import java.io.Serializable;
+import java.util.List;
+
+/**
+ * @author lvws
+ * @since 2021/6/29
+ */
+@Service
+@RequiredArgsConstructor
+public class OauthClientService extends BaseService<OauthClient, ClientMapper> implements InitializingBean {
+
+    private final PasswordEncoder passwordEncoder;
+
+    private final RedisTemplate<String, Serializable> redisTemplate;
+
+    //        Set<String> authorizedGrantTypes = new HashSet<>();
+//        authorizedGrantTypes.add("refresh_token");
+//        authorizedGrantTypes.add("authorization_code");
+//        authorizedGrantTypes.add("password");
+//
+//        BaseClientDetails clientDetails = new BaseClientDetails();
+//        clientDetails.setClientId(clientId);
+//        clientDetails.setClientSecret(passwordEncoder.encode("123456"));
+//        clientDetails.setAuthorizedGrantTypes(authorizedGrantTypes);
+//        clientDetails.setRegisteredRedirectUri(Collections.singleton("http://localhost:8081"));
+//        clientDetails.setAccessTokenValiditySeconds(3600);
+//        clientDetails.setRefreshTokenValiditySeconds(3600 * 24 * 7);
+//        clientDetails.setScope(Arrays.asList("个人信息", "全部信息"));
+//        clientDetails.setResourceIds(CollectionUtil.newHashSet(
+//                "jaguar-upms-server", "jaguar-auth-server", "jaguar-websocket-server",
+//                "jaguar-job-admin", "jaguar-job-executor"));
+//
+//        List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("feign");
+//        clientDetails.setAuthorities(new HashSet<>(authorities));
+//
+//        Map<String, Object> params = new HashMap<>();
+//        params.put("captcha", false);
+//        clientDetails.setAdditionalInformation(params);
+
+    public OauthClient loadClientByClientId(String clientId) {
+        return this.unique(Wrappers.<OauthClient>lambdaQuery()
+                .eq(OauthClient::getClientId, clientId));
+    }
+
+    @Override
+    public void afterPropertiesSet() {
+        List<OauthClient> oauthClients = this.list(Wrappers.emptyWrapper());
+        for (OauthClient oauthClient : oauthClients) {
+            BoundValueOperations<String, Serializable> operations =
+                    redisTemplate.boundValueOps(Oauth2Constant.CLIENT_CACHE_KEY_PREFIX + oauthClient.getClientId());
+            operations.set(oauthClient);
+        }
+    }
+
+    public static void main(String[] args) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        for (int i = 0; i < 5; i++) {
+            String encode = encoder.encode(EncryptionUtil.randomPassword(8, 8, 8));
+            System.out.println(encode);
+        }
+
+        System.out.println(IdWorker.getId());
+        System.out.println(IdWorker.getId());
+    }
+
+}

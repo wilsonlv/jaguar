@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>jaguar-handler-log</artifactId>
+        <groupId>top.wilsonlv</groupId>
+        <version>master</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>jaguar-handler-log-server</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>top.wilsonlv</groupId>
+            <artifactId>jaguar-commons-base-crud</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>top.wilsonlv</groupId>
+            <artifactId>jaguar-handler-log-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>top.wilsonlv</groupId>
+            <artifactId>jaguar-upms-sdk</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch.plugin</groupId>
+            <artifactId>x-pack-sql-jdbc</artifactId>
+            <version>7.9.3</version>
+        </dependency>
+    </dependencies>
+
+</project>

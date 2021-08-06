@@ -30,7 +30,7 @@ import javax.validation.Valid;
  */
 @Validated
 @RestController
-@RequestMapping("/system/mgm/user")
+@RequestMapping("/admin/user")
 @Api(tags = "系统用户表管理")
 public class UserController extends BaseController<User, UserMapper, UserService> {
 
