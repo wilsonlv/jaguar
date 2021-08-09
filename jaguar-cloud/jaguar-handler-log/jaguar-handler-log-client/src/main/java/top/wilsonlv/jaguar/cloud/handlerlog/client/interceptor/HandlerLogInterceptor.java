@@ -121,6 +121,7 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
             handlerLog.setStatus(response.getStatus());
             handlerLog.setErrorMsg(ExceptionUtils.getMessage(handlerException));
 
+            log.info("send handler log");
             jmsQueueTemplate.convertAndSend(HandlerLogConstant.DESTINATION_HANDLER_LOG, handlerLog);
         }
     }

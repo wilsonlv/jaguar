@@ -1,6 +1,5 @@
 package top.wilsonlv.jaguar.commons.web.util;
 
-import cn.hutool.core.codec.Base64;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
@@ -11,7 +10,6 @@ import org.springframework.web.util.WebUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.*;
-import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 
 /**
@@ -20,8 +18,6 @@ import java.util.Enumeration;
  */
 @Slf4j
 public class WebUtil extends WebUtils {
-
-    private static final String BASIC_ = "Basic ";
 
     private static final String UNKNOWN = "unknown";
 
@@ -57,36 +53,6 @@ public class WebUtil extends WebUtils {
         return ((ServletRequestAttributes) requestAttributes).getResponse();
     }
 
-    /**
-     * 解析clientId
-     *
-     * @param header 请求头
-     * @return clientId
-     */
-    public String extractClientId(String header) {
-        if (StringUtils.isBlank(header) || !header.startsWith(BASIC_)) {
-            log.debug("请求头中client信息为空: {}", header);
-            return null;
-        }
-
-        byte[] base64Token = header.substring(6).getBytes(StandardCharsets.UTF_8);
-        byte[] decoded;
-        try {
-            decoded = Base64.decode(base64Token);
-        } catch (IllegalArgumentException e) {
-            log.debug("Failed to decode basic authentication token: {}", header);
-            return null;
-        }
-
-        String token = new String(decoded, StandardCharsets.UTF_8);
-
-        int colon = token.indexOf(":");
-        if (colon == -1) {
-            log.debug("Invalid basic authentication token: {}", header);
-            return null;
-        }
-        return token.substring(0, colon);
-    }
 
     /**
      * 获取客户端IP

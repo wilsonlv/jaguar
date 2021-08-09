@@ -1,13 +1,14 @@
 package top.wilsonlv.jaguar.cloud.handlerlog.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
+import cn.hutool.core.date.DatePattern;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
 
 import java.time.LocalDateTime;
@@ -37,6 +38,7 @@ public class HandlerLog extends BaseModel {
     /**
      * 访问时间
      */
+    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = DatePattern.NORM_DATETIME_PATTERN)
     @TableField("accessTime")
     private LocalDateTime accessTime;
     /**

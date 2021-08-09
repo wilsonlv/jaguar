@@ -31,7 +31,7 @@ public class ClientDetailsImpl implements ClientDetails {
 
     private Collection<String> autoApproveScopes;
 
-    private Collection<GrantedAuthority> authorities;
+    private Collection<GrantedAuthority> authorities = Collections.emptySet();
 
     private Integer accessTokenValiditySeconds;
 

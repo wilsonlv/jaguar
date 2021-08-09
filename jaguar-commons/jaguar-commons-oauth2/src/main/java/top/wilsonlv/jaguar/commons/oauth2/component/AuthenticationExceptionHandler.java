@@ -45,13 +45,11 @@ public class AuthenticationExceptionHandler implements AuthenticationEntryPoint 
         } else if (e instanceof InternalAuthenticationServiceException) {
             if (e.getCause() != null) {
                 message = e.getCause().getMessage();
-                log.error("其他错误 - [{}]", message);
-            } else {
-                log.error("内部错误 - [{}]", message);
             }
+            log.error(e.getMessage(), e);
         } else {
             // 其他错误
-            log.error("其他错误 - [{}]", message);
+            log.error(e.getMessage(), e);
         }
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

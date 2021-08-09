@@ -1,10 +1,14 @@
 package top.wilsonlv.jaguar.cloud.handlerlog.model;
 
+import cn.hutool.core.date.DatePattern;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
 import top.wilsonlv.jaguar.commons.enums.ClientType;
 import top.wilsonlv.jaguar.commons.enums.UserType;
@@ -21,7 +25,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("login_log")
-@Document(indexName = "handler_log")
+@Document(indexName = "login_log")
 @EqualsAndHashCode(callSuper = false)
 public class LoginLog extends BaseModel {
 
@@ -60,6 +64,7 @@ public class LoginLog extends BaseModel {
     /**
      * 登录时间
      */
+    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = DatePattern.NORM_DATETIME_PATTERN)
     @TableField("loginTime")
     private LocalDateTime loginTime;
     /**
@@ -116,6 +121,6 @@ public class LoginLog extends BaseModel {
      * 租户
      */
     @TableField("tenantId")
-    private String tenantId;
+    private Long tenantId;
 
 }

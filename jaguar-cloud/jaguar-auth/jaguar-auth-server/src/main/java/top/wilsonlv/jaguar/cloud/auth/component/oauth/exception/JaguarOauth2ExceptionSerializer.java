@@ -21,7 +21,7 @@ public class JaguarOauth2ExceptionSerializer extends StdSerializer<JaguarOauth2E
     public void serialize(JaguarOauth2Exception value, JsonGenerator gen, SerializerProvider provider) throws IOException {
         gen.writeStartObject();
         gen.writeNumberField("resultCode", ResultCode.CONFLICT.getValue());
-        gen.writeStringField("message", value.getMessage());
+        gen.writeStringField("i18n", value.getMessage());
         gen.writeNumberField("timestamp", System.currentTimeMillis());
         gen.writeEndObject();
     }

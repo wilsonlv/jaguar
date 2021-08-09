@@ -87,6 +87,6 @@ public class LoginLogSaveDTO implements Serializable {
     /**
      * 租户
      */
-    private String tenantId;
+    private Long tenantId;
 
 }
