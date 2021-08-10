@@ -11,7 +11,7 @@ public enum UserType {
      */
     ADMIN,
     /**
-     * 租户
+     * 平台租户
      */
     TENANT,
     /**

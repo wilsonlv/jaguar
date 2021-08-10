@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import top.wilsonlv.jaguar.commons.enums.UserType;
 import top.wilsonlv.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
 import top.wilsonlv.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler;
 import top.wilsonlv.jaguar.commons.oauth2.properties.SpringSecurityProperties;
@@ -49,9 +50,13 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 //不需要认证就可以访问的
-                .authorizeRequests().antMatchers(springSecurityProperties.getIgnoreUrls()).permitAll()
+                .authorizeRequests()
+                .antMatchers("/admin/**").hasRole(UserType.ADMIN.name())
+                .antMatchers("/tenant/**").hasRole(UserType.TENANT.name())
+                .antMatchers("/user/**").hasRole(UserType.USER.name())
                 .antMatchers("/swagger-resources", "/swagger-resources/**", "/v2/**").permitAll()
                 .antMatchers("/druid/**").permitAll()
+                .antMatchers(springSecurityProperties.getIgnoreUrls()).permitAll()
                 //其余都需要认证
                 .anyRequest()
                 .authenticated()

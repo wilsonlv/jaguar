@@ -3,6 +3,7 @@ package top.wilsonlv.jaguar.cloud.auth.component.oauth.exception;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import top.wilsonlv.jaguar.commons.web.JsonResult;
 import top.wilsonlv.jaguar.commons.web.ResultCode;
 
 import java.io.IOException;
@@ -19,10 +20,6 @@ public class JaguarOauth2ExceptionSerializer extends StdSerializer<JaguarOauth2E
 
     @Override
     public void serialize(JaguarOauth2Exception value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        gen.writeStartObject();
-        gen.writeNumberField("resultCode", ResultCode.CONFLICT.getValue());
-        gen.writeStringField("i18n", value.getMessage());
-        gen.writeNumberField("timestamp", System.currentTimeMillis());
-        gen.writeEndObject();
+        gen.writeObject(new JsonResult<>(ResultCode.CONFLICT, null, value.getMessage()));
     }
 }

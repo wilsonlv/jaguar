@@ -31,10 +31,10 @@ import top.wilsonlv.jaguar.commons.web.JsonResult;
 @Validated
 @RestController
 @RequestMapping("/admin/loginLog")
-@Api(tags = "系统登录日志表管理")
+@Api(tags = "登录日志管理")
 public class LoginLogController extends BaseController<LoginLog, LoginLogMapper, LoginLogService> {
 
-    @ApiOperation(value = "查询系统登录日志表")
+    @ApiOperation(value = "查询登录日志")
     @PreAuthorize("hasAuthority('登录日志管理')")
     @GetMapping(value = "/page")
     public JsonResult<Page<LoginLog>> page(

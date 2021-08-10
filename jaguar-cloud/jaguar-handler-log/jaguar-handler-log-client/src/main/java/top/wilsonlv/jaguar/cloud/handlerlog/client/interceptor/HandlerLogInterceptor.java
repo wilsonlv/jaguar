@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import top.wilsonlv.jaguar.cloud.handlerlog.client.HandlerLogConstant;
+import top.wilsonlv.jaguar.cloud.handlerlog.client.advice.JsonResultResponseAdvice;
 import top.wilsonlv.jaguar.cloud.handlerlog.client.dto.HandlerLogSaveDTO;
 import top.wilsonlv.jaguar.commons.oauth2.model.SecurityUser;
 import top.wilsonlv.jaguar.commons.oauth2.util.SecurityUtil;
@@ -43,6 +44,9 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
      */
     public static final ThreadLocal<HandlerLogSaveDTO> HANDLER_LOG = new NamedThreadLocal<>("HANDLER_LOG");
 
+    private static final String ACTUATOR = "/actuator";
+    private static final String ERROR = "/error";
+
     private static final UASparser UAS_PARSER;
 
     @Autowired
@@ -67,9 +71,6 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
 
         return userAgentInfo.getOsName() + " " + userAgentInfo.getType() + " " + userAgentInfo.getUaName();
     }
-
-    private static final String ACTUATOR ="/actuator";
-    private static final String ERROR ="/error";
 
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {
@@ -124,6 +125,8 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
             log.info("send handler log");
             jmsQueueTemplate.convertAndSend(HandlerLogConstant.DESTINATION_HANDLER_LOG, handlerLog);
         }
+
+        JsonResultResponseAdvice.JSON_RESULT.remove();
     }
 
 }
