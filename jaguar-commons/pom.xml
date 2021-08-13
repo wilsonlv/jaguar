@@ -17,12 +17,16 @@
         <module>jaguar-commons-aviator</module>
         <module>jaguar-commons-base-crud</module>
         <module>jaguar-commons-bom</module>
+        <module>jaguar-commons-captcha</module>
         <module>jaguar-commons-cloud-client</module>
         <module>jaguar-commons-encryption</module>
+        <module>jaguar-commons-enums</module>
         <module>jaguar-commons-export-csv</module>
+        <module>jaguar-commons-feign</module>
         <module>jaguar-commons-monitor-client</module>
         <module>jaguar-commons-mybatis-plus</module>
         <module>jaguar-commons-oauth2</module>
+        <module>jaguar-commons-pdf</module>
         <module>jaguar-commons-pinyin</module>
         <module>jaguar-commons-qrcode</module>
         <module>jaguar-commons-redis</module>
@@ -30,9 +34,6 @@
         <module>jaguar-commons-swagger</module>
         <module>jaguar-commons-tenant</module>
         <module>jaguar-commons-web</module>
-        <module>jaguar-commons-feign</module>
-        <module>jaguar-commons-captcha</module>
-        <module>jaguar-commons-enums</module>
     </modules>
 
 </project>
