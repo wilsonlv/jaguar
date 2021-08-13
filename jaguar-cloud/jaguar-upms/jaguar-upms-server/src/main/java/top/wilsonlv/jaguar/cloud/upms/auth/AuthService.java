@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Set;
 
@@ -37,7 +38,7 @@ public class AuthService extends BaseService<User, UserMapper> implements UserDe
     public User getDetail(User user) {
         //获取角色
         List<Role> roles = userRoleService.listRoleByUserId(user.getId());
-        user.setRoles(roles);
+//        user.setRoles(roles);
 
         //获取菜单功能
 //        Set<String> menuFunctionNames = userRoleService.listMenuFunctionNamesByUserId(user.getId());
@@ -86,6 +87,7 @@ public class AuthService extends BaseService<User, UserMapper> implements UserDe
             throw new UsernameNotFoundException(null);
         }
 
-        return this.getDetail(user);
+//        return this.getDetail(user);
+        return null;
     }
 }

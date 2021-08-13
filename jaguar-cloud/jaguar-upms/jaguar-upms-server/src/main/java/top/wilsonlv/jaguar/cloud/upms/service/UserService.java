@@ -1,23 +1,27 @@
 package top.wilsonlv.jaguar.cloud.upms.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import top.wilsonlv.jaguar.cloud.upms.mapper.UserMapper;
 import top.wilsonlv.jaguar.cloud.upms.model.Role;
 import top.wilsonlv.jaguar.cloud.upms.model.User;
+import top.wilsonlv.jaguar.cloud.upms.sdk.vo.RoleVO;
+import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
 import top.wilsonlv.jaguar.commons.basecrud.Assert;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;
 import top.wilsonlv.jaguar.commons.data.encryption.util.EncryptionUtil;
 import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
-import top.wilsonlv.jaguar.cloud.upms.mapper.UserMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -30,11 +34,37 @@ import java.util.List;
 @Service
 public class UserService extends BaseService<User, UserMapper> {
 
-    @Lazy
+
     @Autowired
     private UserRoleService userRoleService;
+    @Autowired
+    private RoleMenuService roleMenuService;
+
 
     /*----------  通用接口  ----------*/
+
+    public UserVO getByPrincipalWithRoleAndPermission(String username) {
+        User user = this.unique(Wrappers.lambdaQuery(User.class)
+                .eq(User::getUserAccount, username).or()
+                .eq(User::getUserPhone, username).or()
+                .eq(User::getUserEmail, username));
+        if (user == null) {
+            return null;
+        }
+
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(user, userVO);
+
+        List<Role> roles = userRoleService.listRoleByUserId(user.getId());
+        List<RoleVO> roleVOList = roles.stream().map(role ->
+                new RoleVO(role.getRoleName(), role.getRoleBuiltIn(), role.getRoleEnable()))
+                .collect(Collectors.toList());
+        userVO.setRoles(roleVOList);
+
+
+
+        return userVO;
+    }
 
     public User getByAccount(@NotBlank String account) {
         return this.unique(JaguarLambdaQueryWrapper.<User>newInstance()
@@ -54,7 +84,7 @@ public class UserService extends BaseService<User, UserMapper> {
     /**
      * 获取用户详情
      *
-     * @param currentUser                     用户ID
+     * @param currentUser 用户ID
      * @return 用户详情
      */
     @Transactional
@@ -63,7 +93,7 @@ public class UserService extends BaseService<User, UserMapper> {
 
         //获取角色
         List<Role> roles = userRoleService.listRoleByUserId(user.getId());
-        user.setRoles(roles);
+//        user.setRoles(roles);
 
         return user;
     }
@@ -75,7 +105,7 @@ public class UserService extends BaseService<User, UserMapper> {
         page = this.query(page, wrapper);
         for (User user : page.getRecords()) {
             List<Role> userRoleList = userRoleService.listRoleByUserId(user.getId());
-            user.setRoles(userRoleList);
+//            user.setRoles(userRoleList);
         }
         return page;
     }
@@ -84,7 +114,7 @@ public class UserService extends BaseService<User, UserMapper> {
      * 新建用户
      */
     @Transactional
-    public User create(User user) {
+    public void create(User user) {
         Assert.notNull(user.getUserPassword(), "用户密码");
         if (EncryptionUtil.passwordUnmatched(user.getUserPassword())) {
             throw new CheckedException("密码格式为包含数字，字母大小写的6-20位字符串！");
@@ -106,15 +136,14 @@ public class UserService extends BaseService<User, UserMapper> {
         user.setUserLocked(false);
         this.insert(user);
 
-        userRoleService.relateRoles(user.getId(), user.getRoleIds());
-        return user;
+//        userRoleService.relateRoles(user.getId(), user.getRoleIds());
     }
 
     /**
      * 修改用户信息
      */
     @Transactional
-    public User modify(User user) {
+    public void modify(User user) {
         User persist = this.getById(user.getId());
 
         if (StringUtils.isNotBlank(user.getUserPhone())) {
@@ -132,8 +161,8 @@ public class UserService extends BaseService<User, UserMapper> {
         user.setUserLocked(null);
         this.updateById(user);
 
-        userRoleService.relateRoles(user.getId(), user.getRoleIds());
-        return user;
+//        userRoleService.relateRoles(user.getId(), user.getRoleIds());
     }
+
 
 }

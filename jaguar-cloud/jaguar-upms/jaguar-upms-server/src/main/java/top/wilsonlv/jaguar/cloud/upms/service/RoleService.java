@@ -42,7 +42,7 @@ public class RoleService extends BaseService<Role, RoleMapper> {
         page = this.query(page, wrapper);
         for (Role role : page.getRecords()) {
             List<User> users = userRoleService.listUserByRoleId(role.getId());
-            role.setUsers(users);
+//            role.setUsers(users);
         }
         return page;
     }
@@ -52,7 +52,7 @@ public class RoleService extends BaseService<Role, RoleMapper> {
 
         List<RoleMenu> roleMenus = roleMenuService.list(JaguarLambdaQueryWrapper.<RoleMenu>newInstance()
                 .eq(RoleMenu::getRoleId, roleId));
-        role.setRoleMenus(roleMenus);
+//        role.setRoleMenus(roleMenus);
 
         return role;
     }
@@ -65,7 +65,7 @@ public class RoleService extends BaseService<Role, RoleMapper> {
 
         this.saveOrUpdate(role);
 
-        roleMenuService.relateMenuFunctions(role.getId(), role.getMenuFunctionNames());
+//        roleMenuService.relateMenuFunctions(role.getId(), role.getMenuFunctionNames());
     }
 
     @Transactional

@@ -31,25 +31,28 @@ CREATE TABLE `jaguar_cloud_upms_oauth_client`
   COLLATE = utf8mb4_bin COMMENT = 'oauth2客户端'
   ROW_FORMAT = Dynamic;
 
+
 DROP TABLE IF EXISTS `jaguar_cloud_upms_user`;
 CREATE TABLE `jaguar_cloud_upms_user`
 (
-    `id_`            bigint(20)   NOT NULL COMMENT 'ID',
-    `user_account`   varchar(50)  NOT NULL COMMENT '用户账号（唯一）',
-    `user_phone`     varchar(11)  NULL DEFAULT NULL COMMENT '用户手机号（唯一）',
-    `user_email`     varchar(50)  NULL DEFAULT NULL COMMENT '用户邮箱（唯一）',
-    `user_password`  varchar(100) NOT NULL COMMENT '用户密码',
-    `user_nick_name` varchar(20)  NULL DEFAULT NULL COMMENT '用户昵称',
-    `user_enable`    tinyint(1)   NULL DEFAULT 1 COMMENT '用户是否启用',
-    `user_locked`    tinyint(1)   NULL DEFAULT 0 COMMENT '用户是否锁定',
-    `remark_`        varchar(50)  NULL DEFAULT NULL COMMENT '备注',
-    `create_by`      varchar(50)  NULL COMMENT '创建人',
-    `create_user_id` bigint(20)   NULL COMMENT '创建人ID',
-    `create_time`    timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
-    `update_by`      varchar(50)  NULL COMMENT '更新人',
-    `update_user_id` bigint(20)   NULL COMMENT '更新人ID',
-    `update_time`    timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '更新时间',
-    `deleted_`       tinyint(1)   NULL DEFAULT 0 COMMENT '逻辑删除标记(0--正常 1--删除)',
+    `id_`                            bigint(20)   NOT NULL COMMENT 'ID',
+    `user_account`                   varchar(50)  NOT NULL COMMENT '用户账号（唯一）',
+    `user_built_in`                  tinyint(1)   NULL DEFAULT 0 COMMENT '是否内置用户',
+    `user_phone`                     varchar(11)  NULL DEFAULT NULL COMMENT '用户手机号（唯一）',
+    `user_email`                     varchar(50)  NULL DEFAULT NULL COMMENT '用户邮箱（唯一）',
+    `user_password`                  varchar(100) NOT NULL COMMENT '用户密码',
+    `user_password_last_modify_time` datetime(0)  NULL COMMENT '密码上次修改时间',
+    `user_nick_name`                 varchar(20)  NULL DEFAULT NULL COMMENT '用户昵称',
+    `user_enable`                    tinyint(1)   NULL DEFAULT 1 COMMENT '用户是否启用',
+    `user_locked`                    tinyint(1)   NULL DEFAULT 0 COMMENT '用户是否锁定',
+    `remark_`                        varchar(50)  NULL DEFAULT NULL COMMENT '备注',
+    `create_by`                      varchar(50)  NULL COMMENT '创建人',
+    `create_user_id`                 bigint(20)   NULL COMMENT '创建人ID',
+    `create_time`                    timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+    `update_by`                      varchar(50)  NULL COMMENT '更新人',
+    `update_user_id`                 bigint(20)   NULL COMMENT '更新人ID',
+    `update_time`                    timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+    `deleted_`                       tinyint(1)   NULL DEFAULT 0 COMMENT '逻辑删除标记(0--正常 1--删除)',
     PRIMARY KEY (`id_`) USING BTREE,
     UNIQUE INDEX `user_account` (`user_account`) USING BTREE,
     UNIQUE INDEX `user_phone` (`user_phone`) USING BTREE,
@@ -60,9 +63,10 @@ CREATE TABLE `jaguar_cloud_upms_user`
   ROW_FORMAT = Dynamic;
 
 INSERT INTO `jaguar_cloud_upms_user`
-VALUES (1419901871475785729, 'admin', NULL, NULL, '$2a$10$zz0cVKy8NFtiR7/vP4mWHOiS144mBXkjlqQ81Cjbox3ayekIa02HG', '管理员',
-        1, 0, null, null, null, null, null, null, null, 0);
+VALUES (1419901871475785729, 'admin', 1, NULL, NULL, '$2a$10$zz0cVKy8NFtiR7/vP4mWHOiS144mBXkjlqQ81Cjbox3ayekIa02HG',
+        null, '管理员', 1, 0, null, null, null, null, null, null, null, 0);
 -- admin/Aa123456
+
 
 DROP TABLE IF EXISTS `jaguar_cloud_upms_role`;
 CREATE TABLE `jaguar_cloud_upms_role`

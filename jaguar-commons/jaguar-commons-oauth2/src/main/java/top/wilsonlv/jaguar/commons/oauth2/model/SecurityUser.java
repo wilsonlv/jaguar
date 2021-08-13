@@ -18,6 +18,8 @@ public class SecurityUser implements UserDetails {
 
     private Long tenantId;
 
+    private Boolean buildIn = false;
+
     private String username;
 
     private String password;
@@ -49,7 +51,7 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return this.passwordLastModifyTime == null || LocalDateTime.now().plusDays(180).isAfter(this.passwordLastModifyTime);
+        return this.buildIn || (this.passwordLastModifyTime != null && this.passwordLastModifyTime.plusDays(90).isAfter(LocalDateTime.now()));
     }
 
     @Override

@@ -34,28 +34,17 @@ public class Role extends BaseModel {
     /**
      * 角色名称
      */
-    @ApiModelProperty(value = "角色名称", required = true)
-    @NotBlank(message = "角色名称为非空")
     @TableField("role_name")
     private String roleName;
     /**
+     * 是否内置角色
+     */
+    @TableField("role_built_in")
+    private String roleBuiltIn;
+    /**
      * 角色是否启用
      */
-    @ApiModelProperty(value = "角色是否启用", required = true)
-    @NotNull(message = "角色是否启用为非空")
     @TableField("role_enable")
     private Boolean roleEnable;
-
-    @ApiModelProperty(value = "菜单和功能名称集合")
-    @TableField(exist = false)
-    private Set<String> menuFunctionNames = new HashSet<>();
-
-    @ApiModelProperty(hidden = true)
-    @TableField(exist = false)
-    private List<User> users = new ArrayList<>();
-
-    @ApiModelProperty(hidden = true)
-    @TableField(exist = false)
-    private List<RoleMenu> roleMenus = new ArrayList<>();
 
 }

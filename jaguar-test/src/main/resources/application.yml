@@ -1,0 +1,6 @@
+server:
+  port: 26666
+
+spring:
+  application:
+    name: jaguar-test
