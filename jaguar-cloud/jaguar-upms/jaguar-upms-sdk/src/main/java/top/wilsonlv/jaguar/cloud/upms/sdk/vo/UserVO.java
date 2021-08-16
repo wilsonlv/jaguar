@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author lvws
@@ -69,5 +70,10 @@ public class UserVO implements Serializable {
      */
     @ApiModelProperty(value = "用户角色")
     private List<RoleVO> roles;
+    /**
+     * 用户权限
+     */
+    @ApiModelProperty(value = "用户权限")
+    private Set<String> permissions;
 
 }

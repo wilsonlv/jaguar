@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import top.wilsonlv.jaguar.cloud.upms.model.User;
+import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
 import top.wilsonlv.jaguar.commons.basecrud.BaseController;
 import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import top.wilsonlv.jaguar.commons.web.JsonResult;
@@ -58,8 +59,8 @@ public class UserController extends BaseController<User, UserMapper, UserService
     @ApiOperation(value = "系统用户表详情")
     @PreAuthorize("hasAuthority('用户管理')")
     @GetMapping(value = "/{id}")
-    public JsonResult<User> detail(@PathVariable Long id) {
-        User user = service.getDetail(id);
+    public JsonResult<UserVO> detail(@PathVariable Long id) {
+        UserVO user = service.getDetail(id);
         return success(user);
     }
 

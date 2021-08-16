@@ -1,16 +1,10 @@
 package top.wilsonlv.jaguar.cloud.upms.model;
 
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.oauth2.provider.ClientDetails;
-
-import java.util.*;
 
 /**
  * @author lvws

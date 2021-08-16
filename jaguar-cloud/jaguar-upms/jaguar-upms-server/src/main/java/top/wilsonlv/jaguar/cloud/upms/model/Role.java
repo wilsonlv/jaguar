@@ -2,30 +2,20 @@ package top.wilsonlv.jaguar.cloud.upms.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 /**
  * <p>
- * 系统角色表
+ * 角色表
  * </p>
  *
  * @author lvws
- * @since 2019-11-08
+ * @since 2021-08-16
  */
 @Data
-@ApiModel
-@TableName("jaguar_modules_system_role")
+@TableName("jaguar_cloud_upms_role")
 @EqualsAndHashCode(callSuper = true)
 public class Role extends BaseModel {
 

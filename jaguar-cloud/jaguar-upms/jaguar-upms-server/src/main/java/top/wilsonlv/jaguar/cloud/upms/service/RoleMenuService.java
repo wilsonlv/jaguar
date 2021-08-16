@@ -1,13 +1,9 @@
 package top.wilsonlv.jaguar.cloud.upms.service;
 
+import org.springframework.stereotype.Service;
+import top.wilsonlv.jaguar.cloud.upms.mapper.RoleMenuMapper;
 import top.wilsonlv.jaguar.cloud.upms.model.RoleMenu;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;
-import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
-import top.wilsonlv.jaguar.cloud.upms.mapper.RoleMenuMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
@@ -22,8 +18,10 @@ import java.util.Set;
 @Service
 public class RoleMenuService extends BaseService<RoleMenu, RoleMenuMapper> {
 
-    @Autowired
-    private UserRoleService userRoleService;
+
+    public Set<String> listPermissionsByRoleIds(Set<Long> roleIds) {
+        return this.mapper.listPermissionsByRoleIds(roleIds);
+    }
 
 
     /*---------- 个人用户菜单权限查询 ----------*/
@@ -32,34 +30,5 @@ public class RoleMenuService extends BaseService<RoleMenu, RoleMenuMapper> {
 
     /*---------- 权限管理 ----------*/
 
-    /**
-     * 关联菜单和功能
-     *
-     * @param roleId            角色ID
-     * @param menuFunctionNames 菜单功能名称集合
-     */
-    @Transactional
-    public void relateMenuFunctions(Long roleId, Set<String> menuFunctionNames) {
-        for (String menuFunctionName : menuFunctionNames) {
-//            if (!MenuFunction.hasName(menuFunctionName)) {
-//                throw new CheckedException("无效的菜单或功能名称");
-//            }
-
-            RoleMenu roleMenu = new RoleMenu();
-            roleMenu.setRoleId(roleId);
-            roleMenu.setMenuFuncionName(menuFunctionName);
-
-            if (this.exists(JaguarLambdaQueryWrapper.<RoleMenu>newInstance()
-                    .setEntity(roleMenu))) {
-                continue;
-            }
-
-            this.insert(roleMenu);
-        }
-
-        this.delete(JaguarLambdaQueryWrapper.<RoleMenu>newInstance()
-                .eq(RoleMenu::getRoleId, roleId)
-                .notIn(RoleMenu::getMenuFuncionName, menuFunctionNames));
-    }
 
 }

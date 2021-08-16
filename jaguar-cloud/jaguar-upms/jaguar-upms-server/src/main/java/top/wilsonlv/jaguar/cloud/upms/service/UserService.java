@@ -14,14 +14,17 @@ import top.wilsonlv.jaguar.cloud.upms.model.User;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.RoleVO;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
 import top.wilsonlv.jaguar.commons.basecrud.Assert;
+import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;
 import top.wilsonlv.jaguar.commons.data.encryption.util.EncryptionUtil;
 import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 /**
  * <p>
@@ -34,7 +37,6 @@ import java.util.stream.Collectors;
 @Service
 public class UserService extends BaseService<User, UserMapper> {
 
-
     @Autowired
     private UserRoleService userRoleService;
     @Autowired
@@ -42,29 +44,6 @@ public class UserService extends BaseService<User, UserMapper> {
 
 
     /*----------  通用接口  ----------*/
-
-    public UserVO getByPrincipalWithRoleAndPermission(String username) {
-        User user = this.unique(Wrappers.lambdaQuery(User.class)
-                .eq(User::getUserAccount, username).or()
-                .eq(User::getUserPhone, username).or()
-                .eq(User::getUserEmail, username));
-        if (user == null) {
-            return null;
-        }
-
-        UserVO userVO = new UserVO();
-        BeanUtils.copyProperties(user, userVO);
-
-        List<Role> roles = userRoleService.listRoleByUserId(user.getId());
-        List<RoleVO> roleVOList = roles.stream().map(role ->
-                new RoleVO(role.getRoleName(), role.getRoleBuiltIn(), role.getRoleEnable()))
-                .collect(Collectors.toList());
-        userVO.setRoles(roleVOList);
-
-
-
-        return userVO;
-    }
 
     public User getByAccount(@NotBlank String account) {
         return this.unique(JaguarLambdaQueryWrapper.<User>newInstance()
@@ -81,6 +60,19 @@ public class UserService extends BaseService<User, UserMapper> {
                 .eq(User::getUserEmail, email));
     }
 
+    public UserVO getByPrincipalWithRoleAndPermission(String username) {
+        User user = this.unique(Wrappers.lambdaQuery(User.class)
+                .select(BaseModel::getId)
+                .eq(User::getUserAccount, username).or()
+                .eq(User::getUserPhone, username).or()
+                .eq(User::getUserEmail, username));
+        if (user == null) {
+            return null;
+        }
+
+        return this.getDetail(user.getId());
+    }
+
     /**
      * 获取用户详情
      *
@@ -88,14 +80,27 @@ public class UserService extends BaseService<User, UserMapper> {
      * @return 用户详情
      */
     @Transactional
-    public User getDetail(Long currentUser) {
+    public UserVO getDetail(Long currentUser) {
         User user = this.getById(currentUser);
 
-        //获取角色
-        List<Role> roles = userRoleService.listRoleByUserId(user.getId());
-//        user.setRoles(roles);
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(user, userVO);
 
-        return user;
+        List<Role> roles = userRoleService.listRoleByUserId(user.getId());
+        userVO.setRoles(new ArrayList<>(roles.size()));
+
+        Set<Long> roleIds = new HashSet<>();
+        for (Role role : roles) {
+            RoleVO roleVO = new RoleVO(role.getRoleName(), role.getRoleBuiltIn(), role.getRoleEnable());
+            userVO.getRoles().add(roleVO);
+
+            roleIds.add(role.getId());
+        }
+
+        Set<String> permissions = roleMenuService.listPermissionsByRoleIds(roleIds);
+        userVO.setPermissions(permissions);
+
+        return userVO;
     }
 
     /*----------  管理类接口  ----------*/
