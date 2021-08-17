@@ -59,7 +59,7 @@ public class RoleController extends BaseController<Role, RoleMapper, RoleService
         return success(role);
     }
 
-    @ApiOperation(value = "新建角色")
+    @ApiOperation(value = "新增角色")
     @PreAuthorize("hasAuthority('角色管理')")
     @PostMapping
     public JsonResult<Void> create(@Valid @RequestBody RoleCreateDTO role) {

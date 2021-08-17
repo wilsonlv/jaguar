@@ -31,10 +31,6 @@ public class RoleMenuService extends BaseService<RoleMenu, RoleMenuMapper> {
         return this.mapper.listPermissionsByRoleIds(roleIds);
     }
 
-    /*---------- 个人用户菜单权限查询 ----------*/
-
-
-
     /*---------- 权限管理 ----------*/
 
     @Transactional

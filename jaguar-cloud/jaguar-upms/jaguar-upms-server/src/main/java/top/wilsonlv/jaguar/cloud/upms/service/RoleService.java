@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.klock.annotation.Klock;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import top.wilsonlv.jaguar.cloud.upms.constant.LockNameConstant;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.RoleCreateDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.RoleModifyDTO;
 import top.wilsonlv.jaguar.cloud.upms.mapper.RoleMapper;
@@ -77,6 +79,7 @@ public class RoleService extends BaseService<Role, RoleMapper> {
         return roles;
     }
 
+    @Klock(name = LockNameConstant.ROLE_CREATE_MODIFY_LOCK)
     @Transactional
     public void create(RoleCreateDTO roleCreateDTO) {
         Role unique = this.getByRoleName(roleCreateDTO.getRoleName());
@@ -91,6 +94,7 @@ public class RoleService extends BaseService<Role, RoleMapper> {
         roleMenuService.relateMenus(role.getId(), roleCreateDTO.getMenuIds());
     }
 
+    @Klock(name = LockNameConstant.ROLE_CREATE_MODIFY_LOCK)
     @Transactional
     public void modify(RoleModifyDTO roleModifyDTO) {
         this.getById(roleModifyDTO.getId());

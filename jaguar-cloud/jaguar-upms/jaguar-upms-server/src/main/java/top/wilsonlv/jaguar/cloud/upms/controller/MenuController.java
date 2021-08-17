@@ -5,7 +5,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import top.wilsonlv.jaguar.cloud.upms.controller.dto.RoleCreateDTO;
+import top.wilsonlv.jaguar.cloud.upms.controller.dto.MenuCreateDTO;
+import top.wilsonlv.jaguar.cloud.upms.controller.dto.MenuModifyDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.RoleModifyDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.vo.MenuVO;
 import top.wilsonlv.jaguar.cloud.upms.mapper.MenuMapper;
@@ -31,35 +32,34 @@ import java.util.List;
 @Api(tags = "菜单管理")
 public class MenuController extends BaseController<Menu, MenuMapper, MenuService> {
 
-    @ApiOperation(value = "查询菜单")
+    @ApiOperation(value = "查询菜单树")
     @PreAuthorize("hasAuthority('菜单管理')")
     @GetMapping(value = "/tree")
     public JsonResult<List<MenuVO>> tree() {
-        return null;
+        return success(service.tree(null));
     }
 
     @ApiOperation(value = "菜单详情")
     @PreAuthorize("hasAuthority('菜单管理')")
     @GetMapping(value = "/{id}")
     public JsonResult<MenuVO> detail(@PathVariable Long id) {
-
-//        MenuVO role = service.getDetail(id);
-        return null;
+        Menu menu = service.getById(id);
+        return success(service.model2Vo(menu));
     }
 
-    @ApiOperation(value = "新建菜单")
+    @ApiOperation(value = "新增菜单")
     @PreAuthorize("hasAuthority('菜单管理')")
     @PostMapping
-    public JsonResult<Void> create(@Valid @RequestBody RoleCreateDTO role) {
-//        service.create(role);
+    public JsonResult<Void> create(@Valid @RequestBody MenuCreateDTO menu) {
+        service.create(menu);
         return success();
     }
 
     @ApiOperation(value = "修改菜单")
     @PreAuthorize("hasAuthority('菜单管理')")
     @PostMapping
-    public JsonResult<Void> modify(@Valid @RequestBody RoleModifyDTO role) {
-//        service.modify(role);
+    public JsonResult<Void> modify(@Valid @RequestBody MenuModifyDTO menu) {
+        service.modify(menu);
         return success();
     }
 
@@ -67,7 +67,7 @@ public class MenuController extends BaseController<Menu, MenuMapper, MenuService
     @PreAuthorize("hasAuthority('菜单管理')")
     @DeleteMapping(value = "/{id}")
     public JsonResult<?> del(@PathVariable Long id) {
-//        service.checkAndDelete(id);
+        service.checkAndDelete(id);
         return success();
     }
 

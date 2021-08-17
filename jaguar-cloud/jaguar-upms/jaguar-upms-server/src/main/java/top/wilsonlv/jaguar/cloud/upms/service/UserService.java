@@ -6,11 +6,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.klock.annotation.Klock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import top.wilsonlv.jaguar.cloud.upms.constant.LockNameConstant;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.UserCreateDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.UserModifyDTO;
+import top.wilsonlv.jaguar.cloud.upms.controller.vo.MenuVO;
 import top.wilsonlv.jaguar.cloud.upms.mapper.UserMapper;
+import top.wilsonlv.jaguar.cloud.upms.model.Menu;
 import top.wilsonlv.jaguar.cloud.upms.model.User;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.RoleVO;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
@@ -115,9 +119,7 @@ public class UserService extends BaseService<User, UserMapper> {
         return userVoPage;
     }
 
-    /**
-     * 新建用户
-     */
+    @Klock(name = LockNameConstant.USER_CREATE_MODIFY_LOCK)
     @Transactional
     public void create(UserCreateDTO userCreateDTO) {
         if (EncryptionUtil.passwordUnmatched(userCreateDTO.getUserPassword())) {
@@ -146,9 +148,7 @@ public class UserService extends BaseService<User, UserMapper> {
         userRoleService.relateRoles(user.getId(), userCreateDTO.getRoleIds());
     }
 
-    /**
-     * 修改用户信息
-     */
+    @Klock(name = LockNameConstant.USER_CREATE_MODIFY_LOCK)
     @Transactional
     public void modify(UserModifyDTO userModifyDTO) {
         this.getById(userModifyDTO.getId());
@@ -172,6 +172,5 @@ public class UserService extends BaseService<User, UserMapper> {
         BeanUtils.copyProperties(userModifyDTO, user);
         this.updateById(user);
     }
-
 
 }

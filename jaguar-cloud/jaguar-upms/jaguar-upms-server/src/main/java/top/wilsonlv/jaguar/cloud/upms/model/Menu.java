@@ -1,5 +1,6 @@
 package top.wilsonlv.jaguar.cloud.upms.model;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -24,8 +25,13 @@ public class Menu extends BaseModel {
     /**
      * 父ID
      */
-    @TableField("parent_id")
+    @TableField(value = "parent_id", updateStrategy = FieldStrategy.IGNORED)
     private Long parentId;
+    /**
+     * 是否内置菜单
+     */
+    @TableField("menu_built_in")
+    private Boolean menuBuiltIn;
     /**
      * 名称
      */
