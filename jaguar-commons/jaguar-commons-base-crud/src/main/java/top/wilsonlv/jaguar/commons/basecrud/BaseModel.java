@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * @since 2019/5/6.
  */
 @Data
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class BaseModel implements Serializable {
 

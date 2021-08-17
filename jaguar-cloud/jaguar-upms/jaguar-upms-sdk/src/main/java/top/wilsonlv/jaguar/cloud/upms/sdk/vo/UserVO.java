@@ -1,11 +1,11 @@
 package top.wilsonlv.jaguar.cloud.upms.sdk.vo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import top.wilsonlv.jaguar.commons.web.base.BaseVO;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,12 +16,24 @@ import java.util.Set;
  * @since 2021/8/10
  */
 @Data
-public class UserVO implements Serializable {
+@ApiModel
+@EqualsAndHashCode(callSuper = true)
+public class UserVO extends BaseVO {
 
+    /**
+     * 用户ID
+     */
+    @ApiModelProperty(value = "用户ID")
     private Long id;
-
+    /**
+     * 创建时间
+     */
+    @ApiModelProperty(value = "创建时间")
     private LocalDateTime createTime;
-
+    /**
+     * 更新时间
+     */
+    @ApiModelProperty(value = "更新时间")
     private LocalDateTime updateTime;
 
     /**

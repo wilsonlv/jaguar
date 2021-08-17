@@ -8,8 +8,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import top.wilsonlv.jaguar.cloud.upms.controller.dto.UserCreateDTO;
+import top.wilsonlv.jaguar.cloud.upms.controller.dto.UserModifyDTO;
 import top.wilsonlv.jaguar.cloud.upms.mapper.UserMapper;
-import top.wilsonlv.jaguar.cloud.upms.model.Role;
 import top.wilsonlv.jaguar.cloud.upms.model.User;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.RoleVO;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
@@ -21,10 +22,9 @@ import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrappe
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -86,17 +86,10 @@ public class UserService extends BaseService<User, UserMapper> {
         UserVO userVO = new UserVO();
         BeanUtils.copyProperties(user, userVO);
 
-        List<Role> roles = userRoleService.listRoleByUserId(user.getId());
-        userVO.setRoles(new ArrayList<>(roles.size()));
+        List<RoleVO> roles = userRoleService.listRoleByUserId(user.getId());
+        userVO.setRoles(roles);
 
-        Set<Long> roleIds = new HashSet<>();
-        for (Role role : roles) {
-            RoleVO roleVO = new RoleVO(role.getRoleName(), role.getRoleBuiltIn(), role.getRoleEnable());
-            userVO.getRoles().add(roleVO);
-
-            roleIds.add(role.getId());
-        }
-
+        Set<Long> roleIds = roles.stream().map(RoleVO::getId).collect(Collectors.toSet());
         Set<String> permissions = roleMenuService.listPermissionsByRoleIds(roleIds);
         userVO.setPermissions(permissions);
 
@@ -106,67 +99,78 @@ public class UserService extends BaseService<User, UserMapper> {
     /*----------  管理类接口  ----------*/
 
     @Transactional
-    public Page<User> queryWithRole(Page<User> page, LambdaQueryWrapper<User> wrapper) {
+    public Page<UserVO> queryWithRole(Page<User> page, LambdaQueryWrapper<User> wrapper) {
         page = this.query(page, wrapper);
+
+        Page<UserVO> userVoPage = new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
         for (User user : page.getRecords()) {
-            List<Role> userRoleList = userRoleService.listRoleByUserId(user.getId());
-//            user.setRoles(userRoleList);
+            UserVO userVO = new UserVO();
+            BeanUtils.copyProperties(user, userVO);
+
+            List<RoleVO> roles = userRoleService.listRoleByUserId(user.getId());
+            userVO.setRoles(roles);
+
+            userVoPage.getRecords().add(userVO);
         }
-        return page;
+        return userVoPage;
     }
 
     /**
      * 新建用户
      */
     @Transactional
-    public void create(User user) {
-        Assert.notNull(user.getUserPassword(), "用户密码");
-        if (EncryptionUtil.passwordUnmatched(user.getUserPassword())) {
+    public void create(UserCreateDTO userCreateDTO) {
+        if (EncryptionUtil.passwordUnmatched(userCreateDTO.getUserPassword())) {
             throw new CheckedException("密码格式为包含数字，字母大小写的6-20位字符串！");
         }
 
-        User byAccount = this.getByAccount(user.getUserAccount());
-        Assert.duplicate(byAccount, user, "登录账号");
+        User byAccount = this.getByAccount(userCreateDTO.getUserAccount());
+        Assert.duplicate(byAccount, "用户账号");
 
-        if (StringUtils.isNotBlank(user.getUserPhone())) {
-            User byPhone = this.getByPhone(user.getUserPhone());
-            Assert.duplicate(byPhone, user, "手机号");
+        if (StringUtils.isNotBlank(userCreateDTO.getUserPhone())) {
+            User byPhone = this.getByPhone(userCreateDTO.getUserPhone());
+            Assert.duplicate(byPhone, "用户手机号");
         }
 
-        if (StringUtils.isNotBlank(user.getUserEmail())) {
-            User byEmail = this.getByEmail(user.getUserEmail());
-            Assert.duplicate(byEmail, user, "邮箱");
+        if (StringUtils.isNotBlank(userCreateDTO.getUserEmail())) {
+            User byEmail = this.getByEmail(userCreateDTO.getUserEmail());
+            Assert.duplicate(byEmail, "用户邮箱");
         }
 
+        User user = new User();
+        BeanUtils.copyProperties(userCreateDTO, user);
+        user.setUserBuiltIn(false);
         user.setUserLocked(false);
         this.insert(user);
 
-//        userRoleService.relateRoles(user.getId(), user.getRoleIds());
+        userRoleService.relateRoles(user.getId(), userCreateDTO.getRoleIds());
     }
 
     /**
      * 修改用户信息
      */
     @Transactional
-    public void modify(User user) {
-        User persist = this.getById(user.getId());
+    public void modify(UserModifyDTO userModifyDTO) {
+        this.getById(userModifyDTO.getId());
 
-        if (StringUtils.isNotBlank(user.getUserPhone())) {
-            User byPhone = this.getByPhone(user.getUserPhone());
-            Assert.duplicate(byPhone, user, "手机号");
+        if (StringUtils.isNotBlank(userModifyDTO.getUserAccount())) {
+            User byAccount = this.getByAccount(userModifyDTO.getUserAccount());
+            Assert.duplicate(byAccount, userModifyDTO, "用户账号");
         }
 
-        if (StringUtils.isNotBlank(user.getUserEmail())) {
-            User byEmail = this.getByEmail(user.getUserEmail());
-            Assert.duplicate(byEmail, user, "邮箱");
+        if (StringUtils.isNotBlank(userModifyDTO.getUserPhone())) {
+            User byPhone = this.getByPhone(userModifyDTO.getUserPhone());
+            Assert.duplicate(byPhone, userModifyDTO, "用户手机号");
         }
 
-        user.setUserAccount(null);
-        user.setUserPassword(null);
-        user.setUserLocked(null);
+        if (StringUtils.isNotBlank(userModifyDTO.getUserEmail())) {
+            User byEmail = this.getByEmail(userModifyDTO.getUserEmail());
+            Assert.duplicate(byEmail, userModifyDTO, "用户邮箱");
+        }
+
+        User user = new User();
+        BeanUtils.copyProperties(userModifyDTO, user);
         this.updateById(user);
-
-//        userRoleService.relateRoles(user.getId(), user.getRoleIds());
     }
 
 

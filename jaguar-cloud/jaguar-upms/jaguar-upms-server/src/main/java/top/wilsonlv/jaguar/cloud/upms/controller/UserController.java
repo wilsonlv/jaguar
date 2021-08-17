@@ -6,38 +6,40 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
-import top.wilsonlv.jaguar.cloud.upms.model.User;
-import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
-import top.wilsonlv.jaguar.commons.basecrud.BaseController;
-import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import top.wilsonlv.jaguar.commons.web.JsonResult;
-import top.wilsonlv.jaguar.cloud.upms.mapper.UserMapper;
-import top.wilsonlv.jaguar.cloud.upms.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
+import top.wilsonlv.jaguar.cloud.upms.controller.dto.UserCreateDTO;
+import top.wilsonlv.jaguar.cloud.upms.controller.dto.UserModifyDTO;
+import top.wilsonlv.jaguar.cloud.upms.mapper.UserMapper;
+import top.wilsonlv.jaguar.cloud.upms.model.User;
+import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
+import top.wilsonlv.jaguar.cloud.upms.service.UserService;
+import top.wilsonlv.jaguar.commons.basecrud.BaseController;
+import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
+import top.wilsonlv.jaguar.commons.web.JsonResult;
 
 import javax.validation.Valid;
 
 /**
  * <p>
- * 系统用户表  前端控制器
+ * 用户前端控制器
  * </p>
  *
  * @author lvws
- * @since 2019-11-08
+ * @since 2021-08-16
  */
 @Validated
 @RestController
 @RequestMapping("/admin/user")
-@Api(tags = "系统用户表管理")
+@Api(tags = "用户管理")
 public class UserController extends BaseController<User, UserMapper, UserService> {
 
-    @ApiOperation(value = "查询系统用户表")
+    @ApiOperation(value = "查询用户")
     @PreAuthorize("hasAuthority('用户管理')")
     @GetMapping(value = "/page")
-    public JsonResult<Page<User>> page(
+    public JsonResult<Page<UserVO>> page(
             @ApiIgnore Page<User> page,
             @ApiParam(value = "模糊用户信息") @RequestParam(required = false) String fuzzyUserInfo,
             @ApiParam(value = "锁定状态") @RequestParam(required = false) Boolean userLocked,
@@ -52,11 +54,10 @@ public class UserController extends BaseController<User, UserMapper, UserService
                     .like(User::getUserEmail, fuzzyUserInfo));
         }
 
-        page = service.queryWithRole(page, wrapper);
-        return success(page);
+        return success(service.queryWithRole(page, wrapper));
     }
 
-    @ApiOperation(value = "系统用户表详情")
+    @ApiOperation(value = "用户详情")
     @PreAuthorize("hasAuthority('用户管理')")
     @GetMapping(value = "/{id}")
     public JsonResult<UserVO> detail(@PathVariable Long id) {
@@ -64,17 +65,19 @@ public class UserController extends BaseController<User, UserMapper, UserService
         return success(user);
     }
 
-    @ApiOperation(value = "修改系统用户表")
+    @ApiOperation(value = "新增用户")
     @PreAuthorize("hasAuthority('用户管理')")
     @PostMapping
-    public JsonResult<Void> update(@RequestBody @Valid User user) {
-        synchronized (this) {
-            if (user.getId() == null) {
-                service.create(user);
-            } else {
-                service.modify(user);
-            }
-        }
+    public JsonResult<Void> create(@RequestBody @Valid UserCreateDTO user) {
+        service.create(user);
+        return success();
+    }
+
+    @ApiOperation(value = "更新用户")
+    @PreAuthorize("hasAuthority('用户管理')")
+    @PostMapping
+    public JsonResult<Void> modify(@RequestBody @Valid UserModifyDTO user) {
+        service.modify(user);
         return success();
     }
 

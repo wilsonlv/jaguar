@@ -1,14 +1,15 @@
 package top.wilsonlv.jaguar.cloud.upms.service;
 
-import top.wilsonlv.jaguar.cloud.upms.model.Role;
-import top.wilsonlv.jaguar.cloud.upms.model.User;
-import top.wilsonlv.jaguar.cloud.upms.model.UserRole;
-import top.wilsonlv.jaguar.commons.basecrud.BaseService;
-import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import top.wilsonlv.jaguar.cloud.upms.mapper.UserRoleMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import top.wilsonlv.jaguar.cloud.upms.mapper.UserRoleMapper;
+import top.wilsonlv.jaguar.cloud.upms.model.Role;
+import top.wilsonlv.jaguar.cloud.upms.model.UserRole;
+import top.wilsonlv.jaguar.cloud.upms.sdk.vo.RoleVO;
+import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
+import top.wilsonlv.jaguar.commons.basecrud.BaseService;
+import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -23,22 +24,19 @@ import java.util.Set;
  * @since 2019-11-15
  */
 @Service
+@RequiredArgsConstructor
 public class UserRoleService extends BaseService<UserRole, UserRoleMapper> {
 
-    @Autowired
-    private RoleService roleService;
+    private final RoleService roleService;
 
-    public List<User> listUserByRoleId(@NotNull Long roleId) {
+    public List<UserVO> listUserByRoleId(@NotNull Long roleId) {
         return this.mapper.listUserByRoleId(roleId);
     }
 
-    public List<Role> listRoleByUserId(@NotNull Long userId) {
+    public List<RoleVO> listRoleByUserId(@NotNull Long userId) {
         return this.mapper.listRoleByUserId(userId);
     }
 
-    public Set<String> listMenuFunctionNamesByUserId(@NotNull Long userId) {
-        return this.mapper.listMenuFunctionNamesByUserId(userId);
-    }
 
     /**
      * 用户关联角色
@@ -47,7 +45,7 @@ public class UserRoleService extends BaseService<UserRole, UserRoleMapper> {
      * @param roleIds 角色ID集合
      */
     @Transactional
-    public void relateRoles(Long userId, List<Long> roleIds) {
+    public void relateRoles(Long userId, Set<Long> roleIds) {
         for (Long roleId : roleIds) {
             Role role = roleService.getById(roleId);
 
@@ -60,6 +58,7 @@ public class UserRoleService extends BaseService<UserRole, UserRoleMapper> {
             UserRole userRole = new UserRole();
             userRole.setUserId(userId);
             userRole.setRoleId(roleId);
+            userRole.setBuiltIn(false);
             this.insert(userRole);
         }
 

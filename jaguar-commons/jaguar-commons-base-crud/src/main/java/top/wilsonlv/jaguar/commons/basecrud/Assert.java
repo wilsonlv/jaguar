@@ -1,6 +1,7 @@
 package top.wilsonlv.jaguar.commons.basecrud;
 
 import org.apache.commons.lang3.StringUtils;
+import top.wilsonlv.jaguar.commons.web.base.BaseModifyDTO;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
 import java.math.BigDecimal;
@@ -32,7 +33,19 @@ public final class Assert {
         }
     }
 
+    public static void duplicate(BaseModel unique, String name) {
+        if (unique != null) {
+            throw new CheckedException(getMessage(DUPLICATE, name));
+        }
+    }
+
     public static void duplicate(BaseModel unique, BaseModel update, String name) {
+        if (unique != null && !unique.getId().equals(update.getId())) {
+            throw new CheckedException(getMessage(DUPLICATE, name));
+        }
+    }
+
+    public static void duplicate(BaseModel unique, BaseModifyDTO update, String name) {
         if (unique != null && !unique.getId().equals(update.getId())) {
             throw new CheckedException(getMessage(DUPLICATE, name));
         }

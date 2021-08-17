@@ -59,7 +59,7 @@ CREATE TABLE `jaguar_cloud_upms_user`
     UNIQUE INDEX `user_email` (`user_email`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_bin COMMENT = '用户表'
+  COLLATE = utf8mb4_bin COMMENT = '用户'
   ROW_FORMAT = Dynamic;
 
 INSERT INTO `jaguar_cloud_upms_user`
@@ -86,7 +86,7 @@ CREATE TABLE `jaguar_cloud_upms_role`
     PRIMARY KEY (`id_`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_bin COMMENT = '角色表'
+  COLLATE = utf8mb4_bin COMMENT = '角色'
   ROW_FORMAT = Dynamic;
 
 INSERT INTO `jaguar_cloud_upms_role`
@@ -111,7 +111,7 @@ CREATE TABLE `jaguar_cloud_upms_user_role`
     PRIMARY KEY (`id_`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_bin COMMENT = '用户角色表'
+  COLLATE = utf8mb4_bin COMMENT = '用户角色'
   ROW_FORMAT = Dynamic;
 
 INSERT INTO `jaguar_cloud_upms_user_role`
@@ -139,7 +139,7 @@ CREATE TABLE `jaguar_cloud_upms_menu`
     PRIMARY KEY (`id_`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_bin COMMENT = '菜单表'
+  COLLATE = utf8mb4_bin COMMENT = '菜单'
   ROW_FORMAT = Dynamic;
 
 INSERT INTO `jaguar_cloud_upms_menu`
@@ -171,7 +171,7 @@ CREATE TABLE `jaguar_cloud_upms_role_menu`
     PRIMARY KEY (`id_`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_bin COMMENT = '角色菜单表'
+  COLLATE = utf8mb4_bin COMMENT = '角色菜单'
   ROW_FORMAT = Dynamic;
 
 INSERT INTO `jaguar_cloud_upms_role_menu`

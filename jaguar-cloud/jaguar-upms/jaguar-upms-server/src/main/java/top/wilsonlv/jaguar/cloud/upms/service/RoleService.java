@@ -1,23 +1,29 @@
 package top.wilsonlv.jaguar.cloud.upms.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import top.wilsonlv.jaguar.cloud.upms.model.Role;
-import top.wilsonlv.jaguar.cloud.upms.model.RoleMenu;
-import top.wilsonlv.jaguar.cloud.upms.model.User;
-import top.wilsonlv.jaguar.cloud.upms.model.UserRole;
-import top.wilsonlv.jaguar.commons.basecrud.Assert;
-import top.wilsonlv.jaguar.commons.basecrud.BaseService;
-import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
-import top.wilsonlv.jaguar.cloud.upms.mapper.RoleMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import top.wilsonlv.jaguar.cloud.upms.controller.dto.RoleCreateDTO;
+import top.wilsonlv.jaguar.cloud.upms.controller.dto.RoleModifyDTO;
+import top.wilsonlv.jaguar.cloud.upms.mapper.RoleMapper;
+import top.wilsonlv.jaguar.cloud.upms.model.Role;
+import top.wilsonlv.jaguar.cloud.upms.model.RoleMenu;
+import top.wilsonlv.jaguar.cloud.upms.model.UserRole;
+import top.wilsonlv.jaguar.cloud.upms.sdk.vo.RoleVO;
+import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
+import top.wilsonlv.jaguar.commons.basecrud.Assert;
+import top.wilsonlv.jaguar.commons.basecrud.BaseService;
+import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
+import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -38,44 +44,78 @@ public class RoleService extends BaseService<Role, RoleMapper> {
     private RoleMenuService roleMenuService;
 
 
-    public Page<Role> queryWithUser(Page<Role> page, LambdaQueryWrapper<Role> wrapper) {
-        page = this.query(page, wrapper);
-        for (Role role : page.getRecords()) {
-            List<User> users = userRoleService.listUserByRoleId(role.getId());
-//            role.setUsers(users);
-        }
-        return page;
+    public Role getByRoleName(String roleName) {
+        return this.unique(JaguarLambdaQueryWrapper.<Role>newInstance()
+                .eq(Role::getRoleName, roleName));
     }
 
-    public Role getDetail(Long roleId) {
+    public RoleVO getDetail(Long roleId) {
         Role role = this.getById(roleId);
 
-        List<RoleMenu> roleMenus = roleMenuService.list(JaguarLambdaQueryWrapper.<RoleMenu>newInstance()
+        List<RoleMenu> roleMenus = roleMenuService.list(Wrappers.lambdaQuery(RoleMenu.class)
+                .select(RoleMenu::getMenuId)
                 .eq(RoleMenu::getRoleId, roleId));
-//        role.setRoleMenus(roleMenus);
+        Set<Long> menuIds = roleMenus.stream().map(RoleMenu::getMenuId).collect(Collectors.toSet());
 
-        return role;
+        RoleVO roleVO = new RoleVO(role.getRoleName(), role.getRoleBuiltIn(), role.getRoleEnable());
+        roleVO.setMenuIds(menuIds);
+        return roleVO;
     }
 
     @Transactional
-    public void createOrUpdate(Role role) {
-        Role unique = this.unique(JaguarLambdaQueryWrapper.<Role>newInstance()
-                .eq(Role::getRoleName, role));
-        Assert.duplicate(unique, role, "角色名称");
+    public Page<RoleVO> queryWithUser(Page<Role> page, LambdaQueryWrapper<Role> wrapper) {
+        page = this.query(page, wrapper);
 
-        this.saveOrUpdate(role);
+        Page<RoleVO> roles = new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
+        for (Role role : page.getRecords()) {
+            List<UserVO> users = userRoleService.listUserByRoleId(role.getId());
 
-//        roleMenuService.relateMenuFunctions(role.getId(), role.getMenuFunctionNames());
+            RoleVO roleVO = new RoleVO(role.getRoleName(), role.getRoleBuiltIn(), role.getRoleEnable());
+            roleVO.setUsers(users);
+            roles.getRecords().add(roleVO);
+        }
+        return roles;
+    }
+
+    @Transactional
+    public void create(RoleCreateDTO roleCreateDTO) {
+        Role unique = this.getByRoleName(roleCreateDTO.getRoleName());
+        Assert.duplicate(unique, "角色名称");
+
+        Role role = new Role();
+        role.setRoleName(roleCreateDTO.getRoleName());
+        role.setRoleEnable(roleCreateDTO.getRoleEnable());
+        role.setRoleBuiltIn(false);
+        this.insert(role);
+
+        roleMenuService.relateMenus(role.getId(), roleCreateDTO.getMenuIds());
+    }
+
+    @Transactional
+    public void modify(RoleModifyDTO roleModifyDTO) {
+        this.getById(roleModifyDTO.getId());
+
+        if (StringUtils.isNotBlank(roleModifyDTO.getRoleName())) {
+            Role byRoleName = this.getByRoleName(roleModifyDTO.getRoleName());
+            Assert.duplicate(byRoleName, roleModifyDTO, "角色名称");
+        }
+
+        Role role = new Role();
+        role.setId(roleModifyDTO.getId());
+        role.setRoleName(roleModifyDTO.getRoleName());
+        role.setRoleEnable(roleModifyDTO.getRoleEnable());
+        this.updateById(role);
     }
 
     @Transactional
     public void checkAndDelete(Long id) {
-        if (userRoleService.exists(JaguarLambdaQueryWrapper.<UserRole>newInstance()
+        if (userRoleService.exists(Wrappers.lambdaUpdate(UserRole.class)
                 .eq(UserRole::getRoleId, id))) {
             throw new CheckedException("该角色下已绑定用户，不可删除！");
         }
 
         this.delete(id);
     }
+
 
 }

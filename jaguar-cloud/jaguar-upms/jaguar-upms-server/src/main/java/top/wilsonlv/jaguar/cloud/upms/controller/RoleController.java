@@ -1,43 +1,44 @@
 package top.wilsonlv.jaguar.cloud.upms.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import top.wilsonlv.jaguar.commons.basecrud.BaseController;
-import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import top.wilsonlv.jaguar.commons.web.JsonResult;
-import top.wilsonlv.jaguar.cloud.upms.mapper.RoleMapper;
-import top.wilsonlv.jaguar.cloud.upms.model.Role;
-import top.wilsonlv.jaguar.cloud.upms.service.RoleService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
+import top.wilsonlv.jaguar.cloud.upms.controller.dto.RoleCreateDTO;
+import top.wilsonlv.jaguar.cloud.upms.controller.dto.RoleModifyDTO;
+import top.wilsonlv.jaguar.cloud.upms.mapper.RoleMapper;
+import top.wilsonlv.jaguar.cloud.upms.model.Role;
+import top.wilsonlv.jaguar.cloud.upms.sdk.vo.RoleVO;
+import top.wilsonlv.jaguar.cloud.upms.service.RoleService;
+import top.wilsonlv.jaguar.commons.basecrud.BaseController;
+import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
+import top.wilsonlv.jaguar.commons.web.JsonResult;
 
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * <p>
- * 系统角色表  前端控制器
+ * 角色  前端控制器
  * </p>
  *
  * @author lvws
- * @since 2019-11-08
+ * @since 2021-08-17
  */
 @Validated
 @RestController
 @RequestMapping("/admin/role")
-@Api(tags = "系统角色表管理")
+@Api(tags = "角色管理")
 public class RoleController extends BaseController<Role, RoleMapper, RoleService> {
 
-    @ApiOperation(value = "查询系统角色表")
+    @ApiOperation(value = "查询角色")
     @PreAuthorize("hasAuthority('角色管理')")
     @GetMapping(value = "/page")
-    public JsonResult<Page<Role>> page(
+    public JsonResult<Page<RoleVO>> page(
             @ApiIgnore Page<Role> page,
             @ApiParam(value = "模糊角色名称") @RequestParam(required = false) String fuzzyRoleName,
             @ApiParam(value = "角色是否启用") @RequestParam(required = false) Boolean roleEnable) {
@@ -46,43 +47,40 @@ public class RoleController extends BaseController<Role, RoleMapper, RoleService
                 like(Role::getRoleName, fuzzyRoleName)
                 .eq(Role::getRoleEnable, roleEnable);
 
-        page = service.queryWithUser(page, wrapper);
-        return success(page);
+        return success(service.queryWithUser(page, wrapper));
     }
 
-    @ApiOperation(value = "系统角色表详情")
+    @ApiOperation(value = "角色详情")
     @PreAuthorize("hasAuthority('角色管理')")
     @GetMapping(value = "/{id}")
-    public JsonResult<Role> detail(@PathVariable Long id) {
+    public JsonResult<RoleVO> detail(@PathVariable Long id) {
 
-        Role role = service.getDetail(id);
+        RoleVO role = service.getDetail(id);
         return success(role);
     }
 
-    @ApiOperation(value = "修改系统角色表")
+    @ApiOperation(value = "新建角色")
     @PreAuthorize("hasAuthority('角色管理')")
     @PostMapping
-    public JsonResult<Role> update(@Valid @RequestBody Role role) {
-        synchronized (this) {
-            service.createOrUpdate(role);
-        }
-        return success(role);
-    }
-
-    @ApiOperation(value = "删除系统角色表")
-    @PreAuthorize("hasAuthority('角色管理')")
-    @DeleteMapping(value = "/{id}")
-    public JsonResult<?> del(@PathVariable Long id) {
-        synchronized (this) {
-            service.checkAndDelete(id);
-        }
+    public JsonResult<Void> create(@Valid @RequestBody RoleCreateDTO role) {
+        service.create(role);
         return success();
     }
 
-//    @ApiOperation(value = "获取所有菜单和功能")
-//    @PreAuthorize("hasAuthority('角色管理')")
-//    @GetMapping(value = "/menu_functions")
-//    public JsonResult<List<MenuFunction>> menuFunctions() {
-//        return success(MenuFunction.MENU_FUNCTIONS);
-//    }
+    @ApiOperation(value = "修改角色")
+    @PreAuthorize("hasAuthority('角色管理')")
+    @PostMapping
+    public JsonResult<Void> modify(@Valid @RequestBody RoleModifyDTO role) {
+        service.modify(role);
+        return success();
+    }
+
+    @ApiOperation(value = "删除角色")
+    @PreAuthorize("hasAuthority('角色管理')")
+    @DeleteMapping(value = "/{id}")
+    public JsonResult<?> del(@PathVariable Long id) {
+        service.checkAndDelete(id);
+        return success();
+    }
+
 }

@@ -30,7 +30,7 @@ public class Role extends BaseModel {
      * 是否内置角色
      */
     @TableField("role_built_in")
-    private String roleBuiltIn;
+    private Boolean roleBuiltIn;
     /**
      * 角色是否启用
      */

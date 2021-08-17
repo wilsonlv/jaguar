@@ -34,26 +34,6 @@ public class AuthService extends BaseService<User, UserMapper> implements UserDe
     @Autowired
     private UserRoleService userRoleService;
 
-    @Transactional
-    public User getDetail(User user) {
-        //获取角色
-        List<Role> roles = userRoleService.listRoleByUserId(user.getId());
-//        user.setRoles(roles);
-
-        //获取菜单功能
-//        Set<String> menuFunctionNames = userRoleService.listMenuFunctionNamesByUserId(user.getId());
-//        user.setMenuFunctions(MenuFunction.filterMenuFunctions(menuFunctionNames));
-
-        //获取权限
-//        for (String menuFunctionName : menuFunctionNames) {
-//            MenuFunction menuFunction = MenuFunction.getMenuFunction(menuFunctionName);
-//            if (menuFunction != null && StringUtils.isNotBlank(menuFunction.getPermission())) {
-//                user.getAuthorities().add(new SimpleGrantedAuthority(menuFunction.getPermission()));
-//            }
-//        }
-
-        return user;
-    }
 
     @Transactional
     public void modifyPassword(Long currentUser, String oldPassword, String newPassword) {
