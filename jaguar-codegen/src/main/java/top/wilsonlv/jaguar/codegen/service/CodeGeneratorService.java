@@ -14,7 +14,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import top.wilsonlv.jaguar.codegen.mapper.CodeGeneratorMapper;
-import top.wilsonlv.jaguar.codegen.model.CodeTemplate;
+import top.wilsonlv.jaguar.codegen.entity.CodeTemplate;
 import top.wilsonlv.jaguar.codegen.velocity.CodeTemplateResourceLoader;
 import top.wilsonlv.jaguar.commons.aviator.ExpressionUtil;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;

@@ -1,7 +1,7 @@
 package top.wilsonlv.jaguar.cloud.handlerlog.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import top.wilsonlv.jaguar.cloud.handlerlog.model.LoginLog;
+import top.wilsonlv.jaguar.cloud.handlerlog.entity.LoginLog;
 import top.wilsonlv.jaguar.commons.basecrud.BaseMapper;
 
 /**

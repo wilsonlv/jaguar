@@ -2,9 +2,7 @@ package top.wilsonlv.jaguar.cloud.upms.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import top.wilsonlv.jaguar.cloud.upms.model.Role;
-import top.wilsonlv.jaguar.cloud.upms.model.User;
-import top.wilsonlv.jaguar.cloud.upms.model.UserRole;
+import top.wilsonlv.jaguar.cloud.upms.entity.UserRole;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.RoleVO;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
 import top.wilsonlv.jaguar.commons.basecrud.BaseMapper;

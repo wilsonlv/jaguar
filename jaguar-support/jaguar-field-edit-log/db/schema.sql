@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS `jaguar_core_field_edit_log`;
-CREATE TABLE `jaguar_core_field_edit_log`
+DROP TABLE IF EXISTS `jaguar_support_field_edit_log`;
+CREATE TABLE `jaguar_support_field_edit_log`
 (
     `id_`         bigint(20)                                             NOT NULL COMMENT 'ID',
     `class_name`  varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '类全名',
@@ -18,5 +18,5 @@ CREATE TABLE `jaguar_core_field_edit_log`
     INDEX `record_id_index` (`record_id`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_bin COMMENT = '字段编辑日志表'
+  COLLATE = utf8mb4_bin COMMENT = '字段编辑日志'
   ROW_FORMAT = Dynamic;

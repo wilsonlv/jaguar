@@ -3,7 +3,7 @@ package top.wilsonlv.jaguar.codegen.service;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 import top.wilsonlv.jaguar.codegen.mapper.CodeTemplateMapper;
-import top.wilsonlv.jaguar.codegen.model.CodeTemplate;
+import top.wilsonlv.jaguar.codegen.entity.CodeTemplate;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;

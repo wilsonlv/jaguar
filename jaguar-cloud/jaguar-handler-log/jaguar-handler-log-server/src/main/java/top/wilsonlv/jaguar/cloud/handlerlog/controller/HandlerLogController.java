@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 import top.wilsonlv.jaguar.cloud.handlerlog.mapper.HandlerLogMapper;
-import top.wilsonlv.jaguar.cloud.handlerlog.model.HandlerLog;
+import top.wilsonlv.jaguar.cloud.handlerlog.entity.HandlerLog;
 import top.wilsonlv.jaguar.cloud.handlerlog.service.HandlerLogService;
 import top.wilsonlv.jaguar.commons.basecrud.BaseController;
 import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;

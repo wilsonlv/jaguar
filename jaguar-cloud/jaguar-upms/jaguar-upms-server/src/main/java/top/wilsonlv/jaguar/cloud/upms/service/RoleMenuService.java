@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.wilsonlv.jaguar.cloud.upms.mapper.RoleMenuMapper;
-import top.wilsonlv.jaguar.cloud.upms.model.Menu;
-import top.wilsonlv.jaguar.cloud.upms.model.RoleMenu;
+import top.wilsonlv.jaguar.cloud.upms.entity.Menu;
+import top.wilsonlv.jaguar.cloud.upms.entity.RoleMenu;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;
 
 import java.util.Set;

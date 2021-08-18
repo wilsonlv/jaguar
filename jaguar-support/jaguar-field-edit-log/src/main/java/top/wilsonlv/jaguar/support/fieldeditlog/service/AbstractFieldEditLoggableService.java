@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import top.wilsonlv.jaguar.commons.basecrud.BaseMapper;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
-import top.wilsonlv.jaguar.support.fieldeditlog.model.FieldEditLoggable;
+import top.wilsonlv.jaguar.support.fieldeditlog.entity.FieldEditLoggable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 

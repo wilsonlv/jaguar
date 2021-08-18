@@ -1,4 +1,4 @@
-package top.wilsonlv.jaguar.support.fieldeditlog.model;
+package top.wilsonlv.jaguar.support.fieldeditlog.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;

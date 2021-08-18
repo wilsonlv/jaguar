@@ -1,4 +1,4 @@
-package top.wilsonlv.jaguar.cloud.upms.model;
+package top.wilsonlv.jaguar.cloud.upms.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;

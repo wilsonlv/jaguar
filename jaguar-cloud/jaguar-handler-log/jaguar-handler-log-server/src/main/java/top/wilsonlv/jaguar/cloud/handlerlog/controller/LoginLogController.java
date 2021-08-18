@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 import top.wilsonlv.jaguar.cloud.handlerlog.mapper.LoginLogMapper;
-import top.wilsonlv.jaguar.cloud.handlerlog.model.LoginLog;
+import top.wilsonlv.jaguar.cloud.handlerlog.entity.LoginLog;
 import top.wilsonlv.jaguar.cloud.handlerlog.service.LoginLogService;
 import top.wilsonlv.jaguar.commons.basecrud.BaseController;
 import top.wilsonlv.jaguar.commons.enums.UserType;

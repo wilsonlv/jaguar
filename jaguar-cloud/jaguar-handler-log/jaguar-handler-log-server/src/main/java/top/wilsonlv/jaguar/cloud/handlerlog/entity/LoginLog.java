@@ -1,4 +1,4 @@
-package top.wilsonlv.jaguar.cloud.handlerlog.model;
+package top.wilsonlv.jaguar.cloud.handlerlog.entity;
 
 import cn.hutool.core.date.DatePattern;
 import com.baomidou.mybatisplus.annotation.TableField;

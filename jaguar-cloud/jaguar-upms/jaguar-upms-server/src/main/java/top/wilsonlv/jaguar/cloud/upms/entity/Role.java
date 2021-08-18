@@ -1,4 +1,4 @@
-package top.wilsonlv.jaguar.cloud.upms.model;
+package top.wilsonlv.jaguar.cloud.upms.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -8,33 +8,33 @@ import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
 
 /**
  * <p>
- * 角色菜单表
+ * 角色表
  * </p>
  *
  * @author lvws
  * @since 2021-08-16
  */
 @Data
-@TableName("jaguar_cloud_upms_role_menu")
+@TableName("jaguar_cloud_upms_role")
 @EqualsAndHashCode(callSuper = true)
-public class RoleMenu extends BaseModel {
+public class Role extends BaseModel {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 角色ID
+     * 角色名称
      */
-    @TableField("role_id")
-    private Long roleId;
+    @TableField("role_name")
+    private String roleName;
     /**
-     * 菜单ID
+     * 是否内置角色
      */
-    @TableField("role_id")
-    private Long menuId;
+    @TableField("role_built_in")
+    private Boolean roleBuiltIn;
     /**
-     * 是否内置
+     * 角色是否启用
      */
-    @TableField("built_in")
-    private Boolean builtIn;
+    @TableField("role_enable")
+    private Boolean roleEnable;
 
 }

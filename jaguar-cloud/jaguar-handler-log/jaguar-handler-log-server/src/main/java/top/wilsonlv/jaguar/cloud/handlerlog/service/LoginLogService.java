@@ -2,7 +2,7 @@ package top.wilsonlv.jaguar.cloud.handlerlog.service;
 
 import org.springframework.stereotype.Service;
 import top.wilsonlv.jaguar.cloud.handlerlog.mapper.LoginLogMapper;
-import top.wilsonlv.jaguar.cloud.handlerlog.model.LoginLog;
+import top.wilsonlv.jaguar.cloud.handlerlog.entity.LoginLog;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;
 
 /**

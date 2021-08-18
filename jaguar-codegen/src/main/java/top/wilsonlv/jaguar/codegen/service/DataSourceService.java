@@ -9,7 +9,7 @@ import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSour
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 import top.wilsonlv.jaguar.codegen.mapper.DataSourceMapper;
-import top.wilsonlv.jaguar.codegen.model.DataSource;
+import top.wilsonlv.jaguar.codegen.entity.DataSource;
 import top.wilsonlv.jaguar.commons.basecrud.Assert;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;

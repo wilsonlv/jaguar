@@ -9,3 +9,7 @@ server:
 spring:
   application:
     name: @artifactId@
+
+logging:
+  level:
+    top.wilsonlv.jaguar.codegen: debug

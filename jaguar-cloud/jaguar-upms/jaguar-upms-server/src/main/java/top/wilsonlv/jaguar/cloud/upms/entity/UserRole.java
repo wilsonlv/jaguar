@@ -1,13 +1,10 @@
-package top.wilsonlv.jaguar.cloud.upms.model;
+package top.wilsonlv.jaguar.cloud.upms.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * <p>

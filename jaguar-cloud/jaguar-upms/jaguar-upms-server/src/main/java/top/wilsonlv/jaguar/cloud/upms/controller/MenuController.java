@@ -7,10 +7,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.MenuCreateDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.MenuModifyDTO;
-import top.wilsonlv.jaguar.cloud.upms.controller.dto.RoleModifyDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.vo.MenuVO;
 import top.wilsonlv.jaguar.cloud.upms.mapper.MenuMapper;
-import top.wilsonlv.jaguar.cloud.upms.model.Menu;
+import top.wilsonlv.jaguar.cloud.upms.entity.Menu;
 import top.wilsonlv.jaguar.cloud.upms.service.MenuService;
 import top.wilsonlv.jaguar.commons.basecrud.BaseController;
 import top.wilsonlv.jaguar.commons.web.JsonResult;
@@ -57,7 +56,7 @@ public class MenuController extends BaseController<Menu, MenuMapper, MenuService
 
     @ApiOperation(value = "修改菜单")
     @PreAuthorize("hasAuthority('菜单管理')")
-    @PostMapping
+    @PutMapping
     public JsonResult<Void> modify(@Valid @RequestBody MenuModifyDTO menu) {
         service.modify(menu);
         return success();

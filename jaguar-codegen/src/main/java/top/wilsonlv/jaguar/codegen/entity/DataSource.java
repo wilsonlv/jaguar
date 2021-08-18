@@ -1,4 +1,4 @@
-package top.wilsonlv.jaguar.codegen.model;
+package top.wilsonlv.jaguar.codegen.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;

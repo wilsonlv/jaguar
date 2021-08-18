@@ -12,7 +12,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.RoleCreateDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.RoleModifyDTO;
 import top.wilsonlv.jaguar.cloud.upms.mapper.RoleMapper;
-import top.wilsonlv.jaguar.cloud.upms.model.Role;
+import top.wilsonlv.jaguar.cloud.upms.entity.Role;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.RoleVO;
 import top.wilsonlv.jaguar.cloud.upms.service.RoleService;
 import top.wilsonlv.jaguar.commons.basecrud.BaseController;
@@ -69,7 +69,7 @@ public class RoleController extends BaseController<Role, RoleMapper, RoleService
 
     @ApiOperation(value = "修改角色")
     @PreAuthorize("hasAuthority('角色管理')")
-    @PostMapping
+    @PutMapping
     public JsonResult<Void> modify(@Valid @RequestBody RoleModifyDTO role) {
         service.modify(role);
         return success();

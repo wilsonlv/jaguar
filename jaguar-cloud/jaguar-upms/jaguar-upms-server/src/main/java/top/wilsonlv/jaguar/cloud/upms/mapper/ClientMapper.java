@@ -1,7 +1,7 @@
 package top.wilsonlv.jaguar.cloud.upms.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import top.wilsonlv.jaguar.cloud.upms.model.OauthClient;
+import top.wilsonlv.jaguar.cloud.upms.entity.OauthClient;
 import top.wilsonlv.jaguar.commons.basecrud.BaseMapper;
 
 /**

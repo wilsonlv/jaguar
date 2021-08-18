@@ -1,7 +1,7 @@
 package top.wilsonlv.jaguar.codegen.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import top.wilsonlv.jaguar.codegen.model.DataSource;
+import top.wilsonlv.jaguar.codegen.entity.DataSource;
 import top.wilsonlv.jaguar.commons.basecrud.BaseMapper;
 
 /**

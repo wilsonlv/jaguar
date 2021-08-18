@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.wilsonlv.jaguar.cloud.upms.mapper.UserMapper;
-import top.wilsonlv.jaguar.cloud.upms.model.User;
+import top.wilsonlv.jaguar.cloud.upms.entity.User;
 import top.wilsonlv.jaguar.cloud.upms.service.UserRoleService;
 import top.wilsonlv.jaguar.cloud.upms.service.UserService;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;

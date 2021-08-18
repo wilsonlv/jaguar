@@ -6,7 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import top.wilsonlv.jaguar.codegen.mapper.DataSourceMapper;
-import top.wilsonlv.jaguar.codegen.model.DataSource;
+import top.wilsonlv.jaguar.codegen.entity.DataSource;
 import top.wilsonlv.jaguar.commons.basecrud.BaseController;
 import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import top.wilsonlv.jaguar.commons.web.JsonResult;

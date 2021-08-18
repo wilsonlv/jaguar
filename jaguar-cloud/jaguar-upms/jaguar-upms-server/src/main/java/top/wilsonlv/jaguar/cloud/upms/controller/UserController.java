@@ -13,7 +13,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.UserCreateDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.UserModifyDTO;
 import top.wilsonlv.jaguar.cloud.upms.mapper.UserMapper;
-import top.wilsonlv.jaguar.cloud.upms.model.User;
+import top.wilsonlv.jaguar.cloud.upms.entity.User;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
 import top.wilsonlv.jaguar.cloud.upms.service.UserService;
 import top.wilsonlv.jaguar.commons.basecrud.BaseController;
@@ -75,7 +75,7 @@ public class UserController extends BaseController<User, UserMapper, UserService
 
     @ApiOperation(value = "更新用户")
     @PreAuthorize("hasAuthority('用户管理')")
-    @PostMapping
+    @PutMapping
     public JsonResult<Void> modify(@RequestBody @Valid UserModifyDTO user) {
         service.modify(user);
         return success();

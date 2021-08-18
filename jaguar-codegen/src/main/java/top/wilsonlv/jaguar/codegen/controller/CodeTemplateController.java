@@ -3,7 +3,7 @@ package top.wilsonlv.jaguar.codegen.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import top.wilsonlv.jaguar.codegen.mapper.CodeTemplateMapper;
-import top.wilsonlv.jaguar.codegen.model.CodeTemplate;
+import top.wilsonlv.jaguar.codegen.entity.CodeTemplate;
 import top.wilsonlv.jaguar.codegen.service.CodeTemplateService;
 import top.wilsonlv.jaguar.commons.basecrud.BaseController;
 import top.wilsonlv.jaguar.commons.web.JsonResult;

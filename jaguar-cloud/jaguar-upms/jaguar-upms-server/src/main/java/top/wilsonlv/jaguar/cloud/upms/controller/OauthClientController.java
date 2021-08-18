@@ -5,15 +5,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 import top.wilsonlv.jaguar.cloud.upms.mapper.ClientMapper;
-import top.wilsonlv.jaguar.cloud.upms.model.OauthClient;
+import top.wilsonlv.jaguar.cloud.upms.entity.OauthClient;
 import top.wilsonlv.jaguar.cloud.upms.service.OauthClientService;
 import top.wilsonlv.jaguar.commons.basecrud.BaseController;
 import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import top.wilsonlv.jaguar.commons.web.JsonResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 
@@ -23,9 +23,9 @@ import javax.validation.Valid;
  */
 @Validated
 @RestController
-@RequestMapping("/admin/client")
+@RequestMapping("/admin/oauthClient")
 @Api(tags = "oauth2客户端管理")
-public class OAuthClientController extends BaseController<OauthClient, ClientMapper, OauthClientService> {
+public class OauthClientController extends BaseController<OauthClient, ClientMapper, OauthClientService> {
 
     @ApiOperation(value = "分页查询oauth2客户端")
     @GetMapping(value = "/page")
@@ -48,13 +48,13 @@ public class OAuthClientController extends BaseController<OauthClient, ClientMap
 
     @ApiOperation(value = "新增oauth2客户端")
     @PostMapping
-    public JsonResult<Void> save(@RequestBody @Valid OauthClient OAuthClient) {
+    public JsonResult<Void> save(@RequestBody @Valid OauthClient oauthClient) {
         return success();
     }
 
     @ApiOperation(value = "修改oauth2客户端")
     @PutMapping
-    public JsonResult<Void> update(@RequestBody @Valid OauthClient OAuthClient) {
+    public JsonResult<Void> update(@RequestBody @Valid OauthClient oauthClient) {
         return success();
     }
 
