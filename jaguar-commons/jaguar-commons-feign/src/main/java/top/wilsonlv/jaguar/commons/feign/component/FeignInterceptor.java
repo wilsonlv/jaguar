@@ -1,4 +1,4 @@
-package top.wilsonlv.jaguar.commons.feign.interceptor;
+package top.wilsonlv.jaguar.commons.feign.component;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;

@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
  * @since 2021-08-16
  */
 @Data
-@TableName("jaguar_modules_system_user")
+@TableName("jaguar_cloud_upms_user")
 @EqualsAndHashCode(callSuper = true)
 public class User extends BaseModel {
 

@@ -38,7 +38,7 @@ public class JaguarUserDetailsServiceImpl implements UserDetailsService {
         Map<String, Object> additionalInformation = clientDetails.getAdditionalInformation();
         String userTypeStr = (String) additionalInformation.get("userType");
         if (StringUtils.isBlank(userTypeStr)) {
-            throw new CheckedException("客户端没有配置用户类型");
+            throw new CheckedException("当前客户端没有配置用户类型");
         }
 
         UserType userType = UserType.valueOf(userTypeStr);

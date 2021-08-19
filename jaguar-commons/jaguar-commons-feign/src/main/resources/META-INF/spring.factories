@@ -1,3 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    top.wilsonlv.jaguar.commons.feign.interceptor.FeignInterceptor,\
+    top.wilsonlv.jaguar.commons.feign.component.FeignErrorDecoder,\
+    top.wilsonlv.jaguar.commons.feign.component.FeignInterceptor,\
     org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties
