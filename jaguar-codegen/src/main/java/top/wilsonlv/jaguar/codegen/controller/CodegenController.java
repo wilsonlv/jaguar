@@ -68,10 +68,12 @@ public class CodegenController {
 
     @ApiOperation(value = "预览真实文件路径")
     @GetMapping(value = "/preview/filePath")
-    public JsonResult<String> previewFilePath(@RequestParam @NotBlank String parentPackage,
+    public JsonResult<String> previewFilePath(@RequestParam @NotBlank String tableName,
+                                              @RequestParam(required = false) String tablePrefix,
+                                              @RequestParam @NotBlank String parentPackage,
                                               @RequestParam @NotBlank String moduleName,
                                               @RequestParam @NotBlank String filePath) {
-        return JsonResult.success(codeGeneratorService.previewFilePath(parentPackage, moduleName, filePath));
+        return JsonResult.success(codeGeneratorService.previewFilePath(tableName, tablePrefix, parentPackage, moduleName, filePath));
     }
 
 }

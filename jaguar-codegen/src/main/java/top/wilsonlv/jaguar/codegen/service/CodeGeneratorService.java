@@ -193,9 +193,11 @@ public class CodeGeneratorService {
         return (String) ExpressionUtil.executeText(fileName, entityEnvVariables);
     }
 
-    public String previewFilePath(String parentPackage, String moduleName, String filePath) {
+    public String previewFilePath(String tableName, String tablePrefix, String parentPackage, String moduleName, String filePath) {
+        Map<String, Object> envVariables = this.getEntityVariables(tableName, tablePrefix);
         Map<String, Object> fileEnvVariables = this.getFileEnvVariables(parentPackage, moduleName);
-        return (String) ExpressionUtil.executeText(filePath, fileEnvVariables);
+        envVariables.putAll(fileEnvVariables);
+        return (String) ExpressionUtil.executeText(filePath, envVariables);
     }
 
     private int strengthColumnInfo(List<ColumnVO> columnInfos) {
