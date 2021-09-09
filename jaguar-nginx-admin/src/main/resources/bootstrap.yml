@@ -1,0 +1,6 @@
+server:
+  port: 10088
+
+spring:
+  application:
+    name: @artifactId@

@@ -52,3 +52,15 @@ jaguar由四大模块组成，分别是基础通用模块、代码生成模块�
     - jaguar-sentinel：流量控制
     - jaguar-upms：用户权限管理服务
     - jaguar-websocket：消息推送服务
+
+#### 使用配置
+- host
+    - 127.0.0.1       jaguar-mysql
+    - 127.0.0.1       jaguar-es
+    - 127.0.0.1       jaguar-redis
+    - 127.0.0.1       jaguar-mq
+    - 127.0.0.1       jaguar-register
+    - 127.0.0.1       jaguar-sentinel
+    - 127.0.0.1       jaguar-monitor
+    - 127.0.0.1       jaguar-job-admin
+    - 127.0.0.1       codegen.wilsonlv.top
