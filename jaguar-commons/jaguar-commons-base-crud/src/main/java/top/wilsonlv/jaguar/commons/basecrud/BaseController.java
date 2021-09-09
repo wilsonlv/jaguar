@@ -49,7 +49,7 @@ public abstract class BaseController<E extends BaseModel, M extends BaseMapper<E
         return success();
     }
 
-    public JsonResult<?> delete(Long id) {
+    public JsonResult<Void> delete(Long id) {
         service.delete(id);
         return success();
     }
