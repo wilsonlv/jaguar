@@ -138,7 +138,7 @@ public class CodeGeneratorService {
     @DS("#codegen.dataSourceName")
     public void generate(CodegenDTO codegen, HttpServletResponse response) throws IOException {
         Map<String, Object> envVariables = getEnvVariables(codegen);
-        VelocityContext variables = new VelocityContext();
+        VelocityContext variables = new VelocityContext(envVariables);
 
         VelocityEngine engine = getVelocityEngine();
 
