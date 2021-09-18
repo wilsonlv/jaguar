@@ -7,6 +7,7 @@ package top.wilsonlv.jaguar.cloud.handlerlog.client;
 public interface HandlerLogConstant {
 
     String DESTINATION_HANDLER_LOG = "HandlerLog";
+
     String DESTINATION_LOGIN_LOG = "LoginLog";
 
 }

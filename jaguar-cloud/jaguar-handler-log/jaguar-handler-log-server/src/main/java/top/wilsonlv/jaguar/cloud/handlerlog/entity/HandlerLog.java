@@ -77,6 +77,11 @@ public class HandlerLog extends BaseModel {
     @TableField("status")
     private Integer status;
     /**
+     * 响应结果
+     */
+    @TableField("jsonResult")
+    private String jsonResult;
+    /**
      * 错误信息
      */
     @TableField("errorMsg")

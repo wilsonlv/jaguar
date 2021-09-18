@@ -70,5 +70,9 @@ public class HandlerLogSaveDTO implements Serializable {
      * 创建人ID
      */
     private Long createUserId;
+    /**
+     * 响应结果
+     */
+    private String jsonResult;
 
 }

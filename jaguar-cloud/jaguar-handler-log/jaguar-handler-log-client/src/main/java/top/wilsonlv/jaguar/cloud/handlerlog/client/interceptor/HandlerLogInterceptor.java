@@ -21,6 +21,7 @@ import top.wilsonlv.jaguar.cloud.handlerlog.client.advice.JsonResultResponseAdvi
 import top.wilsonlv.jaguar.cloud.handlerlog.client.dto.HandlerLogSaveDTO;
 import top.wilsonlv.jaguar.commons.oauth2.model.SecurityUser;
 import top.wilsonlv.jaguar.commons.oauth2.util.SecurityUtil;
+import top.wilsonlv.jaguar.commons.web.JsonResult;
 import top.wilsonlv.jaguar.commons.web.util.WebUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -121,6 +122,10 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
             handlerLog.setDuration(duration);
             handlerLog.setStatus(response.getStatus());
             handlerLog.setErrorMsg(ExceptionUtils.getMessage(handlerException));
+            JsonResult<?> jsonResult = JsonResultResponseAdvice.JSON_RESULT.get();
+            if (jsonResult != null) {
+                handlerLog.setJsonResult(jsonResult.toJsonStr());
+            }
 
             log.info("send handler log");
             jmsQueueTemplate.convertAndSend(HandlerLogConstant.DESTINATION_HANDLER_LOG, handlerLog);
