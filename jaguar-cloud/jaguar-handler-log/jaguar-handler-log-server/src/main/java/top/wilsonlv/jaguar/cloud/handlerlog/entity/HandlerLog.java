@@ -99,7 +99,7 @@ public class HandlerLog extends BaseModel {
     /**
      * 创建人ID
      */
-    @TableField(value = "create_user_id")
+    @TableField(value = "createUserId")
     private Long createUserId;
 
 }
