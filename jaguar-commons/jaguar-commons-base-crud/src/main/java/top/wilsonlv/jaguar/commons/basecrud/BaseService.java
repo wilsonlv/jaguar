@@ -78,8 +78,14 @@ public abstract class BaseService<T extends BaseModel, M extends BaseMapper<T>> 
     }
 
     public T getById(Long id) {
+        return this.getById(id, true);
+    }
+
+    public T getById(Long id, boolean thorwEx) {
         T t = this.mapper.selectById(id);
-        Assert.validateId(t, "实体", id);
+        if (thorwEx) {
+            Assert.validateId(t, "实体", id);
+        }
         return t;
     }
 
