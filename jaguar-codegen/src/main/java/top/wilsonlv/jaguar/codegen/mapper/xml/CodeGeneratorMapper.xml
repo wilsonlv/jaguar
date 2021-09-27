@@ -11,6 +11,7 @@
                 AND table_name LIKE CONCAT('%',#{fuzzyTableName},'%')
             </if>
         </where>
+        order by create_time desc
     </select>
 
     <select id="getTableInfo" resultType="top.wilsonlv.jaguar.codegen.controller.vo.TableVO">
