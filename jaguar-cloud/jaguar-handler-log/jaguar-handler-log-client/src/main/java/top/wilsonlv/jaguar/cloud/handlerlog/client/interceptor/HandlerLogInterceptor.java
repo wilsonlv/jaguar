@@ -11,6 +11,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.http.HttpHeaders;
+import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -128,7 +129,11 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
             }
 
             log.info("send handler log");
-            jmsQueueTemplate.convertAndSend(HandlerLogConstant.DESTINATION_HANDLER_LOG, handlerLog);
+            try {
+                jmsQueueTemplate.convertAndSend(HandlerLogConstant.DESTINATION_HANDLER_LOG, handlerLog);
+            } catch (JmsException e) {
+                log.error(e.getMessage());
+            }
         }
 
         JsonResultResponseAdvice.JSON_RESULT.remove();

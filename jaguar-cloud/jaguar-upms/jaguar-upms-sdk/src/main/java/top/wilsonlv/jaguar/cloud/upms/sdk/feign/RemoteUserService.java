@@ -4,6 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
+import top.wilsonlv.jaguar.commons.web.JsonResult;
 
 
 /**
@@ -20,6 +21,6 @@ public interface RemoteUserService {
      * @return 用户
      */
     @GetMapping("/feign/user/loadUserByUsername")
-    UserVO loadUserByUsername(@RequestParam("username") String username);
+    JsonResult<UserVO> loadUserByUsername(@RequestParam("username") String username);
 
 }

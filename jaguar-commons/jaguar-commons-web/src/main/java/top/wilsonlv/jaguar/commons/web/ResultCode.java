@@ -1,5 +1,8 @@
 package top.wilsonlv.jaguar.commons.web;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * @author lvws
  * @since 2021/3/30.
@@ -69,6 +72,7 @@ public enum ResultCode {
         this.reasonPhrase = reasonPhrase;
     }
 
+    @JsonValue
     public int getValue() {
         return value;
     }
@@ -76,4 +80,15 @@ public enum ResultCode {
     public String getReasonPhrase() {
         return reasonPhrase;
     }
+
+    @JsonCreator
+    public static ResultCode forValue(int value) {
+        for (ResultCode resultCode : ResultCode.values()) {
+            if (resultCode.getValue() == value) {
+                return resultCode;
+            }
+        }
+        return null;
+    }
+
 }

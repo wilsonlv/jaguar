@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import top.wilsonlv.jaguar.commons.web.JsonResult;
 
 import javax.validation.constraints.NotBlank;
 
@@ -28,8 +29,8 @@ public class RemoteUserServiceImpl implements RemoteUserService {
 
     @Override
     @GetMapping("/loadUserByUsername")
-    public UserVO loadUserByUsername(@RequestParam @NotBlank String username) {
-        return userService.getByPrincipalWithRoleAndPermission(username);
+    public JsonResult<UserVO> loadUserByUsername(@RequestParam @NotBlank String username) {
+        return JsonResult.success(userService.getByPrincipalWithRoleAndPermission(username));
     }
 
 }

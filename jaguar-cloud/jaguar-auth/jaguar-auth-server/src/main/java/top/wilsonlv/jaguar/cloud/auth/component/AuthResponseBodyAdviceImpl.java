@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.ClientDetails;
@@ -98,6 +99,10 @@ public class AuthResponseBodyAdviceImpl implements ResponseBodyAdvice<Object> {
         loginLog.setTenantId(securityUser.getTenantId());
 
         log.info("send login log");
-        jmsQueueTemplate.convertAndSend(HandlerLogConstant.DESTINATION_LOGIN_LOG, loginLog);
+        try {
+            jmsQueueTemplate.convertAndSend(HandlerLogConstant.DESTINATION_LOGIN_LOG, loginLog);
+        } catch (JmsException e) {
+            log.error(e.getMessage());
+        }
     }
 }

@@ -71,10 +71,7 @@ public abstract class BaseService<T extends BaseModel, M extends BaseMapper<T>> 
 
     @Transactional
     public void delete(Wrapper<T> wrapper) {
-        boolean success = SqlHelper.retBool(this.mapper.delete(wrapper));
-        if (!success) {
-            throw new DataCrudException("数据删除失败！");
-        }
+        this.mapper.delete(wrapper);
     }
 
     public T getById(Long id) {

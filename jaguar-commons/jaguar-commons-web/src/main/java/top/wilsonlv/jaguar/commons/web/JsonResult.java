@@ -31,7 +31,7 @@ public class JsonResult<T> implements Serializable {
     }
 
     @ApiModelProperty(value = "结果码")
-    private ResultCode resultCode;
+    private ResultCode resultCode = ResultCode.OK;
 
     @ApiModelProperty(value = "结果数据")
     private T data;
@@ -41,6 +41,9 @@ public class JsonResult<T> implements Serializable {
 
     @ApiModelProperty(value = "响应时间戳")
     private final Long timestamp = System.currentTimeMillis();
+
+    public JsonResult() {
+    }
 
     public JsonResult(ResultCode resultCode) {
         this.resultCode = resultCode;
