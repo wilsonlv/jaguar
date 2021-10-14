@@ -13,6 +13,9 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.time.LocalDate;
@@ -64,6 +67,20 @@ public class SpringMvcConfig implements WebMvcConfigurer {
         registrar.setDateFormatter(DATE_FORMATTER);
         registrar.setDateTimeFormatter(DATE_TIME_FORMATTER);
         registrar.registerFormatters(registry);
+    }
+
+    /**
+     * 解决跨域
+     */
+    @Bean
+    public CorsFilter corsFilter() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedOrigin("*");
+        config.addAllowedMethod("*");
+        config.addAllowedHeader("*");
+        UrlBasedCorsConfigurationSource configSource = new UrlBasedCorsConfigurationSource();
+        configSource.registerCorsConfiguration("/**", config);
+        return new CorsFilter(configSource);
     }
 
 }

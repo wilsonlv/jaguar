@@ -3,8 +3,8 @@ package top.wilsonlv.jaguar.commons.web.filter;
 import cn.hutool.core.date.DatePattern;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import top.wilsonlv.jaguar.commons.web.util.WebUtil;
 import org.springframework.http.HttpHeaders;
+import top.wilsonlv.jaguar.commons.web.util.WebUtil;
 
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
@@ -27,6 +27,10 @@ public class RequestParamsFilter implements Filter {
 
     private static final String ACTUATOR = "/actuator";
 
+    private static final String CSS = ".css";
+    private static final String JS = ".js";
+    private static final String HTML = ".html";
+
     @Override
     public void init(FilterConfig filterConfig) {
     }
@@ -37,7 +41,9 @@ public class RequestParamsFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        if (request.getRequestURI().startsWith(ACTUATOR)) {
+        String requestUri = request.getRequestURI();
+        if (requestUri.startsWith(ACTUATOR)
+                || requestUri.endsWith(CSS) || requestUri.endsWith(JS) || requestUri.endsWith(HTML)) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
@@ -71,11 +77,6 @@ public class RequestParamsFilter implements Filter {
         }
 
         filterChain.doFilter(servletRequest, servletResponse);
-
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Headers", "*");
-        response.setHeader("Access-Control-Allow-Credentials", "true");
-        response.setHeader("Access-Control-Allow-Methods", "POST,GET,PUT,OPTIONS,DELETE");
 
         LocalDateTime endTime = LocalDateTime.now();
         long duration = Duration.between(accessTime, endTime).toMillis();
