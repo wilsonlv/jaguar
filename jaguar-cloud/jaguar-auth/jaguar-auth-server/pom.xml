@@ -36,7 +36,6 @@
         <dependency>
             <groupId>top.wilsonlv</groupId>
             <artifactId>jaguar-upms-sdk</artifactId>
-            <version>${jaguar.version}</version>
         </dependency>
 
         <dependency>

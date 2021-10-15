@@ -31,15 +31,9 @@
         <spring-cloud-alibaba.version>2.2.5.RELEASE</spring-cloud-alibaba.version>
         <spring-boot-admin.version>2.3.1</spring-boot-admin.version>
 
-        <mybatis-plus.version>3.4.1</mybatis-plus.version>
-        <mysql.version>8.0.18</mysql.version>
-
-        <swagger.version>1.5.10</swagger.version>
         <fastjson.version>1.2.23</fastjson.version>
         <jackson.version>2.9.0</jackson.version>
         <hutool.version>5.5.8</hutool.version>
-        <captcha.version>1.2.9</captcha.version>
-        <klock.version>1.4-RELEASE</klock.version>
     </properties>
 
     <dependencyManagement>
@@ -117,6 +111,13 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+
+        <!-- hutool -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
         </dependency>
 
         <!--  Lombok  -->
