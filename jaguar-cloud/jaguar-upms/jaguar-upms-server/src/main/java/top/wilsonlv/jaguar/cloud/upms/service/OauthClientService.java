@@ -95,16 +95,13 @@ public class OauthClientService extends BaseService<OauthClient, ClientMapper> i
 
     public static void main(String[] args) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 1; i++) {
             String password = EncryptionUtil.randomPassword(8, 8, 8);
             String encode = encoder.encode(password);
             System.out.println(password);
             System.out.println(encode);
+            System.out.println(IdWorker.getId());
         }
-
-        System.out.println(IdWorker.getId());
-        System.out.println(IdWorker.getId());
     }
 
 //    clientId              原密码                       密码
@@ -113,5 +110,6 @@ public class OauthClientService extends BaseService<OauthClient, ClientMapper> i
 //    jaguar-websocket      F34ag14gI5UYLJ8U0lhgHo3m    $2a$10$ssSInpunW4K5NllSYT7oA.zQ0ny9ijtkPcsKJJbvD5/vj9GvitPCi
 //    jaguar-handler-log    lJ1MJ80Kmm1oU6kx0W0RCb2b    $2a$10$s6l9eDccvLajyhUvbpdHHOipIh3nCGinyBkDedc4.IXkT8h/lyVXW
 //    jaguar-admin-pc       Q7b6VK0B8j3y4wf5I4oVNfZy    $2a$10$94CLjZ98IRNWzEkJubfIk.rr3DS7YJnqpCiHUSNDGmx2q.xcQsBcG
+//    thirdParty            ygF4Xq8NONr326zC60fzJZ4h    $2a$10$x.DmCRCV.hljeFjQUAIXJOnjm9xan4EgoPPTNZAczQYEWOzo53vIS
 
 }

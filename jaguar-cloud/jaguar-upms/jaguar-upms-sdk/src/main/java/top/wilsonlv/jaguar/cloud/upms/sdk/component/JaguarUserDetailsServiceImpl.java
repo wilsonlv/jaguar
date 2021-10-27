@@ -36,7 +36,12 @@ public class JaguarUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public SecurityUser loadUserByUsername(String username) throws UsernameNotFoundException {
-        ClientDetails clientDetails = clientDetailsService.loadClientByClientId(SecurityUtil.getClientId());
+        String clientId = SecurityUtil.getClientId();
+        if (clientId == null) {
+            return getAdminUser(username);
+        }
+
+        ClientDetails clientDetails = clientDetailsService.loadClientByClientId(clientId);
         Map<String, Object> additionalInformation = clientDetails.getAdditionalInformation();
         String userTypeStr = (String) additionalInformation.get("userType");
         if (StringUtils.isBlank(userTypeStr)) {
@@ -48,7 +53,9 @@ public class JaguarUserDetailsServiceImpl implements UserDetailsService {
             case ADMIN: {
                 return getAdminUser(username);
             }
-            case TENANT:
+            case TENANT: {
+                return null;
+            }
             case USER: {
                 return null;
             }
