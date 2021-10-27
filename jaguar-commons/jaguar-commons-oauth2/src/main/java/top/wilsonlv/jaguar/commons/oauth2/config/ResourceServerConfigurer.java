@@ -15,6 +15,7 @@ import top.wilsonlv.jaguar.commons.enums.UserType;
 import top.wilsonlv.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
 import top.wilsonlv.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler;
 import top.wilsonlv.jaguar.commons.oauth2.properties.SpringSecurityProperties;
+import top.wilsonlv.jaguar.commons.oauth2.util.MonitorUitl;
 
 /**
  * @author lvws
@@ -55,7 +56,7 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
                 .antMatchers("/tenant/**").hasRole(UserType.TENANT.name())
                 .antMatchers("/user/**").hasRole(UserType.USER.name())
                 .antMatchers("/swagger-resources", "/swagger-resources/**", "/v2/**").permitAll()
-                .antMatchers("/druid/**").permitAll()
+                .antMatchers("/druid/**").hasIpAddress(MonitorUitl.getMonitorIp())
                 .antMatchers(springSecurityProperties.getIgnoreUrls()).permitAll()
                 //其余都需要认证
                 .anyRequest()

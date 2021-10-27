@@ -24,6 +24,7 @@ import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrappe
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -104,7 +105,7 @@ public class UserService extends BaseService<User, UserMapper> {
     public Page<UserVO> queryWithRole(Page<User> page, LambdaQueryWrapper<User> wrapper) {
         page = this.query(page, wrapper);
 
-        Page<UserVO> userVoPage = new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
+        List<UserVO> records = new ArrayList<>(page.getRecords().size());
         for (User user : page.getRecords()) {
             UserVO userVO = new UserVO();
             BeanUtils.copyProperties(user, userVO);
@@ -112,8 +113,11 @@ public class UserService extends BaseService<User, UserMapper> {
             List<RoleVO> roles = userRoleService.listRoleByUserId(user.getId());
             userVO.setRoles(roles);
 
-            userVoPage.getRecords().add(userVO);
+            records.add(userVO);
         }
+
+        Page<UserVO> userVoPage = new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
+        userVoPage.setRecords(records);
         return userVoPage;
     }
 

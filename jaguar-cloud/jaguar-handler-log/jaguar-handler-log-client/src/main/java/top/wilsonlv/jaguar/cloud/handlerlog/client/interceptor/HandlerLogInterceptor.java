@@ -128,11 +128,11 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
                 handlerLog.setJsonResult(jsonResult.toJsonStr());
             }
 
-            log.info("send handler log");
             try {
+                log.debug("send handler log");
                 jmsQueueTemplate.convertAndSend(HandlerLogConstant.DESTINATION_HANDLER_LOG, handlerLog);
             } catch (JmsException e) {
-                log.error(e.getMessage());
+                log.debug(e.getMessage());
             }
         }
 

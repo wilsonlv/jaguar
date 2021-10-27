@@ -98,11 +98,11 @@ public class AuthResponseBodyAdviceImpl implements ResponseBodyAdvice<Object> {
         loginLog.setDeviceImei(deviceImei);
         loginLog.setTenantId(securityUser.getTenantId());
 
-        log.info("send login log");
         try {
+            log.debug("send login log");
             jmsQueueTemplate.convertAndSend(HandlerLogConstant.DESTINATION_LOGIN_LOG, loginLog);
         } catch (JmsException e) {
-            log.error(e.getMessage());
+            log.debug(e.getMessage());
         }
     }
 }
