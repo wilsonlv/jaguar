@@ -43,6 +43,11 @@ public class Menu extends BaseModel {
     @TableField("menu_permission")
     private String menuPermission;
     /**
+     * 排序
+     */
+    @TableField("menu_order")
+    private String menuOrder;
+    /**
      * 是否为按钮
      */
     @TableField("menu_button")

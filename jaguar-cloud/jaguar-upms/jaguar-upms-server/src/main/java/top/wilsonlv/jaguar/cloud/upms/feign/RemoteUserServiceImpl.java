@@ -22,10 +22,7 @@ import javax.validation.constraints.NotBlank;
 @RequestMapping("/feign/user")
 public class RemoteUserServiceImpl implements RemoteUserService {
 
-    private final PasswordEncoder passwordEncoder;
-
     private final UserService userService;
-
 
     @Override
     @GetMapping("/loadUserByUsername")

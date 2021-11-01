@@ -29,7 +29,7 @@ public class RoleMenu extends BaseModel {
     /**
      * 菜单ID
      */
-    @TableField("role_id")
+    @TableField("menu_id")
     private Long menuId;
     /**
      * 是否内置

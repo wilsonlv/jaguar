@@ -38,6 +38,15 @@ public final class SecurityUtil {
         return null;
     }
 
+    public static Long getCurrentUserId() {
+        SecurityUser currentUser = getCurrentUser();
+        if (currentUser == null) {
+            return null;
+        }
+
+        return currentUser.getId();
+    }
+
     public static String getClientId() {
         HttpServletRequest request = WebUtil.getRequest();
         if (request == null) {
