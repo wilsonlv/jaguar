@@ -3,9 +3,11 @@ package top.wilsonlv.jaguar.cloud.upms.api;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.common.OAuth2RefreshToken;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.web.bind.annotation.*;
 import top.wilsonlv.jaguar.cloud.upms.controller.vo.MenuVO;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
 import top.wilsonlv.jaguar.cloud.upms.service.AuthService;
@@ -29,6 +31,8 @@ public class AuthApi {
 
     private final AuthService authService;
 
+    private final TokenStore tokenStore;
+
     @ApiOperation(value = "获取个人信息")
     @GetMapping("/getUserInfo")
     public JsonResult<UserVO> getUserInfo() {
@@ -39,6 +43,21 @@ public class AuthApi {
     @GetMapping("/getUserMenus")
     public JsonResult<List<MenuVO>> getUserMenus() {
         return JsonResult.success(authService.getUserMenus(SecurityUtil.getCurrentUserId()));
+    }
+
+    @ApiOperation(value = "登出")
+    @DeleteMapping("/logout")
+    public JsonResult<Void> logout(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        OAuth2AccessToken accessToken = tokenStore.readAccessToken(token);
+        // 清空access token
+        tokenStore.removeAccessToken(accessToken);
+
+        // 清空 refresh token
+        OAuth2RefreshToken refreshToken = accessToken.getRefreshToken();
+        if (refreshToken != null) {
+            tokenStore.removeRefreshToken(refreshToken);
+        }
+        return JsonResult.success();
     }
 
 }

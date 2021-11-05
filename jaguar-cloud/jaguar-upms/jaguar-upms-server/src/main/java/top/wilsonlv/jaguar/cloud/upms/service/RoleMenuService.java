@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import top.wilsonlv.jaguar.cloud.upms.mapper.RoleMenuMapper;
 import top.wilsonlv.jaguar.cloud.upms.entity.Menu;
 import top.wilsonlv.jaguar.cloud.upms.entity.RoleMenu;
+import top.wilsonlv.jaguar.cloud.upms.mapper.RoleMenuMapper;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;
 
 import java.util.Set;
@@ -53,6 +53,7 @@ public class RoleMenuService extends BaseService<RoleMenu, RoleMenuMapper> {
 
         this.delete(Wrappers.lambdaQuery(RoleMenu.class)
                 .eq(RoleMenu::getRoleId, roleId)
+                .eq(RoleMenu::getBuiltIn, false)
                 .notIn(RoleMenu::getMenuId, menuIds));
     }
 

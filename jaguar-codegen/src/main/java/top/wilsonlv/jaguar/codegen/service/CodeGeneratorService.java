@@ -48,8 +48,10 @@ public class CodeGeneratorService {
 
     static {
         IGNORE_COLUMNS.add("id_");
+        IGNORE_COLUMNS.add("create_user_id");
         IGNORE_COLUMNS.add("create_by");
         IGNORE_COLUMNS.add("create_time");
+        IGNORE_COLUMNS.add("update_user_id");
         IGNORE_COLUMNS.add("update_by");
         IGNORE_COLUMNS.add("update_time");
         IGNORE_COLUMNS.add("remark_");
@@ -105,6 +107,9 @@ public class CodeGeneratorService {
             entityCamelCase = split.length == 1 ? split[0] : split[1];
         } else {
             entityCamelCase = tableName;
+        }
+        if (entityCamelCase.startsWith("_")) {
+            entityCamelCase = entityCamelCase.substring(1);
         }
         entityCamelCase = StrUtil.toCamelCase(entityCamelCase);
 

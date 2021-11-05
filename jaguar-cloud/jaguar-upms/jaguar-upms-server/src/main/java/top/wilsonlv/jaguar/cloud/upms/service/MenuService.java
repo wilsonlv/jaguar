@@ -103,7 +103,7 @@ public class MenuService extends BaseService<Menu, MenuMapper> {
 
         if (StringUtils.isNotBlank(menuModifyDTO.getMenuPermission())) {
             Menu byMenuPermission = this.getByMenuPermission(menuModifyDTO.getMenuPermission());
-            Assert.duplicate(byMenuPermission, "权限");
+            Assert.duplicate(byMenuPermission, menuModifyDTO, "权限");
         }
 
         Menu menu = new Menu();

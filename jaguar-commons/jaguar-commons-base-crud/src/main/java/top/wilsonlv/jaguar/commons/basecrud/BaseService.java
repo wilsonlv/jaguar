@@ -7,10 +7,13 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
-import top.wilsonlv.jaguar.commons.web.exception.impl.DataCrudException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
+import top.wilsonlv.jaguar.commons.web.exception.impl.DataCrudException;
 
+import java.lang.reflect.ParameterizedType;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -57,7 +60,10 @@ public abstract class BaseService<T extends BaseModel, M extends BaseMapper<T>> 
 
     @Transactional
     public void delete(Long id) {
-        boolean success = SqlHelper.retBool(this.mapper.deleteById(id));
+        T t = this.getById(id);
+        t.setUpdateTime(LocalDateTime.now());
+        t.setDeleted(true);
+        boolean success = SqlHelper.retBool(this.mapper.updateById(t));
         if (!success) {
             log.error("实体ID：" + id);
             throw new DataCrudException("数据删除失败！");
@@ -71,7 +77,17 @@ public abstract class BaseService<T extends BaseModel, M extends BaseMapper<T>> 
 
     @Transactional
     public void delete(Wrapper<T> wrapper) {
-        this.mapper.delete(wrapper);
+        ParameterizedType parameterizedType = (ParameterizedType) getClass().getGenericSuperclass();
+        @SuppressWarnings("unchecked") Class<T> clazz = (Class<T>) parameterizedType.getActualTypeArguments()[0];
+        T t;
+        try {
+            t = clazz.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new CheckedException(e);
+        }
+        t.setUpdateTime(LocalDateTime.now());
+        t.setDeleted(true);
+        this.mapper.update(t, wrapper);
     }
 
     public T getById(Long id) {

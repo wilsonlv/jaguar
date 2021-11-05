@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.klock.annotation.Klock;
 import org.springframework.context.annotation.Lazy;
@@ -12,10 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import top.wilsonlv.jaguar.cloud.upms.constant.LockNameConstant;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.RoleCreateDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.RoleModifyDTO;
-import top.wilsonlv.jaguar.cloud.upms.mapper.RoleMapper;
 import top.wilsonlv.jaguar.cloud.upms.entity.Role;
 import top.wilsonlv.jaguar.cloud.upms.entity.RoleMenu;
 import top.wilsonlv.jaguar.cloud.upms.entity.UserRole;
+import top.wilsonlv.jaguar.cloud.upms.mapper.RoleMapper;
+import top.wilsonlv.jaguar.cloud.upms.sdk.vo.RoleMenuVO;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.RoleVO;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
 import top.wilsonlv.jaguar.commons.basecrud.Assert;
@@ -23,9 +25,8 @@ import top.wilsonlv.jaguar.commons.basecrud.BaseService;
 import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -54,13 +55,18 @@ public class RoleService extends BaseService<Role, RoleMapper> {
     public RoleVO getDetail(Long roleId) {
         Role role = this.getById(roleId);
 
-        List<RoleMenu> roleMenus = roleMenuService.list(Wrappers.lambdaQuery(RoleMenu.class)
-                .select(RoleMenu::getMenuId)
-                .eq(RoleMenu::getRoleId, roleId));
-        Set<Long> menuIds = roleMenus.stream().map(RoleMenu::getMenuId).collect(Collectors.toSet());
+        RoleVO roleVO = new RoleVO();
+        BeanUtils.copyProperties(role, roleVO);
 
-        RoleVO roleVO = new RoleVO(role.getRoleName(), role.getRoleBuiltIn(), role.getRoleEnable());
-        roleVO.setMenuIds(menuIds);
+        List<RoleMenu> roleMenus = roleMenuService.list(Wrappers.lambdaQuery(RoleMenu.class)
+                .eq(RoleMenu::getRoleId, roleId));
+        roleVO.setRoleMenus(new ArrayList<>(roleMenus.size()));
+
+        for (RoleMenu roleMenu : roleMenus) {
+            RoleMenuVO roleMenuVO = new RoleMenuVO();
+            BeanUtils.copyProperties(roleMenu, roleMenuVO);
+            roleVO.getRoleMenus().add(roleMenuVO);
+        }
         return roleVO;
     }
 
@@ -68,15 +74,19 @@ public class RoleService extends BaseService<Role, RoleMapper> {
     public Page<RoleVO> queryWithUser(Page<Role> page, LambdaQueryWrapper<Role> wrapper) {
         page = this.query(page, wrapper);
 
-        Page<RoleVO> roles = new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
+        List<RoleVO> records = new ArrayList<>(page.getRecords().size());
         for (Role role : page.getRecords()) {
-            List<UserVO> users = userRoleService.listUserByRoleId(role.getId());
+            RoleVO roleVO = new RoleVO();
+            BeanUtils.copyProperties(role, roleVO);
 
-            RoleVO roleVO = new RoleVO(role.getRoleName(), role.getRoleBuiltIn(), role.getRoleEnable());
+            List<UserVO> users = userRoleService.listUserByRoleId(role.getId());
             roleVO.setUsers(users);
-            roles.getRecords().add(roleVO);
+            records.add(roleVO);
         }
-        return roles;
+
+        Page<RoleVO> roleVOPage = new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
+        roleVOPage.setRecords(records);
+        return roleVOPage;
     }
 
     @Klock(name = LockNameConstant.ROLE_CREATE_MODIFY_LOCK)
@@ -86,9 +96,9 @@ public class RoleService extends BaseService<Role, RoleMapper> {
         Assert.duplicate(unique, "角色名称");
 
         Role role = new Role();
+        role.setRoleBuiltIn(false);
         role.setRoleName(roleCreateDTO.getRoleName());
         role.setRoleEnable(roleCreateDTO.getRoleEnable());
-        role.setRoleBuiltIn(false);
         this.insert(role);
 
         roleMenuService.relateMenus(role.getId(), roleCreateDTO.getMenuIds());
@@ -106,9 +116,12 @@ public class RoleService extends BaseService<Role, RoleMapper> {
 
         Role role = new Role();
         role.setId(roleModifyDTO.getId());
+        role.setRoleBuiltIn(false);
         role.setRoleName(roleModifyDTO.getRoleName());
         role.setRoleEnable(roleModifyDTO.getRoleEnable());
         this.updateById(role);
+
+        roleMenuService.relateMenus(role.getId(), roleModifyDTO.getMenuIds());
     }
 
     @Transactional
@@ -118,8 +131,12 @@ public class RoleService extends BaseService<Role, RoleMapper> {
             throw new CheckedException("该角色下已绑定用户，不可删除！");
         }
 
+        Role role = this.getById(id);
+        if (role.getRoleBuiltIn()) {
+            throw new CheckedException("内置脚色不可刪除");
+        }
+
         this.delete(id);
     }
-
 
 }

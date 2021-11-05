@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.UserCreateDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.UserModifyDTO;
-import top.wilsonlv.jaguar.cloud.upms.mapper.UserMapper;
 import top.wilsonlv.jaguar.cloud.upms.entity.User;
+import top.wilsonlv.jaguar.cloud.upms.mapper.UserMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
 import top.wilsonlv.jaguar.cloud.upms.service.UserService;
 import top.wilsonlv.jaguar.commons.basecrud.BaseController;
@@ -78,6 +78,14 @@ public class UserController extends BaseController<User, UserMapper, UserService
     @PutMapping
     public JsonResult<Void> modify(@RequestBody @Valid UserModifyDTO user) {
         service.modify(user);
+        return success();
+    }
+
+    @ApiOperation(value = "删除用户")
+    @PreAuthorize("hasAuthority('用户管理')")
+    @DeleteMapping(value = "/{id}")
+    public JsonResult<Void> del(@PathVariable Long id) {
+        service.checkAnddelete(id);
         return success();
     }
 
