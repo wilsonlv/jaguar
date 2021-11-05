@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import top.wilsonlv.jaguar.cloud.upms.controller.vo.MenuVO;
+import top.wilsonlv.jaguar.cloud.upms.sdk.vo.MenuVO;
 import top.wilsonlv.jaguar.cloud.upms.entity.Menu;
 import top.wilsonlv.jaguar.cloud.upms.entity.RoleMenu;
 import top.wilsonlv.jaguar.cloud.upms.entity.UserRole;

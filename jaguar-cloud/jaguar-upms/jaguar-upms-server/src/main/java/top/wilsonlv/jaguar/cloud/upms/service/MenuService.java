@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import top.wilsonlv.jaguar.cloud.upms.constant.LockNameConstant;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.MenuCreateDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.MenuModifyDTO;
-import top.wilsonlv.jaguar.cloud.upms.controller.vo.MenuVO;
+import top.wilsonlv.jaguar.cloud.upms.sdk.vo.MenuVO;
 import top.wilsonlv.jaguar.cloud.upms.mapper.MenuMapper;
 import top.wilsonlv.jaguar.cloud.upms.entity.Menu;
 import top.wilsonlv.jaguar.commons.basecrud.Assert;
@@ -84,13 +84,6 @@ public class MenuService extends BaseService<Menu, MenuMapper> {
         this.insert(menu);
     }
 
-    public void checkBuiltIn(Long id){
-        Menu byId = this.getById(id);
-        if (byId.getMenuBuiltIn()) {
-            throw new CheckedException("内置菜单不可修改");
-        }
-    }
-
     @Klock(name = LockNameConstant.MENU_CREATE_MODIFY_LOCK)
     @Transactional
     public void modify(MenuModifyDTO menuModifyDTO) {
@@ -115,5 +108,12 @@ public class MenuService extends BaseService<Menu, MenuMapper> {
     public void checkAndDelete(Long id) {
         this.checkBuiltIn(id);
         this.delete(id);
+    }
+
+    public void checkBuiltIn(Long id){
+        Menu byId = this.getById(id);
+        if (byId.getMenuBuiltIn()) {
+            throw new CheckedException("内置菜单不可修改");
+        }
     }
 }

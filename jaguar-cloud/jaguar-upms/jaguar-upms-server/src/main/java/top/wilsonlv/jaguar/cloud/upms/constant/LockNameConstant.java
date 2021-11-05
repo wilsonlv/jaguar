@@ -6,10 +6,12 @@ package top.wilsonlv.jaguar.cloud.upms.constant;
  */
 public interface LockNameConstant {
 
-    String USER_CREATE_MODIFY_LOCK = "user_create_modify_lock";
+    String USER_CREATE_MODIFY_LOCK = "USER_CREATE_MODIFY_LOCK";
 
-    String ROLE_CREATE_MODIFY_LOCK = "role_create_modify_lock";
+    String ROLE_CREATE_MODIFY_LOCK = "ROLE_CREATE_MODIFY_LOCK";
 
-    String MENU_CREATE_MODIFY_LOCK = "menu_create_modify_lock";
+    String MENU_CREATE_MODIFY_LOCK = "MENU_CREATE_MODIFY_LOCK";
+
+    String OAUTH_CLIENT_CREATE_MODIFY_LOCK = "OAUTH_CLIENT_CREATE_MODIFY_LOCK";
 
 }

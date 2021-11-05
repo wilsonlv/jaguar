@@ -7,7 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.MenuCreateDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.MenuModifyDTO;
-import top.wilsonlv.jaguar.cloud.upms.controller.vo.MenuVO;
+import top.wilsonlv.jaguar.cloud.upms.sdk.vo.MenuVO;
 import top.wilsonlv.jaguar.cloud.upms.mapper.MenuMapper;
 import top.wilsonlv.jaguar.cloud.upms.entity.Menu;
 import top.wilsonlv.jaguar.cloud.upms.service.MenuService;

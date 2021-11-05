@@ -2,7 +2,6 @@ package top.wilsonlv.jaguar.cloud.auth.component;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import top.wilsonlv.jaguar.cloud.handlerlog.client.HandlerLogConstant;
 import top.wilsonlv.jaguar.cloud.handlerlog.client.dto.LoginLogSaveDTO;
-import top.wilsonlv.jaguar.commons.enums.ClientType;
+import top.wilsonlv.jaguar.cloud.upms.sdk.dto.OauthClientAdditionalInfo;
 import top.wilsonlv.jaguar.commons.oauth2.model.SecurityUser;
 import top.wilsonlv.jaguar.commons.oauth2.util.SecurityUtil;
 import top.wilsonlv.jaguar.commons.web.util.WebUtil;
@@ -86,12 +85,11 @@ public class AuthResponseBodyAdviceImpl implements ResponseBodyAdvice<Object> {
 
         ClientDetails clientDetails = clientDetailsService.loadClientByClientId(SecurityUtil.getClientId());
         Map<String, Object> additionalInformation = clientDetails.getAdditionalInformation();
-        String clientType = (String) additionalInformation.get("clientType");
+        OauthClientAdditionalInfo clientAdditionalInfo = OauthClientAdditionalInfo.parse(additionalInformation);
 
         loginLog.setClientId(clientDetails.getClientId());
-        if (StringUtils.isNotBlank(clientType)) {
-            loginLog.setClientType(ClientType.valueOf(clientType));
-        }
+        loginLog.setClientType(clientAdditionalInfo.getClientType());
+
         loginLog.setClientVersion(clientVersion);
         loginLog.setDeviceModel(deviceModel);
         loginLog.setDeviceSysVersion(deviceSysVersion);

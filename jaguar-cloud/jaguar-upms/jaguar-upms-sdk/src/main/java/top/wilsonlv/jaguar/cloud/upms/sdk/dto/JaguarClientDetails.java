@@ -15,7 +15,7 @@ import java.util.Set;
  * @since 2021/8/6
  */
 @Data
-public class ClientDetailsImpl implements ClientDetails {
+public class JaguarClientDetails implements ClientDetails {
 
     private String clientId;
 

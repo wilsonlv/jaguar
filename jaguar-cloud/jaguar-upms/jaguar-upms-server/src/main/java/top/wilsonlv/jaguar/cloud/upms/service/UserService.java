@@ -177,7 +177,7 @@ public class UserService extends BaseService<User, UserMapper> {
 
     @Klock(name = LockNameConstant.USER_CREATE_MODIFY_LOCK)
     @Transactional
-    public void checkAnddelete(Long id) {
+    public void checkAndDelete(Long id) {
         User user = this.getById(id);
         if (user.getUserBuiltIn()) {
             throw new CheckedException("内置用户不可删除");

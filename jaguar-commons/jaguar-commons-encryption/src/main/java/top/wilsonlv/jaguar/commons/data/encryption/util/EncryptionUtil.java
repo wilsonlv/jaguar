@@ -148,10 +148,6 @@ public final class EncryptionUtil {
     private static final char[] LOWER_CASE_LETTER = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
     private static final char[] NUM = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
-    public static String randomPassword() {
-        return randomPassword(2, 2, 4);
-    }
-
     public static String randomPassword(int upperCaseLetterLength, int lowerCaseLetterLength, int numLength) {
         Random r = new Random();
 

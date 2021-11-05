@@ -85,7 +85,7 @@ public class UserController extends BaseController<User, UserMapper, UserService
     @PreAuthorize("hasAuthority('用户管理')")
     @DeleteMapping(value = "/{id}")
     public JsonResult<Void> del(@PathVariable Long id) {
-        service.checkAnddelete(id);
+        service.checkAndDelete(id);
         return success();
     }
 
