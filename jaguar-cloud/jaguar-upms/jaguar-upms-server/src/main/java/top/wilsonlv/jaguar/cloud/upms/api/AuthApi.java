@@ -48,7 +48,7 @@ public class AuthApi {
     @ApiOperation(value = "登出")
     @DeleteMapping("/logout")
     public JsonResult<Void> logout(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        OAuth2AccessToken accessToken = tokenStore.readAccessToken(token);
+        OAuth2AccessToken accessToken = tokenStore.readAccessToken(token.substring(7));
         // 清空access token
         tokenStore.removeAccessToken(accessToken);
 
