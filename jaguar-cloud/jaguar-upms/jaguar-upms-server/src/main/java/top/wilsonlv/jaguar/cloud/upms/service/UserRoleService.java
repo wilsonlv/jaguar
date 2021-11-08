@@ -3,9 +3,9 @@ package top.wilsonlv.jaguar.cloud.upms.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import top.wilsonlv.jaguar.cloud.upms.mapper.UserRoleMapper;
 import top.wilsonlv.jaguar.cloud.upms.entity.Role;
 import top.wilsonlv.jaguar.cloud.upms.entity.UserRole;
+import top.wilsonlv.jaguar.cloud.upms.mapper.UserRoleMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.RoleVO;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;
@@ -47,17 +47,16 @@ public class UserRoleService extends BaseService<UserRole, UserRoleMapper> {
     @Transactional
     public void relateRoles(Long userId, Set<Long> roleIds) {
         for (Long roleId : roleIds) {
-            Role role = roleService.getById(roleId);
-
             if (this.exists(JaguarLambdaQueryWrapper.<UserRole>newInstance()
                     .eq(UserRole::getUserId, userId)
                     .eq(UserRole::getRoleId, roleId))) {
                 continue;
             }
 
+            Role role = roleService.getById(roleId);
             UserRole userRole = new UserRole();
             userRole.setUserId(userId);
-            userRole.setRoleId(roleId);
+            userRole.setRoleId(role.getId());
             userRole.setBuiltIn(false);
             this.insert(userRole);
         }

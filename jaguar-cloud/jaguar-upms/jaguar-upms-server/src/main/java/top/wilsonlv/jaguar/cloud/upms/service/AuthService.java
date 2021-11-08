@@ -2,13 +2,12 @@ package top.wilsonlv.jaguar.cloud.upms.service;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import top.wilsonlv.jaguar.cloud.upms.sdk.vo.MenuVO;
 import top.wilsonlv.jaguar.cloud.upms.entity.Menu;
 import top.wilsonlv.jaguar.cloud.upms.entity.RoleMenu;
 import top.wilsonlv.jaguar.cloud.upms.entity.UserRole;
+import top.wilsonlv.jaguar.cloud.upms.sdk.vo.MenuVO;
 import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
 
 import java.util.ArrayList;
@@ -58,8 +57,7 @@ public class AuthService {
             if ((parentId == null && menu.getParentId() == null) ||
                     (parentId != null && parentId.equals(menu.getParentId()))) {
                 iterator.remove();
-                MenuVO userMenuVO = new MenuVO();
-                BeanUtils.copyProperties(menu, userMenuVO);
+                MenuVO userMenuVO = menu.toVo(MenuVO.class);
                 menuVOs.add(userMenuVO);
             }
         }

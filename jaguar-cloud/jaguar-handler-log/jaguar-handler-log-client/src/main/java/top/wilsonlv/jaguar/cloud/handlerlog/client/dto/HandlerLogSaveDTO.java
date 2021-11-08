@@ -1,8 +1,9 @@
 package top.wilsonlv.jaguar.cloud.handlerlog.client.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import top.wilsonlv.jaguar.commons.web.base.BaseDTO;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -10,7 +11,8 @@ import java.time.LocalDateTime;
  * @since 2021/8/6
  */
 @Data
-public class HandlerLogSaveDTO implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class HandlerLogSaveDTO extends BaseDTO {
 
     private static final long serialVersionUID = 1L;
 

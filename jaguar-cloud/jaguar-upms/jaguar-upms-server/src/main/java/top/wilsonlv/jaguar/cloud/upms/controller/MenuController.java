@@ -13,6 +13,7 @@ import top.wilsonlv.jaguar.cloud.upms.entity.Menu;
 import top.wilsonlv.jaguar.cloud.upms.service.MenuService;
 import top.wilsonlv.jaguar.commons.basecrud.BaseController;
 import top.wilsonlv.jaguar.commons.web.JsonResult;
+import top.wilsonlv.jaguar.commons.web.base.BaseVO;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -43,7 +44,7 @@ public class MenuController extends BaseController<Menu, MenuMapper, MenuService
     @GetMapping(value = "/{id}")
     public JsonResult<MenuVO> detail(@PathVariable Long id) {
         Menu menu = service.getById(id);
-        return success(service.model2Vo(menu));
+        return success(menu.toVo(MenuVO.class));
     }
 
     @ApiOperation(value = "新增菜单")

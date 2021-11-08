@@ -3,6 +3,8 @@ package top.wilsonlv.jaguar.cloud.upms.controller.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import top.wilsonlv.jaguar.commons.web.base.BaseDTO;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -14,7 +16,8 @@ import java.io.Serializable;
  */
 @Data
 @ApiModel
-public class MenuCreateDTO implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class MenuCreateDTO extends BaseDTO {
 
     /**
      * 父ID

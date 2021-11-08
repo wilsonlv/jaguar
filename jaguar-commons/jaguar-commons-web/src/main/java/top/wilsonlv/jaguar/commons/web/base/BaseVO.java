@@ -2,6 +2,8 @@ package top.wilsonlv.jaguar.commons.web.base;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
+import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

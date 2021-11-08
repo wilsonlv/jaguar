@@ -85,9 +85,7 @@ public class UserService extends BaseService<User, UserMapper> {
     @Transactional
     public UserVO getDetail(Long currentUser) {
         User user = this.getById(currentUser);
-
-        UserVO userVO = new UserVO();
-        BeanUtils.copyProperties(user, userVO);
+        UserVO userVO = user.toVo(UserVO.class);
 
         List<RoleVO> roles = userRoleService.listRoleByUserId(user.getId());
         userVO.setRoles(roles);
@@ -107,13 +105,11 @@ public class UserService extends BaseService<User, UserMapper> {
 
         List<UserVO> records = new ArrayList<>(page.getRecords().size());
         for (User user : page.getRecords()) {
-            UserVO userVO = new UserVO();
-            BeanUtils.copyProperties(user, userVO);
+            UserVO userVO = user.toVo(UserVO.class);
+            records.add(userVO);
 
             List<RoleVO> roles = userRoleService.listRoleByUserId(user.getId());
             userVO.setRoles(roles);
-
-            records.add(userVO);
         }
 
         Page<UserVO> userVoPage = new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
@@ -141,8 +137,7 @@ public class UserService extends BaseService<User, UserMapper> {
             Assert.duplicate(byEmail, "用户邮箱");
         }
 
-        User user = new User();
-        BeanUtils.copyProperties(userCreateDTO, user);
+        User user = userCreateDTO.toEntity(User.class);
         user.setUserBuiltIn(false);
         user.setUserLocked(false);
         this.insert(user);
@@ -170,8 +165,7 @@ public class UserService extends BaseService<User, UserMapper> {
             Assert.duplicate(byEmail, userModifyDTO, "用户邮箱");
         }
 
-        User user = new User();
-        BeanUtils.copyProperties(userModifyDTO, user);
+        User user = userModifyDTO.toEntity(User.class);
         this.updateById(user);
     }
 

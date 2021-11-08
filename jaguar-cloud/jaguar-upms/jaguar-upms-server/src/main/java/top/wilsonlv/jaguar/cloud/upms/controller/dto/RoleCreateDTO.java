@@ -3,6 +3,8 @@ package top.wilsonlv.jaguar.cloud.upms.controller.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import top.wilsonlv.jaguar.commons.web.base.BaseDTO;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -15,7 +17,8 @@ import java.util.Set;
  */
 @Data
 @ApiModel
-public class RoleCreateDTO implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class RoleCreateDTO extends BaseDTO {
 
     @NotBlank(message = "角色名称为非空")
     @ApiModelProperty(value = "角色名称", required = true)

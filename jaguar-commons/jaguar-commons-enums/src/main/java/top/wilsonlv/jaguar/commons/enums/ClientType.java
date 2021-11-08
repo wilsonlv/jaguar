@@ -7,12 +7,28 @@ package top.wilsonlv.jaguar.commons.enums;
 public enum ClientType {
 
     /**
-     * 客户端类型
+     * PC
      */
     PC,
+    /**
+     * WAP
+     */
     WAP,
+    /**
+     * 微信
+     */
     WEI_XIN,
+    /**
+     * 安卓
+     */
     ANDROID,
-    IOS;
+    /**
+     * 苹果
+     */
+    IOS,
+    /**
+     * 微服务
+     */
+    SERVER
 
 }

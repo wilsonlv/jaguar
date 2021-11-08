@@ -3,6 +3,8 @@ package top.wilsonlv.jaguar.cloud.upms.controller.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import top.wilsonlv.jaguar.commons.web.base.BaseDTO;
 
 import java.io.Serializable;
 
@@ -12,7 +14,8 @@ import java.io.Serializable;
  */
 @Data
 @ApiModel
-public class OauthClientCreateDTO implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class OauthClientCreateDTO extends BaseDTO {
 
     @ApiModelProperty("客户端ID")
     private String clientId;

@@ -3,6 +3,7 @@ package top.wilsonlv.jaguar.cloud.upms.sdk.dto;
 import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 import top.wilsonlv.jaguar.commons.enums.ClientType;
+import top.wilsonlv.jaguar.commons.enums.UserType;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -18,7 +19,11 @@ public class OauthClientAdditionalInfo implements Serializable {
 
     private Boolean enable;
 
+    private Boolean captcha;
+
     private ClientType clientType;
+
+    private UserType userType;
 
     public static OauthClientAdditionalInfo parse(String additionalInformation) {
         return JSONObject.parseObject(additionalInformation, OauthClientAdditionalInfo.class);

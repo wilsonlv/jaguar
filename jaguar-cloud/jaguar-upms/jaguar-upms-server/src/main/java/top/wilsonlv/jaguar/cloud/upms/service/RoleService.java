@@ -54,17 +54,14 @@ public class RoleService extends BaseService<Role, RoleMapper> {
 
     public RoleVO getDetail(Long roleId) {
         Role role = this.getById(roleId);
-
-        RoleVO roleVO = new RoleVO();
-        BeanUtils.copyProperties(role, roleVO);
+        RoleVO roleVO = role.toVo(RoleVO.class);
 
         List<RoleMenu> roleMenus = roleMenuService.list(Wrappers.lambdaQuery(RoleMenu.class)
                 .eq(RoleMenu::getRoleId, roleId));
         roleVO.setRoleMenus(new ArrayList<>(roleMenus.size()));
 
         for (RoleMenu roleMenu : roleMenus) {
-            RoleMenuVO roleMenuVO = new RoleMenuVO();
-            BeanUtils.copyProperties(roleMenu, roleMenuVO);
+            RoleMenuVO roleMenuVO = roleMenu.toVo(RoleMenuVO.class);
             roleVO.getRoleMenus().add(roleMenuVO);
         }
         return roleVO;
@@ -76,12 +73,11 @@ public class RoleService extends BaseService<Role, RoleMapper> {
 
         List<RoleVO> records = new ArrayList<>(page.getRecords().size());
         for (Role role : page.getRecords()) {
-            RoleVO roleVO = new RoleVO();
-            BeanUtils.copyProperties(role, roleVO);
+            RoleVO roleVO = role.toVo(RoleVO.class);
+            records.add(roleVO);
 
             List<UserVO> users = userRoleService.listUserByRoleId(role.getId());
             roleVO.setUsers(users);
-            records.add(roleVO);
         }
 
         Page<RoleVO> roleVOPage = new Page<>(page.getCurrent(), page.getSize(), page.getTotal());

@@ -2,7 +2,6 @@ package top.wilsonlv.jaguar.cloud.handlerlog.mq.listener;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 import top.wilsonlv.jaguar.cloud.handlerlog.client.HandlerLogConstant;
@@ -30,16 +29,14 @@ public class LogConsumer {
     @JmsListener(destination = HandlerLogConstant.DESTINATION_HANDLER_LOG, containerFactory = ActivemqConstant.QUEUE_LISTENER)
     public void saveLog(HandlerLogSaveDTO handlerLogSaveDTO) {
         log.debug("接口日志来了:{}", handlerLogSaveDTO.getRequestUri());
-        HandlerLog handlerLog = new HandlerLog();
-        BeanUtils.copyProperties(handlerLogSaveDTO, handlerLog);
+        HandlerLog handlerLog = handlerLogSaveDTO.toEntity(HandlerLog.class);
         handlerLogRepository.save(handlerLog);
     }
 
     @JmsListener(destination = HandlerLogConstant.DESTINATION_LOGIN_LOG, containerFactory = ActivemqConstant.QUEUE_LISTENER)
     public void saveLog(LoginLogSaveDTO loginLogSaveDTO) {
         log.debug("登录日志来了:{}", loginLogSaveDTO.getPrincipal());
-        LoginLog loginLog = new LoginLog();
-        BeanUtils.copyProperties(loginLogSaveDTO, loginLog);
+        LoginLog loginLog = loginLogSaveDTO.toEntity(LoginLog.class);
         loginLogRepository.save(loginLog);
     }
 

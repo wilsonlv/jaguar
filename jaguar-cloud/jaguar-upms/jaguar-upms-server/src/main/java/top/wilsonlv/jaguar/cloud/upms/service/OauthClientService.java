@@ -2,7 +2,6 @@ package top.wilsonlv.jaguar.cloud.upms.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
@@ -10,28 +9,21 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.klock.annotation.Klock;
-import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.wilsonlv.jaguar.cloud.upms.constant.LockNameConstant;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.OauthClientCreateDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.OauthClientModifyDTO;
-import top.wilsonlv.jaguar.cloud.upms.entity.Menu;
-import top.wilsonlv.jaguar.cloud.upms.entity.User;
-import top.wilsonlv.jaguar.cloud.upms.mapper.ClientMapper;
 import top.wilsonlv.jaguar.cloud.upms.entity.OauthClient;
+import top.wilsonlv.jaguar.cloud.upms.mapper.ClientMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.dto.JaguarClientDetails;
 import top.wilsonlv.jaguar.cloud.upms.sdk.dto.OauthClientAdditionalInfo;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.OauthClientVO;
-import top.wilsonlv.jaguar.cloud.upms.sdk.vo.RoleVO;
-import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
 import top.wilsonlv.jaguar.commons.basecrud.Assert;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;
-import top.wilsonlv.jaguar.commons.data.encryption.util.EncryptionUtil;
 import top.wilsonlv.jaguar.commons.oauth2.Oauth2Constant;
 import top.wilsonlv.jaguar.commons.oauth2.model.SecurityAuthority;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
@@ -87,18 +79,24 @@ public class OauthClientService extends BaseService<OauthClient, ClientMapper> i
 
     @Override
     public void afterPropertiesSet() {
+        Set<String> keys = redisTemplate.keys(Oauth2Constant.CLIENT_CACHE_KEY_PREFIX + "*");
+        redisTemplate.delete(keys);
+
         List<OauthClient> oauthClients = this.list(Wrappers.lambdaQuery(OauthClient.class));
         for (OauthClient oauthClient : oauthClients) {
-            OauthClientAdditionalInfo additionalInfo = OauthClientAdditionalInfo.parse(oauthClient.getAdditionalInformation());
-            if (!additionalInfo.getEnable()) {
-                continue;
-            }
+            this.add2Cache(oauthClient);
+        }
+    }
 
-            BoundValueOperations<String, Serializable> operations =
-                    redisTemplate.boundValueOps(Oauth2Constant.CLIENT_CACHE_KEY_PREFIX + oauthClient.getClientId());
+    public void add2Cache(OauthClient oauthClient) {
+        OauthClientAdditionalInfo additionalInfo = OauthClientAdditionalInfo.parse(oauthClient.getAdditionalInformation());
+        String key = Oauth2Constant.CLIENT_CACHE_KEY_PREFIX + oauthClient.getClientId();
 
+        if (additionalInfo.getEnable()) {
             ClientDetails clientDetails = entity2Dto(oauthClient);
-            operations.set(clientDetails);
+            redisTemplate.boundValueOps(key).set(clientDetails);
+        } else {
+            redisTemplate.delete(key);
         }
     }
 
@@ -120,8 +118,7 @@ public class OauthClientService extends BaseService<OauthClient, ClientMapper> i
         List<OauthClientVO> records = new ArrayList<>(page.getRecords().size());
 
         for (OauthClient oauthClient : page.getRecords()) {
-            OauthClientVO oauthClientVO = new OauthClientVO();
-            BeanUtils.copyProperties(oauthClient, oauthClientVO);
+            OauthClientVO oauthClientVO = oauthClient.toVo(OauthClientVO.class);
             records.add(oauthClientVO);
         }
 
@@ -136,9 +133,10 @@ public class OauthClientService extends BaseService<OauthClient, ClientMapper> i
         OauthClient byClientId = this.getByClientId(createDTO.getClientId());
         Assert.duplicate(byClientId, "客户端ID");
 
-        OauthClient oauthClient = new OauthClient();
-        BeanUtils.copyProperties(createDTO, oauthClient);
+        OauthClient oauthClient = createDTO.toEntity(OauthClient.class);
         this.insert(oauthClient);
+
+        this.afterTransactionCommit(this::add2Cache, oauthClient);
     }
 
     @Klock(name = LockNameConstant.OAUTH_CLIENT_CREATE_MODIFY_LOCK)
@@ -149,25 +147,29 @@ public class OauthClientService extends BaseService<OauthClient, ClientMapper> i
         OauthClient byClientId = this.getByClientId(modifyDTO.getClientId());
         Assert.duplicate(byClientId, modifyDTO, "客户端ID");
 
-        OauthClient oauthClient = new OauthClient();
-        BeanUtils.copyProperties(modifyDTO, oauthClient);
-        this.insert(oauthClient);
+        OauthClient oauthClient = modifyDTO.toEntity(OauthClient.class);
+        this.updateById(oauthClient);
+
+        this.afterTransactionCommit(this::add2Cache, oauthClient);
     }
 
     @Klock(name = LockNameConstant.OAUTH_CLIENT_CREATE_MODIFY_LOCK)
     @Transactional
     public void checkAndDelete(Long id) {
-        this.checkBuiltIn(id);
+        OauthClient oauthClient = this.checkBuiltIn(id);
         this.delete(id);
+
+        String key = Oauth2Constant.CLIENT_CACHE_KEY_PREFIX + oauthClient.getClientId();
+        this.afterTransactionCommit(redisTemplate::delete, key);
     }
 
-    public void checkBuiltIn(Long id) {
+    public OauthClient checkBuiltIn(Long id) {
         OauthClient oauthClient = this.getById(id);
         OauthClientAdditionalInfo additionalInfo = OauthClientAdditionalInfo.parse(oauthClient.getAdditionalInformation());
         if (additionalInfo.getBuiltIn()) {
             throw new CheckedException("内置oauth客户端不可删除");
         }
+        return oauthClient;
     }
-
 
 }

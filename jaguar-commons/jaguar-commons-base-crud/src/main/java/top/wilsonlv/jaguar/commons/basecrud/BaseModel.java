@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.beans.BeanUtils;
+import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -34,5 +36,16 @@ public abstract class BaseModel implements Serializable {
     @TableField("deleted_")
     @TableLogic
     private Boolean deleted;
+
+    public <V> V toVo(Class<V> clazz) {
+        V vo;
+        try {
+            vo = clazz.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new CheckedException(e);
+        }
+        BeanUtils.copyProperties(this, vo);
+        return vo;
+    }
 
 }

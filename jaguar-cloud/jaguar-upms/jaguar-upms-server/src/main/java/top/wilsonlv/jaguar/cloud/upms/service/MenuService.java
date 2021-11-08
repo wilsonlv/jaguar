@@ -14,6 +14,7 @@ import top.wilsonlv.jaguar.cloud.upms.mapper.MenuMapper;
 import top.wilsonlv.jaguar.cloud.upms.entity.Menu;
 import top.wilsonlv.jaguar.commons.basecrud.Assert;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;
+import top.wilsonlv.jaguar.commons.web.base.BaseVO;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
 import java.util.ArrayList;
@@ -31,12 +32,6 @@ import java.util.List;
 public class MenuService extends BaseService<Menu, MenuMapper> {
 
     /*----------  通用接口  ----------*/
-
-    public MenuVO model2Vo(Menu menu) {
-        MenuVO menuVO = new MenuVO();
-        BeanUtils.copyProperties(menu, menuVO);
-        return menuVO;
-    }
 
     public Menu getByMenuName(String menuName) {
         return this.unique(Wrappers.lambdaQuery(Menu.class)
@@ -63,7 +58,7 @@ public class MenuService extends BaseService<Menu, MenuMapper> {
 
         List<MenuVO> menuVos = new ArrayList<>(menus.size());
         for (Menu menu : menus) {
-            MenuVO menuVO = this.model2Vo(menu);
+            MenuVO menuVO = menu.toVo(MenuVO.class);
             menuVO.setChildren(this.tree(menu.getId()));
             menuVos.add(menuVO);
         }
@@ -79,8 +74,7 @@ public class MenuService extends BaseService<Menu, MenuMapper> {
         Menu byMenuPermission = this.getByMenuPermission(menuCreateDTO.getMenuPermission());
         Assert.duplicate(byMenuPermission, "权限");
 
-        Menu menu = new Menu();
-        BeanUtils.copyProperties(menuCreateDTO, menu);
+        Menu menu = menuCreateDTO.toEntity(Menu.class);
         this.insert(menu);
     }
 
@@ -99,8 +93,7 @@ public class MenuService extends BaseService<Menu, MenuMapper> {
             Assert.duplicate(byMenuPermission, menuModifyDTO, "权限");
         }
 
-        Menu menu = new Menu();
-        BeanUtils.copyProperties(menuModifyDTO, menu);
+        Menu menu = menuModifyDTO.toEntity(Menu.class);
         this.updateById(menu);
     }
 
@@ -110,10 +103,11 @@ public class MenuService extends BaseService<Menu, MenuMapper> {
         this.delete(id);
     }
 
-    public void checkBuiltIn(Long id){
+    public void checkBuiltIn(Long id) {
         Menu byId = this.getById(id);
         if (byId.getMenuBuiltIn()) {
             throw new CheckedException("内置菜单不可修改");
         }
     }
+
 }
