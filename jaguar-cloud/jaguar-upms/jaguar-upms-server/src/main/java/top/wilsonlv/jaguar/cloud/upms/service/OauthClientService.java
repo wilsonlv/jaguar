@@ -10,17 +10,16 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.klock.annotation.Klock;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import top.wilsonlv.jaguar.cloud.upms.constant.LockNameConstant;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.OauthClientCreateDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.OauthClientModifyDTO;
 import top.wilsonlv.jaguar.cloud.upms.entity.OauthClient;
 import top.wilsonlv.jaguar.cloud.upms.mapper.ClientMapper;
-import top.wilsonlv.jaguar.cloud.upms.sdk.dto.JaguarClientDetails;
-import top.wilsonlv.jaguar.cloud.upms.sdk.dto.OauthClientAdditionalInfo;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.OauthClientVO;
+import top.wilsonlv.jaguar.cloud.upms.sdk.dto.OauthClientAdditionalInfo;
 import top.wilsonlv.jaguar.commons.basecrud.Assert;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;
 import top.wilsonlv.jaguar.commons.oauth2.Oauth2Constant;
@@ -28,10 +27,7 @@ import top.wilsonlv.jaguar.commons.oauth2.model.SecurityAuthority;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author lvws
@@ -51,27 +47,28 @@ public class OauthClientService extends BaseService<OauthClient, ClientMapper> i
     //    jaguar-admin-pc       Q7b6VK0B8j3y4wf5I4oVNfZy    $2a$10$94CLjZ98IRNWzEkJubfIk.rr3DS7YJnqpCiHUSNDGmx2q.xcQsBcG
     //    thirdParty            ygF4Xq8NONr326zC60fzJZ4h    $2a$10$x.DmCRCV.hljeFjQUAIXJOnjm9xan4EgoPPTNZAczQYEWOzo53vIS
 
-    private ClientDetails entity2Dto(OauthClient oauthClient) {
-        JaguarClientDetails clientDetails = new JaguarClientDetails();
-        clientDetails.setClientId(oauthClient.getClientId());
-        clientDetails.setClientSecret(oauthClient.getClientSecret());
-        clientDetails.setAccessTokenValiditySeconds(oauthClient.getAccessTokenValiditySeconds());
-        clientDetails.setRefreshTokenValiditySeconds(oauthClient.getRefreshTokenValiditySeconds());
+    private OauthClientVO entity2VO(OauthClient oauthClient) {
+        OauthClientVO oauthClientVO = new OauthClientVO();
+        oauthClientVO.setId(oauthClient.getId());
+        oauthClientVO.setClientId(oauthClient.getClientId());
+        oauthClientVO.setClientSecret(oauthClient.getClientSecret());
+        oauthClientVO.setAccessTokenValiditySeconds(oauthClient.getAccessTokenValiditySeconds());
+        oauthClientVO.setRefreshTokenValiditySeconds(oauthClient.getRefreshTokenValiditySeconds());
 
         if (StringUtils.isNotBlank(oauthClient.getAutoApproveScopes())) {
-            clientDetails.setAutoApproveScopes(Arrays.asList(oauthClient.getAutoApproveScopes().split(",")));
+            oauthClientVO.setAutoApproveScopes(Arrays.asList(oauthClient.getAutoApproveScopes().split(",")));
         }
         if (StringUtils.isNotBlank(oauthClient.getScope())) {
-            clientDetails.setScope(new HashSet<>(Arrays.asList(oauthClient.getScope().split(","))));
+            oauthClientVO.setScope(new HashSet<>(Arrays.asList(oauthClient.getScope().split(","))));
         }
         if (StringUtils.isNotBlank(oauthClient.getResourceIds())) {
-            clientDetails.setResourceIds(new HashSet<>(Arrays.asList(oauthClient.getResourceIds().split(","))));
+            oauthClientVO.setResourceIds(new HashSet<>(Arrays.asList(oauthClient.getResourceIds().split(","))));
         }
         if (StringUtils.isNotBlank(oauthClient.getAuthorizedGrantTypes())) {
-            clientDetails.setAuthorizedGrantTypes(new HashSet<>(Arrays.asList(oauthClient.getAuthorizedGrantTypes().split(","))));
+            oauthClientVO.setAuthorizedGrantTypes(new HashSet<>(Arrays.asList(oauthClient.getAuthorizedGrantTypes().split(","))));
         }
         if (StringUtils.isNotBlank(oauthClient.getRegisteredRedirectUris())) {
-            clientDetails.setRegisteredRedirectUri(new HashSet<>(Arrays.asList(oauthClient.getRegisteredRedirectUris().split(","))));
+            oauthClientVO.setRegisteredRedirectUri(new HashSet<>(Arrays.asList(oauthClient.getRegisteredRedirectUris().split(","))));
         }
         if (StringUtils.isNotBlank(oauthClient.getAuthorities())) {
             String[] authorities = oauthClient.getAuthorities().split(",");
@@ -80,17 +77,19 @@ public class OauthClientService extends BaseService<OauthClient, ClientMapper> i
             for (String authority : authorities) {
                 securityAuthorities.add(new SecurityAuthority(authority));
             }
-            clientDetails.setAuthorities(securityAuthorities);
+            oauthClientVO.setAuthorities(securityAuthorities);
         }
 
-        clientDetails.setAdditionalInformation(JSONObject.parseObject(oauthClient.getAdditionalInformation()));
-        return clientDetails;
+        oauthClientVO.setAdditionalInformation(JSONObject.parseObject(oauthClient.getAdditionalInformation()));
+        return oauthClientVO;
     }
 
     @Override
     public void afterPropertiesSet() {
         Set<String> keys = redisTemplate.keys(Oauth2Constant.CLIENT_CACHE_KEY_PREFIX + "*");
-        redisTemplate.delete(keys);
+        if (!CollectionUtils.isEmpty(keys)) {
+            redisTemplate.delete(keys);
+        }
 
         List<OauthClient> oauthClients = this.list(Wrappers.lambdaQuery(OauthClient.class));
         for (OauthClient oauthClient : oauthClients) {
@@ -103,8 +102,8 @@ public class OauthClientService extends BaseService<OauthClient, ClientMapper> i
         String key = Oauth2Constant.CLIENT_CACHE_KEY_PREFIX + oauthClient.getClientId();
 
         if (additionalInfo.getEnable()) {
-            ClientDetails clientDetails = entity2Dto(oauthClient);
-            redisTemplate.boundValueOps(key).set(clientDetails);
+            OauthClientVO oauthClientVO = entity2VO(oauthClient);
+            redisTemplate.boundValueOps(key).set(oauthClientVO);
         } else {
             redisTemplate.delete(key);
         }
@@ -125,7 +124,7 @@ public class OauthClientService extends BaseService<OauthClient, ClientMapper> i
         Page<OauthClientVO> voPage = this.toVoPage(page);
 
         for (OauthClient oauthClient : page.getRecords()) {
-            OauthClientVO oauthClientVO = oauthClient.toVo(OauthClientVO.class);
+            OauthClientVO oauthClientVO = this.entity2VO(oauthClient);
             voPage.getRecords().add(oauthClientVO);
         }
         return voPage;
@@ -154,7 +153,7 @@ public class OauthClientService extends BaseService<OauthClient, ClientMapper> i
         OauthClient oauthClient = modifyDTO.toEntity(OauthClient.class);
         this.updateById(oauthClient);
 
-        this.afterTransactionCommit(this::add2Cache, oauthClient);
+        this.afterTransactionCommit(this::add2Cache, getById(modifyDTO.getId()));
     }
 
     @Klock(name = LockNameConstant.OAUTH_CLIENT_CREATE_MODIFY_LOCK)
