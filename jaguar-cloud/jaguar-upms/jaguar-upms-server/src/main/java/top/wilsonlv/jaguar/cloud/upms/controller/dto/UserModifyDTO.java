@@ -10,7 +10,6 @@ import top.wilsonlv.jaguar.commons.web.base.BaseModifyDTO;
  * @author lvws
  * @since 2021/8/16
  */
-
 @Data
 @ApiModel
 @EqualsAndHashCode(callSuper = true)

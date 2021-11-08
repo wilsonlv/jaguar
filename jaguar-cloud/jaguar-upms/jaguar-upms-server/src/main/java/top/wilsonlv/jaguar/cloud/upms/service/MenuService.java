@@ -2,19 +2,17 @@ package top.wilsonlv.jaguar.cloud.upms.service;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.boot.autoconfigure.klock.annotation.Klock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.wilsonlv.jaguar.cloud.upms.constant.LockNameConstant;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.MenuCreateDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.MenuModifyDTO;
-import top.wilsonlv.jaguar.cloud.upms.sdk.vo.MenuVO;
-import top.wilsonlv.jaguar.cloud.upms.mapper.MenuMapper;
 import top.wilsonlv.jaguar.cloud.upms.entity.Menu;
+import top.wilsonlv.jaguar.cloud.upms.mapper.MenuMapper;
+import top.wilsonlv.jaguar.cloud.upms.sdk.vo.MenuVO;
 import top.wilsonlv.jaguar.commons.basecrud.Assert;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;
-import top.wilsonlv.jaguar.commons.web.base.BaseVO;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
 import java.util.ArrayList;
