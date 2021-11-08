@@ -20,50 +20,12 @@ public abstract class BaseController<E extends BaseModel, M extends BaseMapper<E
     @Autowired
     protected S service;
 
-    public JsonResult<? extends Page<E>> query(Page<E> page) {
-        return this.query(page, Wrappers.emptyWrapper());
-    }
-
-    public JsonResult<Page<E>> query(Page<E> page, Wrapper<E> queryWrapper) {
-        page = service.query(page, queryWrapper);
-        return success(page);
-    }
-
-    public JsonResult<E> getById(Long id) {
-        E model = service.getById(id);
-        return success(model);
-    }
-
-    public JsonResult<Void> insert(E entity) {
-        service.insert(entity);
-        return success();
-    }
-
-    public JsonResult<Void> updateById(E entity) {
-        service.updateById(entity);
-        return success();
-    }
-
-    public JsonResult<Void> saveOrUpdate(E entity) {
-        service.saveOrUpdate(entity);
-        return success();
-    }
-
-    public JsonResult<Void> delete(Long id) {
-        service.delete(id);
-        return success();
-    }
-
     protected JsonResult<Void> success() {
         return JsonResult.success();
     }
 
     protected <T> JsonResult<T> success(T data) {
         return JsonResult.success(data);
-    }
-
-    protected <T> JsonResult<Page<T>> success(Page<T> data) {
-        return new JsonResult<>(ResultCode.OK, data, JsonResult.SUCCESS_MSG);
     }
 
 }

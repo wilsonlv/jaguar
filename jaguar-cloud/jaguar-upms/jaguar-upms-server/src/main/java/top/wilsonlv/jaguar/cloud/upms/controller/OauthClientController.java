@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.OauthClientCreateDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.OauthClientModifyDTO;
-import top.wilsonlv.jaguar.cloud.upms.mapper.ClientMapper;
 import top.wilsonlv.jaguar.cloud.upms.entity.OauthClient;
+import top.wilsonlv.jaguar.cloud.upms.mapper.ClientMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.OauthClientVO;
 import top.wilsonlv.jaguar.cloud.upms.service.OauthClientService;
 import top.wilsonlv.jaguar.commons.basecrud.BaseController;
@@ -46,8 +46,8 @@ public class OauthClientController extends BaseController<OauthClient, ClientMap
     @ApiOperation(value = "oauth2客户端详情")
     @PreAuthorize("hasAuthority('oauth2客户端管理')")
     @GetMapping(value = "/{id}")
-    public JsonResult<OauthClient> detail(@PathVariable Long id) {
-        return super.getById(id);
+    public JsonResult<OauthClientVO> detail(@PathVariable Long id) {
+        return success(service.getDetail(id));
     }
 
     @ApiOperation(value = "新增oauth2客户端")

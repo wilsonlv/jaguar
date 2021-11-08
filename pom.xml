@@ -12,7 +12,6 @@
         <module>jaguar-cloud</module>
         <module>jaguar-codegen</module>
         <module>jaguar-commons</module>
-        <module>jaguar-modules</module>
         <module>jaguar-nginx-admin</module>
         <module>jaguar-support</module>
         <module>jaguar-test</module>

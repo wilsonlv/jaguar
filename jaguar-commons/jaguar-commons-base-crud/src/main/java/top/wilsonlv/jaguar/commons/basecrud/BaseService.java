@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronization;
@@ -17,6 +16,7 @@ import top.wilsonlv.jaguar.commons.web.exception.impl.DataCrudException;
 
 import java.lang.reflect.ParameterizedType;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -157,6 +157,15 @@ public abstract class BaseService<E extends BaseModel, M extends BaseMapper<E>> 
                     }
             );
         }
+    }
+
+    public <V> Page<V> toVoPage(Page<E> page) {
+        Page<V> voPage = new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
+        voPage.setRecords(new ArrayList<>(page.getRecords().size()));
+        voPage.setOrders(page.getOrders());
+        voPage.setCountId(page.getCountId());
+        page.setMaxLimit(page.getMaxLimit());
+        return voPage;
     }
 
 }

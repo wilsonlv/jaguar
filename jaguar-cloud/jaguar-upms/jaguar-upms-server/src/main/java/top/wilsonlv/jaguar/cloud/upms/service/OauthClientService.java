@@ -41,6 +41,14 @@ public class OauthClientService extends BaseService<OauthClient, ClientMapper> i
 
     private final RedisTemplate<String, Serializable> redisTemplate;
 
+    //    clientId              原密码                       密码
+    //    jaguar-auth           PHn8KG0T06i45jetPS9ejcT7    $2a$10$kvgD.8bKaY31eAhH/p2qM.5iwP6sxBmTExdMKx.U.kXAZalq.Egsi
+    //    jaguar-upms           qb68F1s9YHl9mc1nWJPZ44Uu    $2a$10$gmE9X0d0F7cI2y3tMq8g5uH86mhYCBr3Wcbj4huVm9U0FqSoGFimS
+    //    jaguar-websocket      F34ag14gI5UYLJ8U0lhgHo3m    $2a$10$ssSInpunW4K5NllSYT7oA.zQ0ny9ijtkPcsKJJbvD5/vj9GvitPCi
+    //    jaguar-handler-log    lJ1MJ80Kmm1oU6kx0W0RCb2b    $2a$10$s6l9eDccvLajyhUvbpdHHOipIh3nCGinyBkDedc4.IXkT8h/lyVXW
+    //    jaguar-admin-pc       Q7b6VK0B8j3y4wf5I4oVNfZy    $2a$10$94CLjZ98IRNWzEkJubfIk.rr3DS7YJnqpCiHUSNDGmx2q.xcQsBcG
+    //    thirdParty            ygF4Xq8NONr326zC60fzJZ4h    $2a$10$x.DmCRCV.hljeFjQUAIXJOnjm9xan4EgoPPTNZAczQYEWOzo53vIS
+
     private ClientDetails entity2Dto(OauthClient oauthClient) {
         JaguarClientDetails clientDetails = new JaguarClientDetails();
         clientDetails.setClientId(oauthClient.getClientId());
@@ -100,30 +108,24 @@ public class OauthClientService extends BaseService<OauthClient, ClientMapper> i
         }
     }
 
-    //    clientId              原密码                       密码
-    //    jaguar-auth           PHn8KG0T06i45jetPS9ejcT7    $2a$10$kvgD.8bKaY31eAhH/p2qM.5iwP6sxBmTExdMKx.U.kXAZalq.Egsi
-    //    jaguar-upms           qb68F1s9YHl9mc1nWJPZ44Uu    $2a$10$gmE9X0d0F7cI2y3tMq8g5uH86mhYCBr3Wcbj4huVm9U0FqSoGFimS
-    //    jaguar-websocket      F34ag14gI5UYLJ8U0lhgHo3m    $2a$10$ssSInpunW4K5NllSYT7oA.zQ0ny9ijtkPcsKJJbvD5/vj9GvitPCi
-    //    jaguar-handler-log    lJ1MJ80Kmm1oU6kx0W0RCb2b    $2a$10$s6l9eDccvLajyhUvbpdHHOipIh3nCGinyBkDedc4.IXkT8h/lyVXW
-    //    jaguar-admin-pc       Q7b6VK0B8j3y4wf5I4oVNfZy    $2a$10$94CLjZ98IRNWzEkJubfIk.rr3DS7YJnqpCiHUSNDGmx2q.xcQsBcG
-    //    thirdParty            ygF4Xq8NONr326zC60fzJZ4h    $2a$10$x.DmCRCV.hljeFjQUAIXJOnjm9xan4EgoPPTNZAczQYEWOzo53vIS
-
     public OauthClient getByClientId(String clientId) {
         return this.unique(Wrappers.lambdaQuery(OauthClient.class)
                 .eq(OauthClient::getClientId, clientId));
     }
 
+    public OauthClientVO getDetail(Long id) {
+        OauthClient oauthClient = this.getById(id);
+        return oauthClient.toVo(OauthClientVO.class);
+    }
+
     public Page<OauthClientVO> queryOauthClient(Page<OauthClient> page, LambdaQueryWrapper<OauthClient> wrapper) {
         page = this.query(page, wrapper);
-        List<OauthClientVO> records = new ArrayList<>(page.getRecords().size());
+        Page<OauthClientVO> voPage = this.toVoPage(page);
 
         for (OauthClient oauthClient : page.getRecords()) {
             OauthClientVO oauthClientVO = oauthClient.toVo(OauthClientVO.class);
-            records.add(oauthClientVO);
+            voPage.getRecords().add(oauthClientVO);
         }
-
-        Page<OauthClientVO> voPage = new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
-        voPage.setRecords(records);
         return voPage;
     }
 
@@ -171,5 +173,6 @@ public class OauthClientService extends BaseService<OauthClient, ClientMapper> i
         }
         return oauthClient;
     }
+
 
 }

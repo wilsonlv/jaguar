@@ -70,19 +70,16 @@ public class RoleService extends BaseService<Role, RoleMapper> {
     @Transactional
     public Page<RoleVO> queryWithUser(Page<Role> page, LambdaQueryWrapper<Role> wrapper) {
         page = this.query(page, wrapper);
+        Page<RoleVO> voPage = this.toVoPage(page);
 
-        List<RoleVO> records = new ArrayList<>(page.getRecords().size());
         for (Role role : page.getRecords()) {
             RoleVO roleVO = role.toVo(RoleVO.class);
-            records.add(roleVO);
+            voPage.getRecords().add(roleVO);
 
             List<UserVO> users = userRoleService.listUserByRoleId(role.getId());
             roleVO.setUsers(users);
         }
-
-        Page<RoleVO> roleVOPage = new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
-        roleVOPage.setRecords(records);
-        return roleVOPage;
+        return voPage;
     }
 
     @Klock(name = LockNameConstant.ROLE_CREATE_MODIFY_LOCK)
