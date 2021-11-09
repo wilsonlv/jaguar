@@ -23,7 +23,7 @@ import top.wilsonlv.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler;
 @Configuration
 @EnableResourceServer
 @RequiredArgsConstructor
-public class AuthResourceServerConfigurer extends ResourceServerConfigurerAdapter {
+public class AuthResourceConfigurer extends ResourceServerConfigurerAdapter {
 
     @Value("${spring.application.name}")
     private String applicationName;
@@ -60,9 +60,11 @@ public class AuthResourceServerConfigurer extends ResourceServerConfigurerAdapte
                 .antMatchers("/oauth/token", "/oauth/check_token").permitAll()
                 .antMatchers("/captcha/**").permitAll()
                 .antMatchers("/swagger-resources", "/swagger-resources/**", "/v2/**").permitAll()
+
                 .anyRequest().authenticated()
                 .and().exceptionHandling()
                 .accessDeniedHandler(jaguarAccessDeniedHandler).authenticationEntryPoint(authenticationExceptionHandler)
+
                 .and().cors()
                 .and().csrf().disable()
                 .headers().frameOptions().disable();

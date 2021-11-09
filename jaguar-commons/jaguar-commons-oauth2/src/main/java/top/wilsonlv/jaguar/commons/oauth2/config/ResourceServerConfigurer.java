@@ -30,13 +30,14 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
     @Value("${spring.application.name}")
     private String applicationName;
 
-    private final SpringSecurityProperties springSecurityProperties;
+    private final TokenStore tokenStore;
 
-    private final AuthenticationExceptionHandler authenticationExceptionHandler;
+    private final SpringSecurityProperties springSecurityProperties;
 
     private final JaguarAccessDeniedHandler jaguarAccessDeniedHandler;
 
-    private final TokenStore tokenStore;
+    private final AuthenticationExceptionHandler authenticationExceptionHandler;
+
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
@@ -59,8 +60,7 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
                 .antMatchers("/druid/**").hasIpAddress(MonitorUitl.getMonitorIp())
                 .antMatchers(springSecurityProperties.getIgnoreUrls()).permitAll()
                 //其余都需要认证
-                .anyRequest()
-                .authenticated()
+                .anyRequest().authenticated()
                 .and().exceptionHandling()
                 .accessDeniedHandler(jaguarAccessDeniedHandler).authenticationEntryPoint(authenticationExceptionHandler)
                 //异常处理
