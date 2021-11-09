@@ -61,7 +61,8 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
                 //其余都需要认证
                 .anyRequest()
                 .authenticated()
-                .and().exceptionHandling().accessDeniedHandler(jaguarAccessDeniedHandler)
+                .and().exceptionHandling()
+                .accessDeniedHandler(jaguarAccessDeniedHandler).authenticationEntryPoint(authenticationExceptionHandler)
                 //异常处理
                 .and().cors()
                 .and().csrf().disable()
