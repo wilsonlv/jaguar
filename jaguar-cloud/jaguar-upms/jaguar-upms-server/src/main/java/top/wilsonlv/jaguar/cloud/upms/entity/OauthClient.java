@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
+import top.wilsonlv.jaguar.commons.enums.ClientType;
+import top.wilsonlv.jaguar.commons.enums.UserType;
 
 /**
  * @author lvws
@@ -70,5 +72,30 @@ public class OauthClient extends BaseModel {
      */
     @TableField("additional_information")
     private String additionalInformation;
+    /**
+     * 是否内置
+     */
+    @TableField("built_in")
+    private Boolean builtIn;
+    /**
+     * 是否启用
+     */
+    @TableField("enable_")
+    private Boolean enable;
+    /**
+     * 是否需要验证码
+     */
+    @TableField("captcha_")
+    private Boolean captcha;
+    /**
+     * 客户端类型
+     */
+    @TableField("client_type")
+    private ClientType clientType;
+    /**
+     * 用户类型
+     */
+    @TableField("user_type")
+    private UserType userType;
 
 }

@@ -9,10 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import top.wilsonlv.jaguar.commons.web.base.BaseVO;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author lvws
@@ -42,7 +39,7 @@ public class OauthClientVO extends BaseVO implements ClientDetails {
     private Set<String> registeredRedirectUri;
 
     @ApiModelProperty("自动授权")
-    private Collection<String> autoApproveScopes;
+    private Set<String> autoApproveScopes;
 
     @ApiModelProperty("权限")
     private Collection<GrantedAuthority> authorities = Collections.emptySet();
@@ -54,7 +51,7 @@ public class OauthClientVO extends BaseVO implements ClientDetails {
     private Integer refreshTokenValiditySeconds;
 
     @ApiModelProperty("其他信息")
-    private Map<String, Object> additionalInformation;
+    private Map<String, Object> additionalInformation = new HashMap<>();
 
     @Override
     @JsonIgnore

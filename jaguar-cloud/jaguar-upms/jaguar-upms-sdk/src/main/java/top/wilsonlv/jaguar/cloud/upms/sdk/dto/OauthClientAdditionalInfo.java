@@ -25,6 +25,10 @@ public class OauthClientAdditionalInfo implements Serializable {
 
     private UserType userType;
 
+    public String toJSONString() {
+        return JSONObject.toJSONString(this);
+    }
+
     public static OauthClientAdditionalInfo parse(String additionalInformation) {
         return JSONObject.parseObject(additionalInformation, OauthClientAdditionalInfo.class);
     }

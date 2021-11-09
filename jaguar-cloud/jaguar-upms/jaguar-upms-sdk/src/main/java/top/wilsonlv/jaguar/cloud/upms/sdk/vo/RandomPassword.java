@@ -1,4 +1,4 @@
-package top.wilsonlv.jaguar.cloud.upms.api.vo;
+package top.wilsonlv.jaguar.cloud.upms.sdk.vo;
 
 import lombok.Data;
 
