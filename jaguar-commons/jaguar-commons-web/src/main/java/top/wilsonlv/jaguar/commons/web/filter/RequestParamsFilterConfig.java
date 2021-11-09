@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 public class RequestParamsFilterConfig {
 
     @Bean
-    public FilterRegistrationBean<RequestParamsFilter> testFilterRegistration() {
+    public FilterRegistrationBean<RequestParamsFilter> requestParamsFilterRegistration() {
         FilterRegistrationBean<RequestParamsFilter> registration = new FilterRegistrationBean<>();
         registration.setFilter(new RequestParamsFilter());
         registration.addUrlPatterns("/*");

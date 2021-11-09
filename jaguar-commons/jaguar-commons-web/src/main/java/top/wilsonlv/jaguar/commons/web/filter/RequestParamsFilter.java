@@ -32,10 +32,6 @@ public class RequestParamsFilter implements Filter {
     private static final String HTML = ".html";
 
     @Override
-    public void init(FilterConfig filterConfig) {
-    }
-
-    @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
@@ -89,8 +85,4 @@ public class RequestParamsFilter implements Filter {
         log.info("====================完成响应====================");
     }
 
-    @Override
-    public void destroy() {
-
-    }
 }
