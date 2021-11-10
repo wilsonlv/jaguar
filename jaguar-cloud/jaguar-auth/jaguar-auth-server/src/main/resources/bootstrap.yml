@@ -1,5 +1,9 @@
 server:
   port: 8868
+  servlet:
+    session:
+      cookie:
+        name: Auth-Session
 
 spring:
   application:

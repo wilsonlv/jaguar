@@ -36,8 +36,6 @@ public class AuthResourceConfigurer extends ResourceServerConfigurerAdapter {
 
     private final LoginFailureHandler loginFailureHandler;
 
-    private final JaguarAccessDeniedHandler jaguarAccessDeniedHandler;
-
     private final AuthenticationExceptionHandler authenticationExceptionHandler;
 
     @Override
@@ -57,17 +55,10 @@ public class AuthResourceConfigurer extends ResourceServerConfigurerAdapter {
                 .successHandler(loginSuccessHandler).failureHandler(loginFailureHandler)
                 .and()
                 .authorizeRequests()
+                .antMatchers("/login", "/captcha/**", "/error").permitAll()
                 .antMatchers("/oauth/token", "/oauth/check_token").permitAll()
-                .antMatchers("/captcha/**").permitAll()
                 .antMatchers("/swagger-resources", "/swagger-resources/**", "/v2/**").permitAll()
-
-                .anyRequest().authenticated()
-                .and().exceptionHandling()
-                .accessDeniedHandler(jaguarAccessDeniedHandler).authenticationEntryPoint(authenticationExceptionHandler)
-
-                .and().cors()
-                .and().csrf().disable()
-                .headers().frameOptions().disable();
+                .anyRequest().authenticated();
     }
 
 }
