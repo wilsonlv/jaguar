@@ -46,7 +46,7 @@ public class Menu extends BaseModel {
      * 排序
      */
     @TableField("menu_order")
-    private String menuOrder;
+    private Integer menuOrder;
     /**
      * 是否为按钮
      */

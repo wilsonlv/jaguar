@@ -1,11 +1,13 @@
 package top.wilsonlv.jaguar.cloud.upms.controller.dto;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import top.wilsonlv.jaguar.commons.web.base.BaseModifyDTO;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author lvws
@@ -19,16 +21,19 @@ public class MenuModifyDTO extends BaseModifyDTO {
     @ApiModelProperty("父ID")
     private Long parentId;
 
-    @ApiModelProperty("menu_name")
+    @NotBlank(message = "名称为非空")
+    @ApiModelProperty(value = "名称（唯一）", required = true)
     private String menuName;
 
-    @ApiModelProperty("menu_permission")
+    @NotBlank(message = "权限为非空")
+    @ApiModelProperty(value = "权限（唯一）", required = true)
     private String menuPermission;
 
     @ApiModelProperty("排序")
-    private String menuOrder;
+    private Integer menuOrder;
 
-    @ApiModelProperty("menu_button")
+    @NotNull(message = "是否为按钮为非空")
+    @ApiModelProperty(value = "是否为按钮", required = true)
     private Boolean menuButton;
 
     @ApiModelProperty("menu_icon")
