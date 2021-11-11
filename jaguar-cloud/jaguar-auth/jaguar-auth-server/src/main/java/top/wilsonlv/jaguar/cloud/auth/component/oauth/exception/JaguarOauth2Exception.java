@@ -10,8 +10,8 @@ import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 @JsonSerialize(using = JaguarOauth2ExceptionSerializer.class)
 public class JaguarOauth2Exception extends OAuth2Exception {
 
-    public JaguarOauth2Exception(String msg) {
-        super(msg);
+    public JaguarOauth2Exception(String msg, Throwable t) {
+        super(msg, t);
     }
 
 }

@@ -55,6 +55,11 @@ public enum ResultCode {
     BAD_GATEWAY(502, "网关错误"),
 
     /**
+     * 服务不可用
+     */
+    SERVICE_UNAVAILABLE(503, "服务不可用"),
+
+    /**
      * 特殊业务异常
      */
     SPECIAL_EXCEPTION(1000, "特殊业务异常"),
@@ -82,7 +87,7 @@ public enum ResultCode {
     }
 
     @JsonCreator
-    public static ResultCode forValue(int value) {
+    public static ResultCode fromValue(int value) {
         for (ResultCode resultCode : ResultCode.values()) {
             if (resultCode.getValue() == value) {
                 return resultCode;

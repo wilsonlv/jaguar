@@ -4,12 +4,14 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import top.wilsonlv.jaguar.cloud.services.JaguarServerName;
+import top.wilsonlv.jaguar.cloud.services.JaguarServiceName;
 
 /**
  * @author lvws
  * @since 2021/6/29
  */
-@FeignClient(value = "jaguar-auth-server", contextId = "remoteAuthService")
+@FeignClient(value = JaguarServerName.JAGUAR_AUTH_SERVER, contextId = JaguarServiceName.REMOTE_AUTH_SERVICE)
 public interface RemoteAuthService {
 
     /**

@@ -20,6 +20,10 @@
     <dependencies>
         <dependency>
             <groupId>top.wilsonlv</groupId>
+            <artifactId>jaguar-services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>top.wilsonlv</groupId>
             <artifactId>jaguar-commons-feign</artifactId>
         </dependency>
     </dependencies>

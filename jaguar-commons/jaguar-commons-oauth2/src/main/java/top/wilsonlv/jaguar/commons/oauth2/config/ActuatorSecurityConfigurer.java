@@ -24,7 +24,10 @@ public class ActuatorSecurityConfigurer extends WebSecurityConfigurerAdapter {
         http.antMatcher("/actuator").antMatcher("/actuator/**")
                 .authorizeRequests()
                 .anyRequest().hasIpAddress(MonitorUitl.getMonitorIp())
-                .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler);
+                .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler)
+                .and().cors()
+                .and().csrf().disable()
+                .headers().frameOptions().disable();
     }
 
 }

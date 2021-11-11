@@ -28,7 +28,10 @@ public class FeignSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .userDetailsService(new ClientDetailsUserDetailsService(clientDetailsService))
                 .authorizeRequests().anyRequest().hasAuthority("feign")
                 .and().httpBasic()
-                .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler);
+                .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler)
+                .and().cors()
+                .and().csrf().disable()
+                .headers().frameOptions().disable();;
     }
 
 }

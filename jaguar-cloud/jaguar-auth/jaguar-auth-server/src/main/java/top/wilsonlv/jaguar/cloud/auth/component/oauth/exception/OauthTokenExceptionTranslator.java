@@ -17,7 +17,7 @@ public class OauthTokenExceptionTranslator implements WebResponseExceptionTransl
 
     @Override
     public ResponseEntity<OAuth2Exception> translate(Exception e) {
-        JaguarOauth2Exception oAuth2Exception = new JaguarOauth2Exception(e.getMessage());
+        JaguarOauth2Exception oAuth2Exception = new JaguarOauth2Exception(e.getMessage(), e);
         return new ResponseEntity<>(oAuth2Exception, HttpStatus.OK);
     }
 

@@ -17,6 +17,7 @@ import top.wilsonlv.jaguar.commons.data.encryption.util.EncryptionUtil;
 import top.wilsonlv.jaguar.commons.oauth2.util.SecurityUtil;
 import top.wilsonlv.jaguar.commons.web.JsonResult;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
@@ -39,6 +40,24 @@ public class AuthApi {
     @GetMapping("/getUserInfo")
     public JsonResult<UserVO> getUserInfo() {
         return userService.getDetail(SecurityUtil.getCurrentUserId());
+    }
+
+    @ApiOperation(value = "修改个人信息")
+    @PostMapping("/modifyUserInfo")
+    public JsonResult<UserVO> modifyUserInfo(@RequestParam(required = false) String userPhone,
+                                             @RequestParam(required = false) String userEmail,
+                                             @RequestParam(required = false) String userNickName) {
+        Long currentUserId = SecurityUtil.getCurrentUserId();
+        userService.modifyUserInfo(currentUserId, userPhone, userEmail, userNickName);
+        return userService.getDetail(currentUserId);
+    }
+
+    @ApiOperation(value = "修改个人密码")
+    @PostMapping("/modifyPassword")
+    public JsonResult<Void> modifyPassword(@RequestParam @NotBlank String oldPassword,
+                                           @RequestParam @NotBlank String newPassword) {
+        userService.modifyPassword(SecurityUtil.getCurrentUserId(), oldPassword, newPassword);
+        return JsonResult.success();
     }
 
     @ApiOperation(value = "获取个人菜单")

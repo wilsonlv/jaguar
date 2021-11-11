@@ -61,19 +61,6 @@ public class UserService extends BaseService<User, UserMapper> {
                 .eq(User::getUserEmail, email));
     }
 
-    public UserVO getByPrincipalWithRoleAndPermission(String username) {
-        User user = this.unique(Wrappers.lambdaQuery(User.class)
-                .select(BaseModel::getId)
-                .eq(User::getUserAccount, username).or()
-                .eq(User::getUserPhone, username).or()
-                .eq(User::getUserEmail, username));
-        if (user == null) {
-            return null;
-        }
-
-        return this.getDetail(user.getId());
-    }
-
     /**
      * 获取用户详情
      *
