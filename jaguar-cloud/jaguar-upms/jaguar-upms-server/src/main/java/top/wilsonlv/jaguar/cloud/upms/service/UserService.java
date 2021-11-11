@@ -169,7 +169,7 @@ public class UserService extends BaseService<User, UserMapper> {
     public void checkAndDelete(Long id) {
         User user = this.getById(id);
         if (user.getUserBuiltIn()) {
-            throw new CheckedException("内置用户不可删除");
+            throw new CheckedException("内置用户不可修改或删除");
         }
         this.delete(id);
     }

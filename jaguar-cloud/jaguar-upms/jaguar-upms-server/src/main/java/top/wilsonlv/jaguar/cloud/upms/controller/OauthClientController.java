@@ -53,9 +53,8 @@ public class OauthClientController extends BaseController<OauthClient, ClientMap
     @ApiOperation(value = "新增oauth2客户端")
     @PreAuthorize("hasAuthority('oauth2客户端管理')")
     @PostMapping
-    public JsonResult<Void> create(@RequestBody @Valid OauthClientCreateDTO oauthClient) {
-        service.create(oauthClient);
-        return success();
+    public JsonResult<String> create(@RequestBody @Valid OauthClientCreateDTO oauthClient) {
+        return success(service.create(oauthClient));
     }
 
     @ApiOperation(value = "修改oauth2客户端")
@@ -64,6 +63,13 @@ public class OauthClientController extends BaseController<OauthClient, ClientMap
     public JsonResult<Void> modify(@RequestBody @Valid OauthClientModifyDTO oauthClient) {
         service.modify(oauthClient);
         return success();
+    }
+
+    @ApiOperation(value = "重置密钥")
+    @PreAuthorize("hasAuthority('oauth2客户端管理')")
+    @PostMapping("/resetSecret")
+    public JsonResult<String> resetSecret(@RequestParam Long id) {
+        return success(service.resetSecret(id));
     }
 
     @ApiOperation(value = "删除oauth2客户端")

@@ -45,8 +45,8 @@ public class OauthClient extends BaseModel {
     /**
      * 重定向URI
      */
-    @TableField("registered_redirect_uris")
-    private String registeredRedirectUris;
+    @TableField("registered_redirect_uri")
+    private String registeredRedirectUri;
     /**
      * 自动授权
      */
@@ -78,11 +78,6 @@ public class OauthClient extends BaseModel {
     @TableField("built_in")
     private Boolean builtIn;
     /**
-     * 是否启用
-     */
-    @TableField("enable_")
-    private Boolean enable;
-    /**
      * 是否需要验证码
      */
     @TableField("captcha_")
@@ -97,5 +92,10 @@ public class OauthClient extends BaseModel {
      */
     @TableField("user_type")
     private UserType userType;
+    /**
+     * 是否启用
+     */
+    @TableField("enable_")
+    private Boolean enable;
 
 }

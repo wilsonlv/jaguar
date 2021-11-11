@@ -104,7 +104,7 @@ public class MenuService extends BaseService<Menu, MenuMapper> {
     public void checkBuiltIn(Long id) {
         Menu byId = this.getById(id);
         if (byId.getMenuBuiltIn()) {
-            throw new CheckedException("内置菜单不可修改");
+            throw new CheckedException("内置菜单不可修改或删除");
         }
     }
 

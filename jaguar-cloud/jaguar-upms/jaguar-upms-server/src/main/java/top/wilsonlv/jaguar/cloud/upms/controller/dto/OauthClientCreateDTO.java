@@ -28,12 +28,7 @@ public class OauthClientCreateDTO extends BaseDTO implements OauthClientBaseDTO 
     @ApiModelProperty(value = "客户端ID", required = true)
     private String clientId;
 
-    @NotBlank(message = "客户端密钥为非空")
-    @ApiModelProperty(value = "客户端密钥", required = true)
-    private String clientSecret;
-
-    @NotEmpty(message = "授权类型为非空")
-    @ApiModelProperty(value = "授权类型", required = true)
+    @ApiModelProperty(value = "授权类型")
     private Set<String> authorizedGrantTypes;
 
     @NotNull(message = "accessToken有效期为非空")
@@ -54,14 +49,10 @@ public class OauthClientCreateDTO extends BaseDTO implements OauthClientBaseDTO 
     private Set<String> resourceIds;
 
     @ApiModelProperty("重定向URI")
-    private Set<String> registeredRedirectUris;
+    private Set<String> registeredRedirectUri;
 
     @ApiModelProperty("权限")
     private Set<String> authorities;
-
-    @NotNull(message = "是否启用为非空")
-    @ApiModelProperty(value = "是否启用", required = true)
-    private Boolean enable;
 
     @NotNull(message = "客户端类型为非空")
     @ApiModelProperty(value = "客户端类型", required = true)
@@ -72,5 +63,9 @@ public class OauthClientCreateDTO extends BaseDTO implements OauthClientBaseDTO 
 
     @ApiModelProperty(value = "是否需要验证码")
     private Boolean captcha;
+
+    @NotNull(message = "是否启用为非空")
+    @ApiModelProperty(value = "是否启用", required = true)
+    private Boolean enable;
 
 }

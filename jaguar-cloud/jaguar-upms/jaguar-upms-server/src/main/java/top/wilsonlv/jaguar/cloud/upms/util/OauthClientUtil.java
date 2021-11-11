@@ -41,8 +41,8 @@ public class OauthClientUtil {
         if (StringUtils.isNotBlank(oauthClient.getResourceIds())) {
             oauthClientVO.setResourceIds(new HashSet<>(Arrays.asList(oauthClient.getResourceIds().split(","))));
         }
-        if (StringUtils.isNotBlank(oauthClient.getRegisteredRedirectUris())) {
-            oauthClientVO.setRegisteredRedirectUri(new HashSet<>(Arrays.asList(oauthClient.getRegisteredRedirectUris().split(","))));
+        if (StringUtils.isNotBlank(oauthClient.getRegisteredRedirectUri())) {
+            oauthClientVO.setRegisteredRedirectUri(new HashSet<>(Arrays.asList(oauthClient.getRegisteredRedirectUri().split(","))));
         }
         if (StringUtils.isNotBlank(oauthClient.getAuthorities())) {
             String[] authorities = oauthClient.getAuthorities().split(",");
@@ -65,7 +65,6 @@ public class OauthClientUtil {
     public static OauthClient dto2Entity(OauthClientBaseDTO oauthClientDTO) {
         OauthClient oauthClient = new OauthClient();
         oauthClient.setClientId(oauthClientDTO.getClientId());
-        oauthClient.setClientSecret(oauthClientDTO.getClientSecret());
         oauthClient.setAccessTokenValiditySeconds(oauthClientDTO.getAccessTokenValiditySeconds());
         oauthClient.setRefreshTokenValiditySeconds(oauthClientDTO.getRefreshTokenValiditySeconds());
         oauthClient.setEnable(oauthClientDTO.getEnable());
@@ -74,22 +73,22 @@ public class OauthClientUtil {
         oauthClient.setUserType(oauthClientDTO.getUserType());
 
         if (!CollectionUtils.isEmpty(oauthClientDTO.getAuthorizedGrantTypes())) {
-            oauthClient.setAuthorizedGrantTypes(StringUtils.join(oauthClientDTO.getAuthorizedGrantTypes().toArray()));
+            oauthClient.setAuthorizedGrantTypes(StringUtils.join(oauthClientDTO.getAuthorizedGrantTypes().toArray(), ","));
         }
         if (!CollectionUtils.isEmpty(oauthClientDTO.getScope())) {
-            oauthClient.setScope(StringUtils.join(oauthClientDTO.getScope().toArray()));
+            oauthClient.setScope(StringUtils.join(oauthClientDTO.getScope().toArray(), ","));
         }
         if (!CollectionUtils.isEmpty(oauthClientDTO.getAutoApproveScopes())) {
-            oauthClient.setAutoApproveScopes(StringUtils.join(oauthClientDTO.getAutoApproveScopes().toArray()));
+            oauthClient.setAutoApproveScopes(StringUtils.join(oauthClientDTO.getAutoApproveScopes().toArray(), ","));
         }
         if (!CollectionUtils.isEmpty(oauthClientDTO.getResourceIds())) {
-            oauthClient.setResourceIds(StringUtils.join(oauthClientDTO.getResourceIds().toArray()));
+            oauthClient.setResourceIds(StringUtils.join(oauthClientDTO.getResourceIds().toArray(), ","));
         }
-        if (!CollectionUtils.isEmpty(oauthClientDTO.getRegisteredRedirectUris())) {
-            oauthClient.setRegisteredRedirectUris(StringUtils.join(oauthClientDTO.getRegisteredRedirectUris().toArray()));
+        if (!CollectionUtils.isEmpty(oauthClientDTO.getRegisteredRedirectUri())) {
+            oauthClient.setRegisteredRedirectUri(StringUtils.join(oauthClientDTO.getRegisteredRedirectUri().toArray(), ","));
         }
         if (!CollectionUtils.isEmpty(oauthClientDTO.getAuthorities())) {
-            oauthClient.setAuthorities(StringUtils.join(oauthClientDTO.getAuthorities().toArray()));
+            oauthClient.setAuthorities(StringUtils.join(oauthClientDTO.getAuthorities().toArray(), ","));
         }
         return oauthClient;
     }

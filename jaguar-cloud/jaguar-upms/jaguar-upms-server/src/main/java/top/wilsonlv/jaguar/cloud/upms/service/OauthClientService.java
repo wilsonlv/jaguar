@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.klock.annotation.Klock;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -15,11 +16,11 @@ import top.wilsonlv.jaguar.cloud.upms.controller.dto.OauthClientCreateDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.OauthClientModifyDTO;
 import top.wilsonlv.jaguar.cloud.upms.entity.OauthClient;
 import top.wilsonlv.jaguar.cloud.upms.mapper.ClientMapper;
-import top.wilsonlv.jaguar.cloud.upms.sdk.dto.OauthClientAdditionalInfo;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.OauthClientVO;
 import top.wilsonlv.jaguar.cloud.upms.util.OauthClientUtil;
 import top.wilsonlv.jaguar.commons.basecrud.Assert;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;
+import top.wilsonlv.jaguar.commons.data.encryption.util.EncryptionUtil;
 import top.wilsonlv.jaguar.commons.oauth2.Oauth2Constant;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
@@ -36,6 +37,8 @@ import java.util.Set;
 public class OauthClientService extends BaseService<OauthClient, ClientMapper> implements InitializingBean {
 
     private final RedisTemplate<String, Serializable> redisTemplate;
+
+    private final PasswordEncoder passwordEncoder;
 
     //    clientId              原密码                       密码
     //    jaguar-auth           PHn8KG0T06i45jetPS9ejcT7    $2a$10$kvgD.8bKaY31eAhH/p2qM.5iwP6sxBmTExdMKx.U.kXAZalq.Egsi
@@ -91,14 +94,20 @@ public class OauthClientService extends BaseService<OauthClient, ClientMapper> i
 
     @Klock(name = LockNameConstant.OAUTH_CLIENT_CREATE_MODIFY_LOCK)
     @Transactional
-    public void create(OauthClientCreateDTO createDTO) {
+    public String create(OauthClientCreateDTO createDTO) {
         OauthClient byClientId = this.getByClientId(createDTO.getClientId());
         Assert.duplicate(byClientId, "客户端ID");
 
+        String randomPassword = EncryptionUtil.randomPassword(8, 8, 8);
+        String encode = passwordEncoder.encode(randomPassword);
+
         OauthClient oauthClient = OauthClientUtil.dto2Entity(createDTO);
+        oauthClient.setClientSecret(encode);
         this.insert(oauthClient);
 
         this.afterTransactionCommit(this::add2Cache, oauthClient);
+
+        return randomPassword;
     }
 
     @Klock(name = LockNameConstant.OAUTH_CLIENT_CREATE_MODIFY_LOCK)
@@ -116,6 +125,19 @@ public class OauthClientService extends BaseService<OauthClient, ClientMapper> i
         this.afterTransactionCommit(this::add2Cache, getById(modifyDTO.getId()));
     }
 
+    @Transactional
+    public String resetSecret(Long id) {
+        OauthClient oauthClient = this.checkBuiltIn(id);
+
+        String randomPassword = EncryptionUtil.randomPassword(8, 8, 8);
+        String encode = passwordEncoder.encode(randomPassword);
+
+        oauthClient.setClientSecret(encode);
+        this.updateById(oauthClient);
+
+        return randomPassword;
+    }
+
     @Klock(name = LockNameConstant.OAUTH_CLIENT_CREATE_MODIFY_LOCK)
     @Transactional
     public void checkAndDelete(Long id) {
@@ -129,10 +151,9 @@ public class OauthClientService extends BaseService<OauthClient, ClientMapper> i
     public OauthClient checkBuiltIn(Long id) {
         OauthClient oauthClient = this.getById(id);
         if (oauthClient.getBuiltIn()) {
-            throw new CheckedException("内置oauth客户端不可删除");
+            throw new CheckedException("内置oauth客户端不可修改或删除");
         }
         return oauthClient;
     }
-
 
 }

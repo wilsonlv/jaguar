@@ -15,10 +15,6 @@ public interface OauthClientBaseDTO {
 
     void setClientId(String clientId);
 
-    String getClientSecret();
-
-    void setClientSecret(String clientSecret);
-
     Set<String> getAuthorizedGrantTypes();
 
     void setAuthorizedGrantTypes(Set<String> authorizedGrantTypes);
@@ -43,9 +39,9 @@ public interface OauthClientBaseDTO {
 
     void setResourceIds(Set<String> resourceIds);
 
-    Set<String> getRegisteredRedirectUris();
+    Set<String> getRegisteredRedirectUri();
 
-    void setRegisteredRedirectUris(Set<String> registeredRedirectUris);
+    void setRegisteredRedirectUri(Set<String> registeredRedirectUri);
 
     Set<String> getAuthorities();
 
