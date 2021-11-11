@@ -96,7 +96,7 @@ public class AuthService {
 
     @Transactional
     public void modifyUserInfo(Long userId, String userPhone, String userEmail, String userNickName) {
-        User user = null;
+        User user = new User();
         user.setId(userId);
         user.setUserPhone(userPhone);
         user.setUserEmail(userEmail);
@@ -118,7 +118,7 @@ public class AuthService {
 
         user = new User();
         user.setId(userId);
-        user.setUserPassword(newPassword);
+        user.setUserPassword(passwordEncoder.encode(newPassword));
         user.setUserPasswordLastModifyTime(LocalDateTime.now());
         userService.updateById(user);
     }

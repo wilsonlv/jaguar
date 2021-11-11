@@ -74,8 +74,6 @@ public class JaguarUserDetailsServiceImpl implements UserDetailsService {
         securityUser.setUsername(user.getUserAccount());
         securityUser.setPassword(user.getUserPassword());
         securityUser.setUserType(UserType.ADMIN);
-        securityUser.setPhone(user.getUserPhone());
-        securityUser.setEmail(user.getUserEmail());
         securityUser.setLocked(user.getUserLocked());
         securityUser.setEnable(user.getUserEnable());
         securityUser.setPasswordLastModifyTime(user.getUserPasswordLastModifyTime());

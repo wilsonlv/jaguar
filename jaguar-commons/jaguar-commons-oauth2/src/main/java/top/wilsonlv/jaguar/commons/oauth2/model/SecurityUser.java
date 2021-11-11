@@ -26,10 +26,6 @@ public class SecurityUser implements UserDetails {
 
     private UserType userType;
 
-    private String phone;
-
-    private String email;
-
     private Boolean locked = false;
 
     private Boolean enable = true;
