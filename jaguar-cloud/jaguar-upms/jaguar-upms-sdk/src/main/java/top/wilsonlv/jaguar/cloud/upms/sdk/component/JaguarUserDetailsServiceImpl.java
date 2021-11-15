@@ -40,13 +40,21 @@ public class JaguarUserDetailsServiceImpl implements UserDetailsService {
         }
 
         ClientDetails clientDetails = clientDetailsService.loadClientByClientId(clientId);
-        Map<String, Object> additionalInformation = clientDetails.getAdditionalInformation();
-        String userTypeStr = (String) additionalInformation.get("userType");
-        if (StringUtils.isBlank(userTypeStr)) {
-            throw new CheckedException("当前客户端没有配置用户类型");
+
+        UserType userType = null;
+        outer:
+        for (String scope : clientDetails.getScope()) {
+            for (UserType item : UserType.values()) {
+                if (item.getUserTypeName().equals(scope)) {
+                    userType = item;
+                    break outer;
+                }
+            }
+        }
+        if (userType == null) {
+            throw new CheckedException("客户端没有配置必要的Scope");
         }
 
-        UserType userType = UserType.valueOf(userTypeStr);
         switch (userType) {
             case ADMIN: {
                 return getAdminUser(username);
@@ -78,11 +86,9 @@ public class JaguarUserDetailsServiceImpl implements UserDetailsService {
         securityUser.setEnable(user.getUserEnable());
         securityUser.setPasswordLastModifyTime(user.getUserPasswordLastModifyTime());
 
-        Set<SecurityAuthority> authorities = new HashSet<>(user.getPermissions().size() + 1);
-        securityUser.setAuthorities(authorities);
-        authorities.add(new SecurityAuthority("ROLE_" + UserType.ADMIN));
+        securityUser.setAuthorities(new HashSet<>(user.getPermissions().size()));
         for (String permission : user.getPermissions()) {
-            authorities.add(new SecurityAuthority(permission));
+            securityUser.getAuthorities().add(new SecurityAuthority(permission));
         }
         return securityUser;
     }

@@ -24,20 +24,4 @@ public interface RemoteUserService {
     @GetMapping("/feign/user/loadUserByUsername")
     JsonResult<UserVO> loadUserByUsername(@RequestParam("username") String username);
 
-    @GetMapping("/feign/user/getDetail")
-    JsonResult<UserVO> getDetail(@RequestParam("userId") Long userId);
-
-    @GetMapping("/feign/user/getUserMenus")
-    JsonResult<List<MenuVO>> getUserMenus(@RequestParam("userId") Long userId);
-
-    @PostMapping("/feign/user/modifyUserInfo")
-    JsonResult<Void> modifyUserInfo(@RequestParam("userId") Long userId,
-                                    @RequestParam(value = "userPhone", required = false) String userPhone,
-                                    @RequestParam(value = "userEmail", required = false) String userEmail,
-                                    @RequestParam(value = "userNickName", required = false) String userNickName);
-
-    @PostMapping("/feign/user/modifyPassword")
-    JsonResult<Void> modifyPassword(@RequestParam("userId") Long userId,
-                                    @RequestParam("oldPassword") @NotBlank String oldPassword,
-                                    @RequestParam("newPassword") @NotBlank String newPassword);
 }

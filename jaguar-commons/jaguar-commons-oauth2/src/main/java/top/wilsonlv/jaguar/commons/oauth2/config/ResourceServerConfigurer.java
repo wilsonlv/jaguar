@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -48,19 +49,27 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http
+        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 //不需要认证就可以访问的
                 .authorizeRequests()
-                .antMatchers("/admin/**").hasRole(UserType.ADMIN.name())
-                .antMatchers("/tenant/**").hasRole(UserType.TENANT.name())
-                .antMatchers("/user/**").hasRole(UserType.USER.name())
+
+                .antMatchers("/admin/**").access("#oauth2.hasScope('" + UserType.ADMIN.getUserTypeName() + "')")
+                .antMatchers("/tenant/**").access("#oauth2.hasScope('" + UserType.TENANT.getUserTypeName() + "')")
+                .antMatchers("/user/**").access("#oauth2.hasScope('" + UserType.USER.getUserTypeName() + "')")
+
                 .antMatchers("/swagger-resources", "/swagger-resources/**", "/v2/**").permitAll()
-                .antMatchers("/druid/**").hasIpAddress(MonitorUitl.getMonitorIp())
-                .antMatchers(springSecurityProperties.getIgnoreUrls()).permitAll()
-                //其余都需要认证
-                .anyRequest().authenticated()
+                .antMatchers("/druid/**").hasIpAddress(MonitorUitl.getMonitorIp());
+
+        if (springSecurityProperties.getIgnoreUrls() != null) {
+            for (String ignoreUrl : springSecurityProperties.getIgnoreUrls()) {
+                registry.antMatchers(ignoreUrl).permitAll();
+            }
+        }
+
+        //其余都需要认证
+        registry.anyRequest().authenticated()
                 .and().exceptionHandling()
                 .accessDeniedHandler(jaguarAccessDeniedHandler).authenticationEntryPoint(authenticationExceptionHandler)
                 //异常处理

@@ -15,6 +15,6 @@ public class SpringSecurityProperties {
 
     private String actuatorAdminIp;
 
-    private String[] ignoreUrls = new String[]{};
+    private String[] ignoreUrls;
 
 }
