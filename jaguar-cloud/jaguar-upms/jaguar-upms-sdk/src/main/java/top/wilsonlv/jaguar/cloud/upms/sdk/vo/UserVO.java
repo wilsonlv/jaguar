@@ -41,6 +41,9 @@ public class UserVO extends BaseVO {
     @ApiModelProperty("用户昵称")
     private String userNickName;
 
+    @ApiModelProperty("用户部门ID")
+    private Long userDeptId;
+
     @ApiModelProperty("用户是否启用")
     private Boolean userEnable;
 

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import top.wilsonlv.jaguar.commons.web.base.BaseModifyDTO;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
@@ -27,6 +28,9 @@ public class UserModifyDTO extends BaseModifyDTO {
 
     @ApiModelProperty(value = "用户邮箱（唯一）")
     private String userEmail;
+
+    @ApiModelProperty(value = "用户密码")
+    private String userPassword;
 
     @ApiModelProperty(value = "用户昵称")
     private String userNickName;

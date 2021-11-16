@@ -37,7 +37,7 @@ public class UserCreateDTO extends BaseDTO {
     @ApiModelProperty(value = "用户昵称")
     private String userNickName;
 
-    @NotBlank(message = "用户部门ID为非空")
+    @NotNull(message = "用户部门ID为非空")
     @ApiModelProperty(value = "用户部门ID", required = true)
     private Long userDeptId;
 

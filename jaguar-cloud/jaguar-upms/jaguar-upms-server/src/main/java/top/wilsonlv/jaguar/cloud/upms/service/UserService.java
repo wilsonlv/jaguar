@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.klock.annotation.Klock;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.wilsonlv.jaguar.cloud.upms.constant.LockNameConstant;
@@ -24,6 +25,7 @@ import top.wilsonlv.jaguar.commons.data.encryption.util.EncryptionUtil;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,13 +41,20 @@ import java.util.stream.Collectors;
 @Service
 public class UserService extends BaseService<User, UserMapper> {
 
+    @Lazy
     @Autowired
     private UserRoleService userRoleService;
+
+    @Lazy
     @Autowired
     private RoleMenuService roleMenuService;
+
     @Lazy
     @Autowired
     private DeptService deptService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     /*----------  通用接口  ----------*/
@@ -116,6 +125,7 @@ public class UserService extends BaseService<User, UserMapper> {
         if (EncryptionUtil.passwordUnmatched(userCreateDTO.getUserPassword())) {
             throw new CheckedException("密码格式为包含数字，字母大小写的6-20位字符串！");
         }
+        userCreateDTO.setUserPassword(passwordEncoder.encode(userCreateDTO.getUserPassword()));
 
         User byAccount = this.getByAccount(userCreateDTO.getUserAccount());
         Assert.duplicate(byAccount, "用户账号");
@@ -133,6 +143,7 @@ public class UserService extends BaseService<User, UserMapper> {
         User user = userCreateDTO.toEntity(User.class);
         user.setUserBuiltIn(false);
         user.setUserLocked(false);
+        user.setUserPasswordLastModifyTime(LocalDateTime.now());
         this.insert(user);
 
         userRoleService.relateRoles(user.getId(), userCreateDTO.getRoleIds());
@@ -146,6 +157,15 @@ public class UserService extends BaseService<User, UserMapper> {
             Assert.duplicate(byAccount, userModifyDTO, "用户账号");
         }
 
+        LocalDateTime userPasswordLastModifyTime = null;
+        if (StringUtils.isNotBlank(userModifyDTO.getUserPassword())) {
+            if (EncryptionUtil.passwordUnmatched(userModifyDTO.getUserPassword())) {
+                throw new CheckedException("密码格式为包含数字，字母大小写的6-20位字符串！");
+            }
+            userModifyDTO.setUserPassword(passwordEncoder.encode(userModifyDTO.getUserPassword()));
+            userPasswordLastModifyTime = LocalDateTime.now();
+        }
+
         if (StringUtils.isNotBlank(userModifyDTO.getUserPhone())) {
             User byPhone = this.getByPhone(userModifyDTO.getUserPhone());
             Assert.duplicate(byPhone, userModifyDTO, "用户手机号");
@@ -157,6 +177,7 @@ public class UserService extends BaseService<User, UserMapper> {
         }
 
         User user = userModifyDTO.toEntity(User.class);
+        user.setUserPasswordLastModifyTime(userPasswordLastModifyTime);
         this.updateById(user);
 
         userRoleService.relateRoles(user.getId(), userModifyDTO.getRoleIds());

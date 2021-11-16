@@ -151,14 +151,16 @@ public abstract class BaseService<E extends BaseModel, M extends BaseMapper<E>> 
         LocalDateTime now = LocalDateTime.now();
         List<E> entityIds = this.list(wrapper.select(E::getId));
 
-        Set<Long> ids = new HashSet<>(entityIds.size());
-        for (E e : entityIds) {
-            e.setUpdateTime(now);
-            ids.add(e.getId());
-        }
-        this.batchUpdateById(entityIds);
+        if (entityIds.size() > 0) {
+            Set<Long> ids = new HashSet<>(entityIds.size());
+            for (E e : entityIds) {
+                e.setUpdateTime(now);
+                ids.add(e.getId());
+            }
+            this.batchUpdateById(entityIds);
 
-        this.mapper.deleteBatchIds(ids);
+            this.mapper.deleteBatchIds(ids);
+        }
     }
 
     public E getById(Long id) {
