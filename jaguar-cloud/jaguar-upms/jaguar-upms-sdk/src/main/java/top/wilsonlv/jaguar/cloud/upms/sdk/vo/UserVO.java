@@ -53,4 +53,7 @@ public class UserVO extends BaseVO {
     @ApiModelProperty("用户权限")
     private Set<String> permissions;
 
+    @ApiModelProperty("用户部门")
+    private DeptVO dept;
+
 }

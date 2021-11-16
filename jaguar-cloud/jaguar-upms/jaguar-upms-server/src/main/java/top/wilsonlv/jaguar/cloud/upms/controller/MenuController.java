@@ -36,7 +36,7 @@ public class MenuController extends BaseController<Menu, MenuMapper, MenuService
     @PreAuthorize("hasAuthority('菜单管理')")
     @GetMapping(value = "/tree")
     public JsonResult<List<MenuVO>> tree() {
-        return success(service.tree(null));
+        return success(service.tree(0));
     }
 
     @ApiOperation(value = "菜单详情")

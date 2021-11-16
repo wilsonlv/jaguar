@@ -6,20 +6,21 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.klock.annotation.Klock;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.wilsonlv.jaguar.cloud.upms.constant.LockNameConstant;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.UserCreateDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.UserModifyDTO;
 import top.wilsonlv.jaguar.cloud.upms.entity.User;
+import top.wilsonlv.jaguar.cloud.upms.entity.UserRole;
 import top.wilsonlv.jaguar.cloud.upms.mapper.UserMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.RoleVO;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
 import top.wilsonlv.jaguar.commons.basecrud.Assert;
-import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;
+import top.wilsonlv.jaguar.commons.basecrud.util.LongUtil;
 import top.wilsonlv.jaguar.commons.data.encryption.util.EncryptionUtil;
-import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
 import javax.validation.constraints.NotBlank;
@@ -42,22 +43,25 @@ public class UserService extends BaseService<User, UserMapper> {
     private UserRoleService userRoleService;
     @Autowired
     private RoleMenuService roleMenuService;
+    @Lazy
+    @Autowired
+    private DeptService deptService;
 
 
     /*----------  通用接口  ----------*/
 
     public User getByAccount(@NotBlank String account) {
-        return this.unique(JaguarLambdaQueryWrapper.<User>newInstance()
+        return this.unique(Wrappers.lambdaQuery(User.class)
                 .eq(User::getUserAccount, account));
     }
 
     public User getByPhone(@NotBlank String phone) {
-        return this.unique(JaguarLambdaQueryWrapper.<User>newInstance()
+        return this.unique(Wrappers.lambdaQuery(User.class)
                 .eq(User::getUserPhone, phone));
     }
 
     public User getByEmail(@NotBlank String email) {
-        return this.unique(JaguarLambdaQueryWrapper.<User>newInstance()
+        return this.unique(Wrappers.lambdaQuery(User.class)
                 .eq(User::getUserEmail, email));
     }
 
@@ -79,6 +83,9 @@ public class UserService extends BaseService<User, UserMapper> {
         Set<String> permissions = roleMenuService.listPermissionsByRoleIds(roleIds);
         userVO.setPermissions(permissions);
 
+        if (LongUtil.notNull(user.getUserDeptId())) {
+            userVO.setDept(deptService.getDetail(user.getUserDeptId()));
+        }
         return userVO;
     }
 
@@ -95,6 +102,10 @@ public class UserService extends BaseService<User, UserMapper> {
 
             List<RoleVO> roles = userRoleService.listRoleByUserId(user.getId());
             userVO.setRoles(roles);
+
+            if (LongUtil.notNull(user.getUserDeptId())) {
+                userVO.setDept(deptService.getDetail(user.getUserDeptId()));
+            }
         }
         return voPage;
     }
@@ -130,8 +141,6 @@ public class UserService extends BaseService<User, UserMapper> {
     @Klock(name = LockNameConstant.USER_CREATE_MODIFY_LOCK)
     @Transactional
     public void modify(UserModifyDTO userModifyDTO) {
-        this.getById(userModifyDTO.getId());
-
         if (StringUtils.isNotBlank(userModifyDTO.getUserAccount())) {
             User byAccount = this.getByAccount(userModifyDTO.getUserAccount());
             Assert.duplicate(byAccount, userModifyDTO, "用户账号");
@@ -149,6 +158,8 @@ public class UserService extends BaseService<User, UserMapper> {
 
         User user = userModifyDTO.toEntity(User.class);
         this.updateById(user);
+
+        userRoleService.relateRoles(user.getId(), userModifyDTO.getRoleIds());
     }
 
     @Klock(name = LockNameConstant.USER_CREATE_MODIFY_LOCK)
@@ -159,5 +170,8 @@ public class UserService extends BaseService<User, UserMapper> {
             throw new CheckedException("内置用户不可修改或删除");
         }
         this.delete(id);
+
+        userRoleService.delete(Wrappers.lambdaQuery(UserRole.class)
+                .eq(UserRole::getUserId, id));
     }
 }

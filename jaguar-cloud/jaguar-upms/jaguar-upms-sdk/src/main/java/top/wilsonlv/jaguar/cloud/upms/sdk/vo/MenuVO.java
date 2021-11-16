@@ -31,7 +31,7 @@ public class MenuVO extends BaseVO {
     private String menuPermission;
 
     @ApiModelProperty("排序")
-    private String menuOrder;
+    private Integer menuOrder;
 
     @ApiModelProperty("是否为按钮")
     private Boolean menuButton;

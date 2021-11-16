@@ -25,7 +25,7 @@ public class Menu extends BaseModel {
     /**
      * 父ID
      */
-    @TableField(value = "parent_id", updateStrategy = FieldStrategy.IGNORED)
+    @TableField(value = "parent_id")
     private Long parentId;
     /**
      * 是否内置菜单

@@ -2,6 +2,7 @@ package top.wilsonlv.jaguar.cloud.auth.component;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -35,6 +36,7 @@ import java.util.Map;
 @Slf4j
 @ControllerAdvice
 @RequiredArgsConstructor
+@ConditionalOnProperty(prefix = "jaguar.auth", name = "loginLogEnable", havingValue = "true")
 public class AuthResponseBodyAdviceImpl implements ResponseBodyAdvice<Object> {
 
     private final TokenStore tokenStore;

@@ -1,5 +1,6 @@
 package top.wilsonlv.jaguar.cloud.upms.service;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,7 +10,6 @@ import top.wilsonlv.jaguar.cloud.upms.mapper.UserRoleMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.RoleVO;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;
-import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -47,7 +47,7 @@ public class UserRoleService extends BaseService<UserRole, UserRoleMapper> {
     @Transactional
     public void relateRoles(Long userId, Set<Long> roleIds) {
         for (Long roleId : roleIds) {
-            if (this.exists(JaguarLambdaQueryWrapper.<UserRole>newInstance()
+            if (this.exists(Wrappers.lambdaQuery(UserRole.class)
                     .eq(UserRole::getUserId, userId)
                     .eq(UserRole::getRoleId, roleId))) {
                 continue;
@@ -61,7 +61,7 @@ public class UserRoleService extends BaseService<UserRole, UserRoleMapper> {
             this.insert(userRole);
         }
 
-        this.delete(JaguarLambdaQueryWrapper.<UserRole>newInstance()
+        this.delete(Wrappers.lambdaQuery(UserRole.class)
                 .eq(UserRole::getUserId, userId)
                 .notIn(UserRole::getRoleId, roleIds));
     }

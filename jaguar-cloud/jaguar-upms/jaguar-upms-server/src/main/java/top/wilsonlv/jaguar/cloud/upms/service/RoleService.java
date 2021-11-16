@@ -21,7 +21,6 @@ import top.wilsonlv.jaguar.cloud.upms.sdk.vo.RoleVO;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
 import top.wilsonlv.jaguar.commons.basecrud.Assert;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;
-import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
 import java.util.ArrayList;
@@ -47,7 +46,7 @@ public class RoleService extends BaseService<Role, RoleMapper> {
 
 
     public Role getByRoleName(String roleName) {
-        return this.unique(JaguarLambdaQueryWrapper.<Role>newInstance()
+        return this.unique(Wrappers.lambdaQuery(Role.class)
                 .eq(Role::getRoleName, roleName));
     }
 
@@ -99,18 +98,12 @@ public class RoleService extends BaseService<Role, RoleMapper> {
     @Klock(name = LockNameConstant.ROLE_CREATE_MODIFY_LOCK)
     @Transactional
     public void modify(RoleModifyDTO roleModifyDTO) {
-        this.getById(roleModifyDTO.getId());
-
         if (StringUtils.isNotBlank(roleModifyDTO.getRoleName())) {
             Role byRoleName = this.getByRoleName(roleModifyDTO.getRoleName());
             Assert.duplicate(byRoleName, roleModifyDTO, "角色名称");
         }
 
-        Role role = new Role();
-        role.setId(roleModifyDTO.getId());
-        role.setRoleBuiltIn(false);
-        role.setRoleName(roleModifyDTO.getRoleName());
-        role.setRoleEnable(roleModifyDTO.getRoleEnable());
+        Role role = roleModifyDTO.toEntity(Role.class);
         this.updateById(role);
 
         roleMenuService.relateMenus(role.getId(), roleModifyDTO.getMenuIds());

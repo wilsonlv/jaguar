@@ -20,6 +20,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import top.wilsonlv.jaguar.cloud.handlerlog.client.HandlerLogConstant;
 import top.wilsonlv.jaguar.cloud.handlerlog.client.advice.JsonResultResponseAdvice;
 import top.wilsonlv.jaguar.cloud.handlerlog.client.dto.HandlerLogSaveDTO;
+import top.wilsonlv.jaguar.cloud.handlerlog.client.properties.JaguarHandlerLogProperties;
 import top.wilsonlv.jaguar.commons.oauth2.model.SecurityUser;
 import top.wilsonlv.jaguar.commons.oauth2.util.SecurityUtil;
 import top.wilsonlv.jaguar.commons.web.JsonResult;
@@ -53,6 +54,8 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
 
     @Autowired
     private JmsTemplate jmsQueueTemplate;
+    @Autowired
+    private JaguarHandlerLogProperties jaguarHandlerLogProperties;
 
     static {
         try {
@@ -128,11 +131,13 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
                 handlerLog.setJsonResult(jsonResult.toJsonStr());
             }
 
-            try {
-                log.debug("send handler log");
-                jmsQueueTemplate.convertAndSend(HandlerLogConstant.DESTINATION_HANDLER_LOG, handlerLog);
-            } catch (JmsException e) {
-                log.debug(e.getMessage());
+            if (jaguarHandlerLogProperties.getEnable()) {
+                try {
+                    log.debug("send handler log");
+                    jmsQueueTemplate.convertAndSend(HandlerLogConstant.DESTINATION_HANDLER_LOG, handlerLog);
+                } catch (JmsException e) {
+                    log.debug(e.getMessage());
+                }
             }
         }
 

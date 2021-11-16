@@ -18,7 +18,8 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(callSuper = true)
 public class MenuCreateDTO extends BaseDTO {
 
-    @ApiModelProperty(value = "父ID")
+    @NotNull(message = "父ID为非空")
+    @ApiModelProperty(value = "父ID", required = true)
     private Long parentId;
 
     @NotBlank(message = "名称为非空")

@@ -70,16 +70,15 @@ public class PersonalService {
     }
 
     private List<MenuVO> list2tree(List<Menu> menus) {
-        return findMenuByParentId(null, menus);
+        return findMenuByParentId(0, menus);
     }
 
-    private List<MenuVO> findMenuByParentId(Long parentId, List<Menu> menus) {
+    private List<MenuVO> findMenuByParentId(long parentId, List<Menu> menus) {
         List<MenuVO> menuVOs = new ArrayList<>();
         Iterator<Menu> iterator = menus.iterator();
         while (iterator.hasNext()) {
             Menu menu = iterator.next();
-            if ((parentId == null && menu.getParentId() == null) ||
-                    (parentId != null && parentId.equals(menu.getParentId()))) {
+            if (menu.getParentId().equals(parentId)) {
                 iterator.remove();
                 MenuVO userMenuVO = menu.toVo(MenuVO.class);
                 menuVOs.add(userMenuVO);

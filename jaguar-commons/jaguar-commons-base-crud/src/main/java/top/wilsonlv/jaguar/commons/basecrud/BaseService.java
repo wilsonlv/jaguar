@@ -1,12 +1,17 @@
 package top.wilsonlv.jaguar.commons.basecrud;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.enums.SqlMethod;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.binding.MapperMethod;
+import org.apache.ibatis.logging.Log;
+import org.apache.ibatis.logging.LogFactory;
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronization;
@@ -16,31 +21,72 @@ import top.wilsonlv.jaguar.commons.web.exception.impl.DataCrudException;
 
 import java.lang.reflect.ParameterizedType;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
  * @author lvws
  * @since 2019/5/6.
  */
-@Slf4j
 public abstract class BaseService<E extends BaseModel, M extends BaseMapper<E>> {
+
+    protected Log log = LogFactory.getLog(this.getClass());
 
     public static final String DEFAULT_ORDER_COLUMN = "id_";
 
     public static final String LIMIT_1 = "limit 1";
 
+    public static final int DEFAULT_BATCH_SIZE = 1000;
+
     @Autowired
     protected M mapper;
+
+    protected Class<E> entityClass = this.currentModelClass();
+    protected Class<M> mapperClass = this.currentMapperClass();
+
+    protected Class<E> currentModelClass() {
+        ParameterizedType parameterizedType = (ParameterizedType) getClass().getGenericSuperclass();
+        @SuppressWarnings("unchecked") Class<E> clazz = (Class<E>) parameterizedType.getActualTypeArguments()[0];
+        return clazz;
+    }
+
+    protected Class<M> currentMapperClass() {
+        ParameterizedType parameterizedType = (ParameterizedType) getClass().getGenericSuperclass();
+        @SuppressWarnings("unchecked") Class<M> clazz = (Class<M>) parameterizedType.getActualTypeArguments()[1];
+        return clazz;
+    }
+
+    protected String getSqlStatement(SqlMethod sqlMethod) {
+        return SqlHelper.getSqlStatement(this.mapperClass, sqlMethod);
+    }
+
+    protected boolean executeBatch(Collection<E> list, int batchSize, BiConsumer<SqlSession, E> consumer) {
+        return SqlHelper.executeBatch(this.entityClass, log, list, batchSize, consumer);
+    }
+
 
     @Transactional
     public void insert(E entity) {
         entity.setId(null);
         boolean success = SqlHelper.retBool(this.mapper.insert(entity));
         if (!success) {
-            log.error("实体信息：" + entity.toString());
+            log.error("数据插入失败: {}" + entity.toString());
             throw new DataCrudException("数据插入失败！");
+        }
+    }
+
+    @Transactional
+    public void batchInsert(Collection<E> entityList) {
+        this.batchInsert(entityList, DEFAULT_BATCH_SIZE);
+    }
+
+    @Transactional
+    public void batchInsert(Collection<E> entityList, int batchSize) {
+        String sqlStatement = this.getSqlStatement(SqlMethod.INSERT_ONE);
+        boolean success = this.executeBatch(entityList, batchSize, (sqlSession, entity) -> sqlSession.insert(sqlStatement, entity));
+        if (!success) {
+            throw new DataCrudException("批量插入数据失败！");
         }
     }
 
@@ -48,8 +94,26 @@ public abstract class BaseService<E extends BaseModel, M extends BaseMapper<E>> 
     public void updateById(E entity) {
         boolean success = SqlHelper.retBool(this.mapper.updateById(entity));
         if (!success) {
-            log.error("实体信息：" + entity.toString());
+            log.error("数据更新失败：" + entity.toString());
             throw new DataCrudException("数据更新失败！");
+        }
+    }
+
+    @Transactional
+    public void batchUpdateById(Collection<E> entityList) {
+        this.batchUpdateById(entityList, DEFAULT_BATCH_SIZE);
+    }
+
+    @Transactional
+    public void batchUpdateById(Collection<E> entityList, int batchSize) {
+        String sqlStatement = this.getSqlStatement(SqlMethod.UPDATE_BY_ID);
+        boolean success = this.executeBatch(entityList, batchSize, (sqlSession, entity) -> {
+            MapperMethod.ParamMap<E> param = new MapperMethod.ParamMap<>();
+            param.put("et", entity);
+            sqlSession.update(sqlStatement, param);
+        });
+        if (!success) {
+            throw new DataCrudException("批量更新数据失败！");
         }
     }
 
@@ -64,34 +128,37 @@ public abstract class BaseService<E extends BaseModel, M extends BaseMapper<E>> 
 
     @Transactional
     public void delete(Long id) {
-        E e = this.getById(id);
-        e.setUpdateTime(LocalDateTime.now());
-        e.setDeleted(true);
-        boolean success = SqlHelper.retBool(this.mapper.updateById(e));
-        if (!success) {
-            log.error("实体ID：" + id);
-            throw new DataCrudException("数据删除失败！");
+        E t;
+        try {
+            t = this.entityClass.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new CheckedException(e);
         }
+        t.setId(id);
+        t.setUpdateTime(LocalDateTime.now());
+        this.updateById(t);
+
+        this.mapper.deleteById(id);
     }
 
     @Transactional
     public void delete(E entity) {
-        this.delete(Wrappers.lambdaUpdate(entity));
+        this.delete(Wrappers.lambdaQuery(entity));
     }
 
     @Transactional
-    public void delete(Wrapper<E> wrapper) {
-        ParameterizedType parameterizedType = (ParameterizedType) getClass().getGenericSuperclass();
-        @SuppressWarnings("unchecked") Class<E> clazz = (Class<E>) parameterizedType.getActualTypeArguments()[0];
-        E t;
-        try {
-            t = clazz.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new CheckedException(e);
+    public void delete(LambdaQueryWrapper<E> wrapper) {
+        LocalDateTime now = LocalDateTime.now();
+        List<E> entityIds = this.list(wrapper.select(E::getId));
+
+        Set<Long> ids = new HashSet<>(entityIds.size());
+        for (E e : entityIds) {
+            e.setUpdateTime(now);
+            ids.add(e.getId());
         }
-        t.setUpdateTime(LocalDateTime.now());
-        t.setDeleted(true);
-        this.mapper.update(t, wrapper);
+        this.batchUpdateById(entityIds);
+
+        this.mapper.deleteBatchIds(ids);
     }
 
     public E getById(Long id) {
