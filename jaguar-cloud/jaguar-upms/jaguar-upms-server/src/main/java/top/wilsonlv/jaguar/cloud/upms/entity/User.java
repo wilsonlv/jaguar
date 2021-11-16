@@ -59,6 +59,11 @@ public class User extends BaseModel {
     @TableField("user_nick_name")
     private String userNickName;
     /**
+     * 用户部门ID
+     */
+    @TableField("user_dept_id")
+    private Long userDeptId;
+    /**
      * 用户是否启用
      */
     @TableField("user_enable")

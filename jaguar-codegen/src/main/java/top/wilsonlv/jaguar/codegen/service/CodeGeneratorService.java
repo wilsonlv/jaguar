@@ -219,6 +219,7 @@ public class CodeGeneratorService {
 
             String camelCase = StrUtil.toCamelCase(columnInfo.getColumnName());
             columnInfo.setFieldName(camelCase);
+            columnInfo.setFieldMethodName(StrUtil.upperFirst(camelCase));
             String fieldType = codegenProperties.getColumnTypeMapping().get(columnInfo.getDataType().toLowerCase());
             columnInfo.setFiledType(fieldType);
 

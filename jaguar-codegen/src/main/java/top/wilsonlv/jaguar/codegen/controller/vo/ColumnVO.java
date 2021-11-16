@@ -29,6 +29,9 @@ public class ColumnVO implements Serializable {
     @ApiModelProperty("字段名")
     private String fieldName;
 
+    @ApiModelProperty("字段方法名")
+    private String fieldMethodName;
+
     @ApiModelProperty("字段类型")
     private String filedType;
 
