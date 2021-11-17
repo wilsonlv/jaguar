@@ -38,7 +38,6 @@ public class JaguarLambdaQueryWrapper<T> extends LambdaQueryWrapper<T> {
 
     @Override
     public LambdaQueryWrapper<T> in(boolean condition, SFunction<T, ?> column, Collection<?> coll) {
-
         if (coll == null || CollectionUtils.isEmpty(coll)) {
             return this;
         }

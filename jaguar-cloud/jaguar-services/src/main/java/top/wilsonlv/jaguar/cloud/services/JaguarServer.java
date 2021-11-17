@@ -6,7 +6,7 @@ import lombok.Getter;
  * @author lvws
  * @since 2021/11/11
  */
-public enum JaguarSever {
+public enum JaguarServer {
 
     UPMS(JaguarServerName.JAGUAR_UPMS_SERVER, "用户权限管理系统"),
 
@@ -18,7 +18,7 @@ public enum JaguarSever {
     @Getter
     private final String alias;
 
-    JaguarSever(String name, String alias) {
+    JaguarServer(String name, String alias) {
         this.name = name;
         this.alias = alias;
     }

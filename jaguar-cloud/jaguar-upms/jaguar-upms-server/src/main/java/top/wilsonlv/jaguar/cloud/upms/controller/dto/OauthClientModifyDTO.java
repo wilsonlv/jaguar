@@ -9,7 +9,6 @@ import top.wilsonlv.jaguar.commons.enums.UserType;
 import top.wilsonlv.jaguar.commons.web.base.BaseModifyDTO;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
@@ -29,12 +28,10 @@ public class OauthClientModifyDTO extends BaseModifyDTO implements OauthClientBa
     @ApiModelProperty(value = "授权类型")
     private Set<String> authorizedGrantTypes;
 
-    @NotNull(message = "accessToken有效期为非空")
-    @ApiModelProperty(value = "accessToken有效期", required = true)
+    @ApiModelProperty(value = "accessToken有效期")
     private Integer accessTokenValiditySeconds;
 
-    @NotNull(message = "refreshToken有效期为非空")
-    @ApiModelProperty(value = "refreshToken有效期", required = true)
+    @ApiModelProperty(value = "refreshToken有效期")
     private Integer refreshTokenValiditySeconds;
 
     @ApiModelProperty("授权范围")

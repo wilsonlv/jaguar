@@ -1,7 +1,6 @@
 package top.wilsonlv.jaguar.cloud.upms.sdk.component;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.provider.ClientDetails;
@@ -14,11 +13,8 @@ import top.wilsonlv.jaguar.commons.oauth2.model.SecurityAuthority;
 import top.wilsonlv.jaguar.commons.oauth2.model.SecurityUser;
 import top.wilsonlv.jaguar.commons.oauth2.util.SecurityUtil;
 import top.wilsonlv.jaguar.commons.web.JsonResult;
-import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
 import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author lvws
@@ -52,7 +48,7 @@ public class JaguarUserDetailsServiceImpl implements UserDetailsService {
             }
         }
         if (userType == null) {
-            throw new CheckedException("客户端没有配置必要的Scope");
+            throw new UsernameNotFoundException(null);
         }
 
         switch (userType) {

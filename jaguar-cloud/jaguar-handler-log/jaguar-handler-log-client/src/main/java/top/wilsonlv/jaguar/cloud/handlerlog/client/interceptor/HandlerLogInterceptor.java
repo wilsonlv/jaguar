@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import top.wilsonlv.jaguar.cloud.handlerlog.client.HandlerLogConstant;
-import top.wilsonlv.jaguar.cloud.handlerlog.client.advice.JsonResultResponseAdvice;
+import top.wilsonlv.jaguar.commons.web.advice.JsonResultResponseAdvice;
 import top.wilsonlv.jaguar.cloud.handlerlog.client.dto.HandlerLogSaveDTO;
 import top.wilsonlv.jaguar.cloud.handlerlog.client.properties.JaguarHandlerLogProperties;
 import top.wilsonlv.jaguar.commons.oauth2.model.SecurityUser;

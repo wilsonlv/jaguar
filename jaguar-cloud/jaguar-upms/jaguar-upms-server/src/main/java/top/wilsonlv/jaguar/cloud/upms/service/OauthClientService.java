@@ -57,13 +57,13 @@ public class OauthClientService extends BaseService<OauthClient, ClientMapper> i
 
         List<OauthClient> oauthClients = this.list(Wrappers.lambdaQuery(OauthClient.class));
         for (OauthClient oauthClient : oauthClients) {
-            this.add2Cache(oauthClient);
+            this.updateCache(oauthClient);
         }
     }
 
-    public void add2Cache(OauthClient oauthClient) {
+    public void updateCache(OauthClient oauthClient) {
         String key = Oauth2Constant.CLIENT_CACHE_KEY_PREFIX + oauthClient.getClientId();
-        if (oauthClient.getEnable()) {
+        if (oauthClient.getEnable() && !oauthClient.getDeleted()) {
             OauthClientVO oauthClientVO = OauthClientUtil.entity2VO(oauthClient);
             redisTemplate.boundValueOps(key).set(oauthClientVO);
         } else {
@@ -105,7 +105,7 @@ public class OauthClientService extends BaseService<OauthClient, ClientMapper> i
         oauthClient.setClientSecret(encode);
         this.insert(oauthClient);
 
-        this.afterTransactionCommit(this::add2Cache, oauthClient);
+        this.afterTransactionCommit(this::updateCache, oauthClient);
 
         return randomPassword;
     }
@@ -122,30 +122,31 @@ public class OauthClientService extends BaseService<OauthClient, ClientMapper> i
         oauthClient.setId(modifyDTO.getId());
         this.updateById(oauthClient);
 
-        this.afterTransactionCommit(this::add2Cache, getById(modifyDTO.getId()));
+        this.afterTransactionCommit(this::updateCache, getById(modifyDTO.getId()));
     }
 
     @Transactional
     public String resetSecret(Long id) {
-        OauthClient oauthClient = this.checkBuiltIn(id);
-
         String randomPassword = EncryptionUtil.randomPassword(8, 8, 8);
         String encode = passwordEncoder.encode(randomPassword);
 
+        OauthClient oauthClient = new OauthClient();
+        oauthClient.setId(id);
         oauthClient.setClientSecret(encode);
         this.updateById(oauthClient);
+
+        this.afterTransactionCommit(this::updateCache, getById(id));
 
         return randomPassword;
     }
 
-    @Klock(name = LockNameConstant.OAUTH_CLIENT_CREATE_MODIFY_LOCK)
     @Transactional
     public void checkAndDelete(Long id) {
         OauthClient oauthClient = this.checkBuiltIn(id);
         this.delete(id);
 
-        String key = Oauth2Constant.CLIENT_CACHE_KEY_PREFIX + oauthClient.getClientId();
-        this.afterTransactionCommit(redisTemplate::delete, key);
+        oauthClient.setDeleted(true);
+        this.afterTransactionCommit(this::updateCache, oauthClient);
     }
 
     public OauthClient checkBuiltIn(Long id) {

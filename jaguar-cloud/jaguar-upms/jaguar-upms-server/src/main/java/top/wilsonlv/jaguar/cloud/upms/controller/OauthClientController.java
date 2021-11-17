@@ -16,6 +16,8 @@ import top.wilsonlv.jaguar.cloud.upms.mapper.ClientMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.OauthClientVO;
 import top.wilsonlv.jaguar.cloud.upms.service.OauthClientService;
 import top.wilsonlv.jaguar.commons.basecrud.BaseController;
+import top.wilsonlv.jaguar.commons.enums.ClientType;
+import top.wilsonlv.jaguar.commons.enums.UserType;
 import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import top.wilsonlv.jaguar.commons.web.JsonResult;
 
@@ -36,10 +38,14 @@ public class OauthClientController extends BaseController<OauthClient, ClientMap
     @GetMapping(value = "/page")
     public JsonResult<Page<OauthClientVO>> page(
             @ApiIgnore Page<OauthClient> page,
-            @ApiParam(value = "模糊用户信息") @RequestParam(required = false) String fuzzyClientId) {
+            @ApiParam(value = "模糊用户信息") @RequestParam(required = false) String fuzzyClientId,
+            @ApiParam(value = "客户端类型") @RequestParam(required = false) ClientType clientType,
+            @ApiParam(value = "用户类型") @RequestParam(required = false) UserType userType) {
 
         LambdaQueryWrapper<OauthClient> wrapper = JaguarLambdaQueryWrapper.<OauthClient>newInstance()
-                .like(OauthClient::getClientId, fuzzyClientId);
+                .like(OauthClient::getClientId, fuzzyClientId)
+                .eq(OauthClient::getClientType, clientType)
+                .eq(OauthClient::getUserType, userType);
         return success(service.queryOauthClient(page, wrapper));
     }
 
