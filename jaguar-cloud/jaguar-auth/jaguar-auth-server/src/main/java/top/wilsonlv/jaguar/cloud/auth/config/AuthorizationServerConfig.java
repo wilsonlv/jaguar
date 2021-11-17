@@ -1,8 +1,7 @@
 package top.wilsonlv.jaguar.cloud.auth.config;
 
 import lombok.RequiredArgsConstructor;
-import top.wilsonlv.jaguar.cloud.auth.component.oauth.AuthServerTokenService;
-import top.wilsonlv.jaguar.cloud.auth.component.oauth.exception.OauthTokenExceptionTranslator;
+import top.wilsonlv.jaguar.cloud.auth.component.oauth.ServerTokenService;
 import top.wilsonlv.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
 import top.wilsonlv.jaguar.commons.oauth2.component.RedisClientDetailsServiceImpl;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +22,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-    private final AuthServerTokenService tokenServices;
+    private final ServerTokenService tokenServices;
 
     private final AuthenticationManager authenticationManager;
 
@@ -32,8 +31,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private final RedisClientDetailsServiceImpl clientDetailsService;
 
     private final AuthenticationExceptionHandler authenticationExceptionHandler;
-
-    private final OauthTokenExceptionTranslator oauthTokenExceptionTranslator;
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
@@ -45,7 +42,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         endpoints.authenticationManager(authenticationManager)
                 .userDetailsService(userDetailService)
                 .tokenServices(tokenServices)
-                .exceptionTranslator(oauthTokenExceptionTranslator)
                 .pathMapping("/oauth/error", "/oauthRedirectPage/error")
                 .pathMapping("/oauth/confirm_access", "/oauthRedirectPage/confirm_access");
     }

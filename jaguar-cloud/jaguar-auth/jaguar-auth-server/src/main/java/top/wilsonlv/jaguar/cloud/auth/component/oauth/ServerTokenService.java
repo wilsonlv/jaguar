@@ -32,7 +32,7 @@ import java.util.UUID;
 @Primary
 @Component
 @RequiredArgsConstructor
-public class AuthServerTokenService implements AuthorizationServerTokenServices {
+public class ServerTokenService implements AuthorizationServerTokenServices {
 
 //    private final RemoteLoginHandler remoteLoginHandler;
 

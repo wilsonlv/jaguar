@@ -1,4 +1,4 @@
-package top.wilsonlv.jaguar.cloud.auth.component;
+package top.wilsonlv.jaguar.cloud.auth.component.oauth;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +37,7 @@ import java.util.Map;
 @ControllerAdvice
 @RequiredArgsConstructor
 @ConditionalOnProperty(prefix = "jaguar.auth", name = "loginLogEnable", havingValue = "true")
-public class AuthResponseBodyAdviceImpl implements ResponseBodyAdvice<Object> {
+public class ResponseBodyAdviceImpl implements ResponseBodyAdvice<Object> {
 
     private final TokenStore tokenStore;
 

@@ -10,8 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import top.wilsonlv.jaguar.cloud.auth.component.CaptchaFilter;
-import top.wilsonlv.jaguar.cloud.auth.component.LoginFailureHandler;
-import top.wilsonlv.jaguar.cloud.auth.component.LoginSuccessHandler;
+import top.wilsonlv.jaguar.cloud.auth.component.security.LoginFailureHandler;
+import top.wilsonlv.jaguar.cloud.auth.component.security.LoginSuccessHandler;
 import top.wilsonlv.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
 import top.wilsonlv.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler;
 
@@ -53,6 +53,7 @@ public class AuthWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login", "/captcha/**", "/error").permitAll()
                 .antMatchers("/oauth/token", "/oauth/check_token").permitAll()
                 .antMatchers("/swagger-resources", "/swagger-resources/**", "/v2/**").permitAll()
+                .antMatchers("/error").permitAll()
                 .anyRequest().authenticated()
 
                 .and().exceptionHandling()

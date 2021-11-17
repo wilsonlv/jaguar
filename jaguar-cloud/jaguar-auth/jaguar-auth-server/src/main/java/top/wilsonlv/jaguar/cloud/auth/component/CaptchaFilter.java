@@ -5,15 +5,15 @@ import com.anji.captcha.model.vo.CaptchaVO;
 import com.anji.captcha.service.CaptchaService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import top.wilsonlv.jaguar.commons.oauth2.component.RedisClientDetailsServiceImpl;
-import top.wilsonlv.jaguar.commons.web.JsonResult;
-import top.wilsonlv.jaguar.commons.web.ResultCode;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import top.wilsonlv.jaguar.commons.oauth2.component.RedisClientDetailsServiceImpl;
+import top.wilsonlv.jaguar.commons.web.JsonResult;
+import top.wilsonlv.jaguar.commons.web.ResultCode;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -37,24 +37,28 @@ public class CaptchaFilter extends OncePerRequestFilter {
 
     private final static String OAUTH_TOKEN_PATH = "/oauth/token";
 
+    private final static String SECURITY_LOGIN_PATH = "/login";
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
             throws ServletException, IOException {
 
-        if (!OAUTH_TOKEN_PATH.equals(request.getRequestURI())) {
+        if (OAUTH_TOKEN_PATH.equals(request.getRequestURI())) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            ClientDetails clientDetails = clientDetailsService.loadClientByClientId(authentication.getName());
+            Map<String, Object> additionalInformation = clientDetails.getAdditionalInformation();
+            Boolean isCaptcha = (Boolean) additionalInformation.get("captcha");
+            if (isCaptcha != null && isCaptcha) {
+                checkCaptcha(request, response, filterChain);
+            }
+        } else if (SECURITY_LOGIN_PATH.equals(request.getRequestURI())) {
+            checkCaptcha(request, response, filterChain);
+        } else {
             filterChain.doFilter(request, response);
-            return;
         }
+    }
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        ClientDetails clientDetails = clientDetailsService.loadClientByClientId(authentication.getName());
-        Map<String, Object> additionalInformation = clientDetails.getAdditionalInformation();
-        Boolean isCaptcha = (Boolean) additionalInformation.get("captcha");
-        if (isCaptcha != null && !isCaptcha) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
+    private void checkCaptcha(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         CaptchaVO captcha = new CaptchaVO();
         captcha.setCaptchaVerification(request.getParameter("captchaVerification"));
         ResponseModel responseModel = captchaService.verification(captcha);
@@ -63,7 +67,6 @@ public class CaptchaFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } else {
             response.setContentType(MediaType.APPLICATION_JSON.toString());
-
             try (PrintWriter writer = response.getWriter()) {
                 JsonResult<Void> result = new JsonResult<>(ResultCode.CONFLICT, null, responseModel.getRepMsg());
                 writer.write(result.toJsonStr());

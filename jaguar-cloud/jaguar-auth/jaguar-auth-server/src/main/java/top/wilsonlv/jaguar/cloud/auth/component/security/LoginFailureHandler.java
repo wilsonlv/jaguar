@@ -1,4 +1,4 @@
-package top.wilsonlv.jaguar.cloud.auth.component;
+package top.wilsonlv.jaguar.cloud.auth.component.security;
 
 import lombok.extern.slf4j.Slf4j;
 import top.wilsonlv.jaguar.commons.web.JsonResult;
