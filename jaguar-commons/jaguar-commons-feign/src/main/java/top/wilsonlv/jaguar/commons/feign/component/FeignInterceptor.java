@@ -2,12 +2,13 @@ package top.wilsonlv.jaguar.commons.feign.component;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
 import top.wilsonlv.jaguar.commons.oauth2.model.SecurityUser;
+import top.wilsonlv.jaguar.commons.oauth2.properties.SpringSecurityProperties;
 import top.wilsonlv.jaguar.commons.oauth2.util.SecurityUtil;
 
 import java.nio.charset.StandardCharsets;
@@ -17,15 +18,15 @@ import java.nio.charset.StandardCharsets;
  * @since 2021/6/29
  */
 @Component
+@RequiredArgsConstructor
 public class FeignInterceptor implements RequestInterceptor {
 
-    @Autowired
-    private OAuth2ResourceServerProperties oAuth2ResourceServerProperties;
+    private final SpringSecurityProperties springSecurityProperties;
 
     @Override
     public void apply(RequestTemplate requestTemplate) {
-        OAuth2ResourceServerProperties.Opaquetoken opaqueToken = oAuth2ResourceServerProperties.getOpaquetoken();
-        String basic = Base64Utils.encodeToString((opaqueToken.getClientId() + ":" + opaqueToken.getClientSecret()).getBytes(StandardCharsets.UTF_8));
+        String basic = Base64Utils.encodeToString((springSecurityProperties.getClientId() + ":" + springSecurityProperties.getClientSecret())
+                .getBytes(StandardCharsets.UTF_8));
         requestTemplate.header(HttpHeaders.AUTHORIZATION, "Basic " + basic);
 
         SecurityUser currentUser = SecurityUtil.getCurrentUser();
