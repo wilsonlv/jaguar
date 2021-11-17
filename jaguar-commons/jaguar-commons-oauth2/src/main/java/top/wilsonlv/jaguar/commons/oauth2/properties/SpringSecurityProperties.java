@@ -2,6 +2,7 @@ package top.wilsonlv.jaguar.commons.oauth2.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -9,11 +10,14 @@ import org.springframework.context.annotation.Configuration;
  * @since 2021/6/7
  */
 @Data
+@RefreshScope
 @Configuration
 @ConfigurationProperties("jaguar.security")
 public class SpringSecurityProperties {
 
-    private String actuatorAdminIp;
+    private String clientId;
+
+    private String clientSecret;
 
     private String[] ignoreUrls;
 

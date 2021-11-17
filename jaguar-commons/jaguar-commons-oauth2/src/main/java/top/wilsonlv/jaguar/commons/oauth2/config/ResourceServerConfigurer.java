@@ -60,6 +60,7 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
                 .antMatchers("/user/**").access("#oauth2.hasScope('" + UserType.USER.getUserTypeName() + "')")
 
                 .antMatchers("/swagger-resources", "/swagger-resources/**", "/v2/**").permitAll()
+                .antMatchers("/error").permitAll()
                 .antMatchers("/druid/**").hasIpAddress(MonitorUitl.getMonitorIp());
 
         if (springSecurityProperties.getIgnoreUrls() != null) {

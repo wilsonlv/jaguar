@@ -2,6 +2,7 @@ package top.wilsonlv.jaguar.commons.oauth2.component;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.client.resource.OAuth2AccessDeniedException;
 import top.wilsonlv.jaguar.commons.web.JsonResult;
@@ -56,6 +57,7 @@ public class AuthenticationExceptionHandler implements AuthenticationEntryPoint 
             log.error(e.getMessage(), e);
         }
 
+        response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         try (PrintWriter writer = response.getWriter()) {
             JsonResult<?> jsonResult = new JsonResult<>(resultCode, null, message);
