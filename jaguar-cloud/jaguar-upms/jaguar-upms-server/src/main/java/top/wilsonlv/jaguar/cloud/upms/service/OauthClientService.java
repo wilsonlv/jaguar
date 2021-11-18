@@ -103,6 +103,7 @@ public class OauthClientService extends BaseService<OauthClient, ClientMapper> i
 
         OauthClient oauthClient = OauthClientUtil.dto2Entity(createDTO);
         oauthClient.setClientSecret(encode);
+        oauthClient.setDeleted(false);
         this.insert(oauthClient);
 
         this.afterTransactionCommit(this::updateCache, oauthClient);

@@ -2,13 +2,13 @@ package top.wilsonlv.jaguar.commons.web.advice;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
-import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
@@ -18,9 +18,7 @@ import top.wilsonlv.jaguar.commons.web.JsonResult;
 import top.wilsonlv.jaguar.commons.web.ResultCode;
 import top.wilsonlv.jaguar.commons.web.properties.JaguarWebProperties;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -28,6 +26,7 @@ import java.util.Set;
  * @since 2021/8/10
  */
 @ControllerAdvice
+@ConditionalOnProperty(prefix = "jaguar.web", name = "jsonResultResponseEnable", havingValue = "true")
 public class JsonResultResponseAdvice implements ResponseBodyAdvice<Object>, InitializingBean {
 
     public static final ThreadLocal<JsonResult<?>> JSON_RESULT = new NamedThreadLocal<>("JsonResult");
