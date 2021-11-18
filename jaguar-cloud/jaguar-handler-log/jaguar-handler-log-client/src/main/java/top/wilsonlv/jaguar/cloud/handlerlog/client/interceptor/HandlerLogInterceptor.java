@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.http.HttpHeaders;
 import org.springframework.jms.JmsException;
@@ -18,12 +19,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import top.wilsonlv.jaguar.cloud.handlerlog.client.HandlerLogConstant;
-import top.wilsonlv.jaguar.commons.web.advice.JsonResultResponseAdvice;
 import top.wilsonlv.jaguar.cloud.handlerlog.client.dto.HandlerLogSaveDTO;
-import top.wilsonlv.jaguar.cloud.handlerlog.client.properties.JaguarHandlerLogProperties;
 import top.wilsonlv.jaguar.commons.oauth2.model.SecurityUser;
 import top.wilsonlv.jaguar.commons.oauth2.util.SecurityUtil;
 import top.wilsonlv.jaguar.commons.web.JsonResult;
+import top.wilsonlv.jaguar.commons.web.advice.JsonResultResponseAdvice;
 import top.wilsonlv.jaguar.commons.web.util.WebUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +40,7 @@ import java.time.LocalDateTime;
  */
 @Slf4j
 @Component
+@ConditionalOnProperty(prefix = "jaguar.handler-log", name = "enable", havingValue = "true")
 public class HandlerLogInterceptor implements HandlerInterceptor {
 
     /**
@@ -54,8 +55,7 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
 
     @Autowired
     private JmsTemplate jmsQueueTemplate;
-    @Autowired
-    private JaguarHandlerLogProperties jaguarHandlerLogProperties;
+
 
     static {
         try {
@@ -131,13 +131,11 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
                 handlerLog.setJsonResult(jsonResult.toJsonStr());
             }
 
-            if (jaguarHandlerLogProperties.getEnable()) {
-                try {
-                    log.debug("send handler log");
-                    jmsQueueTemplate.convertAndSend(HandlerLogConstant.DESTINATION_HANDLER_LOG, handlerLog);
-                } catch (JmsException e) {
-                    log.debug(e.getMessage());
-                }
+            try {
+                log.debug("send handler log");
+                jmsQueueTemplate.convertAndSend(HandlerLogConstant.DESTINATION_HANDLER_LOG, handlerLog);
+            } catch (JmsException e) {
+                log.debug(e.getMessage());
             }
         }
 

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import top.wilsonlv.jaguar.cloud.handlerlog.client.interceptor.HandlerLogInterceptor;
+import top.wilsonlv.jaguar.cloud.handlerlog.client.properties.HandlerLogProperties;
 
 
 /**
@@ -17,11 +18,16 @@ public class HandlerLogConfig implements WebMvcConfigurer {
     private static final String PATH_PATTERNS = "/**";
 
     @Autowired
+    private HandlerLogProperties handlerLogProperties;
+
+    @Autowired(required = false)
     private HandlerLogInterceptor handlerLogInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(handlerLogInterceptor).addPathPatterns(PATH_PATTERNS).order(10);
+        if (handlerLogProperties.getEnable()) {
+            registry.addInterceptor(handlerLogInterceptor).addPathPatterns(PATH_PATTERNS).order(10);
+        }
     }
 
 }

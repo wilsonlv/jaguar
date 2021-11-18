@@ -290,7 +290,6 @@ public class AuthorizationEndpoint extends AbstractEndpoint {
     // We need explicit approval from the user.
     private ModelAndView getUserApprovalPageResponse(Map<String, Object> model,
                                                      AuthorizationRequest authorizationRequest, Authentication principal) {
-        String userApprovalPage = "forward:/oauth/confirm_access";
         if (logger.isDebugEnabled()) {
             logger.debug("Loading user approval page: " + userApprovalPage);
         }

@@ -2,4 +2,4 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
     top.wilsonlv.jaguar.commons.web.advice.JsonResultResponseAdvice,\
     top.wilsonlv.jaguar.cloud.handlerlog.client.config.HandlerLogConfig,\
     top.wilsonlv.jaguar.cloud.handlerlog.client.interceptor.HandlerLogInterceptor,\
-    top.wilsonlv.jaguar.cloud.handlerlog.client.properties.JaguarHandlerLogProperties
+    top.wilsonlv.jaguar.cloud.handlerlog.client.properties.HandlerLogProperties

@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Data
 @Configuration
 @ConfigurationProperties(prefix = "jaguar.handler-log")
-public class JaguarHandlerLogProperties {
+public class HandlerLogProperties {
 
     private Boolean enable = true;
 
