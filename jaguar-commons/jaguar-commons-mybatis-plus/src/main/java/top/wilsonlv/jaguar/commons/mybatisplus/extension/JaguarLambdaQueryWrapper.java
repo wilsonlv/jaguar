@@ -45,6 +45,42 @@ public class JaguarLambdaQueryWrapper<T> extends LambdaQueryWrapper<T> {
         return super.in(condition, column, coll);
     }
 
+    @Override
+    public LambdaQueryWrapper<T> gt(boolean condition, SFunction<T, ?> column, Object val) {
+        if (val == null) {
+            return this;
+        }
+
+        return super.gt(condition, column, val);
+    }
+
+    @Override
+    public LambdaQueryWrapper<T> ge(boolean condition, SFunction<T, ?> column, Object val) {
+        if (val == null) {
+            return this;
+        }
+
+        return super.ge(condition, column, val);
+    }
+
+    @Override
+    public LambdaQueryWrapper<T> lt(boolean condition, SFunction<T, ?> column, Object val) {
+        if (val == null) {
+            return this;
+        }
+
+        return super.lt(condition, column, val);
+    }
+
+    @Override
+    public LambdaQueryWrapper<T> le(boolean condition, SFunction<T, ?> column, Object val) {
+        if (val == null) {
+            return this;
+        }
+
+        return super.le(condition, column, val);
+    }
+
     public static <T> JaguarLambdaQueryWrapper<T> newInstance() {
         return new JaguarLambdaQueryWrapper<T>();
     }

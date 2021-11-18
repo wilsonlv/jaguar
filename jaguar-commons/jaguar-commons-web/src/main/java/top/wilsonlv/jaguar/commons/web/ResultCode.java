@@ -30,6 +30,11 @@ public enum ResultCode {
     FORBIDDEN(403, "没有权限"),
 
     /**
+     * 没有找到接口
+     */
+    NOT_FOUND(404, "没有找到接口"),
+
+    /**
      * 请求方式错误
      */
     METHOD_NOT_ALLOWED(405, "请求方式错误"),

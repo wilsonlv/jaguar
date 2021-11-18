@@ -12,7 +12,7 @@
 
     <properties>
         <mybatis-plus.version>3.4.1</mybatis-plus.version>
-        <druid.version>1.2.4</druid.version>
+        <druid.version>1.2.8</druid.version>
     </properties>
 
     <dependencies>

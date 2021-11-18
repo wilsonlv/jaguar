@@ -9,12 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 import top.wilsonlv.jaguar.commons.web.JsonResult;
 import top.wilsonlv.jaguar.commons.web.ResultCode;
 
-import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Enumeration;
-import java.util.Map;
 
 /**
  * @author lvws
@@ -43,11 +40,10 @@ public class JaguarErrorController extends AbstractErrorController {
         if (statusCode == null) {
             return ResultCode.INTERNAL_SERVER_ERROR;
         }
-        try {
-            return ResultCode.fromValue(statusCode);
-        } catch (Exception ex) {
-            return ResultCode.INTERNAL_SERVER_ERROR;
-        }
+
+        ResultCode resultCode = ResultCode.fromValue(statusCode);
+        return resultCode == null ? ResultCode.INTERNAL_SERVER_ERROR : resultCode;
+
     }
 
     @RequestMapping
