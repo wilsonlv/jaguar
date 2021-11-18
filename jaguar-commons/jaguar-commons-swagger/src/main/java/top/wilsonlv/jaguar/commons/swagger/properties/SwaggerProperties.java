@@ -14,10 +14,17 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerProperties {
 
     private String title;
+
     private String description;
+
     private String version;
+
     private String contactName;
+
     private String contactUrl;
+
     private String contactEmail;
+
+    private Boolean globalAuthorization = true;
 
 }

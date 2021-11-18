@@ -34,9 +34,11 @@ public class SwaggerConfig {
     @Bean
     public Docket platformApi() {
         List<RequestParameter> parameters = new ArrayList<>();
-        RequestParameter build = new RequestParameterBuilder().name("Authorization")
-                .in(ParameterType.HEADER).required(false).build();
-        parameters.add(build);
+        if (swaggerProperties.getGlobalAuthorization()) {
+            RequestParameter build = new RequestParameterBuilder().name("Authorization")
+                    .in(ParameterType.HEADER).required(false).build();
+            parameters.add(build);
+        }
 
         return new Docket(DocumentationType.SWAGGER_2).groupName(applicationName).apiInfo(apiInfo())
                 .globalRequestParameters(parameters)
