@@ -36,7 +36,7 @@ import java.util.Map;
 @Slf4j
 @ControllerAdvice
 @RequiredArgsConstructor
-@ConditionalOnProperty(prefix = "jaguar.auth", name = "loginLogEnable", havingValue = "true")
+@ConditionalOnProperty(prefix = "jaguar.auth", name = "login-log-enable", havingValue = "true", matchIfMissing = true)
 public class ResponseBodyAdviceImpl implements ResponseBodyAdvice<Object> {
 
     private final TokenStore tokenStore;

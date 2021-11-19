@@ -26,7 +26,7 @@ import java.util.Set;
  * @since 2021/8/10
  */
 @ControllerAdvice
-@ConditionalOnProperty(prefix = "jaguar.web", name = "jsonResultResponseEnable", havingValue = "true")
+@ConditionalOnProperty(prefix = "jaguar.web", name = "json-result-response-enable", havingValue = "true", matchIfMissing = true)
 public class JsonResultResponseAdvice implements ResponseBodyAdvice<Object>, InitializingBean {
 
     public static final ThreadLocal<JsonResult<?>> JSON_RESULT = new NamedThreadLocal<>("JsonResult");

@@ -1,5 +1,6 @@
 package top.wilsonlv.jaguar.commons.oauth2.config;
 
+import de.codecentric.boot.admin.client.config.ClientProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -39,6 +40,7 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
 
     private final AuthenticationExceptionHandler authenticationExceptionHandler;
 
+    private final ClientProperties clientProperties;
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
@@ -61,7 +63,7 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
 
                 .antMatchers("/swagger-resources", "/swagger-resources/**", "/v2/**").permitAll()
                 .antMatchers("/error").permitAll()
-                .antMatchers("/druid/**").hasIpAddress(MonitorUitl.getMonitorIp());
+                .antMatchers("/druid/**").hasIpAddress(MonitorUitl.getMonitorIp(clientProperties.getAdminUrl()));
 
         if (springSecurityProperties.getIgnoreUrls() != null) {
             for (String ignoreUrl : springSecurityProperties.getIgnoreUrls()) {

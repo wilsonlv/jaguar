@@ -40,7 +40,7 @@ import java.time.LocalDateTime;
  */
 @Slf4j
 @Component
-@ConditionalOnProperty(prefix = "jaguar.handler-log", name = "enable", havingValue = "true")
+@ConditionalOnProperty(prefix = "jaguar.handler-log", name = "enable", havingValue = "true", matchIfMissing = true)
 public class HandlerLogInterceptor implements HandlerInterceptor {
 
     /**
