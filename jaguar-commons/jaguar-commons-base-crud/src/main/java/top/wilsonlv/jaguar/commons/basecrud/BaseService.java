@@ -147,20 +147,23 @@ public abstract class BaseService<E extends BaseModel, M extends BaseMapper<E>> 
     }
 
     @Transactional
-    public void delete(LambdaQueryWrapper<E> wrapper) {
-        LocalDateTime now = LocalDateTime.now();
+    public Collection<E> delete(LambdaQueryWrapper<E> wrapper) {
         List<E> entityIds = this.list(wrapper.select(E::getId));
-
-        if (entityIds.size() > 0) {
-            Set<Long> ids = new HashSet<>(entityIds.size());
-            for (E e : entityIds) {
-                e.setUpdateTime(now);
-                ids.add(e.getId());
-            }
-            this.batchUpdateById(entityIds);
-
-            this.mapper.deleteBatchIds(ids);
+        if (entityIds.size() == 0) {
+            return Collections.emptySet();
         }
+
+        LocalDateTime now = LocalDateTime.now();
+        Set<Long> ids = new HashSet<>(entityIds.size());
+        for (E e : entityIds) {
+            e.setUpdateTime(now);
+            ids.add(e.getId());
+        }
+        this.batchUpdateById(entityIds);
+
+        this.mapper.deleteBatchIds(ids);
+
+        return entityIds;
     }
 
     public E getById(Long id) {

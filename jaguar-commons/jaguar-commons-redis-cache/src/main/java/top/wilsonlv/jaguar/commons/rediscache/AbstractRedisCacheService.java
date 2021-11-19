@@ -1,6 +1,8 @@
 package top.wilsonlv.jaguar.commons.rediscache;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.CollectionUtils;
 import top.wilsonlv.jaguar.commons.basecrud.BaseMapper;
 import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;
@@ -9,12 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -22,12 +26,14 @@ import java.util.concurrent.TimeUnit;
  * @since 2020/9/16
  */
 @Slf4j
-public abstract class AbstractRedisCacheService<T extends BaseModel, M extends BaseMapper<T>> extends BaseService<T, M> {
+public abstract class AbstractRedisCacheService<E extends BaseModel, M extends BaseMapper<E>> extends BaseService<E, M> {
 
     @Autowired
+    @SuppressWarnings("SpringJavaAutowiredMembersInspection")
     protected RedisTemplate<String, Serializable> redisTemplate;
 
     @Autowired
+    @SuppressWarnings("SpringJavaAutowiredMembersInspection")
     private RedisCacheProperties redisCacheProperties;
 
     /**
@@ -46,13 +52,25 @@ public abstract class AbstractRedisCacheService<T extends BaseModel, M extends B
         return model.getTypeName() + ":" + id;
     }
 
+    protected void batchDeleteCache(Collection<E> entities) {
+        if (CollectionUtils.isEmpty(entities)) {
+            return;
+        }
 
-    public T getCache(Long id) {
+        Set<String> keys = new HashSet<>(entities.size());
+        for (E e : entities) {
+            keys.add(getCacheKey(e.getId()));
+        }
+        redisTemplate.delete(keys);
+    }
+
+
+    public E getCache(Long id) {
         String cacheKey = this.getCacheKey(id);
         BoundValueOperations<String, Serializable> operations = redisTemplate.boundValueOps(cacheKey);
 
         @SuppressWarnings("unchecked")
-        T cacheEntity = (T) operations.get();
+        E cacheEntity = (E) operations.get();
         if (cacheEntity == null) {
             cacheEntity = super.getById(id);
             operations.set(cacheEntity, getTimeout(), TimeUnit.DAYS);
@@ -61,12 +79,12 @@ public abstract class AbstractRedisCacheService<T extends BaseModel, M extends B
     }
 
     @Override
-    public T getById(Long id) {
+    public E getById(Long id) {
         String cacheKey = this.getCacheKey(id);
         BoundValueOperations<String, Serializable> operations = redisTemplate.boundValueOps(cacheKey);
 
         @SuppressWarnings("unchecked")
-        T cacheEntity = (T) operations.get();
+        E cacheEntity = (E) operations.get();
         if (cacheEntity == null) {
             cacheEntity = super.getById(id);
 
@@ -80,42 +98,38 @@ public abstract class AbstractRedisCacheService<T extends BaseModel, M extends B
 
     @Override
     @Transactional
-    public void updateById(T entity) {
+    public void updateById(E entity) {
         String cacheKey = this.getCacheKey(entity.getId());
         redisTemplate.delete(cacheKey);
 
         super.updateById(entity);
 
-        if (TransactionSynchronizationManager.isSynchronizationActive()) {
-            TransactionSynchronizationManager.registerSynchronization(
-                    new TransactionSynchronization() {
-                        @Override
-                        public void afterCommit() {
-                            redisTemplate.delete(cacheKey);
-                        }
-                    }
-            );
-        }
+        afterTransactionCommit((key) -> redisTemplate.delete(key), cacheKey);
     }
 
     @Override
     @Transactional
-    public void delete(T entity) {
-        String cacheKey = this.getCacheKey(entity.getId());
+    public void batchUpdateById(Collection<E> entityList, int batchSize) {
+        super.batchUpdateById(entityList, batchSize);
+        afterTransactionCommit(this::batchDeleteCache, entityList);
+    }
+
+    @Override
+    public void delete(Long id) {
+        String cacheKey = this.getCacheKey(id);
         redisTemplate.delete(cacheKey);
 
-        super.delete(entity);
+        super.delete(id);
 
-        if (TransactionSynchronizationManager.isSynchronizationActive()) {
-            TransactionSynchronizationManager.registerSynchronization(
-                    new TransactionSynchronization() {
-                        @Override
-                        public void afterCommit() {
-                            redisTemplate.delete(cacheKey);
-                        }
-                    }
-            );
-        }
+        afterTransactionCommit((key) -> redisTemplate.delete(key), cacheKey);
     }
+
+    @Override
+    public Collection<E> delete(LambdaQueryWrapper<E> wrapper) {
+        Collection<E> entities = super.delete(wrapper);
+        afterTransactionCommit(this::batchDeleteCache, entities);
+        return entities;
+    }
+
 
 }
