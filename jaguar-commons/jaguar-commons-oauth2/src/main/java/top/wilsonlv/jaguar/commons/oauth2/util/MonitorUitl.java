@@ -1,6 +1,5 @@
 package top.wilsonlv.jaguar.commons.oauth2.util;
 
-import org.apache.commons.lang3.ArrayUtils;
 import top.wilsonlv.jaguar.commons.web.util.WebUtil;
 
 import java.net.*;

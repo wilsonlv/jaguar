@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    top.wilsonlv.jaguar.commons.mybatisplus.extension.DruidStatAllowEnhance,\
     top.wilsonlv.jaguar.commons.mybatisplus.config.MybatisPlusConfig
