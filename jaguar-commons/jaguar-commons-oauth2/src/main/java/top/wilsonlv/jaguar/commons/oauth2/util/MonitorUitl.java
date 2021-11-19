@@ -13,20 +13,27 @@ public class MonitorUitl {
 
     private static final String LOCAL_127 = "127.0.0.1";
 
-    public static String getMonitorIp(String[] monitorUrls) throws UnknownHostException, SocketException {
-        String monitorHost;
-        if (ArrayUtils.isEmpty(monitorUrls)) {
-            monitorHost = "jaguar-monitor";
-        } else {
-            monitorHost = URI.create(monitorUrls[0]).getHost();
-        }
-
+    public static String getMonitorIp(String monitorUrl) throws UnknownHostException, SocketException {
+        String monitorHost = URI.create(monitorUrl).getHost();
         InetAddress inetAddress = Inet4Address.getByName(monitorHost);
         if (LOCAL_127.equals(inetAddress.getHostAddress())) {
             return WebUtil.getInet4Address().getHostAddress();
         } else {
             return inetAddress.getHostAddress();
         }
+    }
+
+    public static String getAccessString(String[] monitorUrls) throws UnknownHostException, SocketException {
+        StringBuilder access = new StringBuilder();
+        for (int i = 0; i < monitorUrls.length; i++) {
+            String url = monitorUrls[i];
+            access.append("hasIpAddress('").append(getMonitorIp(url)).append("')");
+
+            if (i + 1 < monitorUrls.length) {
+                access.append(" or ");
+            }
+        }
+        return access.toString();
     }
 
 }

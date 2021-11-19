@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import top.wilsonlv.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler;
 import top.wilsonlv.jaguar.commons.oauth2.util.MonitorUitl;
 
@@ -24,11 +25,16 @@ public class ActuatorSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.antMatcher("/actuator").antMatcher("/actuator/**")
-                .authorizeRequests()
-                .anyRequest()
-                .hasIpAddress(MonitorUitl.getMonitorIp(clientProperties.getAdminUrl()))
-                .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler)
+        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry =
+                http.antMatcher("/actuator").antMatcher("/actuator/**")
+                .authorizeRequests();
+
+        if (clientProperties.getAdminUrl().length > 0) {
+            String access = MonitorUitl.getAccessString(clientProperties.getAdminUrl());
+            registry.anyRequest().access(access);
+        }
+
+        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler)
                 .and().cors()
                 .and().csrf().disable()
                 .headers().frameOptions().disable();

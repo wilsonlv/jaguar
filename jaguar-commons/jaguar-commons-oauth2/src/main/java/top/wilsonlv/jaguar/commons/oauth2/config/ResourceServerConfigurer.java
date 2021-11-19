@@ -1,6 +1,5 @@
 package top.wilsonlv.jaguar.commons.oauth2.config;
 
-import de.codecentric.boot.admin.client.config.ClientProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -17,7 +16,6 @@ import top.wilsonlv.jaguar.commons.enums.UserType;
 import top.wilsonlv.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
 import top.wilsonlv.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler;
 import top.wilsonlv.jaguar.commons.oauth2.properties.SpringSecurityProperties;
-import top.wilsonlv.jaguar.commons.oauth2.util.MonitorUitl;
 
 /**
  * @author lvws
@@ -40,8 +38,6 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
 
     private final AuthenticationExceptionHandler authenticationExceptionHandler;
 
-    private final ClientProperties clientProperties;
-
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
         resources.resourceId(applicationName)
@@ -62,8 +58,7 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
                 .antMatchers("/user/**").access("#oauth2.hasScope('" + UserType.USER.getUserTypeName() + "')")
 
                 .antMatchers("/swagger-resources", "/swagger-resources/**", "/v2/**").permitAll()
-                .antMatchers("/error").permitAll()
-                .antMatchers("/druid/**").hasIpAddress(MonitorUitl.getMonitorIp(clientProperties.getAdminUrl()));
+                .antMatchers("/druid/**", "/error").permitAll();
 
         if (springSecurityProperties.getIgnoreUrls() != null) {
             for (String ignoreUrl : springSecurityProperties.getIgnoreUrls()) {
