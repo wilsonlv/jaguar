@@ -54,7 +54,8 @@ public class MenuService extends AbstractRedisCacheService<Menu, MenuMapper> {
     @Transactional
     public List<MenuVO> tree(long parentId) {
         List<Menu> menus = this.list(Wrappers.lambdaQuery(Menu.class)
-                .eq(Menu::getParentId, parentId));
+                .eq(Menu::getParentId, parentId)
+                .orderByAsc(Menu::getMenuOrder));
 
         List<MenuVO> menuVos = new ArrayList<>(menus.size());
         for (Menu menu : menus) {
