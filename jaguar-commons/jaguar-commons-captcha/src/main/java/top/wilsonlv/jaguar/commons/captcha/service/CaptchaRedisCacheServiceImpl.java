@@ -3,7 +3,6 @@ package top.wilsonlv.jaguar.commons.captcha.service;
 import com.anji.captcha.properties.AjCaptchaProperties;
 import com.anji.captcha.service.CaptchaCacheService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -15,10 +14,10 @@ import java.util.concurrent.TimeUnit;
  * @since 2021/7/2
  */
 @Component
+@RequiredArgsConstructor
 public class CaptchaRedisCacheServiceImpl implements CaptchaCacheService {
 
-    @Autowired
-    private RedisTemplate<String, Serializable> redisTemplate;
+    private final RedisTemplate<String, Serializable> redisTemplate;
 
     @Override
     public void set(String key, String value, long expiresInSeconds) {

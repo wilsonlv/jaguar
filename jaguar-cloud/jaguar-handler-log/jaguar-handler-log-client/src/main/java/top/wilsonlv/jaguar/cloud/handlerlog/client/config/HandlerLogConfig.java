@@ -7,6 +7,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import top.wilsonlv.jaguar.cloud.handlerlog.client.interceptor.HandlerLogInterceptor;
 import top.wilsonlv.jaguar.cloud.handlerlog.client.properties.HandlerLogProperties;
 
+import javax.annotation.Resource;
+
 
 /**
  * @author lvws
@@ -17,7 +19,7 @@ public class HandlerLogConfig implements WebMvcConfigurer {
 
     private static final String PATH_PATTERNS = "/**";
 
-    @Autowired
+    @Resource
     private HandlerLogProperties handlerLogProperties;
 
     @Autowired(required = false)

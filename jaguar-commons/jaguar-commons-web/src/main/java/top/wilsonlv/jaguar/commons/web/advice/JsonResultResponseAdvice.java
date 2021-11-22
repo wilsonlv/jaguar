@@ -1,7 +1,7 @@
 package top.wilsonlv.jaguar.commons.web.advice;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.NamedThreadLocal;
@@ -26,6 +26,7 @@ import java.util.Set;
  * @since 2021/8/10
  */
 @ControllerAdvice
+@RequiredArgsConstructor
 @ConditionalOnProperty(prefix = "jaguar.web", name = "json-result-response-enable", havingValue = "true", matchIfMissing = true)
 public class JsonResultResponseAdvice implements ResponseBodyAdvice<Object>, InitializingBean {
 
@@ -33,9 +34,7 @@ public class JsonResultResponseAdvice implements ResponseBodyAdvice<Object>, Ini
 
     private final Set<String> ignoreUrls = new HashSet<>();
 
-    @Autowired
-    private JaguarWebProperties jaguarWebProperties;
-
+    private final JaguarWebProperties jaguarWebProperties;
 
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {

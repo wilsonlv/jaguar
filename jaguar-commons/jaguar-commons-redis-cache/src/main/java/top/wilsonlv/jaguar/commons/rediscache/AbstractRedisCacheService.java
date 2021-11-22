@@ -2,17 +2,17 @@ package top.wilsonlv.jaguar.commons.rediscache;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.BoundValueOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.util.CollectionUtils;
 import top.wilsonlv.jaguar.commons.basecrud.BaseMapper;
 import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;
 import top.wilsonlv.jaguar.commons.rediscache.properties.RedisCacheProperties;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.BoundValueOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import javax.annotation.Resource;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -28,12 +28,10 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public abstract class AbstractRedisCacheService<E extends BaseModel, M extends BaseMapper<E>> extends BaseService<E, M> {
 
-    @Autowired
-    @SuppressWarnings("SpringJavaAutowiredMembersInspection")
+    @Resource
     protected RedisTemplate<String, Serializable> redisTemplate;
 
-    @Autowired
-    @SuppressWarnings("SpringJavaAutowiredMembersInspection")
+    @Resource
     private RedisCacheProperties redisCacheProperties;
 
     /**

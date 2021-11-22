@@ -5,10 +5,10 @@ import cz.mallat.uasparser.OnlineUpdater;
 import cz.mallat.uasparser.UASparser;
 import cz.mallat.uasparser.UserAgentInfo;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.http.HttpHeaders;
@@ -40,6 +40,7 @@ import java.time.LocalDateTime;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 @ConditionalOnProperty(prefix = "jaguar.handler-log", name = "enable", havingValue = "true", matchIfMissing = true)
 public class HandlerLogInterceptor implements HandlerInterceptor {
 
@@ -50,11 +51,9 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
 
     private static final String ACTUATOR = "/actuator";
     private static final String ERROR = "/error";
-
     private static final UASparser UAS_PARSER;
 
-    @Autowired
-    private JmsTemplate jmsQueueTemplate;
+    private final JmsTemplate jmsQueueTemplate;
 
 
     static {
