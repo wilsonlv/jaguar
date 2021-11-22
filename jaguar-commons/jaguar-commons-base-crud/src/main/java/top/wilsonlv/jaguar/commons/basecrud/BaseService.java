@@ -38,7 +38,7 @@ public abstract class BaseService<E extends BaseModel, M extends BaseMapper<E>> 
     protected M mapper;
 
     @Resource
-    protected BatchOperation batchOperation;
+    protected BatchOperation<E, M> batchOperation;
 
     protected final Log log = LogFactory.getLog(this.getClass());
 
@@ -94,6 +94,12 @@ public abstract class BaseService<E extends BaseModel, M extends BaseMapper<E>> 
         this.batchUpdateById(entityList, DEFAULT_BATCH_SIZE);
     }
 
+    /**
+     * 实体中最好只set需要更新的字段
+     *
+     * @param entityList 实体集合
+     * @param batchSize  批处理数量
+     */
     @Transactional
     public void batchUpdateById(Collection<E> entityList, int batchSize) {
         batchOperation.batchUpdateById(this.entityClass, this.mapperClass, log, entityList, batchSize);

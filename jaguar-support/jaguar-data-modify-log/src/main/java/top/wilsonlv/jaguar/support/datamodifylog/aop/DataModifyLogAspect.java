@@ -47,7 +47,18 @@ public class DataModifyLogAspect {
     public Object updateByIdAround(ProceedingJoinPoint joinPoint) throws Throwable {
         Object[] args = joinPoint.getArgs();
         if (args[0] instanceof DataModifyLoggable) {
-            this.log((DataModifyLoggable) args[0]);
+            DataModifyLoggable dataModifyLoggable = (DataModifyLoggable) args[0];
+
+            String entityName = StrUtil.lowerFirst(dataModifyLoggable.getClass().getSimpleName());
+            BaseService<?, ?> service = (BaseService<?, ?>) applicationContext.getBean(entityName + "Service");
+            BaseModel org = service.getById(dataModifyLoggable.getId());
+
+            try {
+                dataModifyLogService.log((DataModifyLoggable) org, dataModifyLoggable);
+            } catch (IllegalAccessException e) {
+                log.error(e.getMessage(), e);
+                throw new CheckedException(e.getMessage());
+            }
         }
         return joinPoint.proceed(args);
     }
@@ -58,7 +69,7 @@ public class DataModifyLogAspect {
         Collection<?> entityList = (Collection<?>) args[3];
         for (Object next : entityList) {
             if (next instanceof DataModifyLoggable) {
-                this.log((DataModifyLoggable) next);
+                dataModifyLogService.log(null, (DataModifyLoggable) next);
             } else {
                 break;
             }
@@ -66,16 +77,4 @@ public class DataModifyLogAspect {
         return joinPoint.proceed(args);
     }
 
-    private void log(DataModifyLoggable dataModifyLoggable) {
-        String entityName = StrUtil.lowerFirst(dataModifyLoggable.getClass().getSimpleName());
-        BaseService<?, ?> service = (BaseService<?, ?>) applicationContext.getBean(entityName + "Service");
-        BaseModel org = service.getById(dataModifyLoggable.getId());
-
-        try {
-            dataModifyLogService.log((DataModifyLoggable) org, dataModifyLoggable);
-        } catch (IllegalAccessException e) {
-            log.error(e.getMessage(), e);
-            throw new CheckedException(e.getMessage());
-        }
-    }
 }
