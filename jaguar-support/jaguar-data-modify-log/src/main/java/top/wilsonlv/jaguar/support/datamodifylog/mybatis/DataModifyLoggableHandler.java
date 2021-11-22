@@ -1,4 +1,4 @@
-package top.wilsonlv.jaguar.support.fieldeditlog.mybatis;
+package top.wilsonlv.jaguar.support.datamodifylog.mybatis;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
-import static top.wilsonlv.jaguar.support.fieldeditlog.FieldEditLogConstant.*;
+import static top.wilsonlv.jaguar.support.datamodifylog.DataModifyLogConstant.*;
 
 /**
  * @author lvws
@@ -17,7 +17,7 @@ import static top.wilsonlv.jaguar.support.fieldeditlog.FieldEditLogConstant.*;
  */
 @Primary
 @Component
-public class FieldEditLoggableModelMetaObjectHandler implements MetaObjectHandler {
+public class DataModifyLoggableHandler implements MetaObjectHandler {
 
     @Override
     public void insertFill(MetaObject metaObject) {

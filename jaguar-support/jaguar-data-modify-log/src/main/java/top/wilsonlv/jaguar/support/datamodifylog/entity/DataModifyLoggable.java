@@ -1,4 +1,4 @@
-package top.wilsonlv.jaguar.support.fieldeditlog.entity;
+package top.wilsonlv.jaguar.support.datamodifylog.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -12,7 +12,7 @@ import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class FieldEditLoggable extends BaseModel {
+public class DataModifyLoggable extends BaseModel {
 
     @TableField(value = "create_user_id", fill = FieldFill.INSERT)
     private Long createUserId;

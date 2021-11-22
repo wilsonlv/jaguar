@@ -1,10 +1,10 @@
-package top.wilsonlv.jaguar.support.fieldeditlog;
+package top.wilsonlv.jaguar.support.datamodifylog;
 
 /**
  * @author lvws
  * @since 2021/6/24
  */
-public interface FieldEditLogConstant {
+public interface DataModifyLogConstant {
 
     String ID = "id";
 

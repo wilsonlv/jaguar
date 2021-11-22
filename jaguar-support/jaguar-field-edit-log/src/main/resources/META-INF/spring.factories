@@ -1,4 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    top.wilsonlv.jaguar.support.fieldeditlog.mybatis.FieldEditLoggableModelMetaObjectHandler,\
-    top.wilsonlv.jaguar.support.fieldeditlog.mapper.FieldEditLogMapper,\
-    top.wilsonlv.jaguar.support.fieldeditlog.service.FieldEditLogService

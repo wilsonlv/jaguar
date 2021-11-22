@@ -3,8 +3,8 @@ package top.wilsonlv.jaguar.support.rediscachelog.service;
 import lombok.extern.slf4j.Slf4j;
 import top.wilsonlv.jaguar.commons.basecrud.BaseMapper;
 import top.wilsonlv.jaguar.commons.rediscache.properties.RedisCacheProperties;
-import top.wilsonlv.jaguar.support.fieldeditlog.entity.FieldEditLoggable;
-import top.wilsonlv.jaguar.support.fieldeditlog.service.AbstractFieldEditLoggableService;
+import top.wilsonlv.jaguar.support.datamodifylog.entity.DataModifyLoggable;
+import top.wilsonlv.jaguar.support.datamodifylog.service.AbstractDataModifyLoggableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  * @since 2020/9/16
  */
 @Slf4j
-public abstract class AbstractRedisCacheFieldEditLoggableService<T extends FieldEditLoggable, M extends BaseMapper<T>> extends AbstractFieldEditLoggableService<T, M> {
+public abstract class AbstractRedisCacheDataModifyLoggableService<T extends DataModifyLoggable, M extends BaseMapper<T>> extends AbstractDataModifyLoggableService<T, M> {
 
     @Autowired
     protected RedisTemplate<String, Serializable> redisTemplate;

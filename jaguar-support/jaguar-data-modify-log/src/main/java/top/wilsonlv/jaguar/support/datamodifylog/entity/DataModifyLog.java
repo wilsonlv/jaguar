@@ -1,4 +1,4 @@
-package top.wilsonlv.jaguar.support.fieldeditlog.entity;
+package top.wilsonlv.jaguar.support.datamodifylog.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -11,15 +11,15 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 字段编辑日志表
+ * 数据修改日志表
  * </p>
  *
  * @author lvws
  * @since 2019-04-10
  */
 @Data
-@TableName("jaguar_support_field_edit_log")
-public class FieldEditLog implements Serializable {
+@TableName("jaguar_support_data_modify_log")
+public class DataModifyLog implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -92,6 +92,5 @@ public class FieldEditLog implements Serializable {
      */
     @TableField(value = "modify_user_name")
     private String modifyUserName;
-
 
 }
