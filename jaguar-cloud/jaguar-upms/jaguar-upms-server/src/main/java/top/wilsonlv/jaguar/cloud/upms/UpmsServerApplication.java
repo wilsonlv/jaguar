@@ -4,11 +4,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import top.wilsonlv.jaguar.commons.feign.annotation.EnableJaguarFeignClients;
+import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarMapperScan;
 
 /**
  * @author lvws
  * @since 2021/4/6
  */
+@JaguarMapperScan
 @EnableJaguarFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication

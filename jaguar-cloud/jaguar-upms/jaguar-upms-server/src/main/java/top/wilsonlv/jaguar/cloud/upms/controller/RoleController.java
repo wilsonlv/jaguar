@@ -78,7 +78,7 @@ public class RoleController extends BaseController<Role, RoleMapper, RoleService
     @ApiOperation(value = "删除角色")
     @PreAuthorize("hasAuthority('角色管理')")
     @DeleteMapping(value = "/{id}")
-    public JsonResult<?> del(@PathVariable Long id) {
+    public JsonResult<Void> del(@PathVariable Long id) {
         service.checkAndDelete(id);
         return success();
     }

@@ -66,7 +66,7 @@ public class MenuController extends BaseController<Menu, MenuMapper, MenuService
     @ApiOperation(value = "删除菜单")
     @PreAuthorize("hasAuthority('菜单管理')")
     @DeleteMapping(value = "/{id}")
-    public JsonResult<?> del(@PathVariable Long id) {
+    public JsonResult<Void> del(@PathVariable Long id) {
         service.checkAndDelete(id);
         return success();
     }

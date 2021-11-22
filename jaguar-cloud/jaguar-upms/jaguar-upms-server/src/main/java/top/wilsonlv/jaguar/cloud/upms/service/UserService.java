@@ -4,9 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.klock.annotation.Klock;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +22,7 @@ import top.wilsonlv.jaguar.commons.basecrud.util.LongUtil;
 import top.wilsonlv.jaguar.commons.data.encryption.util.EncryptionUtil;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
+import javax.annotation.Resource;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -41,19 +40,16 @@ import java.util.stream.Collectors;
 @Service
 public class UserService extends BaseService<User, UserMapper> {
 
-    @Lazy
-    @Autowired
+    @Resource
     private UserRoleService userRoleService;
 
-    @Lazy
-    @Autowired
+    @Resource
     private RoleMenuService roleMenuService;
 
-    @Lazy
-    @Autowired
+    @Resource
     private DeptService deptService;
 
-    @Autowired
+    @Resource
     private PasswordEncoder passwordEncoder;
 
 
@@ -155,6 +151,10 @@ public class UserService extends BaseService<User, UserMapper> {
         if (StringUtils.isNotBlank(userModifyDTO.getUserAccount())) {
             User byAccount = this.getByAccount(userModifyDTO.getUserAccount());
             Assert.duplicate(byAccount, userModifyDTO, "用户账号");
+        }
+
+        if ("".equals(userModifyDTO.getUserPassword())) {
+            userModifyDTO.setUserPassword(null);
         }
 
         LocalDateTime userPasswordLastModifyTime = null;

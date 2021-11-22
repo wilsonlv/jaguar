@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
+import top.wilsonlv.jaguar.support.datamodifylog.entity.DataModifyLoggable;
 
 import java.time.LocalDateTime;
 
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 @Data
 @TableName("jaguar_cloud_upms_user")
 @EqualsAndHashCode(callSuper = true)
-public class User extends BaseModel {
+public class User extends DataModifyLoggable {
 
     private static final long serialVersionUID = 1L;
 
