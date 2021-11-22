@@ -2,10 +2,12 @@ package top.wilsonlv.jaguar.support.datamodifylog.service;
 
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.core.config.GlobalConfig;
-import lombok.extern.slf4j.Slf4j;
+import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
+import com.baomidou.mybatisplus.core.enums.SqlMethod;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.ibatis.logging.Log;
+import org.apache.ibatis.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.wilsonlv.jaguar.commons.oauth2.model.SecurityUser;
@@ -15,6 +17,7 @@ import top.wilsonlv.jaguar.support.datamodifylog.entity.DataModifyLog;
 import top.wilsonlv.jaguar.support.datamodifylog.entity.DataModifyLoggable;
 import top.wilsonlv.jaguar.support.datamodifylog.mapper.DataModifyLogMapper;
 
+import javax.annotation.Resource;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,9 +31,10 @@ import java.util.List;
  * @author lvws
  * @since 2019-04-10
  */
-@Slf4j
 @Service
 public class DataModifyLogService<T extends DataModifyLoggable> {
+
+    protected Log log = LogFactory.getLog(this.getClass());
 
     private static final List<String> FILTER_FIELDS = new ArrayList<String>() {{
         add(DataModifyLogConstant.ID);
@@ -43,14 +47,25 @@ public class DataModifyLogService<T extends DataModifyLoggable> {
         add(DataModifyLogConstant.SERIAL_VERSION_UID);
     }};
 
-    @Autowired
+    @Resource
     private DataModifyLogMapper dataModifyLogMapper;
-    @Autowired
-    private GlobalConfig globalConfig;
+    @Resource
+    private MybatisPlusProperties mybatisPlusProperties;
+
+    public FieldStrategy getUpdateStrategy() {
+        FieldStrategy updateStrategy = mybatisPlusProperties.getGlobalConfig().getDbConfig().getUpdateStrategy();
+        if (updateStrategy == FieldStrategy.DEFAULT) {
+            return FieldStrategy.NOT_NULL;
+        } else {
+            return updateStrategy;
+        }
+    }
 
     @Transactional
-    public void logEdit(T persistence, T update) throws IllegalAccessException {
+    public void log(T persistence, T update) throws IllegalAccessException {
         Field[] fields = update.getClass().getDeclaredFields();
+
+        List<DataModifyLog> dataModifyLogList = new ArrayList<>();
         for (Field field : fields) {
             if (FILTER_FIELDS.contains(field.getName())) {
                 continue;
@@ -60,19 +75,17 @@ public class DataModifyLogService<T extends DataModifyLoggable> {
             Object newValue = field.get(update);
 
             TableField annotation = field.getAnnotation(TableField.class);
-            FieldStrategy strategy;
+            FieldStrategy strategy = null;
             if (annotation != null) {
                 //过滤临时字段
                 if (!annotation.exist()) {
                     continue;
                 }
                 strategy = annotation.updateStrategy();
-            } else {
-                strategy = globalConfig.getDbConfig().getUpdateStrategy();
             }
 
-            if (strategy == FieldStrategy.DEFAULT) {
-                strategy = globalConfig.getDbConfig().getUpdateStrategy();
+            if (strategy == null || strategy == FieldStrategy.DEFAULT) {
+                strategy = getUpdateStrategy();
             }
 
             if (strategy == FieldStrategy.NOT_EMPTY) {
@@ -127,7 +140,13 @@ public class DataModifyLogService<T extends DataModifyLoggable> {
                 dataModifyLog.setModifyUserId(currentUser.getId());
                 dataModifyLog.setModifyUserName(currentUser.getUsername());
             }
-            dataModifyLogMapper.insert(dataModifyLog);
+            dataModifyLogList.add(dataModifyLog);
+        }
+
+        if (dataModifyLogList.size() > 0) {
+            String sqlStatement = SqlHelper.getSqlStatement(DataModifyLogMapper.class, SqlMethod.INSERT_ONE);
+            SqlHelper.executeBatch(update.getClass(), log, dataModifyLogList, 100,
+                    (sqlSession, entity) -> sqlSession.insert(sqlStatement, entity));
         }
     }
 

@@ -13,8 +13,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>jaguar-field-edit-log</module>
-        <module>jaguar-cache-field-edit</module>
+        <module>jaguar-data-modify-log</module>
     </modules>
 
 </project>
