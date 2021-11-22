@@ -15,7 +15,7 @@ import top.wilsonlv.jaguar.cloud.upms.mapper.MenuMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.MenuVO;
 import top.wilsonlv.jaguar.commons.basecrud.Assert;
 import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
-import top.wilsonlv.jaguar.commons.basecrud.BaseService;
+import top.wilsonlv.jaguar.commons.rediscache.AbstractRedisCacheService;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
 import javax.annotation.Resource;
@@ -31,7 +31,7 @@ import java.util.List;
  * @since 2021-08-17
  */
 @Service
-public class MenuService extends BaseService<Menu, MenuMapper> {
+public class MenuService extends AbstractRedisCacheService<Menu, MenuMapper> {
 
     @Lazy
     @Resource

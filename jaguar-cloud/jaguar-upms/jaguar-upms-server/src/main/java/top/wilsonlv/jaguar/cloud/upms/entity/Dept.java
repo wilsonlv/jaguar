@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
+import top.wilsonlv.jaguar.support.datamodifylog.entity.DataModifyLoggable;
 
 /**
  * <p>
@@ -20,7 +21,7 @@ import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
 @ApiModel
 @EqualsAndHashCode(callSuper = true)
 @TableName("jaguar_cloud_upms_dept")
-public class Dept extends BaseModel {
+public class Dept extends DataModifyLoggable {
 
     private static final long serialVersionUID = 1L;
 

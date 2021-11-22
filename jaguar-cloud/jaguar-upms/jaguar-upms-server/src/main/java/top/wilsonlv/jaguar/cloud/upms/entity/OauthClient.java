@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
 import top.wilsonlv.jaguar.commons.enums.ClientType;
 import top.wilsonlv.jaguar.commons.enums.UserType;
+import top.wilsonlv.jaguar.support.datamodifylog.entity.DataModifyLoggable;
 
 /**
  * @author lvws
@@ -15,7 +15,7 @@ import top.wilsonlv.jaguar.commons.enums.UserType;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("jaguar_cloud_upms_oauth_client")
-public class OauthClient extends BaseModel {
+public class OauthClient extends DataModifyLoggable {
 
     /**
      * 客户端ID

@@ -1,11 +1,10 @@
 package top.wilsonlv.jaguar.cloud.upms.entity;
 
-import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
+import top.wilsonlv.jaguar.support.datamodifylog.entity.DataModifyLoggable;
 
 /**
  * <p>
@@ -18,7 +17,7 @@ import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
 @Data
 @TableName("jaguar_cloud_upms_menu")
 @EqualsAndHashCode(callSuper = true)
-public class Menu extends BaseModel {
+public class Menu extends DataModifyLoggable {
 
     private static final long serialVersionUID = 1L;
 

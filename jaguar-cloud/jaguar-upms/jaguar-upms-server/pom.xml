@@ -28,6 +28,10 @@
             <groupId>top.wilsonlv</groupId>
             <artifactId>jaguar-commons-encryption</artifactId>
         </dependency>
+        <dependency>
+            <groupId>top.wilsonlv</groupId>
+            <artifactId>jaguar-commons-redis-cache</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>top.wilsonlv</groupId>

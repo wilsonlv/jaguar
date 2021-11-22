@@ -11,7 +11,7 @@ import top.wilsonlv.jaguar.cloud.upms.entity.User;
 import top.wilsonlv.jaguar.cloud.upms.mapper.DeptMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.DeptVO;
 import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
-import top.wilsonlv.jaguar.commons.basecrud.BaseService;
+import top.wilsonlv.jaguar.commons.rediscache.AbstractRedisCacheService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +26,12 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
-public class DeptService extends BaseService<Dept, DeptMapper> {
+public class DeptService extends AbstractRedisCacheService<Dept, DeptMapper> {
 
     private final UserService userService;
 
     public DeptVO getDetail(Long id) {
-        Dept dept = this.getById(id);
+        Dept dept = this.getCache(id);
         return dept.toVo(DeptVO.class);
     }
 

@@ -2,6 +2,7 @@ package top.wilsonlv.jaguar.cloud.upms.service;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import top.wilsonlv.jaguar.cloud.upms.entity.User;
 import top.wilsonlv.jaguar.cloud.upms.entity.UserRole;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.MenuVO;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
+import top.wilsonlv.jaguar.commons.basecrud.Assert;
 import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
 import top.wilsonlv.jaguar.commons.data.encryption.util.EncryptionUtil;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
@@ -100,6 +102,17 @@ public class PersonalService {
         user.setUserPhone(userPhone);
         user.setUserEmail(userEmail);
         user.setUserNickName(userNickName);
+
+        if (StringUtils.isNotBlank(userPhone)) {
+            User byPhone = userService.getByPhone(userPhone);
+            Assert.duplicate(byPhone, user, "用户手机号");
+        }
+
+        if (StringUtils.isNotBlank(userEmail)) {
+            User byEmail = userService.getByEmail(userEmail);
+            Assert.duplicate(byEmail, user, "用户邮箱");
+        }
+
         userService.updateById(user);
     }
 

@@ -20,6 +20,7 @@ import top.wilsonlv.jaguar.commons.basecrud.Assert;
 import top.wilsonlv.jaguar.commons.basecrud.BaseService;
 import top.wilsonlv.jaguar.commons.basecrud.util.LongUtil;
 import top.wilsonlv.jaguar.commons.data.encryption.util.EncryptionUtil;
+import top.wilsonlv.jaguar.commons.rediscache.AbstractRedisCacheService;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
 import javax.annotation.Resource;
@@ -38,7 +39,7 @@ import java.util.stream.Collectors;
  * @since 2019-11-08
  */
 @Service
-public class UserService extends BaseService<User, UserMapper> {
+public class UserService extends AbstractRedisCacheService<User, UserMapper> {
 
     @Resource
     private UserRoleService userRoleService;
@@ -78,7 +79,7 @@ public class UserService extends BaseService<User, UserMapper> {
      */
     @Transactional
     public UserVO getDetail(Long currentUser) {
-        User user = this.getById(currentUser);
+        User user = this.getCache(currentUser);
         UserVO userVO = user.toVo(UserVO.class);
 
         List<RoleVO> roles = userRoleService.listRoleByUserId(user.getId());
