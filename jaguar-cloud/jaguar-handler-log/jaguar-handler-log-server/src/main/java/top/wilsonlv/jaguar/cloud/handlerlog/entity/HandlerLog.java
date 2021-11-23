@@ -4,14 +4,14 @@ import cn.hutool.core.date.DatePattern;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
-import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author lvws
@@ -20,85 +20,100 @@ import java.time.LocalDateTime;
 @Data
 @TableName("handler_log")
 @Document(indexName = "handler_log")
-@EqualsAndHashCode(callSuper = false)
-public class HandlerLog extends BaseModel {
+public class HandlerLog implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    private Long id;
     /**
      * 会话ID
      */
+    @Field(type = FieldType.Keyword)
     @TableField("sessionId")
     private String sessionId;
     /**
      * accessToken
      */
+    @Field(type = FieldType.Keyword)
     @TableField("accessToken")
     private String accessToken;
     /**
      * 访问时间
      */
-    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = DatePattern.NORM_DATETIME_PATTERN)
+    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = DatePattern.NORM_DATETIME_MS_PATTERN)
     @TableField("accessTime")
-    private LocalDateTime accessTime;
+    private Date accessTime;
     /**
      * 客户端IP
      */
+    @Field(type = FieldType.Keyword)
     @TableField("clientHost")
     private String clientHost;
     /**
      * 请求地址
      */
+    @Field(type = FieldType.Keyword)
     @TableField("requestUri")
     private String requestUri;
     /**
      * 接口操作名称
      */
+    @Field(type = FieldType.Keyword)
     @TableField("apiOperation")
     private String apiOperation;
     /**
      * 请求参数
      */
+    @Field(type = FieldType.Text)
     @TableField("parameters")
     private String parameters;
     /**
      * 请求方式
      */
+    @Field(type = FieldType.Keyword)
     @TableField("method")
     private String method;
     /**
      * 客户端引擎
      */
+    @Field(type = FieldType.Text)
     @TableField("userAgent")
     private String userAgent;
     /**
      * http响应状态码
      */
+    @Field(type = FieldType.Keyword)
     @TableField("status")
     private Integer status;
     /**
      * 响应结果
      */
+    @Field(type = FieldType.Text)
     @TableField("jsonResult")
     private String jsonResult;
     /**
      * 错误信息
      */
+    @Field(type = FieldType.Text)
     @TableField("errorMsg")
     private String errorMsg;
     /**
      * 响应时长
      */
+    @Field(type = FieldType.Long)
     @TableField("duration")
     private Long duration;
     /**
      * 创建人
      */
+    @Field(type = FieldType.Keyword)
     @TableField("createBy")
     private String createBy;
     /**
      * 创建人ID
      */
+    @Field(type = FieldType.Keyword)
     @TableField(value = "createUserId")
     private Long createUserId;
 

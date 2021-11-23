@@ -53,10 +53,8 @@ public class JsonResultResponseAdvice implements ResponseBodyAdvice<Object>, Ini
             }
         }
 
-        ServletServerHttpResponse httpResponse = (ServletServerHttpResponse) response;
-        int status = httpResponse.getServletResponse().getStatus();
-
         if (!(body instanceof JsonResult)) {
+            int status = ((ServletServerHttpResponse) response).getServletResponse().getStatus();
             ResultCode resultCode = ResultCode.fromValue(status);
             if (resultCode == null) {
                 return body;
