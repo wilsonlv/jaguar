@@ -21,9 +21,9 @@ public class HandlerLogSaveDTO extends BaseDTO {
      */
     private String sessionId;
     /**
-     * accessToken
+     * authorization
      */
-    private String accessToken;
+    private String authorization;
     /**
      * 访问时间
      */

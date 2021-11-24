@@ -3,6 +3,7 @@ package top.wilsonlv.jaguar.cloud.handlerlog.entity;
 import cn.hutool.core.date.DatePattern;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
@@ -25,6 +26,7 @@ public class HandlerLog implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @Field(type = FieldType.Long)
     private Long id;
     /**
      * 会话ID
@@ -33,14 +35,15 @@ public class HandlerLog implements Serializable {
     @TableField("sessionId")
     private String sessionId;
     /**
-     * accessToken
+     * authorization
      */
     @Field(type = FieldType.Keyword)
-    @TableField("accessToken")
-    private String accessToken;
+    @TableField("authorization")
+    private String authorization;
     /**
      * 访问时间
      */
+    @JsonFormat(pattern = DatePattern.NORM_DATETIME_MS_PATTERN)
     @Field(type = FieldType.Date, format = DateFormat.custom, pattern = DatePattern.NORM_DATETIME_MS_PATTERN)
     @TableField("accessTime")
     private Date accessTime;
@@ -77,13 +80,13 @@ public class HandlerLog implements Serializable {
     /**
      * 客户端引擎
      */
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Keyword)
     @TableField("userAgent")
     private String userAgent;
     /**
      * http响应状态码
      */
-    @Field(type = FieldType.Keyword)
+    @Field(type = FieldType.Integer)
     @TableField("status")
     private Integer status;
     /**

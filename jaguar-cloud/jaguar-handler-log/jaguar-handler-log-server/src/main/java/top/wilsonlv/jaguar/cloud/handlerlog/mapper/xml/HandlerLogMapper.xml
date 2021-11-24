@@ -2,5 +2,65 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.wilsonlv.jaguar.cloud.handlerlog.mapper.HandlerLogMapper">
 
+    <select id="queryHandlerLog" resultType="top.wilsonlv.jaguar.cloud.handlerlog.entity.HandlerLog">
+        select id, sessionId, authorization, accessTime, clientHost, requestUri, apiOperation,
+        method, userAgent, status, duration, createBy, createUserId
+        from handler_log
+        <where>
+            <if test="p.maxId != null">
+                and id &lt; #{p.maxId}
+            </if>
+            <if test="p.sessionId != null and p.sessionId != ''">
+                and sessionId = #{p.sessionId}
+            </if>
+            <if test="p.authorization != null and p.authorization != ''">
+                and authorization = #{p.authorization}
+            </if>
+            <if test="p.clientHost != null and p.clientHost != ''">
+                and p.clientHost = #{p.clientHost}
+            </if>
+            <if test="p.apiOperation != null and p.apiOperation != ''">
+                and p.apiOperation = #{p.apiOperation}
+            </if>
+            <if test="p.method != null and p.method != ''">
+                and p.method = #{p.method}
+            </if>
+            <if test="p.status != null">
+                and p.status = #{p.status}
+            </if>
+
+            <if test="p.fuzzyRequestUri != null and p.fuzzyRequestUri != ''">
+                and requestUri like concat('%', #{p.fuzzyRequestUri}, '%')
+            </if>
+            <if test="p.fuzzyUserAgent != null and p.fuzzyUserAgent != ''">
+                and userAgent like concat('%', #{p.fuzzyUserAgent}, '%')
+            </if>
+
+            <if test="p.matchParameters != null and p.matchParameters != ''">
+                and match(parameters, #{p.matchParameters})
+            </if>
+            <if test="p.matchJsonResult != null and p.matchJsonResult != ''">
+                and match(jsonResult, #{p.matchJsonResult})
+            </if>
+            <if test="p.matchErrorMsg != null and p.matchErrorMsg != ''">
+                and match(errorMsg, #{p.matchErrorMsg})
+            </if>
+
+            <if test="p.accessStartTime != null">
+                and accessTime &gt;= #{p.accessStartTime}
+            </if>
+            <if test="p.accessEndTime != null">
+                and accessTime &lt;= #{p.accessEndTime}
+            </if>
+            <if test="p.minDuration != null">
+                and duration &gt;= #{p.minDuration}
+            </if>
+            <if test="p.maxDuration != null">
+                and duration &lt;= #{p.maxDuration}
+            </if>
+        </where>
+        order by accessTime desc, id desc
+        limit 50
+    </select>
 
 </mapper>

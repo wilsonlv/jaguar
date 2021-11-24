@@ -91,7 +91,7 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
 
             HandlerLogSaveDTO handlerLog = new HandlerLogSaveDTO();
             handlerLog.setSessionId(session != null ? session.getId() : null);
-            handlerLog.setAccessToken(authorization);
+            handlerLog.setAuthorization(authorization);
             handlerLog.setAccessTime(LocalDateTime.now());
             handlerLog.setClientHost(WebUtil.getHost(request));
             handlerLog.setRequestUri(request.getServletPath());
