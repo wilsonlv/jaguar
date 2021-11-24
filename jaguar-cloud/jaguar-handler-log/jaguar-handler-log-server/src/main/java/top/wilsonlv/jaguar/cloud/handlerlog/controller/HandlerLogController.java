@@ -2,11 +2,11 @@ package top.wilsonlv.jaguar.cloud.handlerlog.controller;
 
 import cn.hutool.core.date.DatePattern;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.IndexOperations;
@@ -14,14 +14,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.annotations.ApiIgnore;
 import top.wilsonlv.jaguar.cloud.handlerlog.entity.HandlerLog;
 import top.wilsonlv.jaguar.cloud.handlerlog.mapper.HandlerLogMapper;
 import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import top.wilsonlv.jaguar.commons.web.JsonResult;
 
-import javax.validation.constraints.Max;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -82,8 +83,12 @@ public class HandlerLogController implements InitializingBean {
         params.put("method", method);
         params.put("status", status);
 
-        params.put("fuzzyRequestUri", fuzzyRequestUri);
-        params.put("fuzzyUserAgent", fuzzyUserAgent);
+        if (StringUtils.isNotBlank(fuzzyRequestUri)) {
+            params.put("fuzzyRequestUri", "%" + fuzzyRequestUri + "%");
+        }
+        if (StringUtils.isNotBlank(fuzzyUserAgent)) {
+            params.put("fuzzyUserAgent", "%" + fuzzyUserAgent + "%");
+        }
 
         params.put("matchParameters", matchParameters);
         params.put("matchJsonResult", matchJsonResult);

@@ -30,10 +30,10 @@
             </if>
 
             <if test="p.fuzzyRequestUri != null and p.fuzzyRequestUri != ''">
-                and requestUri like concat('%', #{p.fuzzyRequestUri}, '%')
+                and requestUri like #{p.fuzzyRequestUri}
             </if>
             <if test="p.fuzzyUserAgent != null and p.fuzzyUserAgent != ''">
-                and userAgent like concat('%', #{p.fuzzyUserAgent}, '%')
+                and userAgent like #{p.fuzzyUserAgent}
             </if>
 
             <if test="p.matchParameters != null and p.matchParameters != ''">
