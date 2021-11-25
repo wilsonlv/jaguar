@@ -14,15 +14,11 @@
     <dependencies>
         <dependency>
             <groupId>top.wilsonlv</groupId>
-            <artifactId>jaguar-commons-oauth2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>top.wilsonlv</groupId>
-            <artifactId>jaguar-commons-monitor-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>top.wilsonlv</groupId>
             <artifactId>jaguar-commons-base-crud</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>top.wilsonlv</groupId>
+            <artifactId>jaguar-commons-oauth2</artifactId>
         </dependency>
         <dependency>
             <groupId>top.wilsonlv</groupId>
@@ -31,6 +27,10 @@
         <dependency>
             <groupId>top.wilsonlv</groupId>
             <artifactId>jaguar-commons-redis-cache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>top.wilsonlv</groupId>
+            <artifactId>jaguar-commons-monitor-client</artifactId>
         </dependency>
 
         <dependency>
