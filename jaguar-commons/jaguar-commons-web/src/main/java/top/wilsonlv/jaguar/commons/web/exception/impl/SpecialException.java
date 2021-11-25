@@ -15,6 +15,6 @@ public class SpecialException extends BaseException {
 
     @Override
     public ResultCode getResultCode() {
-        return ResultCode.BAD_REQUEST;
+        return ResultCode.SPECIAL_EXCEPTION;
     }
 }
