@@ -32,7 +32,7 @@ public class DataModifyLogAspect {
     @Resource
     private ApplicationContext applicationContext;
 
-    @Autowired
+    @Resource
     private DataModifyLogService<DataModifyLoggable> dataModifyLogService;
 
     @Pointcut("execution(* top.wilsonlv.jaguar..*.mapper.*.updateById(..))")

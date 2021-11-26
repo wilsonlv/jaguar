@@ -1,12 +1,12 @@
 package top.wilsonlv.jaguar.cloud.websocket.config;
 
 import top.wilsonlv.jaguar.cloud.websocket.handler.WebsocketOnlineHandler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
+import javax.annotation.Resource;
 import java.util.UUID;
 
 /**
@@ -19,7 +19,7 @@ public class WebsocketConfig implements WebSocketConfigurer {
 
     public static final String SERVER_INSTANCE_ID = UUID.randomUUID().toString();
 
-    @Autowired
+    @Resource
     private WebsocketOnlineHandler websocketOnlineHandler;
 
     @Override

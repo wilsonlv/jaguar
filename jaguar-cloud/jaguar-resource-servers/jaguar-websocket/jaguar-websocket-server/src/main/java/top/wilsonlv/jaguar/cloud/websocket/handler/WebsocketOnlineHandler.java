@@ -9,11 +9,11 @@ import top.wilsonlv.jaguar.cloud.websocket.sdk.dto.WebsocketMessage;
 import top.wilsonlv.jaguar.cloud.websocket.sdk.enums.WebsocketPage;
 import top.wilsonlv.jaguar.cloud.websocket.sdk.pusher.WebsocketPusher;
 import top.wilsonlv.jaguar.cloud.websocket.wrapper.WebsocketSessionWrapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,7 +28,7 @@ public class WebsocketOnlineHandler extends BaseOnlineHandler {
 
     private static final Map<String, WebsocketSessionWrapper> WS_SESSION_ID_MAPPING = new ConcurrentHashMap<>();
 
-    @Autowired
+    @Resource
     private WebsocketPusher websocketPusher;
 
     @Override

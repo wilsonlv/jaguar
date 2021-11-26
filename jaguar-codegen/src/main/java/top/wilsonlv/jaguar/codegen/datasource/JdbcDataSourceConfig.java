@@ -2,9 +2,10 @@ package top.wilsonlv.jaguar.codegen.datasource;
 
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.annotation.Resource;
 
 /**
  * @author lvws
@@ -13,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class JdbcDataSourceConfig {
 
-    @Autowired
+    @Resource
     private DynamicDataSourceProperties dataSourceProperties;
 
     @Bean
