@@ -8,13 +8,12 @@ import top.wilsonlv.jaguar.cloud.handlerlog.client.interceptor.HandlerLogInterce
 
 import javax.annotation.Resource;
 
-
 /**
  * @author lvws
  * @since 2019/1/24
  */
 @Component
-@ConditionalOnProperty(value = "jaguar.handler-log", name = "enable", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "jaguar.handler-log", name = "enable", havingValue = "true", matchIfMissing = true)
 public class HandlerLogConfig implements WebMvcConfigurer {
 
     private static final String PATH_PATTERNS = "/**";
