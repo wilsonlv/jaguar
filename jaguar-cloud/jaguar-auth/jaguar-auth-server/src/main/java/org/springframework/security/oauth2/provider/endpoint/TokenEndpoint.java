@@ -24,18 +24,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.common.exceptions.InvalidClientException;
-import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
-import org.springframework.security.oauth2.common.exceptions.InvalidRequestException;
-import org.springframework.security.oauth2.common.exceptions.UnsupportedGrantTypeException;
+import org.springframework.security.oauth2.common.exceptions.*;
 import org.springframework.security.oauth2.common.util.OAuth2Utils;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2RequestValidator;
 import org.springframework.security.oauth2.provider.TokenRequest;
 import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestValidator;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
@@ -67,6 +68,15 @@ public class TokenEndpoint extends AbstractEndpoint {
     private Set<HttpMethod> allowedRequestMethods = new HashSet<>(Collections.singletonList(HttpMethod.POST));
 
 
+    @RequestMapping(value = "/oauth/token", method = RequestMethod.GET)
+    public ResponseEntity<OAuth2AccessToken> getAccessToken(Principal principal, @RequestParam
+            Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
+        if (!allowedRequestMethods.contains(HttpMethod.GET)) {
+            throw new HttpRequestMethodNotSupportedException("GET");
+        }
+        return postAccessToken(principal, parameters);
+    }
+
     @PostMapping(value = "/oauth/token")
     public ResponseEntity<OAuth2AccessToken> postAccessToken(Principal principal,
                                                              @RequestParam Map<String, String> parameters) {
@@ -78,6 +88,7 @@ public class TokenEndpoint extends AbstractEndpoint {
 
         String clientId = getClientId(principal);
         ClientDetails authenticatedClient = getClientDetailsService().loadClientByClientId(clientId);
+        assert authenticatedClient != null;
 
         TokenRequest tokenRequest = getOAuth2RequestFactory().createTokenRequest(parameters, authenticatedClient);
 
@@ -90,9 +101,9 @@ public class TokenEndpoint extends AbstractEndpoint {
                 throw new InvalidClientException("Given client ID does not match authenticated client");
             }
         }
-        if (authenticatedClient != null) {
-            oAuth2RequestValidator.validateScope(tokenRequest, authenticatedClient);
-        }
+
+        oAuth2RequestValidator.validateScope(tokenRequest, authenticatedClient);
+
         if (!StringUtils.hasText(tokenRequest.getGrantType())) {
             throw new InvalidRequestException("Missing grant type");
         }
@@ -111,6 +122,19 @@ public class TokenEndpoint extends AbstractEndpoint {
         if (isRefreshTokenRequest(parameters)) {
             // A refresh token has its own default scopes, so we should ignore any added by the factory here.
             tokenRequest.setScope(OAuth2Utils.parseParameterList(parameters.get(OAuth2Utils.SCOPE)));
+        }
+
+        if (isPasswordRequest(parameters)) {
+            String redirectUri = parameters.get("redirectUri");
+            if (!StringUtils.hasText(redirectUri)) {
+                throw new InvalidRequestException("Missing redirectUri");
+            }
+
+            if (CollectionUtils.isEmpty(authenticatedClient.getRegisteredRedirectUri()) ||
+                    !authenticatedClient.getRegisteredRedirectUri().contains(redirectUri)) {
+                throw new RedirectMismatchException("Invalid redirect: " + redirectUri
+                        + " does not match one of the registered values.");
+            }
         }
 
         OAuth2AccessToken token = getTokenGranter().grant(tokenRequest.getGrantType(), tokenRequest);
@@ -155,4 +179,7 @@ public class TokenEndpoint extends AbstractEndpoint {
         return "authorization_code".equals(parameters.get("grant_type")) && parameters.get("code") != null;
     }
 
+    private boolean isPasswordRequest(Map<String, String> parameters) {
+        return "password".equals(parameters.get("grant_type")) && parameters.get("password") != null;
+    }
 }
