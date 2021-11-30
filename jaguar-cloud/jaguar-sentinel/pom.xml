@@ -140,7 +140,6 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
-
             <resource>
                 <directory>src/main/webapp/</directory>
                 <excludes>
@@ -148,5 +147,21 @@
                 </excludes>
             </resource>
         </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <mainClass>com.alibaba.csp.sentinel.dashboard.SentinelApplication</mainClass>
+                        </configuration>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 </project>
