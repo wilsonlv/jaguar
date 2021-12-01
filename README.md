@@ -59,8 +59,15 @@ jaguar由三大模块组成，分别是基础通用模块、代码生成模块�
   
 - jaguar-codegen：代码生成模块
 
-#### 使用配置
-- host
+#### 使用说明
+- 1、创建数据库
+    - jaguar-cloud/jaguar-register/db/schema.sql
+    - jaguar-cloud/jaguar-resource-servers/jaguar-upms/db/schema.sql
+    - jaguar-cloud/jaguar-resource-servers/jaguar-job/jaguar-job-admin/db/schema.sql
+    - jaguar-codegen/db/schema.sql
+    - jaguar-nginx-admin/db/schema.sql
+  
+- 2、 配置host
     - 127.0.0.1       jaguar-mysql
     - 127.0.0.1       jaguar-es
     - 127.0.0.1       jaguar-redis
@@ -69,3 +76,7 @@ jaguar由三大模块组成，分别是基础通用模块、代码生成模块�
     - 127.0.0.1       jaguar-sentinel
     - 127.0.0.1       jaguar-monitor
     - 127.0.0.1       jaguar-job-admin
+  
+- 3、启动服务
+    - jaguar-codegen和jaguar-nginx-admin是单体项目，不依赖任何服务
+    - jaguar-register是微服务的注册中心，启动微服务必须首先启动该服务
