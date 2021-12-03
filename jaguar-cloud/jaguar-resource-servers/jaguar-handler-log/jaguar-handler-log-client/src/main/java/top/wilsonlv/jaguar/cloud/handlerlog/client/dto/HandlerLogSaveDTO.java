@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 public class HandlerLogSaveDTO extends BaseDTO {
 
-    private static final long serialVersionUID = 1L;
-
     /**
      * 会话ID
      */

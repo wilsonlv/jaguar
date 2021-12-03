@@ -23,8 +23,6 @@ import java.util.Date;
 @Document(indexName = "handler_log")
 public class HandlerLog implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     @Id
     @Field(type = FieldType.Long)
     private Long id;

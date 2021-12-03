@@ -1,17 +1,17 @@
 package top.wilsonlv.jaguar.cloud.auth.config;
 
 import lombok.RequiredArgsConstructor;
-import top.wilsonlv.jaguar.cloud.auth.component.oauth.ServerTokenService;
-import top.wilsonlv.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
-import top.wilsonlv.jaguar.commons.oauth2.component.RedisClientDetailsServiceImpl;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import top.wilsonlv.jaguar.cloud.auth.component.oauth.ServerTokenService;
+import top.wilsonlv.jaguar.cloud.upms.sdk.component.JaguarUserDetailsServiceImpl;
+import top.wilsonlv.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
+import top.wilsonlv.jaguar.commons.oauth2.component.RedisClientDetailsServiceImpl;
 
 /**
  * @author lvws
@@ -26,7 +26,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     private final AuthenticationManager authenticationManager;
 
-    private final UserDetailsService userDetailService;
+    private final JaguarUserDetailsServiceImpl jaguarUserDetailsService;
 
     private final RedisClientDetailsServiceImpl clientDetailsService;
 
@@ -40,7 +40,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints.authenticationManager(authenticationManager)
-                .userDetailsService(userDetailService)
+                .userDetailsService(jaguarUserDetailsService)
                 .tokenServices(tokenServices)
                 .pathMapping("/oauth/error", "/oauthRedirectPage/error")
                 .pathMapping("/oauth/confirm_access", "/oauthRedirectPage/confirm_access");

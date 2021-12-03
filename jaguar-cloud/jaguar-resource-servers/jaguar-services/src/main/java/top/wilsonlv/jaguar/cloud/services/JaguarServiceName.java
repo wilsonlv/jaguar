@@ -10,4 +10,6 @@ public interface JaguarServiceName {
 
     String REMOTE_USER_SERVICE = "remoteUserService";
 
+    String REMOTE_RESOURCE_SERVER_SERVICE = "remoteResourceServerService";
+
 }
