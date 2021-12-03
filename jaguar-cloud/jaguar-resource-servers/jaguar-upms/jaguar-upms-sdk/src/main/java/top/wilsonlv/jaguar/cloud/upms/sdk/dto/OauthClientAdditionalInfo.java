@@ -2,8 +2,8 @@ package top.wilsonlv.jaguar.cloud.upms.sdk.dto;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
-import top.wilsonlv.jaguar.commons.enums.ClientType;
-import top.wilsonlv.jaguar.commons.enums.UserType;
+import top.wilsonlv.jaguar.cloud.upms.sdk.enums.ClientType;
+import top.wilsonlv.jaguar.cloud.upms.sdk.enums.UserType;
 
 import java.io.Serializable;
 import java.util.Map;

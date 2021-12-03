@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +17,17 @@ import top.wilsonlv.jaguar.cloud.upms.mapper.ClientMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.OauthClientVO;
 import top.wilsonlv.jaguar.cloud.upms.service.OauthClientService;
 import top.wilsonlv.jaguar.commons.basecrud.BaseController;
-import top.wilsonlv.jaguar.commons.enums.ClientType;
-import top.wilsonlv.jaguar.commons.enums.UserType;
+import top.wilsonlv.jaguar.cloud.upms.sdk.enums.ClientType;
+import top.wilsonlv.jaguar.cloud.upms.sdk.enums.UserType;
 import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
+import top.wilsonlv.jaguar.commons.oauth2.properties.JaguarSecurityProperties;
 import top.wilsonlv.jaguar.commons.web.JsonResult;
 
 import javax.validation.Valid;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author lvws
@@ -31,7 +37,10 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/admin/oauthClient")
 @Api(tags = "oauth2客户端管理")
+@RequiredArgsConstructor
 public class OauthClientController extends BaseController<OauthClient, ClientMapper, OauthClientService> {
+
+    private final JaguarSecurityProperties jaguarSecurityProperties;
 
     @ApiOperation(value = "分页查询oauth2客户端")
     @PreAuthorize("hasAuthority('oauth2客户端管理')")
@@ -86,4 +95,16 @@ public class OauthClientController extends BaseController<OauthClient, ClientMap
         return success();
     }
 
+    @ApiOperation(value = "查询oauth2 scope")
+    @PreAuthorize("hasAuthority('oauth2客户端管理')")
+    @GetMapping(value = "/scopes")
+    public JsonResult<Collection<String>> scopes() {
+        Collection<String> scopes;
+        if (jaguarSecurityProperties.getScopeUrls() == null) {
+            scopes = Collections.emptySet();
+        } else {
+            scopes = jaguarSecurityProperties.getScopeUrls().values();
+        }
+        return success(scopes);
+    }
 }

@@ -12,10 +12,11 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import top.wilsonlv.jaguar.commons.enums.UserType;
 import top.wilsonlv.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
 import top.wilsonlv.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler;
 import top.wilsonlv.jaguar.commons.oauth2.properties.JaguarSecurityProperties;
+
+import java.util.Map;
 
 /**
  * @author lvws
@@ -52,13 +53,14 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
                 .and()
                 //不需要认证就可以访问的
                 .authorizeRequests()
-
-                .antMatchers("/admin/**").access("#oauth2.hasScope('" + UserType.ADMIN.getUserTypeName() + "')")
-                .antMatchers("/tenant/**").access("#oauth2.hasScope('" + UserType.TENANT.getUserTypeName() + "')")
-                .antMatchers("/user/**").access("#oauth2.hasScope('" + UserType.USER.getUserTypeName() + "')")
-
                 .antMatchers("/swagger-resources", "/swagger-resources/**", "/v2/**").permitAll()
                 .antMatchers("/druid/**", "/error").permitAll();
+
+        if (jaguarSecurityProperties.getScopeUrls() != null){
+            for (Map.Entry<String, String> entry : jaguarSecurityProperties.getScopeUrls().entrySet()) {
+                registry.antMatchers(entry.getKey()).access("#oauth2.hasScope('" + entry.getValue() + "')");
+            }
+        }
 
         if (jaguarSecurityProperties.getIgnoreUrls() != null) {
             for (String ignoreUrl : jaguarSecurityProperties.getIgnoreUrls()) {

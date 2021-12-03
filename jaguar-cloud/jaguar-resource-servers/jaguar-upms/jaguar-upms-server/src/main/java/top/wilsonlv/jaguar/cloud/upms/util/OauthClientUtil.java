@@ -44,15 +44,6 @@ public class OauthClientUtil {
         if (StringUtils.isNotBlank(oauthClient.getRegisteredRedirectUri())) {
             oauthClientVO.setRegisteredRedirectUri(new HashSet<>(Arrays.asList(oauthClient.getRegisteredRedirectUri().split(","))));
         }
-        if (StringUtils.isNotBlank(oauthClient.getAuthorities())) {
-            String[] authorities = oauthClient.getAuthorities().split(",");
-
-            Set<GrantedAuthority> securityAuthorities = new HashSet<>(authorities.length);
-            for (String authority : authorities) {
-                securityAuthorities.add(new SecurityAuthority(authority));
-            }
-            oauthClientVO.setAuthorities(securityAuthorities);
-        }
 
         OauthClientAdditionalInfo oauthClientAdditionalInfo = new OauthClientAdditionalInfo();
         BeanUtils.copyProperties(oauthClient, oauthClientAdditionalInfo);
@@ -87,9 +78,7 @@ public class OauthClientUtil {
         if (!CollectionUtils.isEmpty(oauthClientDTO.getRegisteredRedirectUri())) {
             oauthClient.setRegisteredRedirectUri(StringUtils.join(oauthClientDTO.getRegisteredRedirectUri().toArray(), ","));
         }
-        if (!CollectionUtils.isEmpty(oauthClientDTO.getAuthorities())) {
-            oauthClient.setAuthorities(StringUtils.join(oauthClientDTO.getAuthorities().toArray(), ","));
-        }
+
         return oauthClient;
     }
 

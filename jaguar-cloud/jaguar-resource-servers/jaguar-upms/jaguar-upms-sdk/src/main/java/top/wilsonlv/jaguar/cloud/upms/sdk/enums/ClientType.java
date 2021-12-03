@@ -1,4 +1,4 @@
-package top.wilsonlv.jaguar.commons.enums;
+package top.wilsonlv.jaguar.cloud.upms.sdk.enums;
 
 /**
  * @author lvws
@@ -25,10 +25,6 @@ public enum ClientType {
     /**
      * 苹果
      */
-    IOS,
-    /**
-     * 微服务
-     */
-    SERVER
+    IOS
 
 }

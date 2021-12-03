@@ -5,9 +5,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.stereotype.Component;
+import top.wilsonlv.jaguar.cloud.upms.sdk.enums.UserType;
 import top.wilsonlv.jaguar.cloud.upms.sdk.feign.RemoteUserService;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
-import top.wilsonlv.jaguar.commons.enums.UserType;
 import top.wilsonlv.jaguar.commons.oauth2.component.RedisClientDetailsServiceImpl;
 import top.wilsonlv.jaguar.commons.oauth2.model.SecurityAuthority;
 import top.wilsonlv.jaguar.commons.oauth2.model.SecurityUser;
@@ -37,21 +37,7 @@ public class JaguarUserDetailsServiceImpl implements UserDetailsService {
         }
 
         ClientDetails clientDetails = clientDetailsService.loadClientByClientId(clientId);
-
-        UserType userType = null;
-        outer:
-        for (String scope : clientDetails.getScope()) {
-            for (UserType item : UserType.values()) {
-                if (item.getUserTypeName().equals(scope)) {
-                    userType = item;
-                    break outer;
-                }
-            }
-        }
-        if (userType == null) {
-            throw new UsernameNotFoundException(null);
-        }
-
+        UserType userType = UserType.valueOf((String) clientDetails.getAdditionalInformation().get("userType"));
         switch (userType) {
             case ADMIN: {
                 return getAdminUser(username);
@@ -81,7 +67,7 @@ public class JaguarUserDetailsServiceImpl implements UserDetailsService {
         securityUser.setAccountNonLocked(!user.getUserLocked());
         securityUser.setEnabled(user.getUserEnable());
 
-        boolean credentialsNoExpired =  user.getUserBuiltIn() ||
+        boolean credentialsNoExpired = user.getUserBuiltIn() ||
                 (user.getUserPasswordLastModifyTime() != null && user.getUserPasswordLastModifyTime().plusDays(90).isAfter(LocalDateTime.now()));
         securityUser.setCredentialsNonExpired(credentialsNoExpired);
 

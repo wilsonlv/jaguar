@@ -1,7 +1,7 @@
 package top.wilsonlv.jaguar.cloud.upms.controller.dto;
 
-import top.wilsonlv.jaguar.commons.enums.ClientType;
-import top.wilsonlv.jaguar.commons.enums.UserType;
+import top.wilsonlv.jaguar.cloud.upms.sdk.enums.ClientType;
+import top.wilsonlv.jaguar.cloud.upms.sdk.enums.UserType;
 
 import java.util.Set;
 
@@ -42,10 +42,6 @@ public interface OauthClientBaseDTO {
     Set<String> getRegisteredRedirectUri();
 
     void setRegisteredRedirectUri(Set<String> registeredRedirectUri);
-
-    Set<String> getAuthorities();
-
-    void setAuthorities(Set<String> authorities);
 
     Boolean getEnable();
 

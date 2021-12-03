@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import top.wilsonlv.jaguar.commons.enums.ClientType;
-import top.wilsonlv.jaguar.commons.enums.UserType;
+import top.wilsonlv.jaguar.cloud.upms.sdk.enums.ClientType;
+import top.wilsonlv.jaguar.cloud.upms.sdk.enums.UserType;
 import top.wilsonlv.jaguar.support.datamodifylog.entity.DataModifyLoggable;
 
 /**
@@ -52,11 +52,6 @@ public class OauthClient extends DataModifyLoggable {
      */
     @TableField("auto_approve_scopes")
     private String autoApproveScopes;
-    /**
-     * 权限
-     */
-    @TableField("authorities_")
-    private String authorities;
     /**
      * accessToken有效期
      */

@@ -55,11 +55,6 @@
             </dependency>
             <dependency>
                 <groupId>top.wilsonlv</groupId>
-                <artifactId>jaguar-commons-enums</artifactId>
-                <version>${jaguar.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>top.wilsonlv</groupId>
                 <artifactId>jaguar-commons-export-csv</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>

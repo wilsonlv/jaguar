@@ -4,11 +4,12 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import top.wilsonlv.jaguar.commons.enums.ClientType;
-import top.wilsonlv.jaguar.commons.enums.UserType;
+import top.wilsonlv.jaguar.cloud.upms.sdk.enums.ClientType;
+import top.wilsonlv.jaguar.cloud.upms.sdk.enums.UserType;
 import top.wilsonlv.jaguar.commons.web.base.BaseDTO;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
@@ -28,13 +29,16 @@ public class OauthClientCreateDTO extends BaseDTO implements OauthClientBaseDTO 
     @ApiModelProperty(value = "授权类型")
     private Set<String> authorizedGrantTypes;
 
-    @ApiModelProperty(value = "accessToken有效期")
+    @NotNull(message = "accessToken有效期为非空")
+    @ApiModelProperty(value = "accessToken有效期", required = true)
     private Integer accessTokenValiditySeconds;
 
-    @ApiModelProperty(value = "refreshToken有效期")
+    @NotNull(message = "refreshToken有效期为非空")
+    @ApiModelProperty(value = "refreshToken有效期", required = true)
     private Integer refreshTokenValiditySeconds;
 
-    @ApiModelProperty("授权范围")
+    @NotEmpty(message = "授权范围为非空")
+    @ApiModelProperty(value = "授权范围", required = true)
     private Set<String> scope;
 
     @ApiModelProperty("自动授权")
@@ -46,17 +50,16 @@ public class OauthClientCreateDTO extends BaseDTO implements OauthClientBaseDTO 
     @ApiModelProperty("重定向URI")
     private Set<String> registeredRedirectUri;
 
-    @ApiModelProperty("权限")
-    private Set<String> authorities;
-
     @NotNull(message = "客户端类型为非空")
     @ApiModelProperty(value = "客户端类型", required = true)
     private ClientType clientType;
 
-    @ApiModelProperty(value = "用户类型")
+    @NotNull(message = "用户类型为非空")
+    @ApiModelProperty(value = "用户类型", required = true)
     private UserType userType;
 
-    @ApiModelProperty(value = "是否需要验证码")
+    @NotNull(message = "是否需要验证码为非空")
+    @ApiModelProperty(value = "是否需要验证码", required = true)
     private Boolean captcha;
 
     @NotNull(message = "是否启用为非空")

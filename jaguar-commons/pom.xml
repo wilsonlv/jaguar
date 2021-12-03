@@ -20,7 +20,6 @@
         <module>jaguar-commons-captcha</module>
         <module>jaguar-commons-cloud-client</module>
         <module>jaguar-commons-encryption</module>
-        <module>jaguar-commons-enums</module>
         <module>jaguar-commons-export-csv</module>
         <module>jaguar-commons-feign</module>
         <module>jaguar-commons-monitor-client</module>

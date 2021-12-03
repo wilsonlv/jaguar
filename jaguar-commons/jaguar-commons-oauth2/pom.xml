@@ -24,10 +24,6 @@
             <groupId>top.wilsonlv</groupId>
             <artifactId>jaguar-commons-cloud-client</artifactId>
         </dependency>
-        <dependency>
-            <groupId>top.wilsonlv</groupId>
-            <artifactId>jaguar-commons-enums</artifactId>
-        </dependency>
 
         <!-- spring-security依赖 -->
         <dependency>

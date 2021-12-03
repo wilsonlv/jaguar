@@ -31,7 +31,6 @@ jaguar由三大模块组成，分别是基础通用模块、代码生成模块�
     - jaguar-commons-captcha：验证码组件
     - jaguar-commons-cloud-client：微服务组件
     - jaguar-commons-encryption：数据加密组价
-    - jaguar-commons-enums：基础枚举类
     - jaguar-commons-export-csv：csv导出
     - jaguar-commons-feign：微服务接口调用组件
     - jaguar-commons-monitor-client：监控客户端组件
