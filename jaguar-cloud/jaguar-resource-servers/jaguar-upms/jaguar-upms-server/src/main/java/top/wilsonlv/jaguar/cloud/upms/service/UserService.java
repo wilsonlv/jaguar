@@ -149,10 +149,8 @@ public class UserService extends AbstractRedisCacheService<User, UserMapper> {
     @Klock(name = LockNameConstant.USER_CREATE_MODIFY_LOCK)
     @Transactional
     public void modify(UserModifyDTO userModifyDTO) {
-        if (StringUtils.isNotBlank(userModifyDTO.getUserAccount())) {
-            User byAccount = this.getByAccount(userModifyDTO.getUserAccount());
-            Assert.duplicate(byAccount, userModifyDTO, "用户账号");
-        }
+        User byAccount = this.getByAccount(userModifyDTO.getUserAccount());
+        Assert.duplicate(byAccount, userModifyDTO, "用户账号");
 
         if ("".equals(userModifyDTO.getUserPassword())) {
             userModifyDTO.setUserPassword(null);

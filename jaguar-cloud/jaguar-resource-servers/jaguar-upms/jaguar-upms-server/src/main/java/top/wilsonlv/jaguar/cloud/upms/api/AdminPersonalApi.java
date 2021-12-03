@@ -9,8 +9,10 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.*;
+import top.wilsonlv.jaguar.cloud.upms.entity.ResourceServer;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.MenuVO;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.RandomPassword;
+import top.wilsonlv.jaguar.cloud.upms.sdk.vo.ResourceServerVO;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
 import top.wilsonlv.jaguar.cloud.upms.service.PersonalService;
 import top.wilsonlv.jaguar.cloud.upms.service.UserService;
@@ -61,8 +63,14 @@ public class AdminPersonalApi {
 
     @ApiOperation(value = "获取个人菜单")
     @GetMapping("/getUserMenus")
-    public JsonResult<List<MenuVO>> getUserMenus() {
-        return JsonResult.success(personalService.getUserMenus(SecurityUtil.getCurrentUserId()));
+    public JsonResult<List<MenuVO>> getUserMenus(@RequestParam @NotBlank String serverId) {
+        return JsonResult.success(personalService.getUserMenus(serverId, SecurityUtil.getCurrentUserId()));
+    }
+
+    @ApiOperation(value = "获取个人资源服务")
+    @GetMapping("/getUserResourceServers")
+    public JsonResult<List<ResourceServerVO>> getUserResourceServers() {
+        return JsonResult.success(personalService.getUserResourceServers(SecurityUtil.getCurrentUserId()));
     }
 
 }

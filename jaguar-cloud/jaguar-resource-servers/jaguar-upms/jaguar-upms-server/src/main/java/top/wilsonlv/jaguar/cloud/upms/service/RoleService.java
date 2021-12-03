@@ -99,10 +99,8 @@ public class RoleService extends AbstractRedisCacheService<Role, RoleMapper> {
     @Klock(name = LockNameConstant.ROLE_CREATE_MODIFY_LOCK)
     @Transactional
     public void modify(RoleModifyDTO roleModifyDTO) {
-        if (StringUtils.isNotBlank(roleModifyDTO.getRoleName())) {
-            Role byRoleName = this.getByRoleName(roleModifyDTO.getRoleName());
-            Assert.duplicate(byRoleName, roleModifyDTO, "角色名称");
-        }
+        Role byRoleName = this.getByRoleName(roleModifyDTO.getRoleName());
+        Assert.duplicate(byRoleName, roleModifyDTO, "角色名称");
 
         Role role = roleModifyDTO.toEntity(Role.class);
         this.updateById(role);

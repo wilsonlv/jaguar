@@ -19,8 +19,11 @@ import top.wilsonlv.jaguar.support.datamodifylog.entity.DataModifyLoggable;
 @EqualsAndHashCode(callSuper = true)
 public class Menu extends DataModifyLoggable {
 
-    private static final long serialVersionUID = 1L;
-
+    /**
+     * 资源服务ID
+     */
+    @TableField(value = "resource_server_id")
+    private Long resourceServerId;
     /**
      * 父ID
      */

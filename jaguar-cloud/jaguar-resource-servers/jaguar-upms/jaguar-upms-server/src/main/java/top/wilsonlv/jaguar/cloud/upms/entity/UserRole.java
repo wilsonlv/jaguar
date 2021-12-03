@@ -19,9 +19,7 @@ import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
 @EqualsAndHashCode(callSuper = true)
 public class UserRole extends BaseModel {
 
-    private static final long serialVersionUID = 1L;
-
-    /**
+    /**n
      * 用户ID
      */
     @TableField("user_id")

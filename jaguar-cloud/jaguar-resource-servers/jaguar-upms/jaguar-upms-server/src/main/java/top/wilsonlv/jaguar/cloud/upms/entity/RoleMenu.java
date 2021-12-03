@@ -19,8 +19,6 @@ import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
 @EqualsAndHashCode(callSuper = true)
 public class RoleMenu extends BaseModel {
 
-    private static final long serialVersionUID = 1L;
-
     /**
      * 角色ID
      */

@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import top.wilsonlv.jaguar.commons.web.base.BaseModifyDTO;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 
 /**
  * <p>
@@ -20,14 +23,12 @@ import top.wilsonlv.jaguar.commons.web.base.BaseModifyDTO;
 @EqualsAndHashCode(callSuper = true)
 public class DeptModifyDTO extends BaseModifyDTO {
 
-   private static final long serialVersionUID = 1L;
-  
+    @NotNull(message = "父ID为非空")
+    @ApiModelProperty(value = "父ID", required = true)
+    private Long parentId;
 
-	@ApiModelProperty("父ID")
-	private Long parentId;
-  
+    @NotBlank(message = "部门名称为非空")
+    @ApiModelProperty("部门名称")
+    private String deptName;
 
-	@ApiModelProperty("部门名称")
-	private String deptName;
-  
 }

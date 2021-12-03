@@ -47,7 +47,7 @@ public class OauthClientService extends AbstractRedisCacheService<OauthClient, C
             redisTemplate.delete(keys);
         }
 
-        List<OauthClient> oauthClients = this.list(Wrappers.lambdaQuery(OauthClient.class));
+        List<OauthClient> oauthClients = this.list(Wrappers.emptyWrapper());
         for (OauthClient oauthClient : oauthClients) {
             this.updateCache(oauthClient);
         }
@@ -55,12 +55,13 @@ public class OauthClientService extends AbstractRedisCacheService<OauthClient, C
 
     public void updateCache(OauthClient oauthClient) {
         String key = Oauth2Constant.CLIENT_CACHE_KEY_PREFIX + oauthClient.getClientId();
-        if (oauthClient.getEnable() && !oauthClient.getDeleted()) {
-            OauthClientVO oauthClientVO = OauthClientUtil.entity2VO(oauthClient);
-            redisTemplate.boundValueOps(key).set(oauthClientVO);
-        } else {
-            redisTemplate.delete(key);
-        }
+        OauthClientVO oauthClientVO = OauthClientUtil.entity2VO(oauthClient);
+        redisTemplate.boundValueOps(key).set(oauthClientVO);
+    }
+
+    public void deleteCache(String clientId) {
+        String key = Oauth2Constant.CLIENT_CACHE_KEY_PREFIX + clientId;
+        redisTemplate.delete(key);
     }
 
     public OauthClient getByClientId(String clientId) {
@@ -116,7 +117,11 @@ public class OauthClientService extends AbstractRedisCacheService<OauthClient, C
         oauthClient.setId(modifyDTO.getId());
         this.updateById(oauthClient);
 
-        this.afterTransactionCommit(this::updateCache, getById(modifyDTO.getId()));
+        if (modifyDTO.getEnable()) {
+            this.afterTransactionCommit(this::updateCache, getById(modifyDTO.getId()));
+        } else {
+            this.afterTransactionCommit(this::deleteCache, modifyDTO.getClientId());
+        }
     }
 
     @Transactional
@@ -138,9 +143,7 @@ public class OauthClientService extends AbstractRedisCacheService<OauthClient, C
     public void checkAndDelete(Long id) {
         OauthClient oauthClient = this.checkBuiltIn(id);
         this.delete(id);
-
-        oauthClient.setDeleted(true);
-        this.afterTransactionCommit(this::updateCache, oauthClient);
+        this.afterTransactionCommit(this::deleteCache, oauthClient.getClientId());
     }
 
     public OauthClient checkBuiltIn(Long id) {

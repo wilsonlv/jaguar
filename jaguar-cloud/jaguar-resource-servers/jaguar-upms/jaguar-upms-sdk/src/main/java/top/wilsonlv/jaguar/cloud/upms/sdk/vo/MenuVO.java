@@ -18,6 +18,15 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class MenuVO extends BaseVO {
 
+    @ApiModelProperty("资源服务ID")
+    private Long resourceServerId;
+
+    @ApiModelProperty("服务ID")
+    private String serverId;
+
+    @ApiModelProperty("服务名称")
+    private String serverName;
+
     @ApiModelProperty("父ID")
     private Long parentId;
 

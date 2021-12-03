@@ -106,6 +106,30 @@ VALUES (1462696137332469761, 1462695377932759042, '接口请求日志', 1, '接�
         1419901871475785729, '2021-11-22 16:15:09', 'admin', 1419901871475785729, '2021-11-22 16:15:09', 0);
 
 -- ----------------------------
+-- Table structure for jaguar_cloud_upms_resource_server
+-- ----------------------------
+DROP TABLE IF EXISTS `jaguar_cloud_upms_resource_server`;
+CREATE TABLE `jaguar_cloud_upms_resource_server`
+(
+    `id_`             bigint(20)   NOT NULL COMMENT 'ID',
+    `server_id`       varchar(50)  NOT NULL COMMENT '服务ID',
+    `server_name`     varchar(50)  NOT NULL COMMENT '服务名称',
+    `server_secret`   varchar(50)  NOT NULL COMMENT '服务密钥',
+    `remark_`         varchar(50)  NULL     DEFAULT NULL COMMENT '备注',
+    `create_by`       varchar(50)  NULL     DEFAULT NULL COMMENT '创建人',
+    `create_user_id`  bigint(20)   NULL     DEFAULT NULL COMMENT '创建人ID',
+    `create_time`     timestamp(0) NULL     DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+    `update_by`       varchar(50)  NULL     DEFAULT NULL COMMENT '更新人',
+    `update_user_id`  bigint(20)   NULL     DEFAULT NULL COMMENT '更新人ID',
+    `update_time`     timestamp(0) NULL     DEFAULT CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+    `deleted_`        tinyint(1)   NULL     DEFAULT 0 COMMENT '逻辑删除标记(0--正常 1--删除)',
+    PRIMARY KEY (`id_`) USING BTREE
+) ENGINE = InnoDB
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_bin COMMENT = '资源服务'
+  ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for jaguar_cloud_upms_oauth_client
 -- ----------------------------
 DROP TABLE IF EXISTS `jaguar_cloud_upms_oauth_client`;

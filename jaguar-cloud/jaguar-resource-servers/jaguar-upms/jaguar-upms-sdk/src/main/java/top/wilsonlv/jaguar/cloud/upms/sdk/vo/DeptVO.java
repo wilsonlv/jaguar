@@ -22,8 +22,6 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class DeptVO extends BaseVO {
 
-    private static final long serialVersionUID = 1L;
-
     @ApiModelProperty("父ID")
     private Long parentId;
 

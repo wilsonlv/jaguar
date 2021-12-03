@@ -23,8 +23,6 @@ import top.wilsonlv.jaguar.support.datamodifylog.entity.DataModifyLoggable;
 @TableName("jaguar_cloud_upms_dept")
 public class Dept extends DataModifyLoggable {
 
-    private static final long serialVersionUID = 1L;
-
     /**
      * 父ID
      */

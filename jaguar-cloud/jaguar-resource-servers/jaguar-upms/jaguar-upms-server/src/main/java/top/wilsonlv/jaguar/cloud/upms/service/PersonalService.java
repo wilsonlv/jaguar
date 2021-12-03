@@ -6,11 +6,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import top.wilsonlv.jaguar.cloud.upms.entity.Menu;
-import top.wilsonlv.jaguar.cloud.upms.entity.RoleMenu;
-import top.wilsonlv.jaguar.cloud.upms.entity.User;
-import top.wilsonlv.jaguar.cloud.upms.entity.UserRole;
+import top.wilsonlv.jaguar.cloud.upms.entity.*;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.MenuVO;
+import top.wilsonlv.jaguar.cloud.upms.sdk.vo.ResourceServerVO;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
 import top.wilsonlv.jaguar.commons.basecrud.Assert;
 import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
@@ -40,6 +38,8 @@ public class PersonalService {
 
     private final MenuService menuService;
 
+    private final ResourceServerService resourceServerService;
+
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -57,25 +57,25 @@ public class PersonalService {
     }
 
     @Transactional
-    public List<MenuVO> getUserMenus(Long currentUserId) {
+    public List<MenuVO> getUserMenus(String serverId, Long currentUserId) {
+        ResourceServer resourceServer = resourceServerService.getByServerId(serverId);
+
         List<UserRole> userRoles = userRoleService.list(Wrappers.lambdaQuery(UserRole.class)
                 .eq(UserRole::getUserId, currentUserId));
         Set<Long> roleIds = userRoles.stream().map(UserRole::getRoleId).collect(Collectors.toSet());
 
-        List<RoleMenu> roleMenus = roleMenuService.list(Wrappers.lambdaQuery(RoleMenu.class).in(RoleMenu::getRoleId, roleIds));
+        List<RoleMenu> roleMenus = roleMenuService.list(Wrappers.lambdaQuery(RoleMenu.class)
+                .in(RoleMenu::getRoleId, roleIds));
         Set<Long> menuIds = roleMenus.stream().map(RoleMenu::getMenuId).collect(Collectors.toSet());
 
         List<Menu> menus = menuService.list(Wrappers.lambdaQuery(Menu.class)
+                .eq(Menu::getResourceServerId, resourceServer.getId())
                 .in(BaseModel::getId, menuIds)
                 .orderByAsc(Menu::getMenuOrder));
-        return list2tree(menus);
+        return list2tree(0, menus);
     }
 
-    private List<MenuVO> list2tree(List<Menu> menus) {
-        return findMenuByParentId(0, menus);
-    }
-
-    private List<MenuVO> findMenuByParentId(long parentId, List<Menu> menus) {
+    private List<MenuVO> list2tree(long parentId, List<Menu> menus) {
         List<MenuVO> menuVOs = new ArrayList<>();
         Iterator<Menu> iterator = menus.iterator();
         while (iterator.hasNext()) {
@@ -88,11 +88,25 @@ public class PersonalService {
         }
 
         for (MenuVO menuVO : menuVOs) {
-            List<MenuVO> children = findMenuByParentId(menuVO.getId(), menus);
+            List<MenuVO> children = list2tree(menuVO.getId(), menus);
             menuVO.setChildren(children);
         }
 
         return menuVOs;
+    }
+
+    @Transactional
+    public List<ResourceServerVO> getUserResourceServers(Long currentUserId) {
+        List<ResourceServer> resourceServers = resourceServerService.list(Wrappers.lambdaQuery(ResourceServer.class)
+                .eq(ResourceServer::getServerMenu, true));
+
+        List<ResourceServerVO> resourceServerVOS = new ArrayList<>(resourceServers.size());
+        for (ResourceServer resourceServer : resourceServers) {
+            ResourceServerVO resourceServerVO = resourceServer.toVo(ResourceServerVO.class);
+            resourceServerVO.setServerSecret(null);
+            resourceServerVOS.add(resourceServerVO);
+        }
+        return resourceServerVOS;
     }
 
     @Transactional
@@ -134,4 +148,6 @@ public class PersonalService {
         user.setUserPasswordLastModifyTime(LocalDateTime.now());
         userService.updateById(user);
     }
+
+
 }

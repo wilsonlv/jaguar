@@ -10,6 +10,7 @@ import top.wilsonlv.jaguar.cloud.upms.constant.LockNameConstant;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.MenuCreateDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.MenuModifyDTO;
 import top.wilsonlv.jaguar.cloud.upms.entity.Menu;
+import top.wilsonlv.jaguar.cloud.upms.entity.ResourceServer;
 import top.wilsonlv.jaguar.cloud.upms.entity.RoleMenu;
 import top.wilsonlv.jaguar.cloud.upms.mapper.MenuMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.MenuVO;
@@ -37,6 +38,9 @@ public class MenuService extends AbstractRedisCacheService<Menu, MenuMapper> {
     @Resource
     private RoleMenuService roleMenuService;
 
+    @Resource
+    private ResourceServerService resourceServerService;
+
     /*----------  通用接口  ----------*/
 
     public Menu getByMenuName(String menuName) {
@@ -52,15 +56,38 @@ public class MenuService extends AbstractRedisCacheService<Menu, MenuMapper> {
     /*---------- 菜单管理 ----------*/
 
     @Transactional
-    public List<MenuVO> tree(long parentId) {
+    public List<MenuVO> treeAllResourceServerMenu() {
+        List<Menu> resourceServerIds = this.list(Wrappers.lambdaQuery(Menu.class)
+                .select(Menu::getResourceServerId)
+                .groupBy(Menu::getResourceServerId));
+        List<MenuVO> menuVOS = new ArrayList<>(resourceServerIds.size());
+
+        for (Menu resourceServerId : resourceServerIds) {
+            ResourceServer resourceServer = resourceServerService.getById(resourceServerId.getResourceServerId());
+
+            List<MenuVO> tree = this.tree(resourceServer.getId(), 0);
+
+            MenuVO resourceServerMenu = new MenuVO();
+            resourceServerMenu.setId(resourceServer.getId());
+            resourceServerMenu.setServerId(resourceServer.getServerId());
+            resourceServerMenu.setServerName(resourceServer.getServerName());
+            resourceServerMenu.setChildren(tree);
+            menuVOS.add(resourceServerMenu);
+        }
+        return menuVOS;
+    }
+
+    @Transactional
+    public List<MenuVO> tree(Long resourceServerId, long parentId) {
         List<Menu> menus = this.list(Wrappers.lambdaQuery(Menu.class)
+                .eq(Menu::getResourceServerId, resourceServerId)
                 .eq(Menu::getParentId, parentId)
                 .orderByAsc(Menu::getMenuOrder));
 
         List<MenuVO> menuVos = new ArrayList<>(menus.size());
         for (Menu menu : menus) {
             MenuVO menuVO = menu.toVo(MenuVO.class);
-            menuVO.setChildren(this.tree(menu.getId()));
+            menuVO.setChildren(this.tree(resourceServerId, menu.getId()));
             menuVos.add(menuVO);
         }
         return menuVos;
@@ -84,15 +111,11 @@ public class MenuService extends AbstractRedisCacheService<Menu, MenuMapper> {
     public void modify(MenuModifyDTO menuModifyDTO) {
         this.checkBuiltIn(menuModifyDTO.getId());
 
-        if (StringUtils.isNotBlank(menuModifyDTO.getMenuName())) {
-            Menu byMenuName = this.getByMenuName(menuModifyDTO.getMenuName());
-            Assert.duplicate(byMenuName, menuModifyDTO, "名称");
-        }
+        Menu byMenuName = this.getByMenuName(menuModifyDTO.getMenuName());
+        Assert.duplicate(byMenuName, menuModifyDTO, "名称");
 
-        if (StringUtils.isNotBlank(menuModifyDTO.getMenuPermission())) {
-            Menu byMenuPermission = this.getByMenuPermission(menuModifyDTO.getMenuPermission());
-            Assert.duplicate(byMenuPermission, menuModifyDTO, "权限");
-        }
+        Menu byMenuPermission = this.getByMenuPermission(menuModifyDTO.getMenuPermission());
+        Assert.duplicate(byMenuPermission, menuModifyDTO, "权限");
 
         Menu menu = menuModifyDTO.toEntity(Menu.class);
         this.updateById(menu);
@@ -120,5 +143,6 @@ public class MenuService extends AbstractRedisCacheService<Menu, MenuMapper> {
             throw new CheckedException("内置菜单不可修改或删除");
         }
     }
+
 
 }

@@ -9,6 +9,7 @@ import top.wilsonlv.jaguar.commons.web.base.BaseModifyDTO;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
@@ -20,7 +21,8 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class UserModifyDTO extends BaseModifyDTO {
 
-    @ApiModelProperty(value = "用户账号（唯一）")
+    @NotBlank(message = "用户账号为非空")
+    @ApiModelProperty(value = "用户账号（唯一）", required = true)
     private String userAccount;
 
     @ApiModelProperty(value = "用户手机号（唯一）")
@@ -35,10 +37,12 @@ public class UserModifyDTO extends BaseModifyDTO {
     @ApiModelProperty(value = "用户昵称")
     private String userNickName;
 
-    @ApiModelProperty(value = "用户部门ID")
+    @NotNull(message = "用户部门ID为非空")
+    @ApiModelProperty(value = "用户部门ID", required = true)
     private Long userDeptId;
 
-    @ApiModelProperty(value = "用户是否启用")
+    @NotNull(message = "用户是否启用为非空")
+    @ApiModelProperty(value = "用户是否启用", required = true)
     private Boolean userEnable;
 
     @NotEmpty(message = "用户角色ID集合为非空")

@@ -19,8 +19,6 @@ import top.wilsonlv.jaguar.support.datamodifylog.entity.DataModifyLoggable;
 @EqualsAndHashCode(callSuper = true)
 public class Role extends DataModifyLoggable {
 
-    private static final long serialVersionUID = 1L;
-
     /**
      * 角色名称
      */

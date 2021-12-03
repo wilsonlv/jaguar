@@ -4,16 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.provider.ClientDetails;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.stereotype.Component;
 import top.wilsonlv.jaguar.cloud.upms.sdk.feign.RemoteUserService;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
 import top.wilsonlv.jaguar.commons.enums.UserType;
+import top.wilsonlv.jaguar.commons.oauth2.component.RedisClientDetailsServiceImpl;
 import top.wilsonlv.jaguar.commons.oauth2.model.SecurityAuthority;
 import top.wilsonlv.jaguar.commons.oauth2.model.SecurityUser;
 import top.wilsonlv.jaguar.commons.oauth2.util.SecurityUtil;
 import top.wilsonlv.jaguar.commons.web.JsonResult;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 
 /**
@@ -26,7 +27,7 @@ public class JaguarUserDetailsServiceImpl implements UserDetailsService {
 
     private final RemoteUserService remoteUserService;
 
-    private final ClientDetailsService clientDetailsService;
+    private final RedisClientDetailsServiceImpl clientDetailsService;
 
     @Override
     public SecurityUser loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -77,10 +78,12 @@ public class JaguarUserDetailsServiceImpl implements UserDetailsService {
         securityUser.setId(user.getId());
         securityUser.setUsername(user.getUserAccount());
         securityUser.setPassword(user.getUserPassword());
-        securityUser.setUserType(UserType.ADMIN);
-        securityUser.setLocked(user.getUserLocked());
-        securityUser.setEnable(user.getUserEnable());
-        securityUser.setPasswordLastModifyTime(user.getUserPasswordLastModifyTime());
+        securityUser.setAccountNonLocked(!user.getUserLocked());
+        securityUser.setEnabled(user.getUserEnable());
+
+        boolean credentialsNoExpired =  user.getUserBuiltIn() ||
+                (user.getUserPasswordLastModifyTime() != null && user.getUserPasswordLastModifyTime().plusDays(90).isAfter(LocalDateTime.now()));
+        securityUser.setCredentialsNonExpired(credentialsNoExpired);
 
         securityUser.setAuthorities(new HashSet<>(user.getPermissions().size()));
         for (String permission : user.getPermissions()) {
