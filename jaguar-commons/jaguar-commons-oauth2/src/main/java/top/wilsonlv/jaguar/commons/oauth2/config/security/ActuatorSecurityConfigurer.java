@@ -1,4 +1,4 @@
-package top.wilsonlv.jaguar.commons.oauth2.config;
+package top.wilsonlv.jaguar.commons.oauth2.config.security;
 
 import de.codecentric.boot.admin.client.config.ClientProperties;
 import lombok.RequiredArgsConstructor;

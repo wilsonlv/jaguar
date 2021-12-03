@@ -13,11 +13,11 @@ import org.springframework.context.annotation.Configuration;
 @RefreshScope
 @Configuration
 @ConfigurationProperties("jaguar.security")
-public class SpringSecurityProperties {
+public class JaguarSecurityProperties {
 
-    private String clientId;
+    private String serverId;
 
-    private String clientSecret;
+    private String serverSecret;
 
     private String[] ignoreUrls;
 

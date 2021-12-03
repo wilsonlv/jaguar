@@ -1,4 +1,4 @@
-package top.wilsonlv.jaguar.commons.oauth2.config;
+package top.wilsonlv.jaguar.commons.oauth2.config.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;

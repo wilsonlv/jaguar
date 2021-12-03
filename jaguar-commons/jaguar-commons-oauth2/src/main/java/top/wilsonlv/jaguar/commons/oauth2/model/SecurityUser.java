@@ -1,10 +1,9 @@
 package top.wilsonlv.jaguar.commons.oauth2.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.security.core.userdetails.UserDetails;
-import top.wilsonlv.jaguar.commons.enums.UserType;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 
 /**
@@ -18,41 +17,45 @@ public class SecurityUser implements UserDetails {
 
     private Long tenantId;
 
-    private Boolean buildIn = false;
-
     private String username;
 
     private String password;
 
-    private UserType userType;
+    private String nickName;
 
-    private Boolean locked = false;
+    private Boolean credentialsNonExpired = true;
 
-    private Boolean enable = true;
+    private Boolean accountNonLocked = true;
 
-    private LocalDateTime passwordLastModifyTime;
+    private Boolean enabled = true;
 
     private Collection<SecurityAuthority> authorities;
 
+    private String remark;
+
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
-        return !this.locked;
+        return this.accountNonLocked;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
-        return this.buildIn || (this.passwordLastModifyTime != null && this.passwordLastModifyTime.plusDays(90).isAfter(LocalDateTime.now()));
+        return this.credentialsNonExpired;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
-        return this.enable;
+        return this.enabled;
     }
 
 }

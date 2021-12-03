@@ -1,14 +1,15 @@
-package top.wilsonlv.jaguar.commons.oauth2.config;
+package top.wilsonlv.jaguar.commons.oauth2.config.security;
 
 import lombok.RequiredArgsConstructor;
-import top.wilsonlv.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
-import top.wilsonlv.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
-import org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService;
+import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
+import top.wilsonlv.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
+import top.wilsonlv.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler;
+import top.wilsonlv.jaguar.commons.oauth2.component.RedisResourceServerServiceImpl;
 
 /**
  * @author lvws
@@ -17,19 +18,23 @@ import org.springframework.security.oauth2.provider.client.ClientDetailsUserDeta
 @Order(2)
 @Configuration
 @RequiredArgsConstructor
+@ConditionalOnMissingBean(AuthorizationServerConfigurerAdapter.class)
 public class FeignSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
-    private final ClientDetailsService clientDetailsService;
+    public static final String FEIGN_PERMISSION = "feign";
+
+    private final RedisResourceServerServiceImpl resourceServerService;
 
     private final JaguarAccessDeniedHandler accessDeniedHandler;
 
     private final AuthenticationExceptionHandler authenticationExceptionHandler;
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.antMatcher("/feign/**")
-                .userDetailsService(new ClientDetailsUserDetailsService(clientDetailsService))
-                .authorizeRequests().anyRequest().hasAuthority("feign")
+                .userDetailsService(resourceServerService)
+                .authorizeRequests().anyRequest().hasAuthority(FEIGN_PERMISSION)
                 .and().httpBasic().authenticationEntryPoint(authenticationExceptionHandler)
 
                 .and().exceptionHandling()
@@ -37,7 +42,7 @@ public class FeignSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
                 .and().cors()
                 .and().csrf().disable()
-                .headers().frameOptions().disable();;
+                .headers().frameOptions().disable();
     }
 
 }

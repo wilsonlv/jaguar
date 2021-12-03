@@ -15,7 +15,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import top.wilsonlv.jaguar.commons.enums.UserType;
 import top.wilsonlv.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
 import top.wilsonlv.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler;
-import top.wilsonlv.jaguar.commons.oauth2.properties.SpringSecurityProperties;
+import top.wilsonlv.jaguar.commons.oauth2.properties.JaguarSecurityProperties;
 
 /**
  * @author lvws
@@ -32,7 +32,7 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
 
     private final TokenStore tokenStore;
 
-    private final SpringSecurityProperties springSecurityProperties;
+    private final JaguarSecurityProperties jaguarSecurityProperties;
 
     private final JaguarAccessDeniedHandler jaguarAccessDeniedHandler;
 
@@ -60,8 +60,8 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
                 .antMatchers("/swagger-resources", "/swagger-resources/**", "/v2/**").permitAll()
                 .antMatchers("/druid/**", "/error").permitAll();
 
-        if (springSecurityProperties.getIgnoreUrls() != null) {
-            for (String ignoreUrl : springSecurityProperties.getIgnoreUrls()) {
+        if (jaguarSecurityProperties.getIgnoreUrls() != null) {
+            for (String ignoreUrl : jaguarSecurityProperties.getIgnoreUrls()) {
                 registry.antMatchers(ignoreUrl).permitAll();
             }
         }
