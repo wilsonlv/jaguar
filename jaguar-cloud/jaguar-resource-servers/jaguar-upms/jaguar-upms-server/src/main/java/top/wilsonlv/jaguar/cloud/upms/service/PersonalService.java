@@ -10,8 +10,8 @@ import top.wilsonlv.jaguar.cloud.upms.entity.*;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.MenuVO;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.ResourceServerVO;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
-import top.wilsonlv.jaguar.commons.basecrud.Assert;
-import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
+import top.wilsonlv.jaguar.basecrud.Assert;
+import top.wilsonlv.jaguar.basecrud.BaseModel;
 import top.wilsonlv.jaguar.commons.data.encryption.util.EncryptionUtil;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 

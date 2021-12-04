@@ -3,7 +3,7 @@ package top.wilsonlv.jaguar.cloud.upms.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import top.wilsonlv.jaguar.cloud.upms.entity.RoleMenu;
-import top.wilsonlv.jaguar.commons.basecrud.BaseMapper;
+import top.wilsonlv.jaguar.basecrud.BaseMapper;
 
 import java.util.Set;
 

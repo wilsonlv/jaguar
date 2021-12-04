@@ -3,17 +3,14 @@ package top.wilsonlv.jaguar.cloud.upms.util;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.CollectionUtils;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.OauthClientBaseDTO;
 import top.wilsonlv.jaguar.cloud.upms.entity.OauthClient;
 import top.wilsonlv.jaguar.cloud.upms.sdk.dto.OauthClientAdditionalInfo;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.OauthClientVO;
-import top.wilsonlv.jaguar.commons.oauth2.model.SecurityAuthority;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author lvws

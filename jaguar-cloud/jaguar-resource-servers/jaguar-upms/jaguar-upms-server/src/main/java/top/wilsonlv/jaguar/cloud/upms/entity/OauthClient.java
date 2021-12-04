@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import top.wilsonlv.jaguar.cloud.upms.sdk.enums.ClientType;
 import top.wilsonlv.jaguar.cloud.upms.sdk.enums.UserType;
-import top.wilsonlv.jaguar.support.datamodifylog.entity.DataModifyLoggable;
+import top.wilsonlv.jaguar.datamodifylog.entity.DataModifyLoggable;
 
 /**
  * @author lvws

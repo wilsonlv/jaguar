@@ -1,5 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    top.wilsonlv.jaguar.support.datamodifylog.aop.DataModifyLogAspect,\
-    top.wilsonlv.jaguar.support.datamodifylog.mybatis.DataModifyLoggableHandler,\
-    top.wilsonlv.jaguar.support.datamodifylog.service.DataModifyLogService,\
-    top.wilsonlv.jaguar.support.datamodifylog.controller.DataModifyLogController
+    top.wilsonlv.jaguar.datamodifylog.aop.DataModifyLogAspect,\
+    top.wilsonlv.jaguar.datamodifylog.mybatis.DataModifyLoggableHandler,\
+    top.wilsonlv.jaguar.datamodifylog.service.DataModifyLogService,\
+    top.wilsonlv.jaguar.datamodifylog.controller.DataModifyLogController

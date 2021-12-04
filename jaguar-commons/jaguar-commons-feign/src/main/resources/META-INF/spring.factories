@@ -1,4 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    top.wilsonlv.jaguar.commons.feign.component.FeignDecoder,\
-    top.wilsonlv.jaguar.commons.feign.component.FeignExceptionHandler,\
-    top.wilsonlv.jaguar.commons.feign.component.FeignInterceptor

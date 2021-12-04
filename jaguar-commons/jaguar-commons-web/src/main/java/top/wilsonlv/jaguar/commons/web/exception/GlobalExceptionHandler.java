@@ -1,8 +1,8 @@
 package top.wilsonlv.jaguar.commons.web.exception;
 
 import lombok.extern.slf4j.Slf4j;
-import top.wilsonlv.jaguar.commons.web.JsonResult;
-import top.wilsonlv.jaguar.commons.web.ResultCode;
+import top.wilsonlv.jaguar.commons.web.response.JsonResult;
+import top.wilsonlv.jaguar.commons.web.response.ResultCode;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.ObjectError;

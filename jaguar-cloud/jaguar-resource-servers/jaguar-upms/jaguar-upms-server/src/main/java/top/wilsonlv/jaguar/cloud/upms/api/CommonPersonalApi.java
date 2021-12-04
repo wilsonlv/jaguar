@@ -11,7 +11,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.*;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.RandomPassword;
 import top.wilsonlv.jaguar.commons.data.encryption.util.EncryptionUtil;
-import top.wilsonlv.jaguar.commons.web.JsonResult;
+import top.wilsonlv.jaguar.commons.web.response.JsonResult;
 
 /**
  * @author lvws

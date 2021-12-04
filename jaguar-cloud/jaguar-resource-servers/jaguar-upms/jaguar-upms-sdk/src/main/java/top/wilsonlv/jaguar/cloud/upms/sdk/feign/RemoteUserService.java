@@ -2,16 +2,12 @@ package top.wilsonlv.jaguar.cloud.upms.sdk.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import top.wilsonlv.jaguar.cloud.services.JaguarServerName;
 import top.wilsonlv.jaguar.cloud.services.JaguarServiceName;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.MenuVO;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
-import top.wilsonlv.jaguar.commons.web.JsonResult;
-
-import javax.validation.constraints.NotBlank;
-import java.util.List;
+import top.wilsonlv.jaguar.commons.web.response.JsonResult;
 
 
 /**

@@ -3,7 +3,7 @@ package top.wilsonlv.jaguar.cloud.websocket.handler;
 import com.alibaba.fastjson.JSONObject;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import top.wilsonlv.jaguar.commons.oauth2.model.SecurityUser;
+import top.wilsonlv.jaguar.oauth2.model.SecurityUser;
 import top.wilsonlv.jaguar.cloud.websocket.sdk.WebsocketConstant;
 import top.wilsonlv.jaguar.cloud.websocket.sdk.dto.WebsocketMessage;
 import top.wilsonlv.jaguar.cloud.websocket.sdk.enums.WebsocketPage;

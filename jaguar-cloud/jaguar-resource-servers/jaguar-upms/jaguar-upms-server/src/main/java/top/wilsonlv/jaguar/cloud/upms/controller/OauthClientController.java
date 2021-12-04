@@ -16,18 +16,16 @@ import top.wilsonlv.jaguar.cloud.upms.entity.OauthClient;
 import top.wilsonlv.jaguar.cloud.upms.mapper.ClientMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.OauthClientVO;
 import top.wilsonlv.jaguar.cloud.upms.service.OauthClientService;
-import top.wilsonlv.jaguar.commons.basecrud.BaseController;
+import top.wilsonlv.jaguar.basecrud.BaseController;
 import top.wilsonlv.jaguar.cloud.upms.sdk.enums.ClientType;
 import top.wilsonlv.jaguar.cloud.upms.sdk.enums.UserType;
 import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import top.wilsonlv.jaguar.commons.oauth2.properties.JaguarSecurityProperties;
-import top.wilsonlv.jaguar.commons.web.JsonResult;
+import top.wilsonlv.jaguar.oauth2.properties.JaguarSecurityProperties;
+import top.wilsonlv.jaguar.commons.web.response.JsonResult;
 
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author lvws

@@ -11,9 +11,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import top.wilsonlv.jaguar.commons.oauth2.component.RedisClientDetailsServiceImpl;
-import top.wilsonlv.jaguar.commons.web.JsonResult;
-import top.wilsonlv.jaguar.commons.web.ResultCode;
+import top.wilsonlv.jaguar.oauth2.component.RedisClientDetailsServiceImpl;
+import top.wilsonlv.jaguar.commons.web.response.JsonResult;
+import top.wilsonlv.jaguar.commons.web.response.ResultCode;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

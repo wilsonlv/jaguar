@@ -12,28 +12,8 @@
     <artifactId>jaguar-cloud</artifactId>
     <packaging>pom</packaging>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>top.wilsonlv</groupId>
-                <artifactId>jaguar-commons-bom</artifactId>
-                <version>${jaguar.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>top.wilsonlv</groupId>
-                <artifactId>jaguar-cloud-bom</artifactId>
-                <version>${jaguar.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <modules>
         <module>jaguar-auth</module>
-        <module>jaguar-cloud-bom</module>
         <module>jaguar-monitor</module>
         <module>jaguar-register</module>
         <module>jaguar-resource-servers</module>

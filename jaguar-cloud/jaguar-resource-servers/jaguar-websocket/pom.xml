@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>top.wilsonlv</groupId>
-            <artifactId>jaguar-commons-feign</artifactId>
+            <artifactId>jaguar-openfeign</artifactId>
         </dependency>
     </dependencies>
 

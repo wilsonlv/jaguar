@@ -18,11 +18,11 @@
     <dependencies>
         <dependency>
             <groupId>top.wilsonlv</groupId>
-            <artifactId>jaguar-commons-base-crud</artifactId>
+            <artifactId>jaguar-base-crud</artifactId>
         </dependency>
         <dependency>
             <groupId>top.wilsonlv</groupId>
-            <artifactId>jaguar-commons-oauth2</artifactId>
+            <artifactId>jaguar-security-oauth2</artifactId>
         </dependency>
         <dependency>
             <groupId>top.wilsonlv</groupId>

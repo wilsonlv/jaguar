@@ -1,27 +1,20 @@
 package top.wilsonlv.jaguar.cloud.upms.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.MenuCreateDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.MenuModifyDTO;
-import top.wilsonlv.jaguar.cloud.upms.entity.ResourceServer;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.MenuVO;
 import top.wilsonlv.jaguar.cloud.upms.mapper.MenuMapper;
 import top.wilsonlv.jaguar.cloud.upms.entity.Menu;
 import top.wilsonlv.jaguar.cloud.upms.service.MenuService;
-import top.wilsonlv.jaguar.cloud.upms.service.ResourceServerService;
-import top.wilsonlv.jaguar.commons.basecrud.BaseController;
-import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
-import top.wilsonlv.jaguar.commons.web.JsonResult;
-import top.wilsonlv.jaguar.commons.web.base.BaseVO;
+import top.wilsonlv.jaguar.basecrud.BaseController;
+import top.wilsonlv.jaguar.commons.web.response.JsonResult;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

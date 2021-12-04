@@ -1,6 +1,6 @@
 package top.wilsonlv.jaguar.cloud.auth.api;
 
-import top.wilsonlv.jaguar.commons.web.JsonResult;
+import top.wilsonlv.jaguar.commons.web.response.JsonResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;

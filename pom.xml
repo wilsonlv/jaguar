@@ -12,6 +12,7 @@
         <module>jaguar-cloud</module>
         <module>jaguar-codegen</module>
         <module>jaguar-commons</module>
+        <module>jaguar-dependencies</module>
         <module>jaguar-nginx-admin</module>
         <module>jaguar-support</module>
         <module>jaguar-test</module>
@@ -63,7 +64,7 @@
 
             <dependency>
                 <groupId>top.wilsonlv</groupId>
-                <artifactId>jaguar-commons-bom</artifactId>
+                <artifactId>jaguar-dependencies</artifactId>
                 <version>${jaguar.version}</version>
                 <type>pom</type>
                 <scope>import</scope>

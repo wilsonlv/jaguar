@@ -16,11 +16,11 @@ import top.wilsonlv.jaguar.cloud.upms.controller.dto.ResourceServerModifyDTO;
 import top.wilsonlv.jaguar.cloud.upms.entity.ResourceServer;
 import top.wilsonlv.jaguar.cloud.upms.mapper.ResourceServerMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.ResourceServerVO;
-import top.wilsonlv.jaguar.commons.basecrud.Assert;
-import top.wilsonlv.jaguar.commons.basecrud.BaseService;
+import top.wilsonlv.jaguar.basecrud.Assert;
+import top.wilsonlv.jaguar.basecrud.BaseService;
 import top.wilsonlv.jaguar.commons.data.encryption.util.EncryptionUtil;
-import top.wilsonlv.jaguar.commons.oauth2.Oauth2Constant;
-import top.wilsonlv.jaguar.commons.oauth2.model.SecurityUser;
+import top.wilsonlv.jaguar.oauth2.Oauth2Constant;
+import top.wilsonlv.jaguar.oauth2.model.SecurityUser;
 
 import java.io.Serializable;
 import java.util.List;

@@ -15,9 +15,9 @@ import top.wilsonlv.jaguar.cloud.upms.mapper.RoleMapper;
 import top.wilsonlv.jaguar.cloud.upms.entity.Role;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.RoleVO;
 import top.wilsonlv.jaguar.cloud.upms.service.RoleService;
-import top.wilsonlv.jaguar.commons.basecrud.BaseController;
+import top.wilsonlv.jaguar.basecrud.BaseController;
 import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import top.wilsonlv.jaguar.commons.web.JsonResult;
+import top.wilsonlv.jaguar.commons.web.response.JsonResult;
 
 import javax.validation.Valid;
 

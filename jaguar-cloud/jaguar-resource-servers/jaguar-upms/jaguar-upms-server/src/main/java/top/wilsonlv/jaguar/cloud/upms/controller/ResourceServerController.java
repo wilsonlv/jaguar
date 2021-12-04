@@ -15,9 +15,9 @@ import top.wilsonlv.jaguar.cloud.upms.sdk.vo.ResourceServerVO;
 import top.wilsonlv.jaguar.cloud.upms.entity.ResourceServer;
 import top.wilsonlv.jaguar.cloud.upms.mapper.ResourceServerMapper;
 import top.wilsonlv.jaguar.cloud.upms.service.ResourceServerService;
-import top.wilsonlv.jaguar.commons.basecrud.BaseController;
+import top.wilsonlv.jaguar.basecrud.BaseController;
 import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import top.wilsonlv.jaguar.commons.web.JsonResult;
+import top.wilsonlv.jaguar.commons.web.response.JsonResult;
 
 import javax.validation.Valid;
 

@@ -1,7 +1,6 @@
 package top.wilsonlv.jaguar.cloud.upms.service;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.klock.annotation.Klock;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -14,9 +13,9 @@ import top.wilsonlv.jaguar.cloud.upms.entity.ResourceServer;
 import top.wilsonlv.jaguar.cloud.upms.entity.RoleMenu;
 import top.wilsonlv.jaguar.cloud.upms.mapper.MenuMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.MenuVO;
-import top.wilsonlv.jaguar.commons.basecrud.Assert;
-import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
-import top.wilsonlv.jaguar.commons.rediscache.AbstractRedisCacheService;
+import top.wilsonlv.jaguar.basecrud.Assert;
+import top.wilsonlv.jaguar.basecrud.BaseModel;
+import top.wilsonlv.jaguar.rediscache.AbstractRedisCacheService;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
 import javax.annotation.Resource;

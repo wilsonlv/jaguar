@@ -1,8 +1,8 @@
 package top.wilsonlv.jaguar.cloud.auth.component.security;
 
 import lombok.extern.slf4j.Slf4j;
-import top.wilsonlv.jaguar.commons.web.JsonResult;
-import top.wilsonlv.jaguar.commons.web.ResultCode;
+import top.wilsonlv.jaguar.commons.web.response.JsonResult;
+import top.wilsonlv.jaguar.commons.web.response.ResultCode;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;

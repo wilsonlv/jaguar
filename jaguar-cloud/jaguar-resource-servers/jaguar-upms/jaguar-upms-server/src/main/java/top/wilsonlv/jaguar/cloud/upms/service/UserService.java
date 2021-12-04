@@ -16,11 +16,10 @@ import top.wilsonlv.jaguar.cloud.upms.entity.UserRole;
 import top.wilsonlv.jaguar.cloud.upms.mapper.UserMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.RoleVO;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
-import top.wilsonlv.jaguar.commons.basecrud.Assert;
-import top.wilsonlv.jaguar.commons.basecrud.BaseService;
-import top.wilsonlv.jaguar.commons.basecrud.util.LongUtil;
+import top.wilsonlv.jaguar.basecrud.Assert;
+import top.wilsonlv.jaguar.basecrud.util.LongUtil;
 import top.wilsonlv.jaguar.commons.data.encryption.util.EncryptionUtil;
-import top.wilsonlv.jaguar.commons.rediscache.AbstractRedisCacheService;
+import top.wilsonlv.jaguar.rediscache.AbstractRedisCacheService;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
 import javax.annotation.Resource;

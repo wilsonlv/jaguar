@@ -18,10 +18,10 @@ import top.wilsonlv.jaguar.cloud.upms.entity.OauthClient;
 import top.wilsonlv.jaguar.cloud.upms.mapper.ClientMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.OauthClientVO;
 import top.wilsonlv.jaguar.cloud.upms.util.OauthClientUtil;
-import top.wilsonlv.jaguar.commons.basecrud.Assert;
+import top.wilsonlv.jaguar.basecrud.Assert;
 import top.wilsonlv.jaguar.commons.data.encryption.util.EncryptionUtil;
-import top.wilsonlv.jaguar.commons.oauth2.Oauth2Constant;
-import top.wilsonlv.jaguar.commons.rediscache.AbstractRedisCacheService;
+import top.wilsonlv.jaguar.oauth2.Oauth2Constant;
+import top.wilsonlv.jaguar.rediscache.AbstractRedisCacheService;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
 import java.io.Serializable;

@@ -26,22 +26,21 @@ jaguar由三大模块组成，分别是基础通用模块、代码生成模块�
 - jaguar-commons：基础通用模块，该模块包含以下子模块
     - jaguar-commons-activemq：activemq消息组件
     - jaguar-commons-aviator：表达式解析组件
-    - jaguar-commons-base-crud：基础增删改查
+    - jaguar-base-crud：基础增删改查
     - jaguar-commons-bom：框架通用版本
     - jaguar-commons-captcha：验证码组件
     - jaguar-commons-cloud-client：微服务组件
     - jaguar-commons-encryption：数据加密组价
     - jaguar-commons-export-csv：csv导出
-    - jaguar-commons-feign：微服务接口调用组件
+    - jaguar-openfeign：微服务接口调用组件
     - jaguar-commons-monitor-client：监控客户端组件
     - jaguar-commons-mybatis-plus：持久层组件
-    - jaguar-commons-oauth2：OAuth2组件
+    - jaguar-security-oauth2：OAuth2组件
     - jaguar-commons-pdf：pdf生成组件
     - jaguar-commons-pinyin：汉语拼音组件
     - jaguar-commons-qrcode：二维码生成组件
     - jaguar-commons-redis：redis组件
-    - jaguar-commons-redis-cache：基于redis的二级缓存组件
-    - jaguar-commons-swagger：接口文档组件
+    - jaguar-redis-cache：基于redis的二级缓存组件
     - jaguar-commons-tenant：多租户组件
     - jaguar-commons-web：web服务组件
      

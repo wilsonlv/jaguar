@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    top.wilsonlv.jaguar.commons.basecrud.mybatis.BaseModelMetaObjectHandler,\
-    top.wilsonlv.jaguar.commons.basecrud.BatchOperation

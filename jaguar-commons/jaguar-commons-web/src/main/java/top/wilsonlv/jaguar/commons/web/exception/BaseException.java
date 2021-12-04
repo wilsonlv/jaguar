@@ -1,7 +1,7 @@
 package top.wilsonlv.jaguar.commons.web.exception;
 
 import org.apache.commons.lang3.StringUtils;
-import top.wilsonlv.jaguar.commons.web.ResultCode;
+import top.wilsonlv.jaguar.commons.web.response.ResultCode;
 
 
 /**

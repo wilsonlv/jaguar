@@ -2,7 +2,7 @@ package top.wilsonlv.jaguar.cloud.auth.component.oauth;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import top.wilsonlv.jaguar.commons.oauth2.component.RedisClientDetailsServiceImpl;
+import top.wilsonlv.jaguar.oauth2.component.RedisClientDetailsServiceImpl;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;

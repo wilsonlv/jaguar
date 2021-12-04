@@ -7,10 +7,9 @@ import top.wilsonlv.jaguar.cloud.upms.sdk.vo.MenuVO;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
 import top.wilsonlv.jaguar.cloud.upms.service.PersonalService;
 import top.wilsonlv.jaguar.cloud.upms.service.UserService;
-import top.wilsonlv.jaguar.commons.web.JsonResult;
+import top.wilsonlv.jaguar.commons.web.response.JsonResult;
 
 import javax.validation.constraints.NotBlank;
-import java.util.List;
 
 /**
  * @author lvws

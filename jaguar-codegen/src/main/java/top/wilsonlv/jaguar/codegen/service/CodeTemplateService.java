@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 import top.wilsonlv.jaguar.codegen.mapper.CodeTemplateMapper;
 import top.wilsonlv.jaguar.codegen.entity.CodeTemplate;
-import top.wilsonlv.jaguar.commons.basecrud.BaseService;
+import top.wilsonlv.jaguar.basecrud.BaseService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -6,8 +6,8 @@ import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import top.wilsonlv.jaguar.commons.web.JsonResult;
-import top.wilsonlv.jaguar.commons.web.ResultCode;
+import top.wilsonlv.jaguar.commons.web.response.JsonResult;
+import top.wilsonlv.jaguar.commons.web.response.ResultCode;
 
 import java.util.Map;
 

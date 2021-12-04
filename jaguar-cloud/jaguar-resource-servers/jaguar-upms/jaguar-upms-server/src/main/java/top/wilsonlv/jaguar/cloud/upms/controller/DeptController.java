@@ -1,23 +1,18 @@
 package top.wilsonlv.jaguar.cloud.upms.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.annotations.ApiIgnore;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.DeptCreateDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.DeptModifyDTO;
 import top.wilsonlv.jaguar.cloud.upms.entity.Dept;
 import top.wilsonlv.jaguar.cloud.upms.mapper.DeptMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.DeptVO;
 import top.wilsonlv.jaguar.cloud.upms.service.DeptService;
-import top.wilsonlv.jaguar.commons.basecrud.BaseController;
-import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import top.wilsonlv.jaguar.commons.web.JsonResult;
+import top.wilsonlv.jaguar.basecrud.BaseController;
+import top.wilsonlv.jaguar.commons.web.response.JsonResult;
 
 import javax.validation.Valid;
 import java.util.List;

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import top.wilsonlv.jaguar.support.datamodifylog.entity.DataModifyLoggable;
+import top.wilsonlv.jaguar.datamodifylog.entity.DataModifyLoggable;
 
 /**
  * <p>

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import top.wilsonlv.jaguar.cloud.handlerlog.entity.HandlerLog;
 import top.wilsonlv.jaguar.cloud.handlerlog.mapper.HandlerLogMapper;
 import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
-import top.wilsonlv.jaguar.commons.web.JsonResult;
+import top.wilsonlv.jaguar.commons.web.response.JsonResult;
 
 import java.util.Date;
 import java.util.HashMap;

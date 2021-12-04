@@ -10,8 +10,8 @@ import top.wilsonlv.jaguar.cloud.upms.entity.Dept;
 import top.wilsonlv.jaguar.cloud.upms.entity.User;
 import top.wilsonlv.jaguar.cloud.upms.mapper.DeptMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.DeptVO;
-import top.wilsonlv.jaguar.commons.basecrud.BaseModel;
-import top.wilsonlv.jaguar.commons.rediscache.AbstractRedisCacheService;
+import top.wilsonlv.jaguar.basecrud.BaseModel;
+import top.wilsonlv.jaguar.rediscache.AbstractRedisCacheService;
 
 import java.util.ArrayList;
 import java.util.List;

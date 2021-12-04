@@ -5,8 +5,8 @@ import io.swagger.annotations.ApiOperation;
 import top.wilsonlv.jaguar.codegen.mapper.CodeTemplateMapper;
 import top.wilsonlv.jaguar.codegen.entity.CodeTemplate;
 import top.wilsonlv.jaguar.codegen.service.CodeTemplateService;
-import top.wilsonlv.jaguar.commons.basecrud.BaseController;
-import top.wilsonlv.jaguar.commons.web.JsonResult;
+import top.wilsonlv.jaguar.basecrud.BaseController;
+import top.wilsonlv.jaguar.commons.web.response.JsonResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

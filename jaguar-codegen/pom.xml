@@ -23,7 +23,7 @@
 
         <dependency>
             <groupId>top.wilsonlv</groupId>
-            <artifactId>jaguar-commons-base-crud</artifactId>
+            <artifactId>jaguar-base-crud</artifactId>
         </dependency>
         <dependency>
             <groupId>top.wilsonlv</groupId>

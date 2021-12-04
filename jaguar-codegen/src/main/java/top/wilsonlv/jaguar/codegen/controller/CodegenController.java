@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import top.wilsonlv.jaguar.codegen.controller.dto.CodegenDTO;
 import top.wilsonlv.jaguar.codegen.service.CodeGeneratorService;
-import top.wilsonlv.jaguar.commons.web.JsonResult;
+import top.wilsonlv.jaguar.commons.web.response.JsonResult;
 import top.wilsonlv.jaguar.codegen.controller.dto.PreviewDTO;
 import top.wilsonlv.jaguar.codegen.controller.vo.TableVO;
 import org.springframework.web.bind.annotation.*;

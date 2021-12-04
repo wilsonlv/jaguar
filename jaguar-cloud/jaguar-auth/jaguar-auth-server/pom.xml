@@ -22,7 +22,7 @@
         </dependency>
         <dependency>
             <groupId>top.wilsonlv</groupId>
-            <artifactId>jaguar-commons-oauth2</artifactId>
+            <artifactId>jaguar-security-oauth2</artifactId>
         </dependency>
         <dependency>
             <groupId>top.wilsonlv</groupId>
@@ -34,7 +34,7 @@
         </dependency>
         <dependency>
             <groupId>top.wilsonlv</groupId>
-            <artifactId>jaguar-commons-captcha</artifactId>
+            <artifactId>jaguar-captcha</artifactId>
         </dependency>
         <dependency>
             <groupId>top.wilsonlv</groupId>

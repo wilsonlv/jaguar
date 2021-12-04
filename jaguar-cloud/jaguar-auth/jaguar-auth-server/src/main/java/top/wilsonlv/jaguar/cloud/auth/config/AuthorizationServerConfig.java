@@ -10,8 +10,8 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import top.wilsonlv.jaguar.cloud.auth.component.oauth.ServerTokenService;
 import top.wilsonlv.jaguar.cloud.upms.sdk.component.JaguarUserDetailsServiceImpl;
-import top.wilsonlv.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
-import top.wilsonlv.jaguar.commons.oauth2.component.RedisClientDetailsServiceImpl;
+import top.wilsonlv.jaguar.oauth2.component.AuthenticationExceptionHandler;
+import top.wilsonlv.jaguar.oauth2.component.RedisClientDetailsServiceImpl;
 
 /**
  * @author lvws

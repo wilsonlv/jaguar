@@ -2,7 +2,7 @@ package top.wilsonlv.jaguar.codegen.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import top.wilsonlv.jaguar.codegen.entity.CodeTemplate;
-import top.wilsonlv.jaguar.commons.basecrud.BaseMapper;
+import top.wilsonlv.jaguar.basecrud.BaseMapper;
 
 import java.util.List;
 

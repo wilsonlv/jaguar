@@ -12,8 +12,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import top.wilsonlv.jaguar.cloud.auth.component.CaptchaFilter;
 import top.wilsonlv.jaguar.cloud.auth.component.security.LoginFailureHandler;
 import top.wilsonlv.jaguar.cloud.auth.component.security.LoginSuccessHandler;
-import top.wilsonlv.jaguar.commons.oauth2.component.AuthenticationExceptionHandler;
-import top.wilsonlv.jaguar.commons.oauth2.component.JaguarAccessDeniedHandler;
+import top.wilsonlv.jaguar.oauth2.component.AuthenticationExceptionHandler;
+import top.wilsonlv.jaguar.oauth2.component.JaguarAccessDeniedHandler;
 
 /**
  * @author lvws
