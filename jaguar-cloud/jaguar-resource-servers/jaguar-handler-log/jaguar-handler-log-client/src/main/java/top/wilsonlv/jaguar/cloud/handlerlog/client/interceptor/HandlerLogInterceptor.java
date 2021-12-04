@@ -5,7 +5,6 @@ import cz.mallat.uasparser.OnlineUpdater;
 import cz.mallat.uasparser.UASparser;
 import cz.mallat.uasparser.UserAgentInfo;
 import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -40,7 +39,6 @@ import java.time.LocalDateTime;
  */
 @Slf4j
 @Component
-@RequiredArgsConstructor
 @ConditionalOnProperty(prefix = "jaguar.handler-log", name = "enable", havingValue = "true", matchIfMissing = true)
 public class HandlerLogInterceptor implements HandlerInterceptor {
 
@@ -51,23 +49,19 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
 
     private static final String ACTUATOR = "/actuator";
     private static final String ERROR = "/error";
-    private static final UASparser UAS_PARSER;
 
+    private final UASparser uasParser;
     private final JmsTemplate jmsQueueTemplate;
 
-
-    static {
-        try {
-            UAS_PARSER = new UASparser(OnlineUpdater.getVendoredInputStream());
-        } catch (IOException e) {
-            throw new Error(e);
-        }
+    public HandlerLogInterceptor(JmsTemplate jmsQueueTemplate) throws IOException {
+        this.uasParser = new UASparser(OnlineUpdater.getVendoredInputStream());
+        this.jmsQueueTemplate = jmsQueueTemplate;
     }
 
     private String getUserAgent(HttpServletRequest request) {
         UserAgentInfo userAgentInfo;
         try {
-            userAgentInfo = UAS_PARSER.parse(request.getHeader("user-agent"));
+            userAgentInfo = uasParser.parse(request.getHeader("user-agent"));
         } catch (IOException e) {
             log.error(e.getMessage(), e);
             return null;
