@@ -3,6 +3,7 @@ package top.wilsonlv.jaguar.commons.web.filter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 
 /**
  * @author lvws
@@ -16,7 +17,7 @@ public class RequestParamsFilterConfig {
         FilterRegistrationBean<RequestParamsFilter> registration = new FilterRegistrationBean<>();
         registration.setFilter(new RequestParamsFilter());
         registration.addUrlPatterns("/*");
-        registration.setOrder(1);
+        registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return registration;
     }
 

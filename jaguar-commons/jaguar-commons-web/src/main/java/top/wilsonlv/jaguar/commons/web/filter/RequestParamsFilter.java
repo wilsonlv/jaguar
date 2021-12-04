@@ -27,6 +27,7 @@ public class RequestParamsFilter implements Filter {
 
     private static final String ACTUATOR = "/actuator";
 
+    private static final String ICO = ".ico";
     private static final String CSS = ".css";
     private static final String JS = ".js";
     private static final String HTML = ".html";
@@ -38,7 +39,7 @@ public class RequestParamsFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         String requestUri = request.getRequestURI();
-        if (requestUri.startsWith(ACTUATOR)
+        if (requestUri.startsWith(ACTUATOR) || requestUri.endsWith(ICO)
                 || requestUri.endsWith(CSS) || requestUri.endsWith(JS) || requestUri.endsWith(HTML)) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
