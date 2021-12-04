@@ -1,10 +1,10 @@
 package top.wilsonlv.jaguar.cloud.websocket.config;
 
-import top.wilsonlv.jaguar.cloud.websocket.handler.WebsocketOnlineHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+import top.wilsonlv.jaguar.cloud.websocket.handler.WebsocketOnlineHandler;
 
 import javax.annotation.Resource;
 import java.util.UUID;

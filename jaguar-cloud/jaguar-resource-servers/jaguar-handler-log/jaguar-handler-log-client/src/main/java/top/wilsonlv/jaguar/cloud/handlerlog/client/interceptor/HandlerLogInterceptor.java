@@ -20,11 +20,11 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import top.wilsonlv.jaguar.cloud.handlerlog.client.HandlerLogConstant;
 import top.wilsonlv.jaguar.cloud.handlerlog.client.dto.HandlerLogSaveDTO;
-import top.wilsonlv.jaguar.oauth2.model.SecurityUser;
-import top.wilsonlv.jaguar.oauth2.util.SecurityUtil;
 import top.wilsonlv.jaguar.commons.web.response.JsonResult;
 import top.wilsonlv.jaguar.commons.web.response.JsonResultResponseAdvice;
 import top.wilsonlv.jaguar.commons.web.util.WebUtil;
+import top.wilsonlv.jaguar.oauth2.model.SecurityUser;
+import top.wilsonlv.jaguar.oauth2.util.SecurityUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

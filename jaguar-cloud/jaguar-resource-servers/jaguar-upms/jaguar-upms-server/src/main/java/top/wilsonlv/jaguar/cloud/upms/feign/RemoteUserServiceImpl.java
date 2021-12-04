@@ -1,12 +1,13 @@
 package top.wilsonlv.jaguar.cloud.upms.feign;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import top.wilsonlv.jaguar.cloud.upms.sdk.feign.RemoteUserService;
-import top.wilsonlv.jaguar.cloud.upms.sdk.vo.MenuVO;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
 import top.wilsonlv.jaguar.cloud.upms.service.PersonalService;
-import top.wilsonlv.jaguar.cloud.upms.service.UserService;
 import top.wilsonlv.jaguar.commons.web.response.JsonResult;
 
 import javax.validation.constraints.NotBlank;

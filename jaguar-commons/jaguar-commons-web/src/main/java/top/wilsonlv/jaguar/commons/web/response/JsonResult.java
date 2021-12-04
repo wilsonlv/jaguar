@@ -1,6 +1,8 @@
 package top.wilsonlv.jaguar.commons.web.response;
 
 import com.alibaba.fastjson.JSONObject;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
@@ -11,6 +13,7 @@ import java.io.Serializable;
  * @since 2019/4/16.
  */
 @Data
+@ApiModel(value = "响应信息主体")
 public class JsonResult<T> implements Serializable {
 
     public static final String SUCCESS_MSG = "成功";
@@ -27,12 +30,16 @@ public class JsonResult<T> implements Serializable {
         return new JsonResult<>(ResultCode.CONFLICT, null, message);
     }
 
+    @ApiModelProperty(value = "结果码")
     private ResultCode resultCode = ResultCode.OK;
 
+    @ApiModelProperty(value = "结果数据")
     private T data;
 
+    @ApiModelProperty(value = "结果信息")
     private String message;
 
+    @ApiModelProperty(value = "响应时间戳")
     private final Long timestamp = System.currentTimeMillis();
 
     public JsonResult() {

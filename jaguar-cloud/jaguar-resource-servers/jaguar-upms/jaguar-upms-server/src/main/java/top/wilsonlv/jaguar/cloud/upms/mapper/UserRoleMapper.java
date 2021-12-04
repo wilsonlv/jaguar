@@ -2,10 +2,10 @@ package top.wilsonlv.jaguar.cloud.upms.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import top.wilsonlv.jaguar.basecrud.BaseMapper;
 import top.wilsonlv.jaguar.cloud.upms.entity.UserRole;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.RoleVO;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
-import top.wilsonlv.jaguar.basecrud.BaseMapper;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;

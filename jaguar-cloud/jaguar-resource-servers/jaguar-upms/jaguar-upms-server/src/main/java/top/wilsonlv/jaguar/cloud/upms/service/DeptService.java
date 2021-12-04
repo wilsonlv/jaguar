@@ -4,13 +4,13 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import top.wilsonlv.jaguar.basecrud.BaseModel;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.DeptCreateDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.DeptModifyDTO;
 import top.wilsonlv.jaguar.cloud.upms.entity.Dept;
 import top.wilsonlv.jaguar.cloud.upms.entity.User;
 import top.wilsonlv.jaguar.cloud.upms.mapper.DeptMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.DeptVO;
-import top.wilsonlv.jaguar.basecrud.BaseModel;
 import top.wilsonlv.jaguar.rediscache.AbstractRedisCacheService;
 
 import java.util.ArrayList;

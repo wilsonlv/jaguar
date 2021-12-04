@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 import top.wilsonlv.jaguar.cloud.upms.sdk.enums.UserType;
 import top.wilsonlv.jaguar.cloud.upms.sdk.feign.RemoteUserService;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
+import top.wilsonlv.jaguar.commons.web.response.JsonResult;
 import top.wilsonlv.jaguar.oauth2.component.RedisClientDetailsServiceImpl;
 import top.wilsonlv.jaguar.oauth2.model.SecurityAuthority;
 import top.wilsonlv.jaguar.oauth2.model.SecurityUser;
 import top.wilsonlv.jaguar.oauth2.util.SecurityUtil;
-import top.wilsonlv.jaguar.commons.web.response.JsonResult;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;

@@ -5,13 +5,12 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.MenuVO;
-import top.wilsonlv.jaguar.cloud.upms.sdk.vo.RandomPassword;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.ResourceServerVO;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
 import top.wilsonlv.jaguar.cloud.upms.service.PersonalService;
 import top.wilsonlv.jaguar.cloud.upms.service.UserService;
-import top.wilsonlv.jaguar.oauth2.util.SecurityUtil;
 import top.wilsonlv.jaguar.commons.web.response.JsonResult;
+import top.wilsonlv.jaguar.oauth2.util.SecurityUtil;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;

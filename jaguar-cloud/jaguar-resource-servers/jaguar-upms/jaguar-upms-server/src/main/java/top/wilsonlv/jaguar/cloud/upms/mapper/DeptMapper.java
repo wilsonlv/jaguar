@@ -1,8 +1,8 @@
 package top.wilsonlv.jaguar.cloud.upms.mapper;
 
-import top.wilsonlv.jaguar.cloud.upms.entity.Dept;
 import org.apache.ibatis.annotations.Mapper;
 import top.wilsonlv.jaguar.basecrud.BaseMapper;
+import top.wilsonlv.jaguar.cloud.upms.entity.Dept;
 
 /**
  * <p>

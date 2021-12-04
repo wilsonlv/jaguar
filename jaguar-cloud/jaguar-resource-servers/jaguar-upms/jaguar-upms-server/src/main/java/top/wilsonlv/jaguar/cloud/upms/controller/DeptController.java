@@ -5,13 +5,13 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import top.wilsonlv.jaguar.basecrud.BaseController;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.DeptCreateDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.DeptModifyDTO;
 import top.wilsonlv.jaguar.cloud.upms.entity.Dept;
 import top.wilsonlv.jaguar.cloud.upms.mapper.DeptMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.DeptVO;
 import top.wilsonlv.jaguar.cloud.upms.service.DeptService;
-import top.wilsonlv.jaguar.basecrud.BaseController;
 import top.wilsonlv.jaguar.commons.web.response.JsonResult;
 
 import javax.validation.Valid;
