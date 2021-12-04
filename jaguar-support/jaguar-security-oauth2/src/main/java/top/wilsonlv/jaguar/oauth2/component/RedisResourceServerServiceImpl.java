@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.stereotype.Component;
 import top.wilsonlv.jaguar.oauth2.Oauth2Constant;
+import top.wilsonlv.jaguar.oauth2.config.security.FeignSecurityConfigurer;
 import top.wilsonlv.jaguar.oauth2.model.SecurityAuthority;
 import top.wilsonlv.jaguar.oauth2.model.SecurityUser;
 
@@ -32,11 +33,12 @@ public class RedisResourceServerServiceImpl implements UserDetailsService {
                 redisTemplate.boundValueOps(Oauth2Constant.RESOURCE_SERVER_CACHE_KEY_PREFIX + serverId);
         Serializable resourceServer = operations.get();
         if (resourceServer == null) {
-            throw new UsernameNotFoundException(null);
+            throw new UsernameNotFoundException("无效的serverId：" + serverId);
         }
 
         SecurityUser securityUser = (SecurityUser) resourceServer;
-        securityUser.setAuthorities(Collections.singleton(new SecurityAuthority("feign")));
+        securityUser.setAuthorities(Collections.singleton(
+                new SecurityAuthority(FeignSecurityConfigurer.FEIGN_PERMISSION)));
         return securityUser;
     }
 
