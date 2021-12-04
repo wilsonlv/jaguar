@@ -1,7 +1,7 @@
 package top.wilsonlv.jaguar.commons.web.exception.impl;
 
-import top.wilsonlv.jaguar.commons.web.response.ResultCode;
 import top.wilsonlv.jaguar.commons.web.exception.BaseException;
+import top.wilsonlv.jaguar.commons.web.response.ResultCode;
 
 /**
  * @author lvws

@@ -6,8 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import top.wilsonlv.jaguar.oauth2.model.SecurityUser;
 import top.wilsonlv.jaguar.commons.web.util.WebUtil;
+import top.wilsonlv.jaguar.oauth2.model.SecurityUser;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;

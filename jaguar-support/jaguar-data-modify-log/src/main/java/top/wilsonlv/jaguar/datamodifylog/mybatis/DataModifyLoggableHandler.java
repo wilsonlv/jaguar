@@ -2,11 +2,11 @@ package top.wilsonlv.jaguar.datamodifylog.mybatis;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
-import top.wilsonlv.jaguar.oauth2.model.SecurityUser;
-import top.wilsonlv.jaguar.oauth2.util.SecurityUtil;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import top.wilsonlv.jaguar.datamodifylog.DataModifyLogConstant;
+import top.wilsonlv.jaguar.oauth2.model.SecurityUser;
+import top.wilsonlv.jaguar.oauth2.util.SecurityUtil;
 
 import java.time.LocalDateTime;
 

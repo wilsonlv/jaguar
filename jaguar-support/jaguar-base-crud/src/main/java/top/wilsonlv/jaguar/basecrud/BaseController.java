@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
-import top.wilsonlv.jaguar.commons.web.response.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import top.wilsonlv.jaguar.commons.web.response.JsonResult;
 
 /**
  * 控制器基类

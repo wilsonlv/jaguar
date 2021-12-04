@@ -1,11 +1,11 @@
 package top.wilsonlv.jaguar.oauth2.component;
 
 import org.springframework.http.MediaType;
-import top.wilsonlv.jaguar.commons.web.response.JsonResult;
-import top.wilsonlv.jaguar.commons.web.response.ResultCode;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
+import top.wilsonlv.jaguar.commons.web.response.JsonResult;
+import top.wilsonlv.jaguar.commons.web.response.ResultCode;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

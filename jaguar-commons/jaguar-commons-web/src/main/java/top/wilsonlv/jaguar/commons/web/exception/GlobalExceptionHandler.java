@@ -1,8 +1,6 @@
 package top.wilsonlv.jaguar.commons.web.exception;
 
 import lombok.extern.slf4j.Slf4j;
-import top.wilsonlv.jaguar.commons.web.response.JsonResult;
-import top.wilsonlv.jaguar.commons.web.response.ResultCode;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.ObjectError;
@@ -14,6 +12,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import top.wilsonlv.jaguar.commons.web.response.JsonResult;
+import top.wilsonlv.jaguar.commons.web.response.ResultCode;
 
 import javax.validation.ConstraintViolationException;
 

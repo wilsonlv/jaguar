@@ -10,12 +10,12 @@ import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import top.wilsonlv.jaguar.oauth2.model.SecurityUser;
-import top.wilsonlv.jaguar.oauth2.util.SecurityUtil;
 import top.wilsonlv.jaguar.datamodifylog.DataModifyLogConstant;
 import top.wilsonlv.jaguar.datamodifylog.entity.DataModifyLog;
 import top.wilsonlv.jaguar.datamodifylog.entity.DataModifyLoggable;
 import top.wilsonlv.jaguar.datamodifylog.mapper.DataModifyLogMapper;
+import top.wilsonlv.jaguar.oauth2.model.SecurityUser;
+import top.wilsonlv.jaguar.oauth2.util.SecurityUtil;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
