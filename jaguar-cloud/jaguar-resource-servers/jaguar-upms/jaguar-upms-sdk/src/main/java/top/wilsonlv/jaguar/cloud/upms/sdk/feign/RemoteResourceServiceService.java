@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import top.wilsonlv.jaguar.cloud.services.JaguarServerName;
 import top.wilsonlv.jaguar.cloud.services.JaguarServiceName;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.ResourceServerVO;
-import top.wilsonlv.jaguar.cloud.upms.sdk.vo.UserVO;
 import top.wilsonlv.jaguar.commons.web.response.JsonResult;
 
 

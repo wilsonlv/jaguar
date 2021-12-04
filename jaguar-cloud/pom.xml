@@ -19,7 +19,6 @@
         <module>jaguar-register</module>
         <module>jaguar-resource-servers</module>
         <module>jaguar-sentinel</module>
-        <module>jaguar-services</module>
     </modules>
 
 </project>

@@ -6,9 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import top.wilsonlv.jaguar.commons.web.base.BaseVO;
 
-import javax.validation.constraints.NotBlank;
-
-
 /**
  * <p>
  * 资源服务器
