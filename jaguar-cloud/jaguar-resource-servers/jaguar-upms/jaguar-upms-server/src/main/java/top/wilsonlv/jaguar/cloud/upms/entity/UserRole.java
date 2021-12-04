@@ -19,7 +19,7 @@ import top.wilsonlv.jaguar.basecrud.BaseModel;
 @EqualsAndHashCode(callSuper = true)
 public class UserRole extends BaseModel {
 
-    /**n
+    /**
      * 用户ID
      */
     @TableField("user_id")

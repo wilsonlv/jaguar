@@ -16,7 +16,8 @@
         <file>${LOG_HOME}/${project.artifactId}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!--日志文件输出的文件名-->
-            <FileNamePattern>${LOG_HOME}/${project.artifactId}/%d{yyyy-MM-dd, aux}/%d{yyyy-MM-dd-HH}.%i.log</FileNamePattern>
+            <FileNamePattern>${LOG_HOME}/${project.artifactId}/%d{yyyy-MM-dd, aux}/%d{yyyy-MM-dd-HH}.%i.log
+            </FileNamePattern>
             <MaxHistory>336</MaxHistory>
             <!--用来指定日志文件的上限大小，那么到了这个值，就会删除旧的日志-->
             <totalSizeCap>50GB</totalSizeCap>

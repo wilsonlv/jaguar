@@ -56,7 +56,7 @@ public class ResourceServerConfigurer extends ResourceServerConfigurerAdapter {
                 .antMatchers("/swagger-resources", "/swagger-resources/**", "/v2/**").permitAll()
                 .antMatchers("/druid/**", "/error").permitAll();
 
-        if (jaguarSecurityProperties.getScopeUrls() != null){
+        if (jaguarSecurityProperties.getScopeUrls() != null) {
             for (Map.Entry<String, String> entry : jaguarSecurityProperties.getScopeUrls().entrySet()) {
                 registry.antMatchers(entry.getKey()).access("#oauth2.hasScope('" + entry.getValue() + "')");
             }

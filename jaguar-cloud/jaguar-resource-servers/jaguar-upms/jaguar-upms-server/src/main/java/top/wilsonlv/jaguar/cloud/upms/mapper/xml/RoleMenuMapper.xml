@@ -4,7 +4,7 @@
 
     <select id="listPermissionsByRoleIds" resultType="java.lang.String">
         select
-            distinct m.menu_permission
+        distinct m.menu_permission
         from jaguar_cloud_upms_role_menu rm
         inner join jaguar_cloud_upms_menu m on rm.menu_id = m.id_
         where rm.deleted_ = 0

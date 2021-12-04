@@ -27,7 +27,7 @@ public class ActuatorSecurityConfigurer extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry =
                 http.antMatcher("/actuator").antMatcher("/actuator/**")
-                .authorizeRequests();
+                        .authorizeRequests();
 
         if (clientProperties.getAdminUrl().length > 0) {
             String access = MonitorUitl.getAccessString(clientProperties.getAdminUrl());

@@ -12,37 +12,37 @@ import top.wilsonlv.jaguar.cloud.websocket.sdk.enums.WebsocketPage;
 @Data
 public class WebsocketMessage {
 
-	private WebsocketMessageType websocketMessageType;
+    private WebsocketMessageType websocketMessageType;
 
-	private WebsocketPage websocketPage;
+    private WebsocketPage websocketPage;
 
-	private JSONObject data;
+    private JSONObject data;
 
-	public WebsocketMessage() {
-	}
+    public WebsocketMessage() {
+    }
 
-	public WebsocketMessage(WebsocketMessageType websocketMessageType) {
-		this.websocketMessageType = websocketMessageType;
-	}
+    public WebsocketMessage(WebsocketMessageType websocketMessageType) {
+        this.websocketMessageType = websocketMessageType;
+    }
 
-	public WebsocketMessage(WebsocketMessageType websocketMessageType, JSONObject data) {
-		this.websocketMessageType = websocketMessageType;
-		this.data = data;
-	}
+    public WebsocketMessage(WebsocketMessageType websocketMessageType, JSONObject data) {
+        this.websocketMessageType = websocketMessageType;
+        this.data = data;
+    }
 
-	public WebsocketMessage(WebsocketMessageType websocketMessageType, WebsocketPage websocketPage) {
-		this.websocketMessageType = websocketMessageType;
-		this.websocketPage = websocketPage;
-	}
+    public WebsocketMessage(WebsocketMessageType websocketMessageType, WebsocketPage websocketPage) {
+        this.websocketMessageType = websocketMessageType;
+        this.websocketPage = websocketPage;
+    }
 
-	public WebsocketMessage(WebsocketMessageType websocketMessageType, WebsocketPage websocketPage, JSONObject data) {
-		this.websocketMessageType = websocketMessageType;
-		this.websocketPage = websocketPage;
-		this.data = data;
-	}
+    public WebsocketMessage(WebsocketMessageType websocketMessageType, WebsocketPage websocketPage, JSONObject data) {
+        this.websocketMessageType = websocketMessageType;
+        this.websocketPage = websocketPage;
+        this.data = data;
+    }
 
-	public String toJsonString() {
-		return JSONObject.toJSONString(this);
-	}
+    public String toJsonString() {
+        return JSONObject.toJSONString(this);
+    }
 
 }
