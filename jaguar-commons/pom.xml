@@ -35,16 +35,4 @@
         <module>jaguar-commons-web</module>
     </modules>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>top.wilsonlv</groupId>
-                <artifactId>jaguar-commons-bom</artifactId>
-                <version>${jaguar.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
 </project>

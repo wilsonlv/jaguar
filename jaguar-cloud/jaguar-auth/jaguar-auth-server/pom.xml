@@ -11,6 +11,10 @@
 
     <artifactId>jaguar-auth-server</artifactId>
 
+    <properties>
+        <maven.install.skip>true</maven.install.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.session</groupId>

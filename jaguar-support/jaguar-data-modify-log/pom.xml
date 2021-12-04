@@ -15,12 +15,10 @@
         <dependency>
             <groupId>top.wilsonlv</groupId>
             <artifactId>jaguar-commons-base-crud</artifactId>
-            <version>${jaguar.version}</version>
         </dependency>
         <dependency>
             <groupId>top.wilsonlv</groupId>
             <artifactId>jaguar-commons-oauth2</artifactId>
-            <version>${jaguar.version}</version>
         </dependency>
 
         <dependency>

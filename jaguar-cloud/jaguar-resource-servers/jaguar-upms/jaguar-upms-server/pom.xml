@@ -11,6 +11,10 @@
 
     <artifactId>jaguar-upms-server</artifactId>
 
+    <properties>
+        <maven.install.skip>true</maven.install.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>top.wilsonlv</groupId>

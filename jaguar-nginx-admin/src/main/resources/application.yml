@@ -1,4 +1,5 @@
 server:
+  port: 10088
   servlet:
     session:
       timeout: 7200
@@ -7,6 +8,8 @@ server:
       max: 5
 
 spring:
+  application:
+    name: jaguar-nginx-admin
   jackson:
     default-property-inclusion: NON_NULL
   jmx:

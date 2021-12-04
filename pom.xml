@@ -9,10 +9,10 @@
     <packaging>pom</packaging>
     <version>master</version>
     <modules>
-<!--        <module>jaguar-cloud</module>-->
-<!--        <module>jaguar-codegen</module>-->
+        <module>jaguar-cloud</module>
+        <module>jaguar-codegen</module>
         <module>jaguar-commons</module>
-<!--        <module>jaguar-nginx-admin</module>-->
+        <module>jaguar-nginx-admin</module>
         <module>jaguar-support</module>
         <module>jaguar-test</module>
     </modules>
@@ -57,6 +57,14 @@
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
                 <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>top.wilsonlv</groupId>
+                <artifactId>jaguar-commons-bom</artifactId>
+                <version>${jaguar.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

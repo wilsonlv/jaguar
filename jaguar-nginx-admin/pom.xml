@@ -10,11 +10,11 @@
 
 	<artifactId>jaguar-nginx-admin</artifactId>
 
+	<properties>
+		<maven.install.skip>true</maven.install.skip>
+	</properties>
+
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-bootstrap</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>top.wilsonlv</groupId>
 			<artifactId>jaguar-commons-mybatis-plus</artifactId>
