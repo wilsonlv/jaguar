@@ -14,8 +14,6 @@
 
     <modules>
         <module>jaguar-handler-log</module>
-        <module>jaguar-job</module>
-        <module>jaguar-services</module>
         <module>jaguar-upms</module>
         <module>jaguar-websocket</module>
     </modules>

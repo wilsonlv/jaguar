@@ -23,8 +23,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .antMatchers("*.png")
                 .antMatchers("*.ico")
                 .antMatchers("*.ttf")
-                .antMatchers("*.woff")
-                .antMatchers("/swagger-ui/**");
+                .antMatchers("*.woff");
     }
 
 }
