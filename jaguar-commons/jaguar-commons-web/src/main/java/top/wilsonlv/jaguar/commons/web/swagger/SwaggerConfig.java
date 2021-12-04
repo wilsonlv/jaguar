@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RequestParameterBuilder;
 import springfox.documentation.service.ApiInfo;
@@ -21,6 +22,7 @@ import java.util.List;
  * @author lws
  * @since 2019/4/22.
  */
+@Profile("dev")
 @Configuration
 @EnableSwagger2
 @RequiredArgsConstructor
