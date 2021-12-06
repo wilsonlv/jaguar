@@ -59,9 +59,8 @@ public class ResourceServerController extends BaseController<ResourceServer, Res
     @ApiOperation(value = "新增资源服务")
     @PreAuthorize("hasAuthority('资源服务管理')")
     @PostMapping
-    public JsonResult<Void> create(@RequestBody @Valid ResourceServerCreateDTO resourceServer) {
-        service.create(resourceServer);
-        return success();
+    public JsonResult<String> create(@RequestBody @Valid ResourceServerCreateDTO resourceServer) {
+        return success(service.create(resourceServer));
     }
 
     @ApiOperation(value = "修改资源服务")
