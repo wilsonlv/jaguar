@@ -108,8 +108,6 @@ public class OauthClientService extends AbstractRedisCacheService<OauthClient, C
     @Klock(name = LockNameConstant.OAUTH_CLIENT_CREATE_MODIFY_LOCK)
     @Transactional
     public void modify(OauthClientModifyDTO modifyDTO) {
-        this.checkBuiltIn(modifyDTO.getId());
-
         OauthClient byClientId = this.getByClientId(modifyDTO.getClientId());
         Assert.duplicate(byClientId, modifyDTO, "客户端ID");
 
