@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import top.wilsonlv.jaguar.commons.web.base.BaseDTO;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 
 /**
@@ -30,11 +31,11 @@ public class ResourceServerCreateDTO extends BaseDTO {
     @ApiModelProperty(value = "服务名称", required = true)
     private String serverName;
 
-    @ApiModelProperty(value = "服务网址")
-    private String serverUrl;
-
-    @NotBlank(message = "是否展示菜单为非空")
+    @NotNull(message = "是否展示菜单为非空")
     @ApiModelProperty(value = "是否展示菜单", required = true)
     private Boolean serverMenu;
+
+    @ApiModelProperty(value = "服务网址")
+    private String serverUrl;
 
 }
