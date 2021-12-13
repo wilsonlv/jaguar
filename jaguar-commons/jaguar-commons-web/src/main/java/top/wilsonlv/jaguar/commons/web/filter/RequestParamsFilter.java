@@ -4,6 +4,7 @@ import cn.hutool.core.date.DatePattern;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import top.wilsonlv.jaguar.commons.web.util.WebUtil;
 
 import javax.servlet.*;
@@ -39,7 +40,8 @@ public class RequestParamsFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         String requestUri = request.getRequestURI();
-        if (requestUri.startsWith(ACTUATOR) || requestUri.endsWith(ICO)
+        if (request.getMethod().equals(HttpMethod.OPTIONS.name())
+                || requestUri.startsWith(ACTUATOR) || requestUri.endsWith(ICO)
                 || requestUri.endsWith(CSS) || requestUri.endsWith(JS) || requestUri.endsWith(HTML)) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
