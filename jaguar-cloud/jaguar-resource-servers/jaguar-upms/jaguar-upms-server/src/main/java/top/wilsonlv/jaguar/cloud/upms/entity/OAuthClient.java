@@ -15,7 +15,7 @@ import top.wilsonlv.jaguar.datamodifylog.entity.DataModifyLoggable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("jaguar_cloud_upms_oauth_client")
-public class OauthClient extends DataModifyLoggable {
+public class OAuthClient extends DataModifyLoggable {
 
     /**
      * 客户端ID
@@ -33,10 +33,20 @@ public class OauthClient extends DataModifyLoggable {
     @TableField("resource_ids")
     private String resourceIds;
     /**
+     * 是否第三方
+     */
+    @TableField("third_party")
+    private Boolean thirdParty;
+    /**
      * 授权类型（authorization_code,password,refresh_token,implicit,client_credentials）
      */
     @TableField("authorized_grant_types")
     private String authorizedGrantTypes;
+    /**
+     * 重定向URI
+     */
+    @TableField("registered_redirect_uri")
+    private String registeredRedirectUri;
     /**
      * 权限范围
      */
@@ -57,11 +67,6 @@ public class OauthClient extends DataModifyLoggable {
      */
     @TableField("refresh_token_validity_seconds")
     private Integer refreshTokenValiditySeconds;
-    /**
-     * 是否需要验证码
-     */
-    @TableField("captcha_")
-    private Boolean captcha;
     /**
      * 客户端类型
      */

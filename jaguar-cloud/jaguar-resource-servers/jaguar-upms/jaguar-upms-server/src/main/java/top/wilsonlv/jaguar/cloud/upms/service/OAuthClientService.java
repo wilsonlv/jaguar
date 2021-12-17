@@ -13,19 +13,18 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import top.wilsonlv.jaguar.basecrud.Assert;
 import top.wilsonlv.jaguar.cloud.upms.constant.LockNameConstant;
-import top.wilsonlv.jaguar.cloud.upms.controller.dto.OauthClientCreateDTO;
-import top.wilsonlv.jaguar.cloud.upms.controller.dto.OauthClientModifyDTO;
-import top.wilsonlv.jaguar.cloud.upms.entity.OauthClient;
+import top.wilsonlv.jaguar.cloud.upms.controller.dto.OAuthClientCreateDTO;
+import top.wilsonlv.jaguar.cloud.upms.controller.dto.OAuthClientModifyDTO;
+import top.wilsonlv.jaguar.cloud.upms.entity.OAuthClient;
 import top.wilsonlv.jaguar.cloud.upms.entity.ResourceServer;
-import top.wilsonlv.jaguar.cloud.upms.mapper.ClientMapper;
+import top.wilsonlv.jaguar.cloud.upms.mapper.OAuthClientMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.OauthClientVO;
-import top.wilsonlv.jaguar.cloud.upms.util.OauthClientUtil;
+import top.wilsonlv.jaguar.cloud.upms.util.OAuthClientUtil;
 import top.wilsonlv.jaguar.commons.data.encryption.util.EncryptionUtil;
 import top.wilsonlv.jaguar.oauth2.Oauth2Constant;
 import top.wilsonlv.jaguar.rediscache.AbstractRedisCacheService;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -35,7 +34,7 @@ import java.util.Set;
  */
 @Service
 @RequiredArgsConstructor
-public class OauthClientService extends AbstractRedisCacheService<OauthClient, ClientMapper> implements InitializingBean {
+public class OAuthClientService extends AbstractRedisCacheService<OAuthClient, OAuthClientMapper> implements InitializingBean {
 
     private final RedisTemplate<String, Serializable> redisTemplate;
 
@@ -50,17 +49,16 @@ public class OauthClientService extends AbstractRedisCacheService<OauthClient, C
             redisTemplate.delete(keys);
         }
 
-        List<OauthClient> oauthClients = this.list(Wrappers.emptyWrapper());
-        for (OauthClient oauthClient : oauthClients) {
+        List<OAuthClient> oauthClients = this.list(Wrappers.lambdaQuery(OAuthClient.class)
+                .eq(OAuthClient::getEnable, true));
+        for (OAuthClient oauthClient : oauthClients) {
             this.updateCache(oauthClient);
         }
     }
 
-    public void updateCache(OauthClient oauthClient) {
-        OauthClientVO oauthClientVO = OauthClientUtil.entity2VO(oauthClient);
-        oauthClientVO.setRegisteredRedirectUri(new HashSet<>());
-
-        if (oauthClientVO.getResourceIds() != null) {
+    public void updateCache(OAuthClient oauthClient) {
+        OauthClientVO oauthClientVO = OAuthClientUtil.entity2VO(oauthClient);
+        if (!oauthClient.getThirdParty()) {
             for (String resourceId : oauthClientVO.getResourceIds()) {
                 ResourceServer resourceServer = resourceServerService.getByServerId(resourceId);
                 if (resourceServer.getServerMenu()) {
@@ -68,7 +66,6 @@ public class OauthClientService extends AbstractRedisCacheService<OauthClient, C
                 }
             }
         }
-
         String key = Oauth2Constant.CLIENT_CACHE_KEY_PREFIX + oauthClient.getClientId();
         redisTemplate.boundValueOps(key).set(oauthClientVO);
     }
@@ -78,23 +75,23 @@ public class OauthClientService extends AbstractRedisCacheService<OauthClient, C
         redisTemplate.delete(key);
     }
 
-    public OauthClient getByClientId(String clientId) {
-        return this.unique(Wrappers.lambdaQuery(OauthClient.class)
-                .eq(OauthClient::getClientId, clientId));
+    public OAuthClient getByClientId(String clientId) {
+        return this.unique(Wrappers.lambdaQuery(OAuthClient.class)
+                .eq(OAuthClient::getClientId, clientId));
     }
 
 
     public OauthClientVO getDetail(Long id) {
-        OauthClient oauthClient = this.getCache(id);
+        OAuthClient oauthClient = this.getCache(id);
         return oauthClient.toVo(OauthClientVO.class);
     }
 
-    public Page<OauthClientVO> queryOauthClient(Page<OauthClient> page, LambdaQueryWrapper<OauthClient> wrapper) {
+    public Page<OauthClientVO> queryOauthClient(Page<OAuthClient> page, LambdaQueryWrapper<OAuthClient> wrapper) {
         page = this.query(page, wrapper);
         Page<OauthClientVO> voPage = this.toVoPage(page);
 
-        for (OauthClient oauthClient : page.getRecords()) {
-            OauthClientVO oauthClientVO = OauthClientUtil.entity2VO(oauthClient);
+        for (OAuthClient oauthClient : page.getRecords()) {
+            OauthClientVO oauthClientVO = OAuthClientUtil.entity2VO(oauthClient);
             voPage.getRecords().add(oauthClientVO);
         }
         return voPage;
@@ -102,30 +99,29 @@ public class OauthClientService extends AbstractRedisCacheService<OauthClient, C
 
     @Klock(name = LockNameConstant.OAUTH_CLIENT_CREATE_MODIFY_LOCK)
     @Transactional
-    public String create(OauthClientCreateDTO createDTO) {
-        OauthClient byClientId = this.getByClientId(createDTO.getClientId());
+    public String create(OAuthClientCreateDTO createDTO) {
+        OAuthClient byClientId = this.getByClientId(createDTO.getClientId());
         Assert.duplicate(byClientId, "客户端ID");
 
         String randomPassword = EncryptionUtil.randomPassword(8, 8, 8);
         String encode = passwordEncoder.encode(randomPassword);
 
-        OauthClient oauthClient = OauthClientUtil.dto2Entity(createDTO);
+        OAuthClient oauthClient = OAuthClientUtil.dto2Entity(createDTO);
         oauthClient.setClientSecret(encode);
-        oauthClient.setDeleted(false);
         this.insert(oauthClient);
 
-        this.afterTransactionCommit(this::updateCache, oauthClient);
+        this.afterTransactionCommit(this::updateCache, getById(oauthClient.getId()));
 
         return randomPassword;
     }
 
     @Klock(name = LockNameConstant.OAUTH_CLIENT_CREATE_MODIFY_LOCK)
     @Transactional
-    public void modify(OauthClientModifyDTO modifyDTO) {
-        OauthClient byClientId = this.getByClientId(modifyDTO.getClientId());
+    public void modify(OAuthClientModifyDTO modifyDTO) {
+        OAuthClient byClientId = this.getByClientId(modifyDTO.getClientId());
         Assert.duplicate(byClientId, modifyDTO, "客户端ID");
 
-        OauthClient oauthClient = OauthClientUtil.dto2Entity(modifyDTO);
+        OAuthClient oauthClient = OAuthClientUtil.dto2Entity(modifyDTO);
         oauthClient.setId(modifyDTO.getId());
         this.updateById(oauthClient);
 
@@ -141,7 +137,7 @@ public class OauthClientService extends AbstractRedisCacheService<OauthClient, C
         String randomPassword = EncryptionUtil.randomPassword(8, 8, 8);
         String encode = passwordEncoder.encode(randomPassword);
 
-        OauthClient oauthClient = new OauthClient();
+        OAuthClient oauthClient = new OAuthClient();
         oauthClient.setId(id);
         oauthClient.setClientSecret(encode);
         this.updateById(oauthClient);

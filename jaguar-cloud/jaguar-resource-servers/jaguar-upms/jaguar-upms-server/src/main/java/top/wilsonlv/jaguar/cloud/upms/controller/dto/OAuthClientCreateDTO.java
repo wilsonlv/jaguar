@@ -20,11 +20,15 @@ import java.util.Set;
 @Data
 @ApiModel
 @EqualsAndHashCode(callSuper = true)
-public class OauthClientCreateDTO extends BaseDTO implements OauthClientBaseDTO {
+public class OAuthClientCreateDTO extends BaseDTO implements OAuthClientBaseDTO {
 
     @NotBlank(message = "客户端ID为非空")
     @ApiModelProperty(value = "客户端ID", required = true)
     private String clientId;
+
+    @NotNull(message = "是否第三方为非空")
+    @ApiModelProperty(value = "是否第三方", required = true)
+    private Boolean thirdParty;
 
     @ApiModelProperty(value = "授权类型")
     private Set<String> authorizedGrantTypes;
@@ -58,10 +62,6 @@ public class OauthClientCreateDTO extends BaseDTO implements OauthClientBaseDTO 
     @NotNull(message = "用户类型为非空")
     @ApiModelProperty(value = "用户类型", required = true)
     private UserType userType;
-
-    @NotNull(message = "是否需要验证码为非空")
-    @ApiModelProperty(value = "是否需要验证码", required = true)
-    private Boolean captcha;
 
     @NotNull(message = "是否启用为非空")
     @ApiModelProperty(value = "是否启用", required = true)

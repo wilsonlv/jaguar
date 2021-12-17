@@ -13,27 +13,25 @@ import java.util.Map;
  * @since 2021/11/5
  */
 @Data
-public class OauthClientAdditionalInfo implements Serializable {
+public class OAuthClientAdditionalInfo implements Serializable {
 
-    private Boolean builtIn;
-
-    private Boolean enable;
-
-    private Boolean captcha;
+    private Boolean thirdParty;
 
     private ClientType clientType;
 
     private UserType userType;
 
-    public String toJSONString() {
+    private Boolean enable;
+
+    public String toJsonString() {
         return JSONObject.toJSONString(this);
     }
 
-    public static OauthClientAdditionalInfo parse(String additionalInformation) {
-        return JSONObject.parseObject(additionalInformation, OauthClientAdditionalInfo.class);
+    public static OAuthClientAdditionalInfo parse(String additionalInformation) {
+        return JSONObject.parseObject(additionalInformation, OAuthClientAdditionalInfo.class);
     }
 
-    public static OauthClientAdditionalInfo parse(Map<String, Object> additionalInformation) {
+    public static OAuthClientAdditionalInfo parse(Map<String, Object> additionalInformation) {
         return parse(JSONObject.toJSONString(additionalInformation));
     }
 

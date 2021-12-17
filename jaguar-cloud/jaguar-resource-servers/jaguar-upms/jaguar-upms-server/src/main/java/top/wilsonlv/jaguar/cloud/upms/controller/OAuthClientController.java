@@ -11,14 +11,14 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 import top.wilsonlv.jaguar.basecrud.BaseController;
-import top.wilsonlv.jaguar.cloud.upms.controller.dto.OauthClientCreateDTO;
-import top.wilsonlv.jaguar.cloud.upms.controller.dto.OauthClientModifyDTO;
-import top.wilsonlv.jaguar.cloud.upms.entity.OauthClient;
-import top.wilsonlv.jaguar.cloud.upms.mapper.ClientMapper;
+import top.wilsonlv.jaguar.cloud.upms.controller.dto.OAuthClientCreateDTO;
+import top.wilsonlv.jaguar.cloud.upms.controller.dto.OAuthClientModifyDTO;
+import top.wilsonlv.jaguar.cloud.upms.entity.OAuthClient;
+import top.wilsonlv.jaguar.cloud.upms.mapper.OAuthClientMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.enums.ClientType;
 import top.wilsonlv.jaguar.cloud.upms.sdk.enums.UserType;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.OauthClientVO;
-import top.wilsonlv.jaguar.cloud.upms.service.OauthClientService;
+import top.wilsonlv.jaguar.cloud.upms.service.OAuthClientService;
 import top.wilsonlv.jaguar.commons.mybatisplus.extension.JaguarLambdaQueryWrapper;
 import top.wilsonlv.jaguar.commons.web.response.JsonResult;
 import top.wilsonlv.jaguar.oauth2.properties.JaguarSecurityProperties;
@@ -36,7 +36,7 @@ import java.util.Collections;
 @RequestMapping("/admin/oauthClient")
 @Api(tags = "oauth2客户端管理")
 @RequiredArgsConstructor
-public class OauthClientController extends BaseController<OauthClient, ClientMapper, OauthClientService> {
+public class OAuthClientController extends BaseController<OAuthClient, OAuthClientMapper, OAuthClientService> {
 
     private final JaguarSecurityProperties jaguarSecurityProperties;
 
@@ -44,15 +44,15 @@ public class OauthClientController extends BaseController<OauthClient, ClientMap
     @PreAuthorize("hasAuthority('oauth2客户端管理')")
     @GetMapping(value = "/page")
     public JsonResult<Page<OauthClientVO>> page(
-            @ApiIgnore Page<OauthClient> page,
+            @ApiIgnore Page<OAuthClient> page,
             @ApiParam(value = "模糊用户信息") @RequestParam(required = false) String fuzzyClientId,
             @ApiParam(value = "客户端类型") @RequestParam(required = false) ClientType clientType,
             @ApiParam(value = "用户类型") @RequestParam(required = false) UserType userType) {
 
-        LambdaQueryWrapper<OauthClient> wrapper = JaguarLambdaQueryWrapper.<OauthClient>newInstance()
-                .like(OauthClient::getClientId, fuzzyClientId)
-                .eq(OauthClient::getClientType, clientType)
-                .eq(OauthClient::getUserType, userType);
+        LambdaQueryWrapper<OAuthClient> wrapper = JaguarLambdaQueryWrapper.<OAuthClient>newInstance()
+                .like(OAuthClient::getClientId, fuzzyClientId)
+                .eq(OAuthClient::getClientType, clientType)
+                .eq(OAuthClient::getUserType, userType);
         return success(service.queryOauthClient(page, wrapper));
     }
 
@@ -66,14 +66,14 @@ public class OauthClientController extends BaseController<OauthClient, ClientMap
     @ApiOperation(value = "新增oauth2客户端")
     @PreAuthorize("hasAuthority('oauth2客户端管理')")
     @PostMapping
-    public JsonResult<String> create(@RequestBody @Valid OauthClientCreateDTO oauthClient) {
+    public JsonResult<String> create(@RequestBody @Valid OAuthClientCreateDTO oauthClient) {
         return success(service.create(oauthClient));
     }
 
     @ApiOperation(value = "修改oauth2客户端")
     @PreAuthorize("hasAuthority('oauth2客户端管理')")
     @PutMapping
-    public JsonResult<Void> modify(@RequestBody @Valid OauthClientModifyDTO oauthClient) {
+    public JsonResult<Void> modify(@RequestBody @Valid OAuthClientModifyDTO oauthClient) {
         service.modify(oauthClient);
         return success();
     }

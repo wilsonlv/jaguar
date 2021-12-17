@@ -17,6 +17,6 @@ public enum UserType {
     /**
      *
      */
-    USER;
+    USER
 
 }

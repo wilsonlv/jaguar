@@ -2,7 +2,7 @@ package top.wilsonlv.jaguar.cloud.upms.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import top.wilsonlv.jaguar.basecrud.BaseMapper;
-import top.wilsonlv.jaguar.cloud.upms.entity.OauthClient;
+import top.wilsonlv.jaguar.cloud.upms.entity.OAuthClient;
 
 /**
  * <p>
@@ -13,6 +13,6 @@ import top.wilsonlv.jaguar.cloud.upms.entity.OauthClient;
  * @since 2021-07-27
  */
 @Mapper
-public interface ClientMapper extends BaseMapper<OauthClient> {
+public interface OAuthClientMapper extends BaseMapper<OAuthClient> {
 
 }

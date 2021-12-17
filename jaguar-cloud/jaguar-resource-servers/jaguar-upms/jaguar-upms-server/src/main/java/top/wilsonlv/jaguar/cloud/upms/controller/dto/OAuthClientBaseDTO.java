@@ -9,11 +9,25 @@ import java.util.Set;
  * @author lvws
  * @since 2021/11/9
  */
-public interface OauthClientBaseDTO {
+public interface OAuthClientBaseDTO {
 
+    /**
+     * 获取客户端ID
+     *
+     * @return clientId
+     */
     String getClientId();
 
+    /**
+     * 设置客户端ID
+     *
+     * @param clientId clientId
+     */
     void setClientId(String clientId);
+
+    Boolean getThirdParty();
+
+    void setThirdParty(Boolean thirdParty);
 
     Set<String> getAuthorizedGrantTypes();
 
@@ -43,10 +57,6 @@ public interface OauthClientBaseDTO {
 
     void setRegisteredRedirectUri(Set<String> registeredRedirectUri);
 
-    Boolean getEnable();
-
-    void setEnable(Boolean enable);
-
     ClientType getClientType();
 
     void setClientType(ClientType clientType);
@@ -55,8 +65,8 @@ public interface OauthClientBaseDTO {
 
     void setUserType(UserType userType);
 
-    Boolean getCaptcha();
+    Boolean getEnable();
 
-    void setCaptcha(Boolean captcha);
+    void setEnable(Boolean enable);
 
 }
