@@ -1,4 +1,4 @@
-package top.wilsonlv.jaguar.cloud.auth.component.oauth;
+package top.wilsonlv.jaguar.cloud.auth.component;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ import java.util.UUID;
 @Primary
 @Component
 @RequiredArgsConstructor
-public class ServerTokenService implements AuthorizationServerTokenServices {
+public class AuthServerTokenServices implements AuthorizationServerTokenServices {
 
 //    private final RemoteLoginHandler remoteLoginHandler;
 

@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/oauthRedirectPage")
-@SessionAttributes({OauthRedirectPageApi.AUTHORIZATION_REQUEST_ATTR_NAME, OauthRedirectPageApi.ORIGINAL_AUTHORIZATION_REQUEST_ATTR_NAME})
-public class OauthRedirectPageApi {
+@SessionAttributes({OAuthRedirectPageApi.AUTHORIZATION_REQUEST_ATTR_NAME, OAuthRedirectPageApi.ORIGINAL_AUTHORIZATION_REQUEST_ATTR_NAME})
+public class OAuthRedirectPageApi {
 
     static final String AUTHORIZATION_REQUEST_ATTR_NAME = "authorizationRequest";
 

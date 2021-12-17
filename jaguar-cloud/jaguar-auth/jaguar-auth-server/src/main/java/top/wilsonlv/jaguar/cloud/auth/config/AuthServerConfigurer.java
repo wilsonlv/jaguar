@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import top.wilsonlv.jaguar.cloud.auth.component.oauth.ServerTokenService;
+import top.wilsonlv.jaguar.cloud.auth.component.AuthServerTokenServices;
 import top.wilsonlv.jaguar.cloud.upms.sdk.component.JaguarUserDetailsServiceImpl;
 import top.wilsonlv.jaguar.oauth2.component.AuthenticationExceptionHandler;
 import top.wilsonlv.jaguar.oauth2.component.RedisClientDetailsServiceImpl;
@@ -20,9 +20,9 @@ import top.wilsonlv.jaguar.oauth2.component.RedisClientDetailsServiceImpl;
 @Configuration
 @RequiredArgsConstructor
 @EnableAuthorizationServer
-public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+public class AuthServerConfigurer extends AuthorizationServerConfigurerAdapter {
 
-    private final ServerTokenService tokenServices;
+    private final AuthServerTokenServices tokenServices;
 
     private final AuthenticationManager authenticationManager;
 

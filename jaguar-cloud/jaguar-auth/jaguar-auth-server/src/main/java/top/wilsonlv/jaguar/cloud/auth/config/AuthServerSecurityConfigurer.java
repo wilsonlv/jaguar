@@ -10,9 +10,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import top.wilsonlv.jaguar.cloud.auth.component.CaptchaFilter;
-import top.wilsonlv.jaguar.cloud.auth.component.security.LoginFailureHandler;
-import top.wilsonlv.jaguar.cloud.auth.component.security.LoginSuccessHandler;
-import top.wilsonlv.jaguar.cloud.auth.component.security.LogoutSuccessHandler;
+import top.wilsonlv.jaguar.cloud.auth.component.LoginFailureHandler;
+import top.wilsonlv.jaguar.cloud.auth.component.LoginSuccessHandler;
+import top.wilsonlv.jaguar.cloud.auth.component.LogoutSuccessHandler;
 import top.wilsonlv.jaguar.oauth2.component.AuthenticationExceptionHandler;
 import top.wilsonlv.jaguar.oauth2.component.JaguarAccessDeniedHandler;
 
@@ -23,7 +23,7 @@ import top.wilsonlv.jaguar.oauth2.component.JaguarAccessDeniedHandler;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class AuthWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
+public class AuthServerSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     private final CaptchaFilter captchaFilter;
 

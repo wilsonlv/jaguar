@@ -6,12 +6,8 @@ import com.anji.captcha.service.CaptchaService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import top.wilsonlv.jaguar.oauth2.component.RedisClientDetailsServiceImpl;
 import top.wilsonlv.jaguar.commons.web.response.JsonResult;
 import top.wilsonlv.jaguar.commons.web.response.ResultCode;
 
@@ -21,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Map;
 
 /**
  * @author lvws
@@ -33,25 +28,12 @@ public class CaptchaFilter extends OncePerRequestFilter {
 
     private final CaptchaService captchaService;
 
-    private final RedisClientDetailsServiceImpl clientDetailsService;
-
-    private final static String OAUTH_TOKEN_PATH = "/oauth/token";
-
     private final static String SECURITY_LOGIN_PATH = "/login";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
             throws ServletException, IOException {
-
-        if (OAUTH_TOKEN_PATH.equals(request.getRequestURI())) {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            ClientDetails clientDetails = clientDetailsService.loadClientByClientId(authentication.getName());
-            Map<String, Object> additionalInformation = clientDetails.getAdditionalInformation();
-            Boolean isCaptcha = (Boolean) additionalInformation.get("captcha");
-            if (isCaptcha != null && isCaptcha) {
-                checkCaptcha(request, response, filterChain);
-            }
-        } else if (SECURITY_LOGIN_PATH.equals(request.getRequestURI())) {
+        if (SECURITY_LOGIN_PATH.equals(request.getRequestURI())) {
             checkCaptcha(request, response, filterChain);
         } else {
             filterChain.doFilter(request, response);
