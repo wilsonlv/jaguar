@@ -44,7 +44,8 @@ public class OauthClientModifyDTO extends BaseModifyDTO implements OauthClientBa
     @ApiModelProperty("自动授权")
     private Set<String> autoApproveScopes;
 
-    @ApiModelProperty("资源ID")
+    @NotEmpty(message = "资源ID为非空")
+    @ApiModelProperty(value = "资源ID", required = true)
     private Set<String> resourceIds;
 
     @ApiModelProperty("重定向URI")

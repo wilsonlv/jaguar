@@ -38,4 +38,8 @@ public class ResourceServerModifyDTO extends BaseModifyDTO {
     @ApiModelProperty(value = "服务网址")
     private String serverUrl;
 
+    @NotNull(message = "是否启用为非空")
+    @ApiModelProperty(value = "是否启用", required = true)
+    private Boolean serverEnable;
+
 }

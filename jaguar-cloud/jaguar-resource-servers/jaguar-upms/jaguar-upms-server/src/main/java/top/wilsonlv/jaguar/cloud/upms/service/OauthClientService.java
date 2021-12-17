@@ -16,15 +16,16 @@ import top.wilsonlv.jaguar.cloud.upms.constant.LockNameConstant;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.OauthClientCreateDTO;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.OauthClientModifyDTO;
 import top.wilsonlv.jaguar.cloud.upms.entity.OauthClient;
+import top.wilsonlv.jaguar.cloud.upms.entity.ResourceServer;
 import top.wilsonlv.jaguar.cloud.upms.mapper.ClientMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.OauthClientVO;
 import top.wilsonlv.jaguar.cloud.upms.util.OauthClientUtil;
 import top.wilsonlv.jaguar.commons.data.encryption.util.EncryptionUtil;
-import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 import top.wilsonlv.jaguar.oauth2.Oauth2Constant;
 import top.wilsonlv.jaguar.rediscache.AbstractRedisCacheService;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -40,6 +41,8 @@ public class OauthClientService extends AbstractRedisCacheService<OauthClient, C
 
     private final PasswordEncoder passwordEncoder;
 
+    private final ResourceServerService resourceServerService;
+
     @Override
     public void afterPropertiesSet() {
         Set<String> keys = redisTemplate.keys(Oauth2Constant.CLIENT_CACHE_KEY_PREFIX + "*");
@@ -54,8 +57,19 @@ public class OauthClientService extends AbstractRedisCacheService<OauthClient, C
     }
 
     public void updateCache(OauthClient oauthClient) {
-        String key = Oauth2Constant.CLIENT_CACHE_KEY_PREFIX + oauthClient.getClientId();
         OauthClientVO oauthClientVO = OauthClientUtil.entity2VO(oauthClient);
+        oauthClientVO.setRegisteredRedirectUri(new HashSet<>());
+
+        if (oauthClientVO.getResourceIds() != null) {
+            for (String resourceId : oauthClientVO.getResourceIds()) {
+                ResourceServer resourceServer = resourceServerService.getByServerId(resourceId);
+                if (resourceServer.getServerMenu()) {
+                    oauthClientVO.getRegisteredRedirectUri().add(resourceServer.getServerUrl());
+                }
+            }
+        }
+
+        String key = Oauth2Constant.CLIENT_CACHE_KEY_PREFIX + oauthClient.getClientId();
         redisTemplate.boundValueOps(key).set(oauthClientVO);
     }
 
@@ -139,17 +153,9 @@ public class OauthClientService extends AbstractRedisCacheService<OauthClient, C
 
     @Transactional
     public void checkAndDelete(Long id) {
-        OauthClient oauthClient = this.checkBuiltIn(id);
+        String clientId = this.getById(id).getClientId();
         this.delete(id);
-        this.afterTransactionCommit(this::deleteCache, oauthClient.getClientId());
-    }
-
-    public OauthClient checkBuiltIn(Long id) {
-        OauthClient oauthClient = this.getById(id);
-        if (oauthClient.getBuiltIn()) {
-            throw new CheckedException("内置oauth客户端不可修改或删除");
-        }
-        return oauthClient;
+        this.afterTransactionCommit(this::deleteCache, clientId);
     }
 
 }

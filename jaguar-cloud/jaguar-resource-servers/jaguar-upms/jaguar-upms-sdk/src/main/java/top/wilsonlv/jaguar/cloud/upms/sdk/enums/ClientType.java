@@ -11,13 +11,13 @@ public enum ClientType {
      */
     PC,
     /**
-     * WAP
+     * H5
      */
-    WAP,
+    H5,
     /**
      * 微信
      */
-    WEI_XIN,
+    WECHAT,
     /**
      * 安卓
      */

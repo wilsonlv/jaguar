@@ -30,11 +30,6 @@ public class Menu extends DataModifyLoggable {
     @TableField(value = "parent_id")
     private Long parentId;
     /**
-     * 是否内置菜单
-     */
-    @TableField("menu_built_in")
-    private Boolean menuBuiltIn;
-    /**
      * 名称
      */
     @TableField("menu_name")

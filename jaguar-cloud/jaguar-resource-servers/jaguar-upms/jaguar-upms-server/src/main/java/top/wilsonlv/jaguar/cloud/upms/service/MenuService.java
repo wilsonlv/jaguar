@@ -15,7 +15,6 @@ import top.wilsonlv.jaguar.cloud.upms.entity.ResourceServer;
 import top.wilsonlv.jaguar.cloud.upms.entity.RoleMenu;
 import top.wilsonlv.jaguar.cloud.upms.mapper.MenuMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.MenuVO;
-import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 import top.wilsonlv.jaguar.rediscache.AbstractRedisCacheService;
 
 import javax.annotation.Resource;
@@ -59,7 +58,7 @@ public class MenuService extends AbstractRedisCacheService<Menu, MenuMapper> {
         List<Menu> resourceServerIds = this.list(Wrappers.lambdaQuery(Menu.class)
                 .select(Menu::getResourceServerId)
                 .groupBy(Menu::getResourceServerId));
-        List<MenuVO> menuVOS = new ArrayList<>(resourceServerIds.size());
+        List<MenuVO> menuVos = new ArrayList<>(resourceServerIds.size());
 
         for (Menu resourceServerId : resourceServerIds) {
             ResourceServer resourceServer = resourceServerService.getById(resourceServerId.getResourceServerId());
@@ -71,9 +70,9 @@ public class MenuService extends AbstractRedisCacheService<Menu, MenuMapper> {
             resourceServerMenu.setServerId(resourceServer.getServerId());
             resourceServerMenu.setServerName(resourceServer.getServerName());
             resourceServerMenu.setChildren(tree);
-            menuVOS.add(resourceServerMenu);
+            menuVos.add(resourceServerMenu);
         }
-        return menuVOS;
+        return menuVos;
     }
 
     @Transactional
@@ -108,8 +107,6 @@ public class MenuService extends AbstractRedisCacheService<Menu, MenuMapper> {
     @Klock(name = LockNameConstant.MENU_CREATE_MODIFY_LOCK)
     @Transactional
     public void modify(MenuModifyDTO menuModifyDTO) {
-        this.checkBuiltIn(menuModifyDTO.getId());
-
         Menu byMenuName = this.getByMenuName(menuModifyDTO.getMenuName());
         Assert.duplicate(byMenuName, menuModifyDTO, "名称");
 
@@ -122,7 +119,6 @@ public class MenuService extends AbstractRedisCacheService<Menu, MenuMapper> {
 
     @Transactional
     public void checkAndDelete(Long id) {
-        this.checkBuiltIn(id);
         this.delete(id);
 
         roleMenuService.delete(Wrappers.lambdaQuery(RoleMenu.class)
@@ -135,13 +131,5 @@ public class MenuService extends AbstractRedisCacheService<Menu, MenuMapper> {
             this.checkAndDelete(menu.getId());
         }
     }
-
-    public void checkBuiltIn(Long id) {
-        Menu byId = this.getById(id);
-        if (byId.getMenuBuiltIn()) {
-            throw new CheckedException("内置菜单不可修改或删除");
-        }
-    }
-
 
 }

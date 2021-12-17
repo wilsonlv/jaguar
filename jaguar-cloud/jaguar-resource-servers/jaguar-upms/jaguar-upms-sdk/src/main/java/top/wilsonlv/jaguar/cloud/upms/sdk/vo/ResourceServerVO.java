@@ -34,4 +34,7 @@ public class ResourceServerVO extends BaseVO {
     @ApiModelProperty("服务网址")
     private String serverUrl;
 
+    @ApiModelProperty("是否启用")
+    private Boolean serverEnable;
+
 }

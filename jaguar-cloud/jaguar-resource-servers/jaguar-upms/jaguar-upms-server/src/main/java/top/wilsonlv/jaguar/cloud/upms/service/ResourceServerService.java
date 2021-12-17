@@ -1,10 +1,10 @@
 package top.wilsonlv.jaguar.cloud.upms.service;
 
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +19,7 @@ import top.wilsonlv.jaguar.cloud.upms.entity.ResourceServer;
 import top.wilsonlv.jaguar.cloud.upms.mapper.ResourceServerMapper;
 import top.wilsonlv.jaguar.cloud.upms.sdk.vo.ResourceServerVO;
 import top.wilsonlv.jaguar.commons.data.encryption.util.EncryptionUtil;
+import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 import top.wilsonlv.jaguar.oauth2.Oauth2Constant;
 import top.wilsonlv.jaguar.oauth2.model.SecurityUser;
 
@@ -49,25 +50,21 @@ public class ResourceServerService extends BaseService<ResourceServer, ResourceS
             redisTemplate.delete(keys);
         }
 
-        List<ResourceServer> resourceServers = this.list(Wrappers.emptyWrapper());
+        List<ResourceServer> resourceServers = this.list(Wrappers.lambdaQuery(ResourceServer.class)
+                .eq(ResourceServer::getServerEnable, true));
         for (ResourceServer resourceServer : resourceServers) {
             this.updateCache(resourceServer);
         }
     }
 
     public void updateCache(ResourceServer resourceServer) {
-        String key = Oauth2Constant.RESOURCE_SERVER_CACHE_KEY_PREFIX + resourceServer.getServerId();
         SecurityUser securityUser = new SecurityUser();
         securityUser.setId(resourceServer.getId());
         securityUser.setUsername(resourceServer.getServerId());
         securityUser.setPassword(resourceServer.getServerSecret());
         securityUser.setNickName(resourceServer.getServerName());
 
-        JSONObject remarkJson = new JSONObject();
-        remarkJson.put("serverMenu", resourceServer.getServerMenu());
-        remarkJson.put("serverUrl", resourceServer.getServerUrl());
-        securityUser.setRemark(remarkJson.toJSONString());
-
+        String key = Oauth2Constant.RESOURCE_SERVER_CACHE_KEY_PREFIX + resourceServer.getServerId();
         redisTemplate.boundValueOps(key).set(securityUser);
     }
 
@@ -78,19 +75,8 @@ public class ResourceServerService extends BaseService<ResourceServer, ResourceS
 
 
     public ResourceServer getByServerId(String serverId) {
-        String key = Oauth2Constant.RESOURCE_SERVER_CACHE_KEY_PREFIX + serverId;
-        SecurityUser securityUser = (SecurityUser) redisTemplate.boundValueOps(key).get();
-
-        if (securityUser == null) {
-            return null;
-        }
-
-        ResourceServer resourceServer = JSONObject.parseObject(securityUser.getRemark(), ResourceServer.class);
-        resourceServer.setId(securityUser.getId());
-        resourceServer.setServerId(securityUser.getUsername());
-        resourceServer.setServerName(securityUser.getNickName());
-        resourceServer.setServerSecret(securityUser.getPassword());
-        return resourceServer;
+        return this.unique(Wrappers.lambdaQuery(ResourceServer.class)
+                .eq(ResourceServer::getServerId, serverId));
     }
 
 
@@ -110,15 +96,22 @@ public class ResourceServerService extends BaseService<ResourceServer, ResourceS
         return voPage;
     }
 
+    private void checkServerUrl(ResourceServer resourceServer) {
+        if (resourceServer.getServerMenu() && StringUtils.isBlank(resourceServer.getServerUrl())) {
+            throw new CheckedException("服务网址为非空");
+        }
+    }
+
     @Transactional
     public String create(ResourceServerCreateDTO createDTO) {
         ResourceServer byServerId = this.getByServerId(createDTO.getServerId());
         Assert.duplicate(byServerId, "服务ID");
 
+        ResourceServer resourceServer = createDTO.toEntity(ResourceServer.class);
+        this.checkServerUrl(resourceServer);
+
         String randomPassword = EncryptionUtil.randomPassword(8, 8, 8);
         String encode = passwordEncoder.encode(randomPassword);
-
-        ResourceServer resourceServer = createDTO.toEntity(ResourceServer.class);
         resourceServer.setServerSecret(encode);
         this.insert(resourceServer);
 
@@ -133,9 +126,15 @@ public class ResourceServerService extends BaseService<ResourceServer, ResourceS
         Assert.duplicate(byServerId, modifyDTO, "服务ID");
 
         ResourceServer resourceServer = modifyDTO.toEntity(ResourceServer.class);
+        this.checkServerUrl(resourceServer);
+
         this.updateById(resourceServer);
 
-        this.afterTransactionCommit(this::updateCache, getById(modifyDTO.getId()));
+        if (resourceServer.getServerEnable()) {
+            this.afterTransactionCommit(this::updateCache, getById(modifyDTO.getId()));
+        } else {
+            this.afterTransactionCommit(this::deleteCache, resourceServer.getServerId());
+        }
     }
 
     @Transactional
@@ -159,6 +158,5 @@ public class ResourceServerService extends BaseService<ResourceServer, ResourceS
         this.delete(id);
         this.afterTransactionCommit(this::deleteCache, resourceServer.getServerId());
     }
-
 
 }

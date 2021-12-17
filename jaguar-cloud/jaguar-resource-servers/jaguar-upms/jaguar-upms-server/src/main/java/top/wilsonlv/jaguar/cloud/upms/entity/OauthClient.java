@@ -28,11 +28,6 @@ public class OauthClient extends DataModifyLoggable {
     @TableField("client_secret")
     private String clientSecret;
     /**
-     * 权限范围
-     */
-    @TableField("scope_")
-    private String scope;
-    /**
      * 资源ID
      */
     @TableField("resource_ids")
@@ -43,12 +38,12 @@ public class OauthClient extends DataModifyLoggable {
     @TableField("authorized_grant_types")
     private String authorizedGrantTypes;
     /**
-     * 重定向URI
+     * 权限范围
      */
-    @TableField("registered_redirect_uri")
-    private String registeredRedirectUri;
+    @TableField("scope_")
+    private String scope;
     /**
-     * 自动授权
+     * 自动授权范围
      */
     @TableField("auto_approve_scopes")
     private String autoApproveScopes;
@@ -62,16 +57,6 @@ public class OauthClient extends DataModifyLoggable {
      */
     @TableField("refresh_token_validity_seconds")
     private Integer refreshTokenValiditySeconds;
-    /**
-     * 其他信息
-     */
-    @TableField("additional_information")
-    private String additionalInformation;
-    /**
-     * 是否内置
-     */
-    @TableField("built_in")
-    private Boolean builtIn;
     /**
      * 是否需要验证码
      */
