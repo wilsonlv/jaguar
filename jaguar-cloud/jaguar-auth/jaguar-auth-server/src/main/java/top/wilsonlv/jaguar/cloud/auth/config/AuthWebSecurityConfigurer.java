@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import top.wilsonlv.jaguar.cloud.auth.component.CaptchaFilter;
 import top.wilsonlv.jaguar.cloud.auth.component.security.LoginFailureHandler;
 import top.wilsonlv.jaguar.cloud.auth.component.security.LoginSuccessHandler;
+import top.wilsonlv.jaguar.cloud.auth.component.security.LogoutSuccessHandler;
 import top.wilsonlv.jaguar.oauth2.component.AuthenticationExceptionHandler;
 import top.wilsonlv.jaguar.oauth2.component.JaguarAccessDeniedHandler;
 
@@ -30,6 +31,8 @@ public class AuthWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     private final LoginFailureHandler loginFailureHandler;
 
+    private final LogoutSuccessHandler logoutSuccessHandler;
+
     private final JaguarAccessDeniedHandler jaguarAccessDeniedHandler;
 
     private final AuthenticationExceptionHandler authenticationExceptionHandler;
@@ -46,11 +49,13 @@ public class AuthWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .and()
                 .addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class)
-                .formLogin().loginProcessingUrl("/login")
-                .successHandler(loginSuccessHandler).failureHandler(loginFailureHandler)
+                .formLogin()
+                .loginProcessingUrl("/login").successHandler(loginSuccessHandler).failureHandler(loginFailureHandler)
+                .and()
+                .logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login", "/captcha/**", "/error").permitAll()
+                .antMatchers("/login", "/logout", "/captcha/**", "/error").permitAll()
                 .antMatchers("/oauth/token", "/oauth/check_token").permitAll()
                 .antMatchers("/swagger-resources", "/swagger-resources/**", "/v2/**").permitAll()
                 .antMatchers("/error").permitAll()
