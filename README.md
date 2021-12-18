@@ -23,39 +23,43 @@ jaguar是基于springboot + spring cloud + alibaba cloud的微服务开发框架
 #### 软件架构
 jaguar由三大模块组成，分别是基础通用模块、代码生成模块和微服务模块
 
-- jaguar-commons：基础通用模块，该模块包含以下子模块
+- jaguar-commons：基础通用模块
     - jaguar-commons-activemq：activemq消息组件
     - jaguar-commons-aviator：表达式解析组件
-    - jaguar-base-crud：基础增删改查
-    - jaguar-commons-bom：框架通用版本
-    - jaguar-commons-captcha：验证码组件
     - jaguar-commons-cloud-client：微服务组件
     - jaguar-commons-encryption：数据加密组价
     - jaguar-commons-export-csv：csv导出
-    - jaguar-openfeign：微服务接口调用组件
     - jaguar-commons-monitor-client：监控客户端组件
     - jaguar-commons-mybatis-plus：持久层组件
-    - jaguar-security-oauth2：OAuth2组件
     - jaguar-commons-pdf：pdf生成组件
     - jaguar-commons-pinyin：汉语拼音组件
     - jaguar-commons-qrcode：二维码生成组件
     - jaguar-commons-redis：redis组件
-    - jaguar-redis-cache：基于redis的二级缓存组件
-    - jaguar-commons-tenant：多租户组件
     - jaguar-commons-web：web服务组件
-     
+
+- jaguar-support：扩展增强模块
+    - jaguar-base-crud：基础增删改查
+    - jaguar-captcha：验证码组件
+    - jaguar-data-modify-log：数据修改日志
+    - jaguar-export-csv：csv流式导出
+    - jaguar-openfeign：微服务接口调用组件
+    - jaguar-redis-cache：redis二级缓存
+    - jaguar-security-oauth2：OAuth2资源服务器
+    - jaguar-tenant：多租户数据隔离查询
+
 - jaguar-cloud：微服务模块
     - jaguar-auth：认证服务
-    - jaguar-cloud-bom：框架通用版本
+    - jaguar-job：任务调度服务   
     - jaguar-monitor：服务监控
-    - jaguar-register：nacos注册中心
+    - jaguar-register：注册中心
     - jaguar-sentinel：流量控制
     - jaguar-upms：用户权限管理服务
     - jaguar-websocket：消息推送服务
     - jaguar-handler-log：接口日志服务
-    - jaguar-job：任务调度服务
   
 - jaguar-codegen：代码生成模块
+- jaguar-dependencies：框架通用版本
+
 
 #### 使用说明
 - 1、创建数据库
