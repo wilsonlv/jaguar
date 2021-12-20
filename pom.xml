@@ -7,7 +7,7 @@
     <groupId>top.wilsonlv</groupId>
     <artifactId>jaguar</artifactId>
     <packaging>pom</packaging>
-    <version>4.0</version>
+    <version>master</version>
     <modules>
         <module>jaguar-cloud</module>
         <module>jaguar-codegen</module>
@@ -19,8 +19,6 @@
     </modules>
 
     <properties>
-        <jaguar.version>4.0</jaguar.version>
-
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
