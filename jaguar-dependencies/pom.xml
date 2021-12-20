@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>top.wilsonlv</groupId>
     <artifactId>jaguar-dependencies</artifactId>
-    <version>master</version>
+    <version>4.0</version>
     <description>jaguar 公共版本控制</description>
     <packaging>pom</packaging>
 
     <properties>
-        <jaguar.version>master</jaguar.version>
+        <jaguar.version>4.0</jaguar.version>
     </properties>
 
     <dependencyManagement>

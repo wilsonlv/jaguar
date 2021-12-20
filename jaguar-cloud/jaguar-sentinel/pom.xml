@@ -4,7 +4,7 @@
     <parent>
         <artifactId>jaguar-cloud</artifactId>
         <groupId>top.wilsonlv</groupId>
-        <version>master</version>
+        <version>4.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
