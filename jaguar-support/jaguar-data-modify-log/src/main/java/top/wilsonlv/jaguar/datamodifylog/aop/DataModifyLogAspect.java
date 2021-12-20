@@ -6,6 +6,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -48,10 +49,16 @@ public class DataModifyLogAspect {
         if (args[0] instanceof DataModifyLoggable) {
             DataModifyLoggable dataModifyLoggable = (DataModifyLoggable) args[0];
 
-            String entityName = StrUtil.lowerFirst(dataModifyLoggable.getClass().getSimpleName());
-            BaseService<?, ?> service = (BaseService<?, ?>) applicationContext.getBean(entityName + "Service");
-            BaseModel org = service.getById(dataModifyLoggable.getId());
+            String classSimpleName = dataModifyLoggable.getClass().getSimpleName();
+            String entityName = StrUtil.lowerFirst(classSimpleName);
+            BaseService<?, ?> service;
+            try {
+                service = (BaseService<?, ?>) applicationContext.getBean(entityName + "Service");
+            } catch (NoSuchBeanDefinitionException e) {
+                service = (BaseService<?, ?>) applicationContext.getBean(classSimpleName + "Service");
+            }
 
+            BaseModel org = service.getById(dataModifyLoggable.getId());
             try {
                 dataModifyLogService.log((DataModifyLoggable) org, dataModifyLoggable);
             } catch (IllegalAccessException e) {
