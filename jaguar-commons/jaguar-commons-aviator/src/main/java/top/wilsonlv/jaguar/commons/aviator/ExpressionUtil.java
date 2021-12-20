@@ -1,7 +1,7 @@
 package top.wilsonlv.jaguar.commons.aviator;
 
 import com.googlecode.aviator.AviatorEvaluator;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.Map;
 
@@ -19,7 +19,7 @@ public class ExpressionUtil {
     }
 
     public static boolean isExpression(String expression, String expressionPre, String expressionSuf) {
-        return StringUtils.isNotBlank(expression) && (expression.startsWith(expressionPre) && expression.endsWith(expressionSuf));
+        return StringUtils.hasText(expression) && (expression.startsWith(expressionPre) && expression.endsWith(expressionSuf));
     }
 
     public static Object execute(String expression, Map<String, Object> envVariable) {

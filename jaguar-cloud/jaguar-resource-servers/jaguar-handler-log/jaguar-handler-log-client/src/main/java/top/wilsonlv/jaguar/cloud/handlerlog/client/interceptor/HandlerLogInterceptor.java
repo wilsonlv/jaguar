@@ -1,13 +1,13 @@
 package top.wilsonlv.jaguar.cloud.handlerlog.client.interceptor;
 
+import cn.hutool.core.exceptions.ExceptionUtil;
 import com.alibaba.fastjson.JSONObject;
 import cz.mallat.uasparser.OnlineUpdater;
 import cz.mallat.uasparser.UASparser;
 import cz.mallat.uasparser.UserAgentInfo;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.http.HttpHeaders;
@@ -77,7 +77,7 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
             ApiOperation apiOperation = ((HandlerMethod) handler).getMethod().getAnnotation(ApiOperation.class);
 
             String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
-            if (StringUtils.isBlank(authorization)) {
+            if (!StringUtils.hasText(authorization)) {
                 authorization = request.getParameter("access_token");
             }
 
@@ -118,7 +118,7 @@ public class HandlerLogInterceptor implements HandlerInterceptor {
             long duration = Duration.between(handlerLog.getAccessTime(), LocalDateTime.now()).toMillis();
             handlerLog.setDuration(duration);
             handlerLog.setStatus(response.getStatus());
-            handlerLog.setErrorMsg(ExceptionUtils.getMessage(handlerException));
+            handlerLog.setErrorMsg(ExceptionUtil.getMessage(handlerException));
             JsonResult<?> jsonResult = JsonResultResponseAdvice.JSON_RESULT.get();
             if (jsonResult != null) {
                 handlerLog.setJsonResult(jsonResult.toJsonStr());

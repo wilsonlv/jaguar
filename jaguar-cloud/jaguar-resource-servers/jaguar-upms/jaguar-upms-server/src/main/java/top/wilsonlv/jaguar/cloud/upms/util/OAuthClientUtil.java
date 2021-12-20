@@ -1,9 +1,9 @@
 package top.wilsonlv.jaguar.cloud.upms.util;
 
 import com.alibaba.fastjson.JSONObject;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import top.wilsonlv.jaguar.cloud.upms.controller.dto.OAuthClientBaseDTO;
 import top.wilsonlv.jaguar.cloud.upms.entity.OAuthClient;
 import top.wilsonlv.jaguar.cloud.upms.sdk.dto.OAuthClientAdditionalInfo;
@@ -30,11 +30,11 @@ public class OAuthClientUtil {
         oauthClientVO.setResourceIds(new HashSet<>(Arrays.asList(oauthClient.getResourceIds().split(","))));
 
         oauthClientVO.setScope(new HashSet<>(Arrays.asList(oauthClient.getScope().split(","))));
-        if (StringUtils.isNotBlank(oauthClient.getAutoApproveScopes())) {
+        if (StringUtils.hasText(oauthClient.getAutoApproveScopes())) {
             oauthClientVO.setAutoApproveScopes(new HashSet<>(Arrays.asList(oauthClient.getAutoApproveScopes().split(","))));
         }
 
-        if (StringUtils.isNotBlank(oauthClient.getRegisteredRedirectUri())) {
+        if (StringUtils.hasText(oauthClient.getRegisteredRedirectUri())) {
             oauthClientVO.setRegisteredRedirectUri(new HashSet<>(Arrays.asList(oauthClient.getRegisteredRedirectUri().split(","))));
         } else {
             oauthClientVO.setRegisteredRedirectUri(new HashSet<>());
@@ -58,15 +58,15 @@ public class OAuthClientUtil {
         oauthClient.setUserType(oauthClientDTO.getUserType());
         oauthClient.setEnable(oauthClientDTO.getEnable());
 
-        oauthClient.setAuthorizedGrantTypes(StringUtils.join(oauthClientDTO.getAuthorizedGrantTypes().toArray(), ","));
-        oauthClient.setResourceIds(StringUtils.join(oauthClientDTO.getResourceIds().toArray(), ","));
+        oauthClient.setAuthorizedGrantTypes(String.join(",", oauthClientDTO.getAuthorizedGrantTypes()));
+        oauthClient.setResourceIds(String.join(",", oauthClientDTO.getResourceIds()));
 
-        oauthClient.setScope(StringUtils.join(oauthClientDTO.getScope().toArray(), ","));
+        oauthClient.setScope(String.join(",", oauthClientDTO.getScope()));
         if (!CollectionUtils.isEmpty(oauthClientDTO.getAutoApproveScopes())) {
-            oauthClient.setAutoApproveScopes(StringUtils.join(oauthClientDTO.getAutoApproveScopes().toArray(), ","));
+            oauthClient.setAutoApproveScopes(String.join(",", oauthClientDTO.getAutoApproveScopes()));
         }
         if (!CollectionUtils.isEmpty(oauthClientDTO.getRegisteredRedirectUri())) {
-            oauthClient.setRegisteredRedirectUri(StringUtils.join(oauthClientDTO.getRegisteredRedirectUri().toArray(), ","));
+            oauthClient.setRegisteredRedirectUri(String.join(",", oauthClientDTO.getRegisteredRedirectUri()));
         }
         return oauthClient;
     }

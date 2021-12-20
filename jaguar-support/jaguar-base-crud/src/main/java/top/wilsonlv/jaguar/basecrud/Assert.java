@@ -1,6 +1,6 @@
 package top.wilsonlv.jaguar.basecrud;
 
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 import top.wilsonlv.jaguar.commons.web.base.BaseModifyDTO;
 import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
@@ -23,7 +23,7 @@ public final class Assert {
 
     public static void validateId(Object object, String name, Long id) {
         if (object == null) {
-            throw new CheckedException(getMessage(VALIDATE_ID, StringUtils.isBlank(name) ? "" : name, id));
+            throw new CheckedException(getMessage(VALIDATE_ID, StringUtils.hasText(name) ? name : "", id));
         }
     }
 
@@ -58,7 +58,7 @@ public final class Assert {
     }
 
     public static void notNull(String str, String name) {
-        if (StringUtils.isBlank(str)) {
+        if (!StringUtils.hasText(str)) {
             throw new CheckedException(getMessage(NOT_NULL, name));
         }
     }

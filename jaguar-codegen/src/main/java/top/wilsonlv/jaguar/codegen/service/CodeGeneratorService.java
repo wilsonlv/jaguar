@@ -1,6 +1,5 @@
 package top.wilsonlv.jaguar.codegen.service;
 
-
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.ZipUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
@@ -8,23 +7,23 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
-import top.wilsonlv.jaguar.codegen.mapper.CodeGeneratorMapper;
-import top.wilsonlv.jaguar.codegen.entity.CodeTemplate;
-import top.wilsonlv.jaguar.codegen.velocity.CodeTemplateResourceLoader;
-import top.wilsonlv.jaguar.commons.aviator.ExpressionUtil;
-import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import top.wilsonlv.jaguar.codegen.constant.EnvVariable;
 import top.wilsonlv.jaguar.codegen.controller.dto.CodegenDTO;
 import top.wilsonlv.jaguar.codegen.controller.dto.PreviewDTO;
 import top.wilsonlv.jaguar.codegen.controller.vo.ColumnVO;
 import top.wilsonlv.jaguar.codegen.controller.vo.TableVO;
+import top.wilsonlv.jaguar.codegen.entity.CodeTemplate;
+import top.wilsonlv.jaguar.codegen.mapper.CodeGeneratorMapper;
 import top.wilsonlv.jaguar.codegen.properties.CodegenProperties;
-import org.springframework.stereotype.Service;
+import top.wilsonlv.jaguar.codegen.velocity.CodeTemplateResourceLoader;
+import top.wilsonlv.jaguar.commons.aviator.ExpressionUtil;
+import top.wilsonlv.jaguar.commons.web.exception.impl.CheckedException;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -90,19 +89,19 @@ public class CodeGeneratorService {
     }
 
     private Map<String, Object> getFileEnvVariables(String parentPackage, String moduleName) {
-        parentPackage = StringUtils.isNotBlank(parentPackage) ? parentPackage + '.' + moduleName : parentPackage;
+        parentPackage = StringUtils.hasText(parentPackage) ? parentPackage + '.' + moduleName : parentPackage;
 
         Map<String, Object> fileEnvVariables = new HashMap<>();
         fileEnvVariables.put(EnvVariable.JAVA_PATH, EnvVariable.JAVA_PATH_VALUE);
         fileEnvVariables.put(EnvVariable.PACKAGE, parentPackage);
-        fileEnvVariables.put(EnvVariable.PACKAGE_PATH, StringUtils.join(parentPackage.split("\\."), '/'));
+        fileEnvVariables.put(EnvVariable.PACKAGE_PATH, String.join("/", Arrays.asList(parentPackage.split("\\."))));
         fileEnvVariables.put(EnvVariable.MODULE, moduleName);
         return fileEnvVariables;
     }
 
     private Map<String, Object> getEntityVariables(String tableName, String tablePrefix) {
         String entityCamelCase;
-        if (StringUtils.isNotBlank(tablePrefix)) {
+        if (StringUtils.hasText(tablePrefix)) {
             String[] split = tableName.split(tablePrefix);
             entityCamelCase = split.length == 1 ? split[0] : split[1];
         } else {

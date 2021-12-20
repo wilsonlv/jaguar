@@ -2,7 +2,7 @@ package top.wilsonlv.jaguar.cloud.upms.service;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -115,12 +115,12 @@ public class PersonalService {
         user.setUserEmail(userEmail);
         user.setUserNickName(userNickName);
 
-        if (StringUtils.isNotBlank(userPhone)) {
+        if (StringUtils.hasText(userPhone)) {
             User byPhone = userService.getByPhone(userPhone);
             Assert.duplicate(byPhone, user, "用户手机号");
         }
 
-        if (StringUtils.isNotBlank(userEmail)) {
+        if (StringUtils.hasText(userEmail)) {
             User byEmail = userService.getByEmail(userEmail);
             Assert.duplicate(byEmail, user, "用户邮箱");
         }

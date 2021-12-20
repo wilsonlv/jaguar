@@ -2,7 +2,7 @@ package top.wilsonlv.jaguar.oauth2.util;
 
 import cn.hutool.core.codec.Base64;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -64,7 +64,7 @@ public final class SecurityUtil {
      * @return clientId
      */
     public static String extractClientId(String header) {
-        if (StringUtils.isBlank(header) || !header.startsWith(BASIC_)) {
+        if (!StringUtils.hasText(header) || !header.startsWith(BASIC_)) {
             log.debug("请求头中client信息为空: {}", header);
             return null;
         }

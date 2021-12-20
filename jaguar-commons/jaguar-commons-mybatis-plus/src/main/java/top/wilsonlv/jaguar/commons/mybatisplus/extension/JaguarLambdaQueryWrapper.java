@@ -3,7 +3,7 @@ package top.wilsonlv.jaguar.commons.mybatisplus.extension;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.Collection;
 
@@ -18,7 +18,7 @@ public class JaguarLambdaQueryWrapper<T> extends LambdaQueryWrapper<T> {
         if (val == null) {
             return this;
         }
-        if (val instanceof String && StringUtils.isBlank((String) val)) {
+        if (val instanceof String && !StringUtils.hasText((String) val)) {
             return this;
         }
         return super.eq(condition, column, val);
@@ -29,7 +29,7 @@ public class JaguarLambdaQueryWrapper<T> extends LambdaQueryWrapper<T> {
         if (val == null) {
             return this;
         }
-        if (val instanceof String && StringUtils.isBlank((String) val)) {
+        if (val instanceof String && !StringUtils.hasText((String) val)) {
             return this;
         }
 
@@ -82,6 +82,6 @@ public class JaguarLambdaQueryWrapper<T> extends LambdaQueryWrapper<T> {
     }
 
     public static <T> JaguarLambdaQueryWrapper<T> newInstance() {
-        return new JaguarLambdaQueryWrapper<T>();
+        return new JaguarLambdaQueryWrapper<>();
     }
 }

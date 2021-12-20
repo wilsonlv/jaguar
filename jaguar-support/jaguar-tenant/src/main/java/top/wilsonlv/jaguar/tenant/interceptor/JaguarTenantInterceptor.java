@@ -1,7 +1,7 @@
 package top.wilsonlv.jaguar.tenant.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -30,7 +30,7 @@ public class JaguarTenantInterceptor implements HandlerInterceptor {
             log.debug("resolve tenantId from currentUser : {}", TenantContextManager.getTenantId());
         } else {
             String tenantId = request.getHeader("tenantId");
-            if (request.getRequestURI().startsWith(FEIGN) && StringUtils.isNotBlank(tenantId)) {
+            if (request.getRequestURI().startsWith(FEIGN) && StringUtils.hasText(tenantId)) {
                 TenantContextManager.setTenantId(Long.valueOf(tenantId));
                 log.debug("resolve tenantId from feign request : {}", TenantContextManager.getTenantId());
             } else {

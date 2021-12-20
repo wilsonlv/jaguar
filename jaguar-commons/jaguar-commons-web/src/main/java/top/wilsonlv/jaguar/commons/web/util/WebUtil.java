@@ -1,7 +1,7 @@
 package top.wilsonlv.jaguar.commons.web.util;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -71,16 +71,16 @@ public class WebUtil extends WebUtils {
      */
     public static String getHost(HttpServletRequest request) {
         String ip = request.getHeader("X-Forwarded-For");
-        if (StringUtils.isBlank(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (!StringUtils.hasText(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
         }
-        if (StringUtils.isBlank(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (!StringUtils.hasText(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("WL-Proxy-Client-IP");
         }
-        if (StringUtils.isBlank(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (!StringUtils.hasText(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("X-Real-IP");
         }
-        if (StringUtils.isBlank(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (!StringUtils.hasText(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
         }
 

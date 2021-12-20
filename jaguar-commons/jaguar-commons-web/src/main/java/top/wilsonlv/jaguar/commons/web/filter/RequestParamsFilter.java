@@ -2,7 +2,7 @@ package top.wilsonlv.jaguar.commons.web.filter;
 
 import cn.hutool.core.date.DatePattern;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import top.wilsonlv.jaguar.commons.web.util.WebUtil;
@@ -55,7 +55,7 @@ public class RequestParamsFilter implements Filter {
         log.info("客户端ip: {}", WebUtil.getHost(request));
 
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (StringUtils.isNotBlank(header)) {
+        if (StringUtils.hasText(header)) {
             log.info("Authorization：{}", header);
         }
 

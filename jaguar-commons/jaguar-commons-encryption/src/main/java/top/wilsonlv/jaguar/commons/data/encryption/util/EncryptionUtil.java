@@ -1,16 +1,10 @@
 package top.wilsonlv.jaguar.commons.data.encryption.util;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.Base64Utils;
-import org.springframework.util.DigestUtils;
 import top.wilsonlv.jaguar.commons.data.encryption.coder.DesCoder;
 import top.wilsonlv.jaguar.commons.data.encryption.coder.RsaCoder;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.regex.Pattern;
 
 
@@ -22,19 +16,52 @@ import java.util.regex.Pattern;
  */
 public final class EncryptionUtil {
 
-    private EncryptionUtil() {
-    }
-
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(.{6,20})$");
 
-    private static final char[] HEX_DIGITS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+    private static final char[] UPPER_CASE_LETTER = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+    private static final char[] LOWER_CASE_LETTER = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+    private static final char[] NUM = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
+
+    /**
+     * 验证密码格式
+     */
+    public static boolean passwordUnmatched(String password) {
+        return !PASSWORD_PATTERN.matcher(password).matches();
+    }
+
+    public static String randomPassword(int upperCaseLetterLength, int lowerCaseLetterLength, int numLength) {
+        Random r = new Random();
+
+        List<Character> characters = new ArrayList<>(8);
+        for (int i = 0; i < upperCaseLetterLength; i++) {
+            characters.add(UPPER_CASE_LETTER[r.nextInt(UPPER_CASE_LETTER.length)]);
+        }
+
+        for (int i = 0; i < lowerCaseLetterLength; i++) {
+            characters.add(LOWER_CASE_LETTER[r.nextInt(LOWER_CASE_LETTER.length)]);
+        }
+
+        for (int i = 0; i < numLength; i++) {
+            characters.add(NUM[r.nextInt(NUM.length)]);
+        }
+
+        Collections.shuffle(characters);
+
+        StringBuilder builder = new StringBuilder();
+        for (Character character : characters) {
+            builder.append(character);
+        }
+        return builder.toString();
+    }
+
 
     /**
      * BASE64编码
      */
     public static String encryptBase64(byte[] data) {
         try {
-            return new String(Base64Utils.decode(data), StandardCharsets.UTF_8);
+            return new String(Base64.getEncoder().encode(data), StandardCharsets.UTF_8);
         } catch (Exception e) {
             throw new RuntimeException("加密错误，错误信息：", e);
         }
@@ -45,29 +72,12 @@ public final class EncryptionUtil {
      */
     public static byte[] decryptBase64(String key) {
         try {
-            return Base64Utils.decode(key.getBytes(StandardCharsets.UTF_8));
+            return Base64.getDecoder().decode(key);
         } catch (Exception e) {
             throw new RuntimeException("解密错误，错误信息：", e);
         }
     }
 
-    /**
-     * md5摘要
-     *
-     * @param value 数据
-     * @return md5摘要
-     */
-    public static String md5Digest(String value) {
-        if (StringUtils.isBlank(value)) {
-            return null;
-        }
-
-        try {
-            return DigestUtils.md5DigestAsHex(value.getBytes(StandardCharsets.UTF_8));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     /**
      * DES对称加密
@@ -137,37 +147,8 @@ public final class EncryptionUtil {
         }
     }
 
-    /**
-     * 验证密码格式
-     */
-    public static boolean passwordUnmatched(String password) {
-        return !PASSWORD_PATTERN.matcher(password).matches();
-    }
 
-    private static final char[] UPPER_CASE_LETTER = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
-    private static final char[] LOWER_CASE_LETTER = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
-    private static final char[] NUM = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-
-    public static String randomPassword(int upperCaseLetterLength, int lowerCaseLetterLength, int numLength) {
-        Random r = new Random();
-
-        List<Character> characters = new ArrayList<>(8);
-        for (int i = 0; i < upperCaseLetterLength; i++) {
-            characters.add(UPPER_CASE_LETTER[r.nextInt(UPPER_CASE_LETTER.length)]);
-        }
-
-        for (int i = 0; i < lowerCaseLetterLength; i++) {
-            characters.add(LOWER_CASE_LETTER[r.nextInt(LOWER_CASE_LETTER.length)]);
-        }
-
-        for (int i = 0; i < numLength; i++) {
-            characters.add(NUM[r.nextInt(NUM.length)]);
-        }
-
-        Collections.shuffle(characters);
-
-        Character[] characterArray = characters.toArray(new Character[0]);
-        return StringUtils.join(characterArray);
+    private EncryptionUtil() {
     }
 
 }

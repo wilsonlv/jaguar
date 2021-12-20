@@ -1,6 +1,6 @@
 package top.wilsonlv.jaguar.commons.web.exception;
 
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 import top.wilsonlv.jaguar.commons.web.response.ResultCode;
 
 
@@ -42,7 +42,7 @@ public abstract class BaseException extends RuntimeException {
     @Override
     public String getMessage() {
         String message = super.getMessage();
-        return StringUtils.isNotBlank(message) ? message : getResultCode().getReasonPhrase();
+        return StringUtils.hasText(message) ? message : getResultCode().getReasonPhrase();
     }
 
     public Object getData() {

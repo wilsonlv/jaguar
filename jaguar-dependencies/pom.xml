@@ -5,12 +5,18 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>top.wilsonlv</groupId>
     <artifactId>jaguar-dependencies</artifactId>
-    <version>master</version>
+    <version>4.0</version>
     <description>jaguar 公共版本控制</description>
     <packaging>pom</packaging>
 
     <properties>
-        <jaguar.version>master</jaguar.version>
+        <jaguar.version>4.0</jaguar.version>
+        <mysql.version>8.0.23</mysql.version>
+        <klock.version>1.4-RELEASE</klock.version>
+        <fastjson.version>1.2.23</fastjson.version>
+        <jackson.version>2.9.0</jackson.version>
+        <hutool.version>5.5.8</hutool.version>
+        <spring-boot-admin.version>2.3.1</spring-boot-admin.version>
     </properties>
 
     <dependencyManagement>
@@ -138,6 +144,45 @@
                 <artifactId>jaguar-websocket-sdk</artifactId>
                 <version>${jaguar.version}</version>
             </dependency>
+
+            <!-- apache工具包 -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.10.0</version>
+            </dependency>
+
+            <!-- json -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+            <!-- hutool -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.keking</groupId>
+                <artifactId>spring-boot-klock-starter</artifactId>
+                <version>${klock.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-server</artifactId>
+                <version>${spring-boot-admin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-client</artifactId>
+                <version>${spring-boot-admin.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

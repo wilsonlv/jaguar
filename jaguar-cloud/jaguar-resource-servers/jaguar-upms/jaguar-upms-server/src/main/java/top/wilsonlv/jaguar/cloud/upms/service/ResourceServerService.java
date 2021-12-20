@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -97,7 +97,7 @@ public class ResourceServerService extends BaseService<ResourceServer, ResourceS
     }
 
     private void checkServerUrl(ResourceServer resourceServer) {
-        if (resourceServer.getServerMenu() && StringUtils.isBlank(resourceServer.getServerUrl())) {
+        if (resourceServer.getServerMenu() && !StringUtils.hasText(resourceServer.getServerUrl())) {
             throw new CheckedException("服务网址为非空");
         }
     }

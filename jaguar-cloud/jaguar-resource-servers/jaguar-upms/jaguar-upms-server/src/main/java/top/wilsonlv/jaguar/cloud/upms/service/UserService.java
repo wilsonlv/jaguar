@@ -3,7 +3,7 @@ package top.wilsonlv.jaguar.cloud.upms.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.boot.autoconfigure.klock.annotation.Klock;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -126,12 +126,12 @@ public class UserService extends AbstractRedisCacheService<User, UserMapper> {
         User byAccount = this.getByAccount(userCreateDTO.getUserAccount());
         Assert.duplicate(byAccount, "用户账号");
 
-        if (StringUtils.isNotBlank(userCreateDTO.getUserPhone())) {
+        if (StringUtils.hasText(userCreateDTO.getUserPhone())) {
             User byPhone = this.getByPhone(userCreateDTO.getUserPhone());
             Assert.duplicate(byPhone, "用户手机号");
         }
 
-        if (StringUtils.isNotBlank(userCreateDTO.getUserEmail())) {
+        if (StringUtils.hasText(userCreateDTO.getUserEmail())) {
             User byEmail = this.getByEmail(userCreateDTO.getUserEmail());
             Assert.duplicate(byEmail, "用户邮箱");
         }
@@ -156,7 +156,7 @@ public class UserService extends AbstractRedisCacheService<User, UserMapper> {
         }
 
         LocalDateTime userPasswordLastModifyTime = null;
-        if (StringUtils.isNotBlank(userModifyDTO.getUserPassword())) {
+        if (StringUtils.hasText(userModifyDTO.getUserPassword())) {
             if (EncryptionUtil.passwordUnmatched(userModifyDTO.getUserPassword())) {
                 throw new CheckedException("密码格式为包含数字，字母大小写的6-20位字符串！");
             }
@@ -164,12 +164,12 @@ public class UserService extends AbstractRedisCacheService<User, UserMapper> {
             userPasswordLastModifyTime = LocalDateTime.now();
         }
 
-        if (StringUtils.isNotBlank(userModifyDTO.getUserPhone())) {
+        if (StringUtils.hasText(userModifyDTO.getUserPhone())) {
             User byPhone = this.getByPhone(userModifyDTO.getUserPhone());
             Assert.duplicate(byPhone, userModifyDTO, "用户手机号");
         }
 
-        if (StringUtils.isNotBlank(userModifyDTO.getUserEmail())) {
+        if (StringUtils.hasText(userModifyDTO.getUserEmail())) {
             User byEmail = this.getByEmail(userModifyDTO.getUserEmail());
             Assert.duplicate(byEmail, userModifyDTO, "用户邮箱");
         }

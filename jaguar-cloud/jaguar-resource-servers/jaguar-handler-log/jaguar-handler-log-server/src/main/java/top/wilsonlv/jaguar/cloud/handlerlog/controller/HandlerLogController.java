@@ -6,7 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.IndexOperations;
@@ -83,10 +83,10 @@ public class HandlerLogController implements InitializingBean {
         params.put("method", method);
         params.put("status", status);
 
-        if (StringUtils.isNotBlank(fuzzyRequestUri)) {
+        if (StringUtils.hasText(fuzzyRequestUri)) {
             params.put("fuzzyRequestUri", "%" + fuzzyRequestUri + "%");
         }
-        if (StringUtils.isNotBlank(fuzzyUserAgent)) {
+        if (StringUtils.hasText(fuzzyUserAgent)) {
             params.put("fuzzyUserAgent", "%" + fuzzyUserAgent + "%");
         }
 

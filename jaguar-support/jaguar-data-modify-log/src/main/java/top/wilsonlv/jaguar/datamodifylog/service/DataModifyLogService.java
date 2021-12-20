@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
 import com.baomidou.mybatisplus.core.enums.SqlMethod;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 import org.springframework.stereotype.Service;
@@ -48,8 +48,6 @@ public class DataModifyLogService<T extends DataModifyLoggable> {
     }};
 
     @Resource
-    private DataModifyLogMapper dataModifyLogMapper;
-    @Resource
     private MybatisPlusProperties mybatisPlusProperties;
 
     public FieldStrategy getUpdateStrategy() {
@@ -90,7 +88,7 @@ public class DataModifyLogService<T extends DataModifyLoggable> {
 
             if (strategy == FieldStrategy.NOT_EMPTY) {
                 //如果更新策略是非空更新
-                if (newValue instanceof String && StringUtils.isBlank((String) newValue)) {
+                if (newValue instanceof String && !StringUtils.hasText((String) newValue)) {
                     //如果是空字符串，则不会更新
                     continue;
                 } else if (newValue == null) {

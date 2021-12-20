@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 
@@ -70,7 +70,7 @@ public class JsonResult<T> implements Serializable {
     }
 
     public String getMessage() {
-        return StringUtils.isBlank(this.message) ? resultCode.getReasonPhrase() : this.message;
+        return StringUtils.hasText(this.message) ? this.message : resultCode.getReasonPhrase();
     }
 
     public String toJsonStr() {

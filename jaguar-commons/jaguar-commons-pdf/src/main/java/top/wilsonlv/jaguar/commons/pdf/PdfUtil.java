@@ -24,7 +24,7 @@ public class PdfUtil {
         ClassPathResource resource = new ClassPathResource(fontPath);
         File file = new File("lib/" + fontPath);
         if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
-            throw new Error("创建字体文件夹失败");
+            throw new RuntimeException("创建字体文件夹失败");
         }
 
         try (FileOutputStream outputStream = new FileOutputStream(file);
